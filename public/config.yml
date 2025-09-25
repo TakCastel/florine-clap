@@ -13,8 +13,8 @@ backend:
 media_folder: "public/images/uploads"
 public_folder: "/images/uploads"
 
-site_url: "https://florineclap.com"  # Remplacez par votre URL de production
-display_url: "https://florineclap.com"
+site_url: "http://localhost:3000"
+display_url: "http://localhost:3000"
 
 # Configuration de l'éditeur
 editor:
@@ -70,7 +70,7 @@ collections:
           - { label: "Noindex", name: "noindex", widget: "boolean", required: false, default: false }
 
   - name: "ateliers"
-    label: "Ateliers vidéo"
+    label: "Médiations"
     folder: "content/ateliers"
     create: true
     slug: "{{slug}}"
