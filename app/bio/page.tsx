@@ -9,7 +9,7 @@ export const dynamic = 'error'
 export default function BioPage() {
   const bio = allPages.find((p) => p._raw.flattenedPath === 'pages/bio') || allPages[0]
   return (
-    <div className="mx-auto max-w-3xl px-4 py-12">
+    <div className="mx-auto max-w-6xl px-4 py-12">
       <h1 className="text-3xl font-semibold">{bio?.title || 'Bio'}</h1>
       {bio?.body?.code && (
         <div className="mt-8">

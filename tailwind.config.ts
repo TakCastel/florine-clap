@@ -11,28 +11,28 @@ const config: Config = {
       colors: {
         // Palette dynamique jaune/cyan + orange pour Florine Clap
         primary: {
-          50: '#fefce8',   // Jaune très clair
-          100: '#fef3c7',  // Jaune clair
-          200: '#fde68a',   // Jaune doux
-          300: '#fcd34d',   // Jaune
-          400: '#fbbf24',   // Jaune vif
-          500: '#f59e0b',   // Orange-jaune
-          600: '#d97706',   // Orange
-          700: '#b45309',   // Orange profond
-          800: '#92400e',   // Orange sombre
-          900: '#78350f',   // Orange très sombre
+          50: '#fff7ed',   // Orange très clair
+          100: '#ffedd5',  // Orange clair
+          200: '#fed7aa',   // Orange doux
+          300: '#fdba74',   // Orange
+          400: '#fb923c',   // Orange vif
+          500: '#f97316',   // Orange principal
+          600: '#ea580c',   // Orange foncé
+          700: '#c2410c',   // Orange profond
+          800: '#9a3412',   // Orange sombre
+          900: '#7c2d12',   // Orange très sombre
         },
         // Couleurs cyan pour contraste
         cyan: {
           50: '#ecfeff',
           100: '#cffafe',
           200: '#a5f3fc',
-          300: '#67e8f9',
-          400: '#22d3ee',
-          500: '#06b6d4',
-          600: '#0891b2',
-          700: '#0e7490',
-          800: '#155e75',
+          300: '#8ECAE6',   // Light Blue
+          400: '#219EBC',   // Medium Blue
+          500: '#126782',   // Teal Blue
+          600: '#0e7490',
+          700: '#155e75',
+          800: '#023047',   // Dark Blue
           900: '#164e63',
         },
         // Couleurs neutres pour la sobriété
@@ -50,16 +50,20 @@ const config: Config = {
         },
         // Couleurs d'accent flash
         accent: {
-          yellow: '#fbbf24',
-          orange: '#f97316',
-          cyan: '#06b6d4',
-          lime: '#84cc16',
+          yellow: '#FFB703',   // Golden Yellow
+          orange: '#FD9E02',   // Bright Orange
+          cyan: '#219EBC',     // Medium Blue
+          lime: '#FB8500',     // Vibrant Orange
         },
       },
       fontFamily: {
-        sans: ['Inter', 'system-ui', 'sans-serif'],
+        sans: ['Funnel Display', 'system-ui', 'sans-serif'],
         serif: ['Playfair Display', 'serif'],
         mono: ['JetBrains Mono', 'monospace'],
+        gabarito: ['var(--font-gabarito)', 'sans-serif'],
+        title: ['var(--font-title)', 'sans-serif'],
+        montserrat: ['var(--font-montserrat-alternates)', 'sans-serif'],
+        funnel: ['Funnel Display', 'sans-serif'],
       },
     },
   },

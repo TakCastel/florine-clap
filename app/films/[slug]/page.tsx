@@ -4,7 +4,6 @@ import { notFound } from 'next/navigation'
 import { Metadata } from 'next'
 import { canonical } from '@/lib/seo'
 import { buildMetadata } from '@/components/Seo'
-import { MDXContent } from 'contentlayer/core'
 
 export const dynamic = 'error'
 
@@ -14,10 +13,11 @@ export default function FilmPage({ params }: { params: { slug: string } }) {
   const doc = allFilms.find((d) => d.slug === params.slug)
   if (!doc) return notFound()
   return (
-    <div className="mx-auto max-w-3xl px-4 py-12">
-        <h1 className="text-3xl font-semibold">{doc.title} ({doc.annee})</h1>
-        {doc.duree && <p className="mt-1 text-sm text-gray-500">Durée : {doc.duree}</p>}
-        {doc.synopsis && <p className="mt-4 text-gray-700">{doc.synopsis}</p>}
+    <div className="min-h-screen bg-orange-500">
+      <div className="mx-auto max-w-6xl px-4 py-12">
+        <h1 className="text-4xl md:text-6xl lg:text-8xl font-montserrat font-bold tracking-wide text-orange-100">{doc.title} ({doc.annee})</h1>
+        {doc.duree && <p className="mt-1 text-sm text-orange-100">Durée : {doc.duree}</p>}
+        {doc.synopsis && <p className="mt-4 text-orange-100">{doc.synopsis}</p>}
         {doc.vimeo && (
           <div className="mt-6 aspect-video">
             <iframe
@@ -38,18 +38,18 @@ export default function FilmPage({ params }: { params: { slug: string } }) {
         )}
         {doc.selections && doc.selections.length > 0 && (
           <div className="mt-6">
-            <h3 className="text-lg font-semibold mb-2">Festivals & Sélections</h3>
+            <h3 className="text-lg font-semibold mb-2 text-white">Festivals & Sélections</h3>
             <ul className="list-disc list-inside">
               {doc.selections.map((selection, index) => (
-                <li key={index} className="text-gray-700">{selection}</li>
+                <li key={index} className="text-white">{selection}</li>
               ))}
             </ul>
           </div>
         )}
         {doc.credits && (
           <div className="mt-8">
-            <h3 className="text-lg font-semibold mb-2">Crédits</h3>
-            <div className="prose prose-sm dark:prose-invert whitespace-pre-wrap">
+            <h3 className="text-lg font-semibold mb-2 text-white">Crédits</h3>
+            <div className="prose prose-sm dark:prose-invert whitespace-pre-wrap text-white">
               {typeof doc.credits === 'string' ? doc.credits : doc.credits.raw}
             </div>
           </div>
@@ -59,6 +59,7 @@ export default function FilmPage({ params }: { params: { slug: string } }) {
             <MdxRenderer code={doc.body.code} />
           </div>
         )}
+      </div>
     </div>
   )
 }

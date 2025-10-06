@@ -18,7 +18,10 @@ display_url: "http://localhost:3000"
 
 # Configuration de l'éditeur
 editor:
-  preview: true
+  preview: false
+
+# Configuration de la langue
+locale: 'fr'
 
 # Configuration des collections
 publish_mode: editorial_workflow
@@ -35,7 +38,9 @@ collections:
     folder: "content/films"
     create: true
     slug: "{{slug}}"
-    sortable_fields: ['title', 'annee', 'date']
+    extension: "mdx"
+    format: "frontmatter"
+    sortable_fields: ['title', 'annee']
     view_filters:
       - label: "Année"
         field: annee

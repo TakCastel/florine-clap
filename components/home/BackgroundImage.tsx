@@ -7,12 +7,12 @@ interface BackgroundImageProps {
 
 export default function BackgroundImage({ src, alt }: BackgroundImageProps) {
   return (
-    <div className="fixed inset-0 z-0">
+    <div className="absolute inset-0 z-0">
       <Image
         src={src}
         alt={alt}
         fill
-        className="object-cover"
+        className="object-cover grayscale"
         priority
       />
     </div>

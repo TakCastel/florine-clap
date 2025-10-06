@@ -37,7 +37,7 @@ export default function PageTransition({ children, isTransitioning = false }: Pa
 
       {/* Overlay de transition subtil */}
       {isTransitioning && (
-        <div className="fixed inset-0 z-50 bg-white/80 backdrop-blur-sm transition-opacity duration-300" />
+        <div className="fixed inset-0 z-50 bg-orange-100/80 backdrop-blur-sm transition-opacity duration-300" />
       )}
     </div>
   )

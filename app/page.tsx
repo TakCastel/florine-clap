@@ -2,9 +2,10 @@
 
 import { allPages } from '.contentlayer/generated'
 import { useRef } from 'react'
-import BackgroundImage from '@/components/home/BackgroundImage'
+import BackgroundVideo from '@/components/home/BackgroundVideo'
 import Hero from '@/components/home/Hero'
 import HomeCards from '@/components/home/HomeCards'
+import BioSection from '@/components/home/BioSection'
 
 export default function HomePage() {
   const homePage = allPages.find((p) => p._raw.flattenedPath === 'pages/home')
@@ -12,27 +13,33 @@ export default function HomePage() {
   
   const scrollToSections = () => {
     if (sectionsRef.current) {
-      sectionsRef.current.scrollIntoView({
-        behavior: 'smooth',
-        block: 'start'
+      const elementPosition = sectionsRef.current.offsetTop
+      // En mobile, on scroll directement vers la section sans ajouter 88px
+      // En desktop, on ajoute 88px pour masquer complètement la section hero
+      const isMobile = window.innerWidth < 768
+      const offsetPosition = isMobile ? elementPosition : elementPosition + 88
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth'
       })
     }
   }
   
   return (
-    <div className="relative bg-white min-h-[calc(100vh-88px-80px)]">
-      <BackgroundImage 
-        src="https://picsum.photos/1920/1080?random=1&grayscale&blur=1"
-        alt="Florine Clap - Background"
+    <div className="relative bg-orange-100">
+      <BackgroundVideo 
+        src="/videos/example.mp4"
+        alt="Vidéo de fond artistique"
       />
 
       <Hero 
-        title={homePage?.title || 'Florine'}
-        description={homePage?.body?.raw ? homePage.body.raw.replace(/^# .*$/m, '').trim() : 'Réalisatrice et formatrice en ateliers vidéo'}
         onScrollClick={scrollToSections}
       />
 
       <HomeCards innerRef={sectionsRef} />
+      
+      <BioSection />
     </div>
   )
 }
