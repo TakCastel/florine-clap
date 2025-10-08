@@ -1,99 +1,89 @@
-import Image from 'next/image'
-import { useAnimationOnScroll } from '@/hooks/useAnimationOnScroll'
+'use client'
 
 export default function BioSection() {
-  const { ref, isVisible } = useAnimationOnScroll()
+  const scrollToFooter = () => {
+    const footer = document.querySelector('footer')
+    const container = document.querySelector('.scroll-container') as HTMLElement
+    
+    if (footer && container) {
+      const elementTop = footer.offsetTop
+      const headerHeight = 80 // Hauteur du header fixe
+      const offsetPosition = elementTop - headerHeight
+      
+      container.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth'
+      })
+    }
+  }
 
   return (
-    <section ref={ref} className="relative bg-orange-100 py-24 pb-48 overflow-hidden z-20">
-      <div className="max-w-6xl mx-auto px-4 md:px-6">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          
-          {/* Bloc de texte avec fond coloré */}
-          <div className={`relative transition-all duration-1000 ease-out ${
-            isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-12'
-          }`}>
-            {/* Bloc carré de couleur en arrière-plan */}
-            <div className="relative bg-cyan-400 p-8 lg:p-12 min-h-[400px] flex items-center">
-              {/* Bordure intérieure blanche */}
-              <div className={`absolute inset-4 border-2 border-orange-100 transition-all duration-1000 ease-out delay-300 ${
-                isVisible ? 'opacity-100' : 'opacity-0'
-              }`}></div>
+    <section id="bio-section" className="scroll-section w-full z-30" style={{ height: 'calc(100vh - 80px)' }}>
+      <div className="w-full h-full flex">
+        {/* Image - 1/2 de la page */}
+        <div className="w-1/2 h-full relative overflow-hidden group">
+          <img 
+            src="https://picsum.photos/800/1200?random=5" 
+            alt="Florine Clap - Portrait"
+            className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700"
+          />
+          <div className="absolute inset-0 bg-theme-dark/20 group-hover:bg-theme-dark/10 transition-all duration-700"></div>
+        </div>
+        
+        {/* Texte - 1/2 de la page */}
+        <div className="w-1/2 h-full bg-theme-grey flex items-center justify-center p-8 relative overflow-hidden">
+          <div className="max-w-2xl relative z-10">
+            <h2 className="text-5xl md:text-7xl font-bold text-theme-blue mb-8">
+              Mon parcours
+            </h2>
+            
+            <div className="space-y-6 text-theme-blue text-xl md:text-2xl leading-relaxed">
+              <p>
+                Née à Avignon en 1988, je me passionne très tôt pour le théâtre et le cinéma. 
+                Diplômée en esthétique et pratique du cinéma à l'université Paris I Panthéon-Sorbonne.
+              </p>
               
-              {/* Contenu du texte */}
-              <div className="relative z-10 text-orange-100">
-                <h2 className={`text-3xl lg:text-4xl font-montserrat font-bold mb-6 tracking-wide transition-all duration-1000 ease-out delay-500 ${
-                  isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
-                }`}>
-                  Mon parcours artistique
-                </h2>
-                
-                <div className={`space-y-4 text-lg leading-relaxed transition-all duration-1000 ease-out delay-700 ${
-                  isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
-                }`}>
-                  <p>
-                    Née à Avignon en 1988, je me passionne très tôt pour le théâtre et le cinéma. 
-                    Diplômée en esthétique et pratique du cinéma à l'université Paris I Panthéon-Sorbonne, 
-                    j'ai développé une approche artistique singulière.
-                  </p>
-                  
-                  <p>
-                    Ma filmographie révèle un intérêt renouvelé pour le cinéma, le théâtre et la danse, 
-                    m'ayant menée de l'Académie du spectacle équestre de Bartabas à la réalisation de 
-                    documentaires d'art et sur l'art.
-                  </p>
-                  
-                  <p>
-                    Mes films explorent des figures atypiques et des structures associatives, 
-                    témoignant d'une sensibilité sociale et artistique qui m'oriente aujourd'hui 
-                    vers la fiction et le docu-fiction.
-                  </p>
-                </div>
-                
-                {/* Mots-clés pour le SEO */}
-                <div className={`mt-6 flex flex-wrap gap-2 transition-all duration-1000 ease-out delay-900 ${
-                  isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
-                }`}>
-                  <span className="px-3 py-1 bg-orange-100 text-cyan-600 text-sm font-medium">
-                    Réalisatrice documentaire
-                  </span>
-                  <span className="px-3 py-1 bg-orange-100 text-cyan-600 text-sm font-medium">
-                    Festival d'Avignon
-                  </span>
-                  <span className="px-3 py-1 bg-orange-100 text-cyan-600 text-sm font-medium">
-                    Médiation artistique
-                  </span>
-                  <span className="px-3 py-1 bg-orange-100 text-cyan-600 text-sm font-medium">
-                    Cinéma d'auteur
-                  </span>
-                </div>
-              </div>
+              <p>
+                Ma filmographie révèle un intérêt renouvelé pour le cinéma, le théâtre et la danse, 
+                m'ayant menée de l'Académie du spectacle équestre de Bartabas à la réalisation de 
+                documentaires d'art et sur l'art.
+              </p>
+              
+              <p>
+                Mes films explorent des figures atypiques et des structures associatives, 
+                témoignant d'une sensibilité sociale et artistique qui m'oriente aujourd'hui 
+                vers la fiction et le docu-fiction.
+              </p>
             </div>
-          </div>
-
-          {/* Image simplifiée - Design épuré */}
-          <div className={`relative transition-all duration-1000 ease-out delay-300 ${
-            isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-12'
-          }`}>
-            <div className="relative w-full h-[500px] lg:h-[600px]">
-              
-              {/* Image principale avec effet subtil */}
-              <div className="absolute inset-0">
-                <Image
-                  src="https://picsum.photos/600/800?random=6"
-                  alt="Florine Clap - Réalisatrice et autrice"
-                  fill
-                  className="object-cover grayscale hover:grayscale-0 transition-all duration-700 ease-out"
-                />
-                {/* Overlay simple */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
-              </div>
-              
-              {/* Bordure simple */}
-              <div className={`absolute inset-0 border-2 border-orange-100 transition-all duration-1000 ease-out delay-500 ${
-                isVisible ? 'opacity-100' : 'opacity-0'
-              }`}></div>
-              
+            
+            {/* Bouton d'action */}
+            <div className="mt-8">
+              <a 
+                href="/bio" 
+                className="inline-flex items-center text-theme-blue text-xl font-medium hover:text-theme-blue/80 transition-all duration-300 relative after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-theme-blue after:transition-all after:duration-300 hover:after:w-full"
+              >
+                Découvrir mon parcours complet →
+              </a>
+            </div>
+            
+            {/* Indicateur de scroll vers le footer */}
+            <div className="mt-12 text-center">
+              <button
+                onClick={scrollToFooter}
+                className="inline-flex flex-col items-center text-theme-blue/60 hover:text-theme-blue transition-colors cursor-pointer group"
+                aria-label="Aller au footer"
+              >
+                <span className="text-sm mb-2">Continuer vers le bas</span>
+                <svg 
+                  className="w-6 h-6 transition-transform duration-300 group-hover:translate-y-1" 
+                  fill="none" 
+                  stroke="currentColor" 
+                  strokeWidth="2" 
+                  viewBox="0 0 24 24"
+                >
+                  <path d="M19 14l-7 7m0 0l-7-7m7 7V3"/>
+                </svg>
+              </button>
             </div>
           </div>
         </div>

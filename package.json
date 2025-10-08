@@ -9,6 +9,7 @@
     "postinstall": "contentlayer2 build"
   },
   "dependencies": {
+    "@studio-freight/lenis": "^1.0.42",
     "autoprefixer": "^10.4.20",
     "contentlayer2": "^0.5.0",
     "decap-cms-app": "^3.8.3",

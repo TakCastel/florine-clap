@@ -36,25 +36,25 @@ export default function ProjectCard({
       case 'films':
         return {
           container: 'group block overflow-hidden bg-black hover:shadow-xl hover:scale-[1.02] transition-all duration-300 h-full flex flex-col',
-          title: 'text-2xl font-bold text-orange-100',
-          subtitle: 'text-base text-orange-200',
-          excerpt: 'mt-2 text-base text-orange-100 line-clamp-3',
-          meta: 'text-sm text-orange-300',
-          button: 'mt-auto inline-flex items-center px-4 py-2 bg-orange-500 text-white text-base font-medium hover:bg-orange-600 transition-colors w-fit'
+          title: 'text-2xl font-bold text-white',
+          subtitle: 'text-base text-theme-yellow/80',
+          excerpt: 'mt-2 text-base text-white line-clamp-3',
+          meta: 'text-sm text-theme-yellow/60',
+          button: 'mt-auto inline-flex items-center px-4 py-2 bg-theme-yellow text-theme-dark text-base font-medium hover:bg-theme-yellow/90 transition-colors w-fit'
         }
       case 'ateliers':
         return {
-          container: 'group block overflow-hidden bg-orange-500 hover:shadow-sm',
-          title: 'text-base font-semibold text-white',
-          subtitle: 'text-sm text-orange-100',
-          excerpt: 'mt-2 text-sm text-white line-clamp-2'
+          container: 'group block overflow-hidden bg-theme-grey hover:shadow-sm h-full flex flex-col',
+          title: 'text-base font-semibold text-theme-blue',
+          subtitle: 'text-sm text-theme-yellow/80',
+          excerpt: 'mt-2 text-sm text-theme-blue line-clamp-2'
         }
       case 'actus':
         return {
-          container: 'group block overflow-hidden bg-black hover:shadow-sm',
-          title: 'text-base font-semibold text-white',
-          subtitle: 'text-sm text-cyan-100',
-          excerpt: 'mt-2 text-sm text-white line-clamp-2'
+          container: 'group block overflow-hidden bg-theme-yellow hover:shadow-sm h-full flex flex-col',
+          title: 'text-base font-semibold text-theme-dark',
+          subtitle: 'text-sm text-theme-yellow/80',
+          excerpt: 'mt-2 text-sm text-theme-dark line-clamp-2'
         }
       default:
         return {
@@ -105,7 +105,7 @@ export default function ProjectCard({
         </div>
       )}
       
-      <div className="p-6 flex flex-col gap-6 flex-1">
+      <div className="p-6 flex flex-col gap-4 flex-1 justify-start" style={{ paddingTop: '40%' }}>
         <div className="flex-grow">
           <h3 className={styles.title}>{title}</h3>
           {subtitle && <p className={styles.subtitle}>{subtitle}</p>}
@@ -156,6 +156,5 @@ export default function ProjectCard({
         )}
       </div>
     </Link>
-  )}
-
-
+  )
+}

@@ -1,4 +1,5 @@
 import MdxRenderer from '@/components/MdxRenderer'
+import Breadcrumb from '@/components/Breadcrumb'
 import { allPages } from '.contentlayer/generated'
 import { buildMetadata } from '@/components/Seo'
 import { Metadata } from 'next'
@@ -10,6 +11,13 @@ export default function BioPage() {
   const bio = allPages.find((p) => p._raw.flattenedPath === 'pages/bio') || allPages[0]
   return (
     <div className="mx-auto max-w-6xl px-4 py-12">
+      <Breadcrumb 
+        items={[
+          { label: 'Accueil', href: '/' },
+          { label: 'Bio' }
+        ]}
+        variant="dark"
+      />
       <h1 className="text-3xl font-semibold">{bio?.title || 'Bio'}</h1>
       {bio?.body?.code && (
         <div className="mt-8">

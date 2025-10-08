@@ -7,27 +7,68 @@ type BreadcrumbItem = {
 
 type Props = {
   items: BreadcrumbItem[]
+  variant?: 'default' | 'blue' | 'grey' | 'yellow' | 'dark'
 }
 
-export default function Breadcrumb({ items }: Props) {
+export default function Breadcrumb({ items, variant = 'default' }: Props) {
+  const getVariantStyles = () => {
+    switch (variant) {
+      case 'blue':
+        return {
+          text: 'text-theme-blue/80',
+          separator: 'text-theme-blue/60',
+          hover: 'hover:text-theme-blue',
+          current: 'text-theme-blue'
+        }
+      case 'grey':
+        return {
+          text: 'text-theme-blue/80',
+          separator: 'text-theme-blue/60',
+          hover: 'hover:text-theme-blue',
+          current: 'text-theme-blue'
+        }
+      case 'yellow':
+        return {
+          text: 'text-theme-yellow/80',
+          separator: 'text-theme-yellow/60',
+          hover: 'hover:text-theme-yellow',
+          current: 'text-theme-yellow'
+        }
+      case 'dark':
+        return {
+          text: 'text-theme-dark/80',
+          separator: 'text-theme-dark/60',
+          hover: 'hover:text-theme-dark',
+          current: 'text-theme-dark'
+        }
+      default:
+        return {
+          text: 'text-gray-600',
+          separator: 'text-gray-400',
+          hover: 'hover:text-gray-800',
+          current: 'text-gray-800'
+        }
+    }
+  }
+
+  const styles = getVariantStyles()
+
   return (
-    <nav className="flex items-center space-x-2 text-sm text-orange-200 mb-8" aria-label="Breadcrumb">
+    <nav className={`flex items-center text-sm ${styles.text} mb-8`} aria-label="Breadcrumb">
       {items.map((item, index) => (
-        <div key={index} className="flex items-center space-x-2">
+        <div key={index} className="flex items-center">
           {index > 0 && (
-            <svg className="w-4 h-4 text-orange-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-            </svg>
+            <span className={`mx-8 ${styles.separator}`}>/</span>
           )}
           {item.href ? (
             <Link 
               href={item.href} 
-              className="hover:text-orange-100 transition-colors"
+              className={`${styles.hover} transition-colors`}
             >
               {item.label}
             </Link>
           ) : (
-            <span className="text-orange-100 font-medium">{item.label}</span>
+            <span className={`${styles.current} font-medium`}>{item.label}</span>
           )}
         </div>
       ))}

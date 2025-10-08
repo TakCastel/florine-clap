@@ -19,9 +19,7 @@ export default function Layout({ children }: LayoutProps) {
       <Header />
       
       {/* Main content avec espacement pour le header */}
-      <main className={`flex-1 ${
-        isHomePage ? '' : 'pt-[88px] md:-mt-[88px]'
-      }`}>
+      <main className="flex-1 pt-20">
         {children}
       </main>
       

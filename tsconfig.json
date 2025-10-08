@@ -33,6 +33,9 @@
       "@/hooks/*": [
         "hooks/*"
       ],
+      "@/contexts/*": [
+        "contexts/*"
+      ],
       "contentlayer/generated": [
         ".contentlayer/generated"
       ]

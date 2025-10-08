@@ -1,47 +1,22 @@
 'use client'
 
-import { allPages } from '.contentlayer/generated'
-import { useRef } from 'react'
-import BackgroundVideo from '@/components/home/BackgroundVideo'
-import Hero from '@/components/home/Hero'
-import HomeCards from '@/components/home/HomeCards'
+import WindowsScrollOptimizer from '@/components/WindowsScrollOptimizer'
+import HeroSection from '@/components/home/HeroSection'
+import CategoriesSection from '@/components/home/CategoriesSection'
 import BioSection from '@/components/home/BioSection'
+import Footer from '@/components/Footer'
+import { HoverProvider } from '@/contexts/HoverContext'
 
 export default function HomePage() {
-  const homePage = allPages.find((p) => p._raw.flattenedPath === 'pages/home')
-  const sectionsRef = useRef<HTMLElement>(null)
-  
-  const scrollToSections = () => {
-    if (sectionsRef.current) {
-      const elementPosition = sectionsRef.current.offsetTop
-      // En mobile, on scroll directement vers la section sans ajouter 88px
-      // En desktop, on ajoute 88px pour masquer complètement la section hero
-      const isMobile = window.innerWidth < 768
-      const offsetPosition = isMobile ? elementPosition : elementPosition + 88
-
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: 'smooth'
-      })
-    }
-  }
-  
   return (
-    <div className="relative bg-orange-100">
-      <BackgroundVideo 
-        src="/videos/example.mp4"
-        alt="Vidéo de fond artistique"
-      />
-
-      <Hero 
-        onScrollClick={scrollToSections}
-      />
-
-      <HomeCards innerRef={sectionsRef} />
-      
-      <BioSection />
-    </div>
+    <HoverProvider>
+      <div className="relative scroll-container scrollbar-hide">
+        <WindowsScrollOptimizer />
+        <HeroSection />
+        <CategoriesSection />
+        <BioSection />
+        <Footer />
+      </div>
+    </HoverProvider>
   )
 }
-
-
