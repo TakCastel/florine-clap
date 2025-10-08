@@ -47,7 +47,7 @@ export default function HomeCards({ innerRef }: HomeCardsProps) {
             </Link>
 
             {/* Carte MÃ©diations */}
-            <Link href="/ateliers" className="group transition-all duration-1000 ease-out opacity-100 translate-y-0">
+            <Link href="/médiations" className="group transition-all duration-1000 ease-out opacity-100 translate-y-0">
               <div className="relative w-full h-80 overflow-hidden bg-black transition-all duration-500 group-hover:brightness-110 group-hover:scale-105 cursor-pointer">
                 {/* Image en filigrane */}
                 <Image

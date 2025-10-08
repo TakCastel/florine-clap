@@ -1,177 +1,66 @@
 backend:
-  name: github
-  repo: TakCastel/florine-clap  # Remplacez par votre vrai repo GitHub
+  name: git-gateway
   branch: main
-  commit_messages:
-    create: "Créer {{collection}} «{{slug}}»"
-    update: "Mettre à jour {{collection}} «{{slug}}»"
-    delete: "Supprimer {{collection}} «{{slug}}»"
-    uploadMedia: "Télécharger {{path}}"
-    deleteMedia: "Supprimer {{path}}"
-    openAuthoring: "{{message}}"
 
 media_folder: "public/images/uploads"
 public_folder: "/images/uploads"
 
-site_url: "https://florineclap.com"  # Remplacez par votre URL de production
-display_url: "https://florineclap.com"
-
-# Configuration de l'éditeur
-editor:
-  preview: true
-
-# Configuration des collections
-publish_mode: editorial_workflow
-
-# Configuration des slugs
-slug:
-  encoding: "ascii"
-  clean_accents: true
-  sanitize_replacement: "-"
-
 collections:
   - name: "films"
-    label: "Films / Réalisations"
+    label: "Films"
     folder: "content/films"
     create: true
     slug: "{{slug}}"
-    sortable_fields: ['title', 'annee', 'date']
-    view_filters:
-      - label: "Année"
-        field: annee
-        pattern: "{{year}}"
-    view_groups:
-      - label: "Année"
-        field: annee
-        pattern: "{{year}}"
     fields:
-      - { label: "Titre", name: "title", widget: "string" }
-      - { label: "Année", name: "annee", widget: "number" }
-      - { label: "Durée", name: "duree", widget: "string", required: false, hint: "Ex: 15 min, 1h30" }
-      - { label: "Synopsis", name: "synopsis", widget: "text", required: false }
-      - { label: "Statut", name: "statut", widget: "select", options: ["En production", "Terminé", "En post-production", "En montage"], required: false }
-      - { label: "Vimeo ID", name: "vimeo", widget: "string", required: false, hint: "ID de la vidéo Vimeo" }
-      - { label: "YouTube ID", name: "youtube", widget: "string", required: false, hint: "ID de la vidéo YouTube" }
-      - { label: "Crédits (Markdown)", name: "credits", widget: "markdown", required: false }
-      - { label: "Festivals/Sélections", name: "selections", widget: "list", required: false }
-      - { label: "Affiche/Miniature", name: "cover", widget: "image", required: false }
-      - { label: "Galerie", name: "gallery", widget: "list", field: { label: "Image", name: "url", widget: "image" }, required: false }
-      - { label: "Extrait", name: "excerpt", widget: "text", required: false, hint: "Description courte pour les listes" }
-      - { label: "Tags", name: "tags", widget: "list", required: false }
-      - { label: "Contenu", name: "body", widget: "markdown", required: false }
-      - label: SEO
-        name: seo
-        widget: object
-        collapsed: true
-        fields:
-          - { label: "Title", name: "seo_title", widget: "string", required: false }
-          - { label: "Description", name: "seo_description", widget: "text", required: false }
-          - { label: "Image", name: "seo_image", widget: "image", required: false }
-          - { label: "Noindex", name: "noindex", widget: "boolean", required: false, default: false }
+      - {label: "Titre", name: "title", widget: "string"}
+      - {label: "Année", name: "annee", widget: "number"}
+      - {label: "Durée", name: "duree", widget: "string", required: false}
+      - {label: "Synopsis", name: "synopsis", widget: "text", required: false}
+      - {label: "Statut", name: "statut", widget: "string", required: false}
+      - {label: "Extrait", name: "excerpt", widget: "text", required: false}
+      - {label: "Tags", name: "tags", widget: "list", required: false}
+      - {label: "Catégorie", name: "category", widget: "string", required: false}
+      - {label: "Rôle", name: "role", widget: "string", required: false}
+      - {label: "Contenu", name: "body", widget: "markdown"}
 
-  - name: "ateliers"
-    label: "Médiations vidéo"
-    folder: "content/ateliers"
+  - name: "médiations"
+    label: "Médiations"
+    folder: "content/médiations"
     create: true
     slug: "{{slug}}"
-    sortable_fields: ['title', 'date']
-    view_filters:
-      - label: "Année"
-        field: date
-        pattern: "{{year}}"
-    view_groups:
-      - label: "Année"
-        field: date
-        pattern: "{{year}}"
     fields:
-      - { label: "Titre", name: "title", widget: "string" }
-      - { label: "Date", name: "date", widget: "datetime", date_format: "DD/MM/YYYY", time_format: "HH:mm" }
-      - { label: "Lieu", name: "lieu", widget: "string" }
-      - { label: "Durée", name: "duree", widget: "string", required: false, hint: "Ex: 2h, 1 journée" }
-      - { label: "Modalités", name: "modalites", widget: "markdown", required: false, hint: "Tarifs, conditions, etc." }
-      - { label: "Lien inscription", name: "lien_inscription", widget: "string", required: false, hint: "URL vers le formulaire d'inscription" }
-      - { label: "Galerie", name: "gallery", widget: "list", field: { label: "Image", name: "url", widget: "image" }, required: false }
-      - { label: "Extrait", name: "excerpt", widget: "text", required: false, hint: "Description courte pour les listes" }
-      - { label: "Tags", name: "tags", widget: "list", required: false }
-      - { label: "Contenu", name: "body", widget: "markdown" }
-      - label: SEO
-        name: seo
-        widget: object
-        collapsed: true
-        fields:
-          - { label: "Title", name: "seo_title", widget: "string", required: false }
-          - { label: "Description", name: "seo_description", widget: "text", required: false }
-          - { label: "Image", name: "seo_image", widget: "image", required: false }
-          - { label: "Noindex", name: "noindex", widget: "boolean", required: false, default: false }
+      - {label: "Titre", name: "title", widget: "string"}
+      - {label: "Date", name: "date", widget: "datetime"}
+      - {label: "Lieu", name: "lieu", widget: "string"}
+      - {label: "Durée", name: "duree", widget: "string", required: false}
+      - {label: "Modalités", name: "modalites", widget: "markdown", required: false}
+      - {label: "Lien inscription", name: "lien_inscription", widget: "string", required: false}
+      - {label: "Extrait", name: "excerpt", widget: "text", required: false}
+      - {label: "Tags", name: "tags", widget: "list", required: false}
+      - {label: "Contenu", name: "body", widget: "markdown"}
 
   - name: "actus"
     label: "Actualités"
     folder: "content/actus"
     create: true
     slug: "{{slug}}"
-    sortable_fields: ['title', 'date']
-    view_filters:
-      - label: "Année"
-        field: date
-        pattern: "{{year}}"
-    view_groups:
-      - label: "Année"
-        field: date
-        pattern: "{{year}}"
     fields:
-      - { label: "Titre", name: "title", widget: "string" }
-      - { label: "Date", name: "date", widget: "datetime", date_format: "DD/MM/YYYY", time_format: "HH:mm" }
-      - { label: "Couverture", name: "cover", widget: "image", required: false }
-      - { label: "Extrait", name: "excerpt", widget: "text", required: false, hint: "Description courte pour les listes" }
-      - { label: "Tags", name: "tags", widget: "list", required: false }
-      - { label: "Contenu", name: "body", widget: "markdown" }
-      - label: SEO
-        name: seo
-        widget: object
-        collapsed: true
-        fields:
-          - { label: "Title", name: "seo_title", widget: "string", required: false }
-          - { label: "Description", name: "seo_description", widget: "text", required: false }
-          - { label: "Image", name: "seo_image", widget: "image", required: false }
-          - { label: "Noindex", name: "noindex", widget: "boolean", required: false, default: false }
+      - {label: "Titre", name: "title", widget: "string"}
+      - {label: "Date", name: "date", widget: "datetime"}
+      - {label: "Extrait", name: "excerpt", widget: "text", required: false}
+      - {label: "Tags", name: "tags", widget: "list", required: false}
+      - {label: "Contenu", name: "body", widget: "markdown"}
 
   - name: "pages"
     label: "Pages"
-    files:
-      - label: "Bio"
-        name: "bio"
-        file: "content/pages/bio.mdx"
-        fields:
-          - { label: "Titre", name: "title", widget: "string" }
-          - { label: "Photo portrait", name: "portrait", widget: "image", required: false }
-          - { label: "Contenu", name: "body", widget: "markdown" }
-          - label: SEO
-            name: seo
-            widget: object
-            collapsed: true
-            fields:
-              - { label: "Title", name: "seo_title", widget: "string", required: false }
-              - { label: "Description", name: "seo_description", widget: "text", required: false }
-              - { label: "Image", name: "seo_image", widget: "image", required: false }
-              - { label: "Noindex", name: "noindex", widget: "boolean", required: false, default: false }
-      - label: "Accueil"
-        name: "home"
-        file: "content/pages/home.mdx"
-        fields:
-          - { label: "Titre", name: "title", widget: "string" }
-          - { label: "Vidéo de fond (URL)", name: "hero_video", widget: "string", required: false }
-          - { label: "Image de fallback", name: "hero_image", widget: "image", required: false }
-          - { label: "CTA texte", name: "cta_text", widget: "string", required: false }
-          - { label: "CTA lien", name: "cta_link", widget: "string", required: false }
-          - { label: "Contenu", name: "body", widget: "markdown" }
-          - label: SEO
-            name: seo
-            widget: object
-            collapsed: true
-            fields:
-              - { label: "Title", name: "seo_title", widget: "string", required: false }
-              - { label: "Description", name: "seo_description", widget: "text", required: false }
-              - { label: "Image", name: "seo_image", widget: "image", required: false }
-              - { label: "Noindex", name: "noindex", widget: "boolean", required: false, default: false }
-
-
+    folder: "content/pages"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - {label: "Titre", name: "title", widget: "string"}
+      - {label: "Portrait", name: "portrait", widget: "image", required: false}
+      - {label: "Image héro", name: "hero_image", widget: "image", required: false}
+      - {label: "Vidéo héro", name: "hero_video", widget: "string", required: false}
+      - {label: "Texte CTA", name: "cta_text", widget: "string", required: false}
+      - {label: "Lien CTA", name: "cta_link", widget: "string", required: false}
+      - {label: "Contenu", name: "body", widget: "markdown"}

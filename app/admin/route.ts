@@ -1,20 +1,35 @@
-import { readFileSync } from 'fs'
-import { join } from 'path'
-import { NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
 
-export async function GET() {
-  try {
-    const htmlPath = join(process.cwd(), 'public', 'admin', 'index.html')
-    const htmlContent = readFileSync(htmlPath, 'utf8')
-    
-    return new NextResponse(htmlContent, {
-      headers: {
-        'Content-Type': 'text/html',
-        'Cache-Control': 'no-cache',
-      },
-    })
-  } catch (error) {
-    console.error('Error reading admin HTML:', error)
-    return new NextResponse('Admin not found', { status: 404 })
-  }
+export async function GET(request: NextRequest) {
+  const html = `
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Content Manager</title>
+  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+</head>
+<body>
+  <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
+  <script>
+    if (window.netlifyIdentity) {
+      window.netlifyIdentity.on("init", user => {
+        if (!user) {
+          window.netlifyIdentity.on("login", () => {
+            document.location.href = "/admin/";
+          });
+        }
+      });
+    }
+  </script>
+</body>
+</html>
+  `
+  
+  return new NextResponse(html, {
+    headers: {
+      'Content-Type': 'text/html',
+    },
+  })
 }

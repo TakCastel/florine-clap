@@ -14,7 +14,7 @@
 
 ### 3. Test des collections
 - [ ] Films : Créer un nouveau film
-- [ ] Ateliers : Créer un nouvel atelier
+- [ ] m�diations : Créer un nouvel atelier
 - [ ] Actualités : Créer une nouvelle actualité
 - [ ] Pages : Modifier la page Bio
 

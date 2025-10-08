@@ -2,8 +2,8 @@ import Link from 'next/link'
 
 export const MENU_ITEMS = [
   { href: '/films', label: 'Films' },
-  { href: '/ateliers', label: 'Médiations' },
-  { href: '/actus', label: 'Actualités' },
+  { href: '/mediations', label: 'Mediations' },
+  { href: '/actus', label: 'Actualites' },
   { href: '/bio', label: 'Bio' },
   { href: '/contact', label: 'Contact' }
 ]

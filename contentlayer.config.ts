@@ -5,42 +5,19 @@ import remarkGfm from 'remark-gfm'
 
 const computedFields = {
   slug: {
-    type: 'string',
+    type: 'string' as const,
     resolve: (doc: any) => doc._raw.flattenedPath.split('/').pop(),
   },
   url: {
-    type: 'string',
+    type: 'string' as const,
     resolve: (doc: any) => {
-      const base = doc._raw.sourceFileDir
-      if (doc.type === 'atelier') return `/ateliers/${doc._raw.flattenedPath.split('/').pop()}`
+      if (doc.type === 'mediation') return `/mediations/${doc._raw.flattenedPath.split('/').pop()}`
       if (doc.type === 'film') return `/films/${doc._raw.flattenedPath.split('/').pop()}`
       if (doc.type === 'actu') return `/actus/${doc._raw.flattenedPath.split('/').pop()}`
       return `/${doc._raw.flattenedPath}`
     },
   },
 }
-
-export const Atelier = defineDocumentType(() => ({
-  name: 'Atelier',
-  filePathPattern: `ateliers/**/*.mdx`,
-  contentType: 'mdx',
-  fields: {
-    title: { type: 'string', required: true },
-    date: { type: 'date', required: true },
-    lieu: { type: 'string', required: true },
-    duree: { type: 'string', required: false },
-    modalites: { type: 'markdown', required: false },
-    lien_inscription: { type: 'string', required: false },
-    gallery: { type: 'list', of: { type: 'string' }, required: false },
-    excerpt: { type: 'string', required: false },
-    tags: { type: 'list', of: { type: 'string' }, required: false },
-    seo_title: { type: 'string', required: false },
-    seo_description: { type: 'string', required: false },
-    seo_image: { type: 'string', required: false },
-    noindex: { type: 'boolean', required: false },
-  },
-  computedFields,
-}))
 
 export const Film = defineDocumentType(() => ({
   name: 'Film',
@@ -52,21 +29,20 @@ export const Film = defineDocumentType(() => ({
     duree: { type: 'string', required: false },
     synopsis: { type: 'string', required: false },
     statut: { type: 'string', required: false },
-    vimeo: { type: 'string', required: false },
-    youtube: { type: 'string', required: false },
-    credits: { type: 'markdown', required: false },
-    selections: { type: 'list', of: { type: 'string' }, required: false },
-    selections_text: { type: 'string', required: false },
-    cover: { type: 'string', required: false },
-    gallery: { type: 'list', of: { type: 'string' }, required: false },
     excerpt: { type: 'string', required: false },
-    tags: { type: 'list', of: { type: 'string' }, required: false },
-    category: { type: 'string', required: false },
-    role: { type: 'string', required: false },
-    seo_title: { type: 'string', required: false },
-    seo_description: { type: 'string', required: false },
-    seo_image: { type: 'string', required: false },
-    noindex: { type: 'boolean', required: false },
+  },
+  computedFields,
+}))
+
+export const Mediation = defineDocumentType(() => ({
+  name: 'Mediation',
+  filePathPattern: `médiations/**/*.mdx`,
+  contentType: 'mdx',
+  fields: {
+    title: { type: 'string', required: true },
+    date: { type: 'date', required: true },
+    lieu: { type: 'string', required: true },
+    duree: { type: 'string', required: false },
   },
   computedFields,
 }))
@@ -78,13 +54,6 @@ export const Actu = defineDocumentType(() => ({
   fields: {
     title: { type: 'string', required: true },
     date: { type: 'date', required: true },
-    cover: { type: 'string', required: false },
-    excerpt: { type: 'string', required: false },
-    tags: { type: 'list', of: { type: 'string' }, required: false },
-    seo_title: { type: 'string', required: false },
-    seo_description: { type: 'string', required: false },
-    seo_image: { type: 'string', required: false },
-    noindex: { type: 'boolean', required: false },
   },
   computedFields,
 }))
@@ -95,22 +64,13 @@ export const Page = defineDocumentType(() => ({
   contentType: 'mdx',
   fields: {
     title: { type: 'string', required: true },
-    portrait: { type: 'string', required: false },
-    hero_video: { type: 'string', required: false },
-    hero_image: { type: 'string', required: false },
-    cta_text: { type: 'string', required: false },
-    cta_link: { type: 'string', required: false },
-    seo_title: { type: 'string', required: false },
-    seo_description: { type: 'string', required: false },
-    seo_image: { type: 'string', required: false },
-    noindex: { type: 'boolean', required: false },
   },
   computedFields,
 }))
 
 export default makeSource({
   contentDirPath: 'content',
-  documentTypes: [Atelier, Film, Actu, Page],
+  documentTypes: [Film, Mediation, Actu, Page],
   disableImportAliasWarning: true,
   mdx: {
     remarkPlugins: [remarkGfm],
@@ -120,5 +80,3 @@ export default makeSource({
     ],
   },
 })
-
-

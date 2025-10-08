@@ -37,7 +37,7 @@ NEXT_PUBLIC_SITE_URL=https://florineclap.com
 ## 5. Utilisation
 
 - Films : Gérez vos réalisations et projets vidéo
-- Ateliers : Créez et organisez vos ateliers vidéo
+- m�diations : Créez et organisez vos m�diations vidéo
 - Actualités : Publiez des nouvelles et événements
 - Pages : Modifiez le contenu des pages statiques (Bio, Accueil)
 

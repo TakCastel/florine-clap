@@ -55,7 +55,6 @@
     "**/*.ts",
     "**/*.tsx",
     ".contentlayer/generated",
-    ".contentlayer2/generated",
     ".next/types/**/*.ts"
   ],
   "exclude": [

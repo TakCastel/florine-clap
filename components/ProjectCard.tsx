@@ -12,7 +12,7 @@ type Props = {
   statut?: string
   synopsis?: string
   placeholderImage?: string
-  variant?: 'default' | 'films' | 'ateliers' | 'actus'
+  variant?: 'default' | 'films' | 'mediations' | 'actus'
   category?: string
   role?: string
 }
@@ -42,7 +42,7 @@ export default function ProjectCard({
           meta: 'text-sm text-theme-yellow/60',
           button: 'mt-auto inline-flex items-center px-4 py-2 bg-theme-yellow text-theme-dark text-base font-medium hover:bg-theme-yellow/90 transition-colors w-fit'
         }
-      case 'ateliers':
+      case 'mediations':
         return {
           container: 'group block overflow-hidden bg-theme-grey hover:shadow-sm h-full flex flex-col',
           title: 'text-base font-semibold text-theme-blue',
@@ -70,7 +70,7 @@ export default function ProjectCard({
 
   const imageSrc = cover || placeholderImage
 
-  // Fonction pour générer les badges de statut
+  // Fonction pour generer les badges de statut
   const getStatusBadges = () => {
     const badges = []
     
@@ -121,7 +121,7 @@ export default function ProjectCard({
             </div>
           )}
           
-          {/* Métadonnées du film */}
+          {/* Metadonnees du film */}
           <div className="flex flex-wrap gap-3 mt-2">
             {duree && (
               <span className={`${styles.meta} flex items-center gap-1`}>

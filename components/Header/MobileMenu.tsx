@@ -11,8 +11,8 @@ export default function MobileMenu({ isHomePage = false }: MobileMenuProps) {
 
   const navItems = [
     { href: '/films', label: 'Films' },
-    { href: '/ateliers', label: 'Médiations' },
-    { href: '/actus', label: 'Actualités' },
+    { href: '/mediations', label: 'Mediations' },
+    { href: '/actus', label: 'Actualites' },
     { href: '/bio', label: 'Bio' }
   ]
 

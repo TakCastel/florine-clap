@@ -8,81 +8,82 @@ import { buildMetadata } from '@/components/Seo'
 
 export const dynamic = 'error'
 
-export const generateStaticParams = async () => allFilms.map((p) => ({ slug: p.slug }))
+type FilmPageProps = {
+  params: { slug: string }
+}
 
-export default function FilmPage({ params }: { params: { slug: string } }) {
-  const doc = allFilms.find((d) => d.slug === params.slug)
-  if (!doc) return notFound()
+export async function generateMetadata({ params }: FilmPageProps): Promise<Metadata> {
+  const film = allFilms.find(f => f.slug === params.slug)
+  
+  if (!film) {
+    return {}
+  }
+
+  return buildMetadata({
+    title: film.seo_title || film.title,
+    description: film.seo_description || film.excerpt || film.synopsis,
+    image: film.seo_image || film.cover,
+    url: canonical(`/films/${film.slug}`),
+    noindex: film.noindex
+  })
+}
+
+export default function FilmPage({ params }: FilmPageProps) {
+  const film = allFilms.find(f => f.slug === params.slug)
+  
+  if (!film) {
+    notFound()
+  }
+
   return (
     <div className="min-h-screen bg-white">
-      <div className="mx-auto max-w-6xl px-4 py-12">
+      <div className="max-w-4xl mx-auto px-4 py-8">
         <Breadcrumb 
           items={[
             { label: 'Accueil', href: '/' },
             { label: 'Films', href: '/films' },
-            { label: doc.title }
+            { label: film.title }
           ]}
           variant="blue"
         />
-        <h1 className="text-4xl md:text-6xl lg:text-8xl font-montserrat font-bold tracking-wide text-theme-blue">{doc.title} ({doc.annee})</h1>
-        {doc.duree && <p className="mt-1 text-sm text-gray-600">Durée : {doc.duree}</p>}
-        {doc.synopsis && <p className="mt-4 text-gray-700">{doc.synopsis}</p>}
-        {doc.vimeo && (
-          <div className="mt-6 aspect-video">
-            <iframe
-              src={`https://player.vimeo.com/video/${doc.vimeo}`}
-              allow="autoplay; fullscreen; picture-in-picture"
-              className="w-full h-full"
-            />
-          </div>
-        )}
-        {doc.youtube && (
-          <div className="mt-6 aspect-video">
-            <iframe
-              src={`https://www.youtube.com/embed/${doc.youtube}`}
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              className="w-full h-full"
-            />
-          </div>
-        )}
-        {doc.selections && doc.selections.length > 0 && (
-          <div className="mt-6">
-            <h3 className="text-lg font-semibold mb-2 text-theme-blue">Festivals & Sélections</h3>
-            <ul className="list-disc list-inside">
-              {doc.selections.map((selection, index) => (
-                <li key={index} className="text-gray-700">{selection}</li>
-              ))}
-            </ul>
-          </div>
-        )}
-        {doc.credits && (
-          <div className="mt-8">
-            <h3 className="text-lg font-semibold mb-2 text-theme-blue">Crédits</h3>
-            <div className="prose prose-sm whitespace-pre-wrap text-gray-700">
-              {typeof doc.credits === 'string' ? doc.credits : doc.credits.raw}
+        
+        <article className="bg-orange-100 rounded-lg shadow-lg overflow-hidden">
+          {/* En-tête du film */}
+          <div className="bg-gradient-to-r from-purple-600 to-blue-600 text-white p-8">
+            <h1 className="text-4xl font-bold mb-2">{film.title}</h1>
+            <div className="flex items-center space-x-4 text-lg">
+              <span>{film.annee}</span>
+              {film.duree && <span>•</span>}
+              {film.duree && <span>{film.duree}</span>}
+              {film.statut && <span>•</span>}
+              {film.statut && <span className="bg-orange-100 bg-opacity-20 px-3 py-1 rounded-full text-sm">{film.statut}</span>}
             </div>
           </div>
-        )}
-        {doc.body?.code && (
-          <div className="mt-8">
-            <MdxRenderer code={doc.body.code} />
+
+          {/* Synopsis */}
+          {film.synopsis && (
+            <div className="p-8 border-b">
+              <h2 className="text-2xl font-semibold mb-4 text-gray-800">Synopsis</h2>
+              <p className="text-gray-600 leading-relaxed">{film.synopsis}</p>
+            </div>
+          )}
+
+          {/* Contenu principal */}
+          <div className="p-8">
+            <MdxRenderer code={film.body.code} />
           </div>
-        )}
+
+          {/* Crédits */}
+          {film.credits && (
+            <div className="p-8 bg-gray-50 border-t">
+              <h2 className="text-2xl font-semibold mb-4 text-gray-800">Crédits</h2>
+              <div className="prose prose-gray max-w-none">
+                <div dangerouslySetInnerHTML={{ __html: film.credits.replace(/\n/g, '<br>') }} />
+              </div>
+            </div>
+          )}
+        </article>
       </div>
     </div>
   )
 }
-
-export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
-  const doc = allFilms.find((d) => d.slug === params.slug)
-  if (!doc) return {}
-  return buildMetadata({
-    title: doc.seo_title || `${doc.title} (${doc.annee})`,
-    description: doc.seo_description || doc.excerpt,
-    image: doc.seo_image || doc.cover,
-    canonical: canonical(`/films/${doc.slug}`),
-    noindex: doc.noindex,
-  })
-}
-
-

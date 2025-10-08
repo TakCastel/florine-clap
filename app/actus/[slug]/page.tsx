@@ -8,42 +8,67 @@ import { buildMetadata } from '@/components/Seo'
 
 export const dynamic = 'error'
 
-export const generateStaticParams = async () => allActus.map((p) => ({ slug: p.slug }))
+type ActuPageProps = {
+  params: { slug: string }
+}
 
-export default function ActuPage({ params }: { params: { slug: string } }) {
-  const doc = allActus.find((d) => d.slug === params.slug)
-  if (!doc) return notFound()
+export async function generateMetadata({ params }: ActuPageProps): Promise<Metadata> {
+  const actu = allActus.find(a => a.slug === params.slug)
+  
+  if (!actu) {
+    return {}
+  }
+
+  return buildMetadata({
+    title: actu.seo_title || actu.title,
+    description: actu.seo_description || actu.excerpt,
+    image: actu.seo_image || actu.cover,
+    url: canonical(`/actus/${actu.slug}`),
+    noindex: actu.noindex
+  })
+}
+
+export default function ActuPage({ params }: ActuPageProps) {
+  const actu = allActus.find(a => a.slug === params.slug)
+  
+  if (!actu) {
+    notFound()
+  }
+
   return (
     <div className="min-h-screen bg-white">
-      <div className="mx-auto max-w-6xl px-4 py-12">
+      <div className="max-w-4xl mx-auto px-4 py-8">
         <Breadcrumb 
           items={[
             { label: 'Accueil', href: '/' },
             { label: 'Actualités', href: '/actus' },
-            { label: doc.title }
+            { label: actu.title }
           ]}
-          variant="yellow"
+          variant="orange"
         />
-        <h1 className="text-4xl md:text-6xl lg:text-8xl font-montserrat font-bold tracking-wide text-theme-yellow">{doc.title}</h1>
-        <p className="mt-2 text-sm text-gray-600">{new Date(doc.date).toLocaleDateString('fr-FR')}</p>
-        <div className="mt-8">
-          <MdxRenderer code={doc.body.code} />
-        </div>
+        
+        <article className="bg-orange-100 rounded-lg shadow-lg overflow-hidden">
+          {/* En-tête de l'actualité */}
+          <div className="bg-gradient-to-r from-orange-600 to-red-600 text-white p-8">
+            <h1 className="text-4xl font-bold mb-2">{actu.title}</h1>
+            <div className="text-lg">
+              <span>{new Date(actu.date).toLocaleDateString('fr-FR')}</span>
+            </div>
+          </div>
+
+          {/* Extrait */}
+          {actu.excerpt && (
+            <div className="p-8 border-b">
+              <p className="text-xl text-gray-600 leading-relaxed italic">{actu.excerpt}</p>
+            </div>
+          )}
+
+          {/* Contenu principal */}
+          <div className="p-8">
+            <MdxRenderer code={actu.body.code} />
+          </div>
+        </article>
       </div>
     </div>
   )
 }
-
-export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
-  const doc = allActus.find((d) => d.slug === params.slug)
-  if (!doc) return {}
-  return buildMetadata({
-    title: doc.seo_title || doc.title,
-    description: doc.seo_description || doc.excerpt,
-    image: doc.seo_image || doc.cover,
-    canonical: canonical(`/actus/${doc.slug}`),
-    noindex: doc.noindex,
-  })
-}
-
-

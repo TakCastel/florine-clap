@@ -74,9 +74,9 @@ collections:
           - { label: "Image", name: "seo_image", widget: "image", required: false }
           - { label: "Noindex", name: "noindex", widget: "boolean", required: false, default: false }
 
-  - name: "ateliers"
+  - name: "médiations"
     label: "Médiations"
-    folder: "content/ateliers"
+    folder: "content/médiations"
     create: true
     slug: "{{slug}}"
     sortable_fields: ['title', 'date']

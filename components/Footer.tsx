@@ -13,14 +13,14 @@ export default function Footer() {
       <div className={`${isHomePage ? 'w-full px-4 md:px-12 lg:px-24 py-12 md:py-24' : 'max-w-6xl mx-auto px-4 md:px-6 py-12'}`}>
         <div className={`grid grid-cols-1 md:grid-cols-4 gap-8 ${isHomePage ? 'md:gap-16' : ''}`}>
           
-          {/* Section À propos */}
+          {/* Section A propos */}
           <div className="md:col-span-2">
             <h3 className={`font-montserrat font-normal tracking-wide mb-4 ${isHomePage ? 'text-xl md:text-3xl' : 'text-lg'}`}>
-              À propos
+              A propos
             </h3>
             <p className={`text-white/90 leading-relaxed mb-6 ${isHomePage ? 'text-base md:text-xl' : ''}`}>
-              Réalisatrice et formatrice passionnée, je crée des films qui questionnent notre rapport au monde. 
-              Spécialisée dans la médiation culturelle, j'anime également des ateliers vidéo pour partager ma passion.
+              Realisatrice et formatrice passionnee, je cree des films qui questionnent notre rapport au monde. 
+              Specialisee dans la mediation culturelle, j'anime egalement des mediations video pour partager ma passion.
             </p>
             <div className={`flex space-x-4 ${isHomePage ? 'md:space-x-6' : ''}`}>
               <a href="https://instagram.com/florineclap" target="_blank" rel="noopener noreferrer" 
@@ -47,11 +47,11 @@ export default function Footer() {
               <Link href="/films" className={`inline-block text-white/80 hover:text-white transition-colors relative after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-white after:transition-all after:duration-300 hover:after:w-full ${isHomePage ? 'text-base md:text-xl' : ''}`}>
                 Films
               </Link>
-              <Link href="/ateliers" className={`inline-block text-white/80 hover:text-white transition-colors relative after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-white after:transition-all after:duration-300 hover:after:w-full ${isHomePage ? 'text-base md:text-xl' : ''}`}>
-                Médiations
+              <Link href="/mediations" className={`inline-block text-white/80 hover:text-white transition-colors relative after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-white after:transition-all after:duration-300 hover:after:w-full ${isHomePage ? 'text-base md:text-xl' : ''}`}>
+                Mediations
               </Link>
               <Link href="/actus" className={`inline-block text-white/80 hover:text-white transition-colors relative after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-white after:transition-all after:duration-300 hover:after:w-full ${isHomePage ? 'text-base md:text-xl' : ''}`}>
-                Actualités
+                Actualites
               </Link>
               <Link href="/bio" className={`inline-block text-white/80 hover:text-white transition-colors relative after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-white after:transition-all after:duration-300 hover:after:w-full ${isHomePage ? 'text-base md:text-xl' : ''}`}>
                 Bio
@@ -79,18 +79,18 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Séparateur */}
+        {/* Separateur */}
         <div className={`border-t border-white/20 ${isHomePage ? 'mt-12 md:mt-16 pt-8 md:pt-12' : 'mt-8 pt-8'}`}>
           <div className={`flex flex-col md:flex-row justify-between items-center ${isHomePage ? 'space-y-4 md:space-y-0' : 'space-y-4 md:space-y-0'}`}>
             <p className={`text-white/60 ${isHomePage ? 'text-sm md:text-lg' : 'text-sm'}`}>
-              © {new Date().getFullYear()} Florine Clap. Tous droits réservés.
+              © {new Date().getFullYear()} Florine Clap. Tous droits reserves.
             </p>
             <div className={`flex space-x-6 ${isHomePage ? 'text-sm md:text-lg' : 'text-sm'}`}>
               <Link href="/mentions-legales" className="inline-block text-white/60 hover:text-white transition-colors">
-                Mentions légales
+                Mentions legales
               </Link>
               <Link href="/politique-confidentialite" className="inline-block text-white/60 hover:text-white transition-colors">
-                Politique de confidentialité
+                Politique de confidentialite
               </Link>
             </div>
           </div>
@@ -99,5 +99,3 @@ export default function Footer() {
     </footer>
   )
 }
-
-

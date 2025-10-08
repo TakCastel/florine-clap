@@ -27,7 +27,7 @@ export default function CategoriesSection() {
         <a href="/films" className={`w-full md:w-1/3 h-1/3 md:h-full relative overflow-hidden group cursor-pointer transition-all duration-500 hover:w-full md:hover:w-1/2 ${forceHoverIndex === 0 ? 'w-full md:w-1/2' : ''}`}>
           <img 
             src="https://picsum.photos/800/1200?random=2" 
-            alt="Découvrir mes films"
+            alt="Decouvrir mes films"
             className="w-full h-full object-cover grayscale"
           />
           <div className={`absolute inset-0 bg-theme-blue/90 flex items-center justify-center group-hover:bg-theme-blue/95 transition-all duration-700 ease-in-out ${forceHoverIndex === 0 ? 'bg-theme-blue/95' : ''}`}>
@@ -43,23 +43,23 @@ export default function CategoriesSection() {
               <div className={`card-hover-content transition-opacity duration-500 text-center opacity-100 md:opacity-0 md:group-hover:opacity-100 ${forceHoverIndex === 0 ? 'md:opacity-100' : ''}`}>
                 {/* Texte explicatif */}
                 <p className="text-white mb-8 text-sm md:text-xl lg:text-2xl leading-relaxed">
-                  Découvrez mes créations cinématographiques, mes courts-métrages et mes projets artistiques
+                  Decouvrez mes creations cinematographiques, mes courts-metrages et mes projets artistiques
                 </p>
                 {/* Bouton d'incitation au clic */}
                 <span className="text-white/80 font-medium hover:text-white transition-all duration-300 relative after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-white after:transition-all after:duration-300 hover:after:w-full after:opacity-0 hover:after:opacity-100 text-xs md:text-base lg:text-lg">
-                  Découvrir →
+                  Decouvrir →
                 </span>
               </div>
             </div>
           </div>
         </a>
         
-        {/* Médiations - 1/3 de la page */}
+        {/* Mediations - 1/3 de la page */}
         <a 
-          href="/ateliers" 
+          href="/mediations" 
           className={`w-full md:w-1/3 h-1/3 md:h-full relative overflow-hidden group cursor-pointer transition-all duration-500 hover:w-full md:hover:w-1/2 ${forceHoverIndex === 1 ? 'w-full md:w-1/2' : ''}`}
           onMouseLeave={() => {
-            // Réinitialiser le hover forcé quand on quitte la carte
+            // Reinitialiser le hover force quand on quitte la carte
             if (forceHoverIndex === 1) {
               setForceHoverIndex(-1)
             }
@@ -67,7 +67,7 @@ export default function CategoriesSection() {
         >
           <img 
             src="https://picsum.photos/800/1200?random=3" 
-            alt="Découvrir mes médiations"
+            alt="Decouvrir mes mediations"
             className="w-full h-full object-cover grayscale"
           />
           <div className={`absolute inset-0 bg-theme-grey/90 flex items-center justify-center group-hover:bg-theme-grey/95 transition-all duration-700 ease-in-out ${forceHoverIndex === 1 ? 'bg-theme-grey/95' : ''}`}>
@@ -75,7 +75,7 @@ export default function CategoriesSection() {
               {/* Titre horizontal - position fixe */}
               <div className="card-content-position">
                 <h3 className="font-bold text-theme-blue mb-6 text-3xl md:text-6xl lg:text-8xl">
-                  Médiations
+                  Mediations
                 </h3>
               </div>
               
@@ -83,7 +83,7 @@ export default function CategoriesSection() {
               <div className={`card-hover-content transition-opacity duration-500 text-center opacity-100 md:opacity-0 md:group-hover:opacity-100 ${forceHoverIndex === 1 ? 'md:opacity-100' : ''}`}>
                 {/* Texte explicatif */}
                 <p className="text-theme-blue mb-8 text-sm md:text-xl lg:text-2xl leading-relaxed">
-                  Explorez mes ateliers de médiation culturelle et mes formations pour tous publics
+                  Explorez mes mediations de mediation culturelle et mes formations pour tous publics
                 </p>
                 {/* Bouton d'incitation au clic */}
                 <span className="text-theme-blue/80 font-medium hover:text-theme-blue transition-all duration-300 relative after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-theme-blue after:transition-all after:duration-300 hover:after:w-full after:opacity-0 hover:after:opacity-100 text-xs md:text-base lg:text-lg">
@@ -94,11 +94,11 @@ export default function CategoriesSection() {
           </div>
         </a>
         
-        {/* Actualités - 1/3 de la page */}
+        {/* Actualites - 1/3 de la page */}
         <a href="/actus" className={`w-full md:w-1/3 h-1/3 md:h-full relative overflow-hidden group cursor-pointer transition-all duration-500 hover:w-full md:hover:w-1/2 ${forceHoverIndex === 2 ? 'w-full md:w-1/2' : ''}`}>
           <img 
             src="https://picsum.photos/800/1200?random=4" 
-            alt="Découvrir mes actualités"
+            alt="Decouvrir mes actualites"
             className="w-full h-full object-cover grayscale"
           />
           <div className={`absolute inset-0 bg-theme-yellow/90 flex items-center justify-center group-hover:bg-theme-yellow/95 transition-all duration-700 ease-in-out ${forceHoverIndex === 2 ? 'bg-theme-yellow/95' : ''}`}>
@@ -106,7 +106,7 @@ export default function CategoriesSection() {
               {/* Titre horizontal - position fixe */}
               <div className="card-content-position">
                 <h3 className="font-bold text-theme-dark mb-6 text-3xl md:text-6xl lg:text-8xl">
-                  Actualités
+                  Actualites
                 </h3>
               </div>
               
@@ -114,7 +114,7 @@ export default function CategoriesSection() {
               <div className={`card-hover-content transition-opacity duration-500 text-center opacity-100 md:opacity-0 md:group-hover:opacity-100 ${forceHoverIndex === 2 ? 'md:opacity-100' : ''}`}>
                 {/* Texte explicatif */}
                 <p className="text-theme-dark mb-8 text-sm md:text-xl lg:text-2xl leading-relaxed">
-                  Suivez mes dernières actualités, événements et projets en cours
+                  Suivez mes dernieres actualites, evenements et projets en cours
                 </p>
                 {/* Bouton d'incitation au clic */}
                 <span className="text-theme-dark/80 font-medium hover:text-theme-dark transition-all duration-300 relative after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-theme-dark after:transition-all after:duration-300 hover:after:w-full after:opacity-0 hover:after:opacity-100 text-xs md:text-base lg:text-lg">
@@ -130,7 +130,7 @@ export default function CategoriesSection() {
           <button
             onClick={scrollToBio}
             className="group text-white/60 hover:text-white/90 transition-all duration-1000 ease-out"
-            aria-label="Aller à la section bio"
+            aria-label="Aller a la section bio"
           >
             <div className="inline-flex flex-col items-center">
               <span className="text-sm mb-2">Continuer vers le bas</span>

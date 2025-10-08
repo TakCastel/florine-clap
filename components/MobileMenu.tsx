@@ -10,8 +10,8 @@ interface MobileMenuProps {
 
 const MENU_ITEMS = [
   { href: '/films', label: 'Films' },
-  { href: '/ateliers', label: 'Médiations' },
-  { href: '/actus', label: 'Actualités' },
+  { href: '/mediations', label: 'Mediations' },
+  { href: '/actus', label: 'Actualites' },
   { href: '/bio', label: 'Bio' }
 ]
 
@@ -53,11 +53,11 @@ const BurgerButton = ({ isOpen, onClick }: { isOpen: boolean; onClick: () => voi
 const MobileMenuOverlay = ({ isOpen, onClose }: MobileMenuProps) => {
   const [showLinks, setShowLinks] = useState(false)
 
-  // Empêcher le scroll du body quand le menu est ouvert
+  // Empecher le scroll du body quand le menu est ouvert
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden'
-      // Délai pour permettre au panel de s'ouvrir avant de montrer les liens
+      // Delai pour permettre au panel de s'ouvrir avant de montrer les liens
       setTimeout(() => setShowLinks(true), 300)
     } else {
       document.body.style.overflow = 'unset'
@@ -145,4 +145,3 @@ export default function MobileMenu() {
     </>
   )
 }
-
