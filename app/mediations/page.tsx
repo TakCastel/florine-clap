@@ -15,7 +15,7 @@ export default function MediationsPage() {
             { label: 'Accueil', href: '/' },
             { label: 'Mediations' }
           ]}
-          variant="green"
+          variant="default"
         />
         
         <h1 className="text-4xl md:text-6xl lg:text-8xl font-montserrat font-bold tracking-wide mb-12 text-theme-green">Mediations</h1>
@@ -27,10 +27,7 @@ export default function MediationsPage() {
               href={`/mediations/${mediation.slug}`} 
               title={mediation.title} 
               subtitle={new Date(mediation.date).toLocaleDateString('fr-FR')} 
-              cover={mediation.gallery?.[0]} 
               excerpt={mediation.excerpt}
-              lieu={mediation.lieu}
-              duree={mediation.duree}
               placeholderImage={`https://picsum.photos/600/400?random=${index + 1}`}
               variant="mediations" 
             />

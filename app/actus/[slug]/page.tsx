@@ -21,8 +21,7 @@ export async function generateMetadata({ params }: ActuPageProps): Promise<Metad
 
   return buildMetadata({
     title: actu.title,
-    description: actu.excerpt,
-    canonical: canonical(`/actus/${actu.slug}`)
+    description: actu.excerpt
   })
 }
 

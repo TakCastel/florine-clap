@@ -15,11 +15,8 @@ export async function generateMetadata(): Promise<Metadata> {
   }
 
   return buildMetadata({
-    title: page.seo_title || page.title,
-    description: page.seo_description,
-    image: page.seo_image || page.portrait,
-    url: canonical('/bio'),
-    noindex: page.noindex
+    title: page.title,
+    description: 'Découvrez le parcours de Florine Clap, réalisatrice et formatrice en médiations vidéo'
   })
 }
 
@@ -38,7 +35,7 @@ export default function BioPage() {
             { label: 'Accueil', href: '/' },
             { label: 'A propos' }
           ]}
-          variant="purple"
+          variant="default"
         />
         
         <article className="bg-orange-100 rounded-lg shadow-lg overflow-hidden">

@@ -20,11 +20,8 @@ export async function generateMetadata({ params }: MediationPageProps): Promise<
   }
 
   return buildMetadata({
-    title: mediation.seo_title || mediation.title,
-    description: mediation.seo_description || mediation.excerpt,
-    image: mediation.seo_image || mediation.gallery?.[0],
-    url: canonical(`/mediations/${mediation.slug}`),
-    noindex: mediation.noindex
+    title: mediation.title,
+    description: mediation.excerpt
   })
 }
 
@@ -44,7 +41,7 @@ export default function MediationPage({ params }: MediationPageProps) {
             { label: 'Mediations', href: '/mediations' },
             { label: mediation.title }
           ]}
-          variant="green"
+          variant="default"
         />
         
         <article className="bg-orange-100 rounded-lg shadow-lg overflow-hidden">

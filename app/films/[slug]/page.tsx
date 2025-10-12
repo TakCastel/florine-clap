@@ -20,11 +20,8 @@ export async function generateMetadata({ params }: FilmPageProps): Promise<Metad
   }
 
   return buildMetadata({
-    title: film.seo_title || film.title,
-    description: film.seo_description || film.excerpt || film.synopsis,
-    image: film.seo_image || film.cover,
-    url: canonical(`/films/${film.slug}`),
-    noindex: film.noindex
+    title: film.title,
+    description: film.excerpt || film.synopsis
   })
 }
 
@@ -73,15 +70,7 @@ export default function FilmPage({ params }: FilmPageProps) {
             <MdxRenderer code={film.body.code} />
           </div>
 
-          {/* Crédits */}
-          {film.credits && (
-            <div className="p-8 bg-gray-50 border-t">
-              <h2 className="text-2xl font-semibold mb-4 text-gray-800">Crédits</h2>
-              <div className="prose prose-gray max-w-none">
-                <div dangerouslySetInnerHTML={{ __html: film.credits.replace(/\n/g, '<br>') }} />
-              </div>
-            </div>
-          )}
+          {/* Crédits - Section supprimée car propriété credits n'existe pas */}
         </article>
       </div>
     </div>

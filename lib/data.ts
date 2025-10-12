@@ -83,30 +83,30 @@ export const films: Film[] = [
     slug: "123-soleil",
     annee: 2023,
     duree: "15 minutes",
-    synopsis: "Un court métrage poétique qui explore la relation entre l'homme et la nature à travers le prisme de la lumière.",
-    statut: "En sélection",
+    synopsis: "Un court metrage poetique qui explore la relation entre l'homme et la nature a travers le prisme de la lumiere",
+    statut: "En selection",
     vimeo: "https://vimeo.com/example",
-    excerpt: "Un voyage lumineux à travers les saisons",
-    tags: ["documentaire", "nature", "poésie"],
-    category: "Court métrage",
-    role: "Réalisatrice",
+    excerpt: "Un voyage lumineux a travers les saisons",
+    tags: ["documentaire", "nature", "poesie"],
+    category: "Court metrage",
+    role: "Realisatrice",
     body: `
 # 123 Soleil
 
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
 
-## Synopsis détaillé
+## Synopsis detaille
 
 Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 
-### Les thèmes abordés
+### Les themes abordes
 
 - La relation homme-nature
 - Le cycle des saisons
-- La poésie du quotidien
-- La lumière comme métaphore
+- La poesie du quotidien
+- La lumiere comme metaphore
 
-## Processus de création
+## Processus de creation
 
 Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
 
@@ -115,31 +115,31 @@ Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed 
   }
 ]
 
-export const m�diations: Atelier[] = [
+export const mediations: Atelier[] = [
   {
     id: "1",
-    title: "Atelier Cinéma Documentaire",
+    title: "Atelier Cinema Documentaire",
     slug: "atelier-cinema-documentaire",
     date: "2024-03-15",
-    lieu: "Médiathèque de la ville",
+    lieu: "Mediatheque de la ville",
     duree: "3 heures",
-    modalites: "Gratuit, sur inscription. Matériel fourni.",
+    modalites: "Gratuit, sur inscription. Materiel fourni.",
     lien_inscription: "https://example.com/inscription",
-    excerpt: "Découvrez les techniques du cinéma documentaire",
+    excerpt: "Decouvrez les techniques du cinema documentaire",
     tags: ["documentaire", "initiation", "technique"],
     body: `
-# Atelier Cinéma Documentaire
+# Atelier Cinema Documentaire
 
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
 
 ## Objectifs de l'atelier
 
-- Comprendre les spécificités du documentaire
+- Comprendre les specificites du documentaire
 - Apprendre les techniques de base
-- Réaliser un court documentaire
-- Développer son regard critique
+- Realiser un court documentaire
+- Developper son regard critique
 
-## Programme détaillé
+## Programme detaille
 
 ### 1. Introduction au documentaire (45 min)
 Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
@@ -150,13 +150,13 @@ Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu 
 ### 3. Montage et post-production (75 min)
 Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 
-## Matériel nécessaire
+## Materiel necessaire
 
-- Caméra ou smartphone
+- Camera ou smartphone
 - Ordinateur portable (optionnel)
 - Carnet de notes
 
-## Modalités pratiques
+## Modalites pratiques
 
 Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
     `
@@ -166,14 +166,14 @@ Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium dolor
 export const actus: Actu[] = [
   {
     id: "1",
-    title: "Nouvelle sélection au Festival de Cannes",
+    title: "Nouvelle selection au Festival de Cannes",
     slug: "selection-festival-cannes",
     date: "2024-02-20",
     cover: "/images/uploads/actu-cannes.jpg",
-    excerpt: "Notre court métrage '123 Soleil' a été sélectionné pour la section Short Film Corner du Festival de Cannes 2024.",
-    tags: ["festival", "cannes", "sélection"],
+    excerpt: "Notre court metrage '123 Soleil' a ete selectionne pour la section Short Film Corner du Festival de Cannes 2024.",
+    tags: ["festival", "cannes", "selection"],
     body: `
-# Nouvelle sélection au Festival de Cannes
+# Nouvelle selection au Festival de Cannes
 
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
 
@@ -185,11 +185,11 @@ Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliqu
 
 Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium.
 
-## Prochaines étapes
+## Prochaines etapes
 
 - Projection au Festival de Cannes
 - Rencontres professionnelles
-- Développement de nouveaux projets
+- Developpement de nouveaux projets
 
 ## Remerciements
 
@@ -201,11 +201,11 @@ Totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architec
 export const pages: Page[] = [
   {
     id: "1",
-    title: "À propos",
+    title: "A propos",
     slug: "bio",
     portrait: "/images/florine-portrait.jpg",
     hero_video: "/videos/example.mp4",
-    cta_text: "Découvrir mes films",
+    cta_text: "Decouvrir mes films",
     cta_link: "/films",
     body: `
 # Florine Clap
@@ -218,15 +218,15 @@ Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliqu
 
 ### Formation
 
-- Master en Cinéma Documentaire
-- École de cinéma de Paris
-- Spécialisation en réalisation
+- Master en Cinema Documentaire
+- Ecole de cinema de Paris
+- Specialisation en realisation
 
-### Expérience
+### Experience
 
 Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium.
 
-## Ma vision du cinéma
+## Ma vision du cinema
 
 Totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit.
     `
@@ -236,23 +236,23 @@ Totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architec
     title: "Accueil",
     slug: "home",
     hero_image: "/images/uploads/hero-home.jpg",
-    cta_text: "Découvrir mes films",
+    cta_text: "Decouvrir mes films",
     cta_link: "/films",
     body: `
 # Bienvenue sur mon site
 
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
 
-## Mes dernières créations
+## Mes dernieres creations
 
 Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
 
-### Films récents
+### Films recents
 
 - 123 Soleil (2023)
 - Projet en cours (2024)
 
-### m�diations et formations
+### Mediations et formations
 
 Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
     `
