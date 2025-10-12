@@ -20,11 +20,9 @@ export async function generateMetadata({ params }: ActuPageProps): Promise<Metad
   }
 
   return buildMetadata({
-    title: actu.seo_title || actu.title,
-    description: actu.seo_description || actu.excerpt,
-    image: actu.seo_image || actu.cover,
-    url: canonical(`/actus/${actu.slug}`),
-    noindex: actu.noindex
+    title: actu.title,
+    description: actu.excerpt,
+    canonical: canonical(`/actus/${actu.slug}`)
   })
 }
 
@@ -44,7 +42,7 @@ export default function ActuPage({ params }: ActuPageProps) {
             { label: 'Actualités', href: '/actus' },
             { label: actu.title }
           ]}
-          variant="orange"
+          variant="default"
         />
         
         <article className="bg-orange-100 rounded-lg shadow-lg overflow-hidden">

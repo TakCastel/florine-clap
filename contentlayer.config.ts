@@ -30,6 +30,7 @@ export const Film = defineDocumentType(() => ({
     synopsis: { type: 'string', required: false },
     statut: { type: 'string', required: false },
     excerpt: { type: 'string', required: false },
+    tags: { type: 'list', of: { type: 'string' }, required: false },
   },
   computedFields,
 }))
@@ -43,6 +44,10 @@ export const Mediation = defineDocumentType(() => ({
     date: { type: 'date', required: true },
     lieu: { type: 'string', required: true },
     duree: { type: 'string', required: false },
+    modalites: { type: 'string', required: false },
+    lien_inscription: { type: 'string', required: false },
+    excerpt: { type: 'string', required: false },
+    tags: { type: 'list', of: { type: 'string' }, required: false },
   },
   computedFields,
 }))
@@ -54,6 +59,8 @@ export const Actu = defineDocumentType(() => ({
   fields: {
     title: { type: 'string', required: true },
     date: { type: 'date', required: true },
+    excerpt: { type: 'string', required: false },
+    tags: { type: 'list', of: { type: 'string' }, required: false },
   },
   computedFields,
 }))
@@ -64,6 +71,10 @@ export const Page = defineDocumentType(() => ({
   contentType: 'mdx',
   fields: {
     title: { type: 'string', required: true },
+    portrait: { type: 'string', required: false },
+    hero_video: { type: 'string', required: false },
+    hero_image: { type: 'string', required: false },
+    cta_text: { type: 'string', required: false },
   },
   computedFields,
 }))

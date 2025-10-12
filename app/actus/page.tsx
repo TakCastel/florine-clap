@@ -15,7 +15,7 @@ export default function ActusPage() {
             { label: 'Accueil', href: '/' },
             { label: 'Actualites' }
           ]}
-          variant="orange"
+          variant="default"
         />
         
         <h1 className="text-4xl md:text-6xl lg:text-8xl font-montserrat font-bold tracking-wide mb-12 text-theme-orange">Actualites</h1>
@@ -27,7 +27,7 @@ export default function ActusPage() {
               href={`/actus/${actu.slug}`} 
               title={actu.title} 
               subtitle={new Date(actu.date).toLocaleDateString('fr-FR')} 
-              cover={actu.cover} 
+              cover={undefined} 
               excerpt={actu.excerpt}
               placeholderImage={`https://picsum.photos/600/400?random=${index + 1}`}
               variant="actus" 
