@@ -50,10 +50,10 @@ export default function FilmsPage({ searchParams }: FilmsPageProps) {
                 key={film._id} 
                 href={`/films/${film.slug}`} 
                 title={film.title} 
-                subtitle={`${film.annee}`} 
-                excerpt={film.excerpt}
-                duree={film.duree}
-                synopsis={film.synopsis}
+                subtitle="Film" 
+                excerpt={undefined}
+                duree={undefined}
+                synopsis={undefined}
                 placeholderImage={`https://picsum.photos/600/400?random=${startIndex + index + 1}`}
                 variant="films" 
               />

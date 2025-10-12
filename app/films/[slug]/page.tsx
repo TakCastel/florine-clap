@@ -21,7 +21,7 @@ export async function generateMetadata({ params }: FilmPageProps): Promise<Metad
 
   return buildMetadata({
     title: film.title,
-    description: film.excerpt || film.synopsis
+    description: 'Découvrez ce film de Florine Clap'
   })
 }
 
@@ -49,21 +49,11 @@ export default function FilmPage({ params }: FilmPageProps) {
           <div className="bg-gradient-to-r from-purple-600 to-blue-600 text-white p-8">
             <h1 className="text-4xl font-bold mb-2">{film.title}</h1>
             <div className="flex items-center space-x-4 text-lg">
-              <span>{film.annee}</span>
-              {film.duree && <span>•</span>}
-              {film.duree && <span>{film.duree}</span>}
-              {film.statut && <span>•</span>}
-              {film.statut && <span className="bg-orange-100 bg-opacity-20 px-3 py-1 rounded-full text-sm">{film.statut}</span>}
+              <span>Film</span>
             </div>
           </div>
 
-          {/* Synopsis */}
-          {film.synopsis && (
-            <div className="p-8 border-b">
-              <h2 className="text-2xl font-semibold mb-4 text-gray-800">Synopsis</h2>
-              <p className="text-gray-600 leading-relaxed">{film.synopsis}</p>
-            </div>
-          )}
+          {/* Synopsis - Section supprimée car propriété synopsis n'existe pas */}
 
           {/* Contenu principal */}
           <div className="p-8">

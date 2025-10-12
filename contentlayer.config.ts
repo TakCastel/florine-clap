@@ -25,12 +25,6 @@ export const Film = defineDocumentType(() => ({
   contentType: 'mdx',
   fields: {
     title: { type: 'string', required: true },
-    annee: { type: 'number', required: true },
-    duree: { type: 'string', required: false },
-    synopsis: { type: 'string', required: false },
-    statut: { type: 'string', required: false },
-    excerpt: { type: 'string', required: false },
-    tags: { type: 'list', of: { type: 'string' }, required: false },
   },
   computedFields,
 }))
