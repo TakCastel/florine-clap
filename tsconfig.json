@@ -40,9 +40,7 @@
         ".contentlayer/generated"
       ]
     },
-    "types": [
-      ".contentlayer/generated"
-    ],
+    "types": [],
     "incremental": true,
     "plugins": [
       {
