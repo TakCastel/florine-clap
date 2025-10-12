@@ -1,5 +1,7 @@
 'use client'
 
+import ScrollIndicator from '@/components/ScrollIndicator'
+
 export default function BioSection() {
   const scrollToFooter = () => {
     const footer = document.querySelector('footer')
@@ -60,7 +62,7 @@ export default function BioSection() {
             <div className="mt-8">
               <a 
                 href="/bio" 
-                className="inline-flex items-center text-theme-blue text-xl font-medium hover:text-theme-blue/80 transition-all duration-300 relative after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-theme-blue after:transition-all after:duration-300 hover:after:w-full"
+                className="inline-flex items-center text-theme-blue text-xl font-medium hover:text-theme-blue/80 transition-all duration-300 relative after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-0.5 after:bg-theme-blue after:transition-all after:duration-300 hover:after:w-full"
               >
                 Découvrir mon parcours complet →
               </a>
@@ -68,22 +70,10 @@ export default function BioSection() {
             
             {/* Indicateur de scroll vers le footer */}
             <div className="mt-12 text-center">
-              <button
+              <ScrollIndicator
                 onClick={scrollToFooter}
-                className="inline-flex flex-col items-center text-theme-blue/60 hover:text-theme-blue transition-colors cursor-pointer group"
-                aria-label="Aller au footer"
-              >
-                <span className="text-sm mb-2">Continuer vers le bas</span>
-                <svg 
-                  className="w-6 h-6 transition-transform duration-300 group-hover:translate-y-1" 
-                  fill="none" 
-                  stroke="currentColor" 
-                  strokeWidth="2" 
-                  viewBox="0 0 24 24"
-                >
-                  <path d="M19 14l-7 7m0 0l-7-7m7 7V3"/>
-                </svg>
-              </button>
+                ariaLabel="Aller au footer"
+              />
             </div>
           </div>
         </div>

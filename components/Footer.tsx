@@ -15,7 +15,7 @@ export default function Footer() {
           
           {/* Section A propos */}
           <div className="md:col-span-2">
-            <h3 className={`font-montserrat font-normal tracking-wide mb-4 ${isHomePage ? 'text-xl md:text-3xl' : 'text-lg'}`}>
+            <h3 className={`font-andale-mono font-normal tracking-wide mb-4 ${isHomePage ? 'text-xl md:text-3xl' : 'text-lg'}`}>
               A propos
             </h3>
             <p className={`text-white/90 leading-relaxed mb-6 ${isHomePage ? 'text-base md:text-xl' : ''}`}>
@@ -40,7 +40,7 @@ export default function Footer() {
 
           {/* Navigation */}
           <div>
-            <h3 className={`font-montserrat font-normal tracking-wide mb-4 ${isHomePage ? 'text-xl md:text-3xl' : 'text-lg'}`}>
+            <h3 className={`font-andale-mono font-normal tracking-wide mb-4 ${isHomePage ? 'text-xl md:text-3xl' : 'text-lg'}`}>
               Navigation
             </h3>
             <nav className={`flex flex-col items-start ${isHomePage ? 'space-y-4 md:space-y-6' : 'space-y-3'}`}>
@@ -61,7 +61,7 @@ export default function Footer() {
 
           {/* Contact */}
           <div>
-            <h3 className={`font-montserrat font-normal tracking-wide mb-4 ${isHomePage ? 'text-xl md:text-3xl' : 'text-lg'}`}>
+            <h3 className={`font-andale-mono font-normal tracking-wide mb-4 ${isHomePage ? 'text-xl md:text-3xl' : 'text-lg'}`}>
               Contact
             </h3>
             <div className={`text-white/80 ${isHomePage ? 'space-y-4 md:space-y-6' : 'space-y-3'}`}>

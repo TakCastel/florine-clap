@@ -13,8 +13,10 @@ export default function Header() {
     }`}>
       <a 
         href="/" 
-        className={`font-bold text-xl hover:text-theme-yellow transition-colors duration-200 header-logo-animation ${
-          isHomePage ? 'text-white' : 'text-theme-dark'
+        className={`font-bold text-xl transition-colors duration-200 header-logo-animation ${
+          isHomePage 
+            ? 'text-white hover:text-theme-yellow' 
+            : 'text-theme-dark hover:text-black'
         }`}
       >
         Florine Clap

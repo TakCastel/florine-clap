@@ -1,6 +1,7 @@
 'use client'
 
 import { useHover } from '@/contexts/HoverContext'
+import ScrollIndicator from '@/components/ScrollIndicator'
 
 export default function CategoriesSection() {
   const { forceHoverIndex, setForceHoverIndex } = useHover()
@@ -42,11 +43,11 @@ export default function CategoriesSection() {
               {/* Contenu qui apparaît au hover - positionné en dessous du titre */}
               <div className={`card-hover-content transition-opacity duration-500 text-center opacity-100 md:opacity-0 md:group-hover:opacity-100 ${forceHoverIndex === 0 ? 'md:opacity-100' : ''}`}>
                 {/* Texte explicatif */}
-                <p className="text-white mb-8 text-sm md:text-xl lg:text-2xl leading-relaxed">
+                <p className="text-white mb-8 text-xs md:text-lg lg:text-xl leading-relaxed">
                   Decouvrez mes creations cinematographiques, mes courts-metrages et mes projets artistiques
                 </p>
                 {/* Bouton d'incitation au clic */}
-                <span className="text-white/80 font-medium hover:text-white transition-all duration-300 relative after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-white after:transition-all after:duration-300 hover:after:w-full after:opacity-0 hover:after:opacity-100 text-xs md:text-base lg:text-lg">
+                <span className="text-white/80 font-medium hover:text-white transition-all duration-300 relative after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-0.5 after:bg-white after:transition-all after:duration-300 hover:after:w-full after:opacity-0 hover:after:opacity-100 text-xs md:text-base lg:text-lg">
                   Decouvrir →
                 </span>
               </div>
@@ -82,11 +83,11 @@ export default function CategoriesSection() {
               {/* Contenu qui apparaît au hover - positionné en dessous du titre */}
               <div className={`card-hover-content transition-opacity duration-500 text-center opacity-100 md:opacity-0 md:group-hover:opacity-100 ${forceHoverIndex === 1 ? 'md:opacity-100' : ''}`}>
                 {/* Texte explicatif */}
-                <p className="text-theme-blue mb-8 text-sm md:text-xl lg:text-2xl leading-relaxed">
+                <p className="text-theme-blue mb-8 text-xs md:text-lg lg:text-xl leading-relaxed">
                   Explorez mes mediations de mediation culturelle et mes formations pour tous publics
                 </p>
                 {/* Bouton d'incitation au clic */}
-                <span className="text-theme-blue/80 font-medium hover:text-theme-blue transition-all duration-300 relative after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-theme-blue after:transition-all after:duration-300 hover:after:w-full after:opacity-0 hover:after:opacity-100 text-xs md:text-base lg:text-lg">
+                <span className="text-theme-blue/80 font-medium hover:text-theme-blue transition-all duration-300 relative after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-0.5 after:bg-theme-blue after:transition-all after:duration-300 hover:after:w-full after:opacity-0 hover:after:opacity-100 text-xs md:text-base lg:text-lg">
                   Explorer →
                 </span>
               </div>
@@ -113,11 +114,11 @@ export default function CategoriesSection() {
               {/* Contenu qui apparaît au hover - positionné en dessous du titre */}
               <div className={`card-hover-content transition-opacity duration-500 text-center opacity-100 md:opacity-0 md:group-hover:opacity-100 ${forceHoverIndex === 2 ? 'md:opacity-100' : ''}`}>
                 {/* Texte explicatif */}
-                <p className="text-theme-dark mb-8 text-sm md:text-xl lg:text-2xl leading-relaxed">
+                <p className="text-theme-dark mb-8 text-xs md:text-lg lg:text-xl leading-relaxed">
                   Suivez mes dernieres actualites, evenements et projets en cours
                 </p>
                 {/* Bouton d'incitation au clic */}
-                <span className="text-theme-dark/80 font-medium hover:text-theme-dark transition-all duration-300 relative after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-theme-dark after:transition-all after:duration-300 hover:after:w-full after:opacity-0 hover:after:opacity-100 text-xs md:text-base lg:text-lg">
+                <span className="text-theme-dark/80 font-medium hover:text-theme-dark transition-all duration-300 relative after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-0.5 after:bg-theme-dark after:transition-all after:duration-300 hover:after:w-full after:opacity-0 hover:after:opacity-100 text-xs md:text-base lg:text-lg">
                   Lire →
                 </span>
               </div>
@@ -127,24 +128,10 @@ export default function CategoriesSection() {
         
         {/* Indicateur de scroll vers la bio */}
         <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-40">
-          <button
+          <ScrollIndicator
             onClick={scrollToBio}
-            className="group text-white/60 hover:text-white/90 transition-all duration-1000 ease-out"
-            aria-label="Aller a la section bio"
-          >
-            <div className="inline-flex flex-col items-center">
-              <span className="text-sm mb-2">Continuer vers le bas</span>
-              <svg 
-                className="w-6 h-6 transition-all duration-1000 group-hover:translate-y-0.5" 
-                fill="none" 
-                stroke="currentColor" 
-                strokeWidth="2" 
-                viewBox="0 0 24 24"
-              >
-                <path d="M19 14l-7 7m0 0l-7-7m7 7V3"/>
-              </svg>
-            </div>
-          </button>
+            ariaLabel="Aller a la section bio"
+          />
         </div>
       </div>
     </section>

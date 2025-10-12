@@ -37,7 +37,7 @@ export default function HomeCards({ innerRef }: HomeCardsProps) {
                   </svg>
                 </div>
                 <div className="absolute inset-0 flex items-center justify-center">
-                  <h3 className="text-2xl md:text-4xl font-montserrat font-bold tracking-wider text-white relative after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-1 after:bg-current after:transition-all after:duration-300 group-hover:after:w-full">
+                  <h3 className="text-2xl md:text-4xl font-andale-mono font-bold tracking-wider text-white relative after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-1 after:bg-current after:transition-all after:duration-300 group-hover:after:w-full">
                     Films
                   </h3>
                 </div>
@@ -47,7 +47,7 @@ export default function HomeCards({ innerRef }: HomeCardsProps) {
             </Link>
 
             {/* Carte Médiations */}
-            <Link href="/m�diations" className="group transition-all duration-1000 ease-out opacity-100 translate-y-0">
+            <Link href="/m�diations" className="group transition-all duration-1000 ease-out opacity-100 translate-y-0">
               <div className="relative w-full h-80 overflow-hidden bg-black transition-all duration-500 group-hover:brightness-110 group-hover:scale-105 cursor-pointer">
                 {/* Image en filigrane */}
                 <Image
@@ -63,7 +63,7 @@ export default function HomeCards({ innerRef }: HomeCardsProps) {
                   </svg>
                 </div>
                 <div className="absolute inset-0 flex items-center justify-center">
-                  <h3 className="text-2xl md:text-4xl font-montserrat font-bold tracking-wider text-white relative after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-1 after:bg-current after:transition-all after:duration-300 group-hover:after:w-full">
+                  <h3 className="text-2xl md:text-4xl font-andale-mono font-bold tracking-wider text-white relative after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-1 after:bg-current after:transition-all after:duration-300 group-hover:after:w-full">
                     Médiations
                   </h3>
                 </div>
@@ -89,7 +89,7 @@ export default function HomeCards({ innerRef }: HomeCardsProps) {
                   </svg>
                 </div>
                 <div className="absolute inset-0 flex items-center justify-center">
-                  <h3 className="text-2xl md:text-4xl font-montserrat font-bold tracking-wider text-white relative after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-1 after:bg-current after:transition-all after:duration-300 group-hover:after:w-full">
+                  <h3 className="text-2xl md:text-4xl font-andale-mono font-bold tracking-wider text-white relative after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-1 after:bg-current after:transition-all after:duration-300 group-hover:after:w-full">
                     Actualités
                   </h3>
                 </div>
