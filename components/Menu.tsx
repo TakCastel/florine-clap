@@ -4,8 +4,7 @@ export const MENU_ITEMS = [
   { href: '/films', label: 'Films' },
   { href: '/mediations', label: 'Mediations' },
   { href: '/actus', label: 'Actualites' },
-  { href: '/bio', label: 'Bio' },
-  { href: '/contact', label: 'Contact' }
+  { href: '/bio', label: 'Bio' }
 ]
 
 interface MenuLinkProps {
