@@ -61,7 +61,7 @@ export default function Breadcrumb({ items, variant = 'default' }: Props) {
   const styles = getVariantStyles()
 
   return (
-    <nav className={`flex items-center text-sm ${styles.text} mb-8`} aria-label="Breadcrumb">
+    <nav className={`flex items-center text-sm ${styles.text}`} aria-label="Breadcrumb">
       {items.map((item, index) => (
         <div key={index} className="flex items-center">
           {index > 0 && (

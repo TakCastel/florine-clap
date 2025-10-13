@@ -40,7 +40,7 @@ export default function BioPage() {
         
         <article className="bg-orange-100 rounded-lg shadow-lg overflow-hidden">
           {/* En-tete avec portrait */}
-          <div className="bg-gradient-to-r from-purple-600 to-indigo-600 text-white p-8">
+          <div className="bg-theme-navy text-white p-8">
             <div className="flex flex-col md:flex-row items-center gap-8">
               {page.portrait && (
                 <img 

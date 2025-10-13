@@ -10,7 +10,7 @@ export default function Footer() {
   
   if (isHomePage) {
     return (
-      <footer className="scroll-section h-screen bg-gradient-to-br from-theme-dark via-gray-900 to-black text-white relative overflow-hidden">
+      <footer className="scroll-section h-screen bg-theme-dark text-white relative overflow-hidden">
         {/* Background pattern */}
         <div className="absolute inset-0 opacity-10">
           <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-white/5 rounded-full blur-3xl"></div>
@@ -18,7 +18,7 @@ export default function Footer() {
         </div>
         
         <div className="relative z-10 h-full flex flex-col justify-center px-4 md:px-12 lg:px-24 py-12 md:py-24">
-          <div className="max-w-6xl mx-auto w-full">
+          <div className="max-w-6xl mx-auto px-4 py-12 w-full">
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 lg:gap-16 mb-16">
               
               {/* Section À propos */}
@@ -32,15 +32,15 @@ export default function Footer() {
                 </p>
                 <div className="flex space-x-6">
                   <a href="https://instagram.com/florineclap" target="_blank" rel="noopener noreferrer" 
-                     className="text-white/70 hover:text-white transition-colors transform hover:scale-110">
+                     className="text-white/70 hover:text-white transition-colors transform hover:scale-110 cursor-pointer">
                     <IoLogoInstagram size={32} />
                   </a>
                   <a href="https://vimeo.com/florineclap" target="_blank" rel="noopener noreferrer" 
-                     className="text-white/70 hover:text-white transition-colors transform hover:scale-110">
+                     className="text-white/70 hover:text-white transition-colors transform hover:scale-110 cursor-pointer">
                     <IoLogoVimeo size={32} />
                   </a>
                   <a href="mailto:contact@florineclap.fr" 
-                     className="text-white/70 hover:text-white transition-colors transform hover:scale-110">
+                     className="text-white/70 hover:text-white transition-colors transform hover:scale-110 cursor-pointer">
                     <IoMailOutline size={32} />
                   </a>
                 </div>
@@ -76,7 +76,7 @@ export default function Footer() {
               <div className="text-white/80 space-y-3 md:space-y-4">
                 <div className="flex items-start space-x-2 md:space-x-3">
                   <IoMailOutline size={16} className="mt-1 flex-shrink-0" />
-                  <a href="mailto:contact@florineclap.fr" className="hover:text-white transition-colors text-sm md:text-base lg:text-xl">
+                  <a href="mailto:contact@florineclap.fr" className="hover:text-white transition-colors text-sm md:text-base lg:text-xl cursor-pointer">
                     contact@florineclap.fr
                   </a>
                 </div>
@@ -112,7 +112,7 @@ export default function Footer() {
   // Footer pour les autres pages (version condensée)
   return (
     <footer className="bg-theme-dark text-white min-h-[200px]">
-      <div className="max-w-6xl mx-auto px-4 md:px-6 py-12">
+      <div className="max-w-6xl mx-auto px-4 py-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           
           {/* Section À propos */}

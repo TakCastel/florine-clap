@@ -28,7 +28,7 @@ export default function VimeoPlayer({
   useEffect(() => {
     if (!iframeRef.current) return
 
-    // Configuration des paramètres Vimeo
+    // Configuration des paramètres Vimeo pour un player léger
     const params = new URLSearchParams({
       autoplay: autoplay ? '1' : '0',
       muted: muted ? '1' : '0',
@@ -38,7 +38,14 @@ export default function VimeoPlayer({
       byline: '0',
       title: '0',
       portrait: '0',
-      responsive: '1'
+      responsive: '1',
+      dnt: '1', // Do Not Track
+      quality: 'auto', // Qualité automatique
+      speed: '1', // Vitesse normale
+      keyboard: '0', // Pas de contrôles clavier
+      pip: '0', // Pas de picture-in-picture
+      transparent: '0',
+      playsinline: '1' // Lecture en ligne sur mobile
     })
 
     const src = `https://player.vimeo.com/video/${videoId}?${params.toString()}`

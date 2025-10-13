@@ -53,7 +53,7 @@ export default function Navigation({ isHomePage = false }: NavigationProps) {
           >
             <a 
               href={item.href} 
-              className={`text-xl font-andale-mono font-bold transition-colors duration-300 uppercase ${
+              className={`text-xl font-andale-mono font-bold transition-colors duration-300 uppercase cursor-pointer ${
                 isHomePage 
                   ? 'text-white hover:text-theme-yellow' 
                   : 'text-theme-dark hover:text-black'

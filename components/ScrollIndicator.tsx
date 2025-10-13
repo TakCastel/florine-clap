@@ -16,7 +16,7 @@ export default function ScrollIndicator({
   return (
     <button
       onClick={onClick}
-      className={`group inline-flex flex-col items-center text-theme-blue/60 hover:text-theme-blue transition-all duration-300 cursor-pointer ${className}`}
+      className={`group inline-flex flex-col items-center transition-all duration-300 cursor-pointer ${className || 'text-white/60 hover:text-white'}`}
       aria-label={ariaLabel}
     >
       <span className="text-sm mb-2 transition-colors duration-300">

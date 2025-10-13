@@ -46,7 +46,7 @@ export default function ActuPage({ params }: ActuPageProps) {
         
         <article className="bg-orange-100 rounded-lg shadow-lg overflow-hidden">
           {/* En-tête de l'actualité */}
-          <div className="bg-gradient-to-r from-orange-600 to-red-600 text-white p-8">
+          <div className="bg-theme-navy text-white p-8">
             <h1 className="text-4xl font-bold mb-2">{actu.title}</h1>
             <div className="text-lg">
               <span>{new Date(actu.date).toLocaleDateString('fr-FR')}</span>

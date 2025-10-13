@@ -12,20 +12,22 @@ export default function FilmsPage() {
   const [currentIndex, setCurrentIndex] = useState(0)
   const [isLoading, setIsLoading] = useState(false)
   const [hasMore, setHasMore] = useState(true)
-  const filmsPerLoad = 1
+  const filmsPerLoad = 3
 
   // Charger les premiers films au montage
   useEffect(() => {
     console.log('allFilms.length:', allFilms.length)
     console.log('allFilms:', allFilms)
-    if (allFilms.length > 0) {
+    if (allFilms && allFilms.length > 0) {
       const initialFilms = allFilms.slice(0, filmsPerLoad)
       console.log('initialFilms:', initialFilms)
       setDisplayedFilms(initialFilms)
       setCurrentIndex(filmsPerLoad)
       setHasMore(filmsPerLoad < allFilms.length)
+    } else {
+      console.log('Aucun film trouvé ou allFilms non défini')
     }
-  }, [])
+  }, [filmsPerLoad])
 
   // Fonction pour charger plus de films
   const loadMoreFilms = useCallback(() => {
@@ -66,9 +68,12 @@ export default function FilmsPage() {
     }
   }, [loadMoreFilms, hasMore, isLoading])
 
+  // Debug: afficher les valeurs importantes
+  console.log('Debug - hasMore:', hasMore, 'displayedFilms.length:', displayedFilms.length, 'allFilms.length:', allFilms.length)
+
   return (
     <div className="min-h-screen bg-white">
-      <div className="mx-auto max-w-6xl px-4 py-12">
+      <div className="max-w-6xl mx-auto px-4 py-12">
         <Breadcrumb 
           items={[
             { label: 'Accueil', href: '/' },
@@ -130,7 +135,7 @@ export default function FilmsPage() {
                       <div className="pt-6">
                         <a 
                           href={`/films/${film.slug}`}
-                          className="inline-flex items-center text-theme-blue text-xl font-medium hover:text-black transition-colors duration-300 relative after:content-[''] after:absolute after:-bottom-2 after:left-0 after:w-0 after:h-1 after:bg-theme-blue after:transition-all after:duration-300 hover:after:w-full"
+                          className="inline-flex items-center text-theme-blue text-xl font-medium hover:text-black transition-colors duration-300 relative after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-0.5 after:bg-theme-blue after:transition-all after:duration-300 hover:after:w-full"
                         >
                           Découvrir le film →
                         </a>
@@ -148,7 +153,7 @@ export default function FilmsPage() {
         </div>
 
         {/* Trigger pour le chargement infini */}
-        {hasMore && (
+        {hasMore && displayedFilms.length > 0 && allFilms.length > displayedFilms.length && (
           <div id="load-more-trigger" className="flex justify-center py-16">
             {isLoading ? (
               <div className="flex flex-col items-center space-y-4">

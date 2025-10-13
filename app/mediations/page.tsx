@@ -9,7 +9,7 @@ export default function MediationsPage() {
 
   return (
     <div className="min-h-screen bg-white">
-      <div className="mx-auto max-w-6xl px-4 py-12">
+      <div className="max-w-6xl mx-auto px-4 py-12">
         <Breadcrumb 
           items={[
             { label: 'Accueil', href: '/' },

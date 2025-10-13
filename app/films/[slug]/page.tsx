@@ -38,7 +38,7 @@ export default function FilmPage({ params }: FilmPageProps) {
     <div className="min-h-screen bg-white">
       {/* Breadcrumb */}
       <div className="bg-theme-dark">
-        <div className="max-w-7xl mx-auto px-4 py-4">
+        <div className="max-w-6xl mx-auto px-4 py-4">
           <Breadcrumb 
             items={[
               { label: 'Accueil', href: '/' },
@@ -109,45 +109,33 @@ export default function FilmPage({ params }: FilmPageProps) {
               <div className="space-y-6">
                 {/* Réalisation */}
                 {film.realisation && (
-                  <div className="flex items-start gap-3">
-                    <User className="w-5 h-5 text-theme-yellow mt-1 flex-shrink-0" />
-                    <div>
-                      <p className="text-sm text-gray-600 font-medium">Réalisation</p>
-                      <p className="text-theme-blue font-semibold">{film.realisation}</p>
-                    </div>
+                  <div>
+                    <p className="text-sm text-gray-600 font-medium">Réalisation</p>
+                    <p className="text-theme-blue font-semibold">{film.realisation}</p>
                   </div>
                 )}
 
                 {/* Mixage */}
                 {film.mixage && (
-                  <div className="flex items-start gap-3">
-                    <Mic className="w-5 h-5 text-theme-yellow mt-1 flex-shrink-0" />
-                    <div>
-                      <p className="text-sm text-gray-600 font-medium">Mixage</p>
-                      <p className="text-theme-blue font-semibold">{film.mixage}</p>
-                    </div>
+                  <div>
+                    <p className="text-sm text-gray-600 font-medium">Mixage</p>
+                    <p className="text-theme-blue font-semibold">{film.mixage}</p>
                   </div>
                 )}
 
                 {/* Texte */}
                 {film.texte && (
-                  <div className="flex items-start gap-3">
-                    <FileText className="w-5 h-5 text-theme-yellow mt-1 flex-shrink-0" />
-                    <div>
-                      <p className="text-sm text-gray-600 font-medium">Texte</p>
-                      <p className="text-theme-blue font-semibold">{film.texte}</p>
-                    </div>
+                  <div>
+                    <p className="text-sm text-gray-600 font-medium">Texte</p>
+                    <p className="text-theme-blue font-semibold">{film.texte}</p>
                   </div>
                 )}
 
                 {/* Production */}
                 {film.production && (
-                  <div className="flex items-start gap-3">
-                    <Building className="w-5 h-5 text-theme-yellow mt-1 flex-shrink-0" />
-                    <div>
-                      <p className="text-sm text-gray-600 font-medium">Production</p>
-                      <p className="text-theme-blue font-semibold">{film.production}</p>
-                    </div>
+                  <div>
+                    <p className="text-sm text-gray-600 font-medium">Production</p>
+                    <p className="text-theme-blue font-semibold">{film.production}</p>
                   </div>
                 )}
 

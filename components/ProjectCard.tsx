@@ -12,6 +12,7 @@ type Props = {
   statut?: string
   synopsis?: string
   placeholderImage?: string
+  vimeoId?: string
   variant?: 'default' | 'films' | 'mediations' | 'actus'
   category?: string
   role?: string
@@ -27,6 +28,7 @@ export default function ProjectCard({
   statut,
   synopsis,
   placeholderImage,
+  vimeoId,
   variant = 'default',
   category,
   role
@@ -68,7 +70,8 @@ export default function ProjectCard({
 
   const styles = getVariantStyles()
 
-  const imageSrc = cover || placeholderImage
+  // Utiliser l'image fournie, sinon la miniature Vimeo, sinon l'image placeholder
+  const imageSrc = cover || (vimeoId ? `https://vumbnail.com/${vimeoId}.jpg` : placeholderImage)
 
   // Fonction pour generer les badges de statut
   const getStatusBadges = () => {
@@ -101,7 +104,7 @@ export default function ProjectCard({
             fill
             className="object-cover transition-transform group-hover:scale-105 duration-300" 
           />
-          <div className="absolute inset-x-0 bottom-0 top-1 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+          <div className="absolute inset-x-0 bottom-0 top-1 bg-black/80 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
         </div>
       )}
       
