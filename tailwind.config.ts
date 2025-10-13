@@ -24,11 +24,13 @@ const config: Config = {
         'theme-slate': '#4A5568',        // Ardoise froide
       },
       fontFamily: {
-        // Configuration simplifiée avec Andale Mono comme unique typographie
-        sans: ['Andale Mono', 'monospace'],
-        serif: ['Andale Mono', 'monospace'],
-        mono: ['Andale Mono', 'monospace'],
+        // Source Sans Pro pour les paragraphes et texte courant
+        sans: ['Source Sans Pro', 'sans-serif'],
+        // Andale Mono pour les titres et éléments spéciaux
         'andale-mono': ['Andale Mono', 'monospace'],
+        // Configuration par défaut
+        serif: ['Source Sans Pro', 'sans-serif'],
+        mono: ['Andale Mono', 'monospace'],
       },
     },
   },

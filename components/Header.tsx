@@ -15,7 +15,7 @@ export default function Header() {
     }`}>
       <a 
         href="/" 
-        className={`font-bold text-xl transition-colors duration-200 ${
+        className={`font-bold text-xl font-andale-mono transition-colors duration-200 ${
           showAnimations ? 'header-logo-animation' : ''
         } ${
           isHomePage 

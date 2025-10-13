@@ -41,14 +41,14 @@ export default function CategoriesSection() {
               </div>
               
               {/* Contenu qui apparaît au hover - positionné en dessous du titre */}
-              <div className={`card-hover-content transition-all duration-700 text-center flex flex-col items-center justify-center opacity-100 md:opacity-0 md:group-hover:opacity-100 ${forceHoverIndex === 0 ? 'md:opacity-100' : ''}`}>
+              <div className={`card-hover-content transition-all duration-700 text-center flex flex-col items-center justify-center opacity-100 md:opacity-0 md:group-hover:opacity-100 touch:opacity-100 ${forceHoverIndex === 0 ? 'md:opacity-100' : ''}`}>
                 {/* Texte explicatif */}
-                <p className="text-white mb-8 text-xs md:text-sm lg:text-base leading-relaxed text-center">
-                  Decouvrez mes creations cinematographiques, mes courts-metrages et mes projets artistiques
+                <p className="text-white mb-8 text-xs md:text-xs lg:text-base leading-relaxed text-center">
+                  Découvrez mes créations cinématographiques, mes courts-métrages et mes projets artistiques
                 </p>
                 {/* Bouton d'incitation au clic */}
-                <span className="text-white/80 font-medium hover:text-white transition-all duration-300 relative after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-0.5 after:bg-white after:transition-all after:duration-300 hover:after:w-full after:opacity-0 hover:after:opacity-100 text-xs md:text-sm lg:text-base">
-                  Decouvrir →
+                <span className="text-white/80 font-medium hover:text-white transition-all duration-300 relative after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-0.5 after:bg-white after:transition-all after:duration-300 hover:after:w-full after:opacity-0 hover:after:opacity-100 text-xs md:text-xs lg:text-base">
+                  Découvrir →
                 </span>
               </div>
             </div>
@@ -81,13 +81,13 @@ export default function CategoriesSection() {
               </div>
               
               {/* Contenu qui apparaît au hover - positionné en dessous du titre */}
-              <div className={`card-hover-content transition-all duration-700 text-center flex flex-col items-center justify-center opacity-100 md:opacity-0 md:group-hover:opacity-100 ${forceHoverIndex === 1 ? 'md:opacity-100' : ''}`}>
+              <div className={`card-hover-content transition-all duration-700 text-center flex flex-col items-center justify-center opacity-100 md:opacity-0 md:group-hover:opacity-100 touch:opacity-100 ${forceHoverIndex === 1 ? 'md:opacity-100' : ''}`}>
                 {/* Texte explicatif */}
-                <p className="text-theme-blue mb-8 text-xs md:text-sm lg:text-base leading-relaxed text-center">
-                  Explorez mes mediations de mediation culturelle et mes formations pour tous publics
+                <p className="text-theme-blue mb-8 text-xs md:text-xs lg:text-base leading-relaxed text-center">
+                  Explorez mes médiations de médiation culturelle et mes formations pour tous publics
                 </p>
                 {/* Bouton d'incitation au clic */}
-                <span className="text-theme-blue/80 font-medium hover:text-theme-blue transition-all duration-300 relative after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-0.5 after:bg-theme-blue after:transition-all after:duration-300 hover:after:w-full after:opacity-0 hover:after:opacity-100 text-xs md:text-sm lg:text-base">
+                <span className="text-theme-blue/80 font-medium hover:text-theme-blue transition-all duration-300 relative after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-0.5 after:bg-theme-blue after:transition-all after:duration-300 hover:after:w-full after:opacity-0 hover:after:opacity-100 text-xs md:text-xs lg:text-base">
                   Explorer →
                 </span>
               </div>
@@ -112,13 +112,13 @@ export default function CategoriesSection() {
               </div>
               
               {/* Contenu qui apparaît au hover - positionné en dessous du titre */}
-              <div className={`card-hover-content transition-all duration-700 text-center flex flex-col items-center justify-center opacity-100 md:opacity-0 md:group-hover:opacity-100 ${forceHoverIndex === 2 ? 'md:opacity-100' : ''}`}>
+              <div className={`card-hover-content transition-all duration-700 text-center flex flex-col items-center justify-center opacity-100 md:opacity-0 md:group-hover:opacity-100 touch:opacity-100 ${forceHoverIndex === 2 ? 'md:opacity-100' : ''}`}>
                 {/* Texte explicatif */}
-                <p className="text-theme-dark mb-8 text-xs md:text-sm lg:text-base leading-relaxed text-center">
-                  Suivez mes dernieres actualites, evenements et projets en cours
+                <p className="text-theme-dark mb-8 text-xs md:text-xs lg:text-base leading-relaxed text-center">
+                  Suivez mes dernières actualités, événements et projets en cours
                 </p>
                 {/* Bouton d'incitation au clic */}
-                <span className="text-theme-dark/80 font-medium hover:text-theme-dark transition-all duration-300 relative after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-0.5 after:bg-theme-dark after:transition-all after:duration-300 hover:after:w-full after:opacity-0 hover:after:opacity-100 text-xs md:text-sm lg:text-base">
+                <span className="text-theme-dark/80 font-medium hover:text-theme-dark transition-all duration-300 relative after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-0.5 after:bg-theme-dark after:transition-all after:duration-300 hover:after:w-full after:opacity-0 hover:after:opacity-100 text-xs md:text-xs lg:text-base">
                   Lire →
                 </span>
               </div>

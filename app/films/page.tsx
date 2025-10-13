@@ -86,46 +86,42 @@ export default function FilmsPage() {
               const isEven = index % 2 === 0
               
               return (
-                <div key={film._id} className={`flex flex-col ${isEven ? 'lg:flex-row' : 'lg:flex-row-reverse'} gap-16 lg:gap-20 items-center min-h-[500px]`}>
+                <article key={film._id} className={`flex flex-col ${isEven ? 'lg:flex-row' : 'lg:flex-row-reverse'} gap-16 lg:gap-20 items-center min-h-[500px]`} itemScope itemType="https://schema.org/Movie">
                   {/* Image */}
                   <div className="w-full lg:w-1/2">
-                    <a href={`/films/${film.slug}`} className="block group">
-                      <div className="relative overflow-hidden shadow-2xl">
-                        <Image 
-                          src={film.image || `/images/CHAVE_1.avif`}
-                          alt={film.title}
-                          width={0}
-                          height={0}
-                          sizes="100vw"
-                          className="w-full h-auto object-contain"
-                          placeholder="blur"
-                          blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABmX/9k="
-                        />
-                        <div className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center">
-                          <span className="text-white text-xl font-medium">Voir le film →</span>
-                        </div>
-                      </div>
-                    </a>
+                    <div className="relative overflow-hidden shadow-2xl">
+                      <Image 
+                        src={film.image || `/images/CHAVE_1.avif`}
+                        alt={`Affiche du film ${film.title} - ${film.shortSynopsis || 'Documentaire de Florine Clap'}`}
+                        width={600}
+                        height={400}
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 600px"
+                        className="w-full h-auto object-contain"
+                        placeholder="blur"
+                        blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABmX/9k="
+                        itemProp="image"
+                      />
+                    </div>
                   </div>
                   
                   {/* Texte */}
                   <div className="w-full lg:w-1/2">
                     <div className="space-y-8">
-                      <h2 className="text-4xl lg:text-5xl font-andale-mono font-bold text-theme-blue leading-tight">
-                        <a href={`/films/${film.slug}`} className="hover:text-black transition-colors duration-300">
-                          {film.title}
-                        </a>
+                      <h2 className="text-4xl lg:text-5xl font-andale-mono font-bold text-theme-blue leading-tight" itemProp="name">
+                        {film.title}
                       </h2>
                       
                       <div className="text-gray-600 text-xl space-y-2">
-                        <p>Documentaire - {film.duree || '26 min'}</p>
-                        <p>{film.annee || '2022'}</p>
-                        {/* Debug */}
-                        <p className="text-xs text-gray-400">Debug: type={film.type}, duree={film.duree}</p>
+                        <p itemProp="genre">Documentaire - <span itemProp="duration">{film.duree || '26 min'}</span></p>
+                        <p itemProp="dateCreated">{film.annee || '2022'}</p>
+                        <meta itemProp="director" content="Florine Clap" />
+                        <meta itemProp="creator" content="Florine Clap" />
+                        <meta itemProp="inLanguage" content="fr" />
+                        <meta itemProp="countryOfOrigin" content="France" />
                       </div>
                       
                       <div className="prose prose-xl max-w-none text-gray-700 leading-relaxed">
-                        <p>
+                        <p itemProp="description">
                           {film.shortSynopsis || 
                             "C'est l'histoire d'un fils de cheminot au destin tout tracé qui, devenu prêtre dans le contexte de l'après-guerre, va découvrir le théâtre et son mystère à travers le Festival d'Avignon et le théâtre populaire de Jean Vilar."}
                         </p>
@@ -141,7 +137,7 @@ export default function FilmsPage() {
                       </div>
                     </div>
                   </div>
-                </div>
+                </article>
               )
             })
           ) : (

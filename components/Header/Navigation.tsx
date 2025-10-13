@@ -53,7 +53,7 @@ export default function Navigation({ isHomePage = false }: NavigationProps) {
           >
             <a 
               href={item.href} 
-              className={`text-xl transition-colors duration-300 uppercase ${
+              className={`text-xl font-andale-mono font-bold transition-colors duration-300 uppercase ${
                 isHomePage 
                   ? 'text-white hover:text-theme-yellow' 
                   : 'text-theme-dark hover:text-black'
@@ -62,7 +62,7 @@ export default function Navigation({ isHomePage = false }: NavigationProps) {
               {item.label}
             </a>
             {index < navItems.length - 1 && (
-              <span className={`mx-8 transition-opacity duration-300 ${
+              <span className={`mx-8 font-andale-mono transition-opacity duration-300 ${
                 isHomePage ? 'text-white/60' : 'text-gray-400'
               }`}>
                 /

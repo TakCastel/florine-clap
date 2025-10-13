@@ -7,7 +7,7 @@ type BreadcrumbItem = {
 
 type Props = {
   items: BreadcrumbItem[]
-  variant?: 'default' | 'blue' | 'grey' | 'yellow' | 'dark'
+  variant?: 'default' | 'blue' | 'grey' | 'yellow' | 'dark' | 'white'
 }
 
 export default function Breadcrumb({ items, variant = 'default' }: Props) {
@@ -40,6 +40,13 @@ export default function Breadcrumb({ items, variant = 'default' }: Props) {
           separator: 'text-theme-dark/60',
           hover: 'hover:text-theme-dark',
           current: 'text-theme-dark'
+        }
+      case 'white':
+        return {
+          text: 'text-white/80',
+          separator: 'text-white/60',
+          hover: 'hover:text-white',
+          current: 'text-white'
         }
       default:
         return {

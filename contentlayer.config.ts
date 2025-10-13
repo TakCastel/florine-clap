@@ -25,6 +25,16 @@ export const Film = defineDocumentType(() => ({
   contentType: 'mdx',
   fields: {
     title: { type: 'string', required: true },
+    image: { type: 'string', required: false },
+    type: { type: 'string', required: false },
+    duree: { type: 'string', required: false },
+    annee: { type: 'string', required: false },
+    vimeoId: { type: 'string', required: false },
+    shortSynopsis: { type: 'string', required: false },
+    realisation: { type: 'string', required: false },
+    mixage: { type: 'string', required: false },
+    texte: { type: 'string', required: false },
+    production: { type: 'string', required: false },
   },
   computedFields,
 }))

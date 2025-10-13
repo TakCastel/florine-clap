@@ -4,7 +4,7 @@ import { usePathname } from 'next/navigation'
 import Navigation from './Header/Navigation'
 import { useAnimation } from '@/contexts/AnimationContext'
 
-export default function PersistentHeader() {
+export default function Header() {
   const pathname = usePathname()
   const isHomePage = pathname === '/'
   const { showAnimations } = useAnimation()
@@ -15,7 +15,7 @@ export default function PersistentHeader() {
     }`}>
       <a 
         href="/" 
-        className={`font-bold text-xl transition-colors duration-200 ${
+        className={`font-bold text-xl font-andale-mono transition-colors duration-200 ${
           showAnimations ? 'header-logo-animation' : ''
         } ${
           isHomePage 
