@@ -9,10 +9,10 @@ interface MobileMenuProps {
 }
 
 const MENU_ITEMS = [
-  { href: '/films', label: 'Films' },
-  { href: '/mediations', label: 'Mediations' },
-  { href: '/actus', label: 'Actualites' },
-  { href: '/bio', label: 'Bio' }
+  { href: '/films', label: 'FILMS' },
+  { href: '/mediations', label: 'MÉDIATIONS' },
+  { href: '/actus', label: 'ACTUALITÉS' },
+  { href: '/bio', label: 'BIO' }
 ]
 
 // Icône burger simple

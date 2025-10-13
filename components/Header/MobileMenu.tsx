@@ -10,10 +10,10 @@ export default function MobileMenu({ isHomePage = false }: MobileMenuProps) {
   const [isOpen, setIsOpen] = useState(false)
 
   const navItems = [
-    { href: '/films', label: 'Films' },
-    { href: '/mediations', label: 'Mediations' },
-    { href: '/actus', label: 'Actualites' },
-    { href: '/bio', label: 'Bio' }
+    { href: '/films', label: 'FILMS' },
+    { href: '/mediations', label: 'MÉDIATIONS' },
+    { href: '/actus', label: 'ACTUALITÉS' },
+    { href: '/bio', label: 'BIO' }
   ]
 
   return (

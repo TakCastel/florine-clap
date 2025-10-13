@@ -9,16 +9,19 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // Couleurs du thème uniquement
-        'theme-light': '#E8E8E8',
-        'theme-beige': '#F0E1D1', 
-        'theme-orange': '#E9B26E',
-        'theme-navy': '#26436C',
-        'theme-dark': '#0E1A27',
-        // Nouvelles couleurs de la palette
-        'theme-blue': '#26436C',
-        'theme-grey': '#D9D5CC',
-        'theme-yellow': '#E8B95C',
+        // Palette "blue + yellow" - Such a Nice Person
+        'theme-light': '#D9D5CC',        // Gris chaud de la palette
+        'theme-beige': '#D9D5CC',        // Gris chaud de la palette
+        'theme-orange': '#E8B95C',       // Jaune moutarde de la palette
+        'theme-navy': '#26436C',         // Bleu sombre de la palette
+        'theme-dark': '#0B1426',         // Bleu nuit profond
+        // Couleurs principales de la palette
+        'theme-blue': '#26436C',         // Bleu principal de la palette
+        'theme-grey': '#D9D5CC',         // Gris chaud de la palette
+        'theme-yellow': '#E8B95C',       // Jaune moutarde de la palette
+        'theme-sage': '#8B9A8B',         // Vert sauge
+        'theme-burgundy': '#6B2C3E',     // Bordeau profond
+        'theme-slate': '#4A5568',        // Ardoise froide
       },
       fontFamily: {
         // Configuration simplifiée avec Andale Mono comme unique typographie

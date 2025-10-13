@@ -13,12 +13,12 @@ export default function MediationsPage() {
         <Breadcrumb 
           items={[
             { label: 'Accueil', href: '/' },
-            { label: 'Mediations' }
+            { label: 'Médiations' }
           ]}
           variant="default"
         />
         
-        <h1 className="text-4xl md:text-6xl lg:text-8xl font-andale-mono font-bold tracking-wide mb-12 text-theme-green">Mediations</h1>
+        <h1 className="text-4xl md:text-6xl lg:text-8xl font-andale-mono font-bold tracking-wide mb-12 text-theme-green">Médiations</h1>
         
         <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-8">
           {items.map((mediation, index) => (
@@ -37,10 +37,10 @@ export default function MediationsPage() {
         {/* Contenu SEO */}
         <div className="mt-16 pt-8 border-t border-gray-200">
           <div className="prose prose-lg max-w-none text-theme-dark">
-            <h2 className="text-2xl font-bold text-theme-dark mb-4">Formation et mediation</h2>
+            <h2 className="text-2xl font-bold text-theme-dark mb-4">Formation et médiation</h2>
             <p className="text-gray-600 leading-relaxed">
-              Decouvrez mes mediations de formation et de mediation autour du cinema documentaire. 
-              Des sessions adaptees a tous les niveaux pour apprendre les techniques de realisation et developper votre regard critique.
+              Découvrez mes médiations de formation et de médiation autour du cinéma documentaire. 
+              Des sessions adaptées à tous les niveaux pour apprendre les techniques de réalisation et développer votre regard critique.
             </p>
           </div>
         </div>

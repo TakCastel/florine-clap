@@ -1,5 +1,6 @@
 backend:
-  name: git-gateway
+  name: github
+  repo: florine-clap/wp-florine
   branch: main
 
 media_folder: "public/images/uploads"

@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect, useCallback } from 'react'
+import Image from 'next/image'
 import Breadcrumb from '@/components/Breadcrumb'
 import { allFilms } from '.contentlayer/generated'
 
@@ -11,12 +12,15 @@ export default function FilmsPage() {
   const [currentIndex, setCurrentIndex] = useState(0)
   const [isLoading, setIsLoading] = useState(false)
   const [hasMore, setHasMore] = useState(true)
-  const filmsPerLoad = 3
+  const filmsPerLoad = 1
 
   // Charger les premiers films au montage
   useEffect(() => {
+    console.log('allFilms.length:', allFilms.length)
+    console.log('allFilms:', allFilms)
     if (allFilms.length > 0) {
       const initialFilms = allFilms.slice(0, filmsPerLoad)
+      console.log('initialFilms:', initialFilms)
       setDisplayedFilms(initialFilms)
       setCurrentIndex(filmsPerLoad)
       setHasMore(filmsPerLoad < allFilms.length)
@@ -87,10 +91,15 @@ export default function FilmsPage() {
                   <div className="w-full lg:w-1/2">
                     <a href={`/films/${film.slug}`} className="block group">
                       <div className="relative overflow-hidden shadow-2xl">
-                        <img 
-                          src={`https://picsum.photos/600/600?random=${index + 1}`}
+                        <Image 
+                          src={film.image || `/images/CHAVE_1.avif`}
                           alt={film.title}
-                          className="w-full h-80 lg:h-96 object-cover transition-transform duration-500 group-hover:scale-105"
+                          width={0}
+                          height={0}
+                          sizes="100vw"
+                          className="w-full h-auto object-contain"
+                          placeholder="blur"
+                          blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABmX/9k="
                         />
                         <div className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center">
                           <span className="text-white text-xl font-medium">Voir le film →</span>
@@ -109,20 +118,16 @@ export default function FilmsPage() {
                       </h2>
                       
                       <div className="text-gray-600 text-xl space-y-2">
-                        <p>Court métrage documentaire</p>
-                        <p>Année de production : 2023</p>
-                        <p>Durée : 15 minutes</p>
+                        <p>Documentaire - {film.duree || '26 min'}</p>
+                        <p>{film.annee || '2022'}</p>
+                        {/* Debug */}
+                        <p className="text-xs text-gray-400">Debug: type={film.type}, duree={film.duree}</p>
                       </div>
                       
                       <div className="prose prose-xl max-w-none text-gray-700 leading-relaxed">
                         <p>
-                          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor 
-                          incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud 
-                          exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                        </p>
-                        <p className="mt-4">
-                          Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu 
-                          fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident.
+                          {film.shortSynopsis || 
+                            "C'est l'histoire d'un fils de cheminot au destin tout tracé qui, devenu prêtre dans le contexte de l'après-guerre, va découvrir le théâtre et son mystère à travers le Festival d'Avignon et le théâtre populaire de Jean Vilar."}
                         </p>
                       </div>
                       

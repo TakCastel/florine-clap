@@ -67,21 +67,10 @@ export default function HeroSection() {
           Votre navigateur ne supporte pas la lecture de vidéos.
         </video>
         
-        {/* Citation */}
-        <div className="absolute inset-0 flex items-center justify-center z-10">
-          <div className="text-center text-white px-8 max-w-7xl hero-quote-animation">
-            <blockquote className="text-2xl md:text-3xl font-light italic mb-4 leading-relaxed text-white/90">
-              "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
-            </blockquote>
-            <cite className="text-base opacity-80 block">
-              — Auteur Lorem
-            </cite>
-          </div>
-        </div>
       </div>
       
       {/* Bande noire avec flèche - par-dessus la vidéo */}
-      <div className="absolute bottom-0 left-0 right-0 h-20 bg-theme-dark flex items-center justify-center z-30">
+      <div className="absolute bottom-0 left-0 right-0 h-20 bg-black flex items-center justify-center z-30">
         <button
           onClick={scrollToCategories}
           className="group text-white/60 hover:text-white/90 transition-all duration-1000 ease-out"

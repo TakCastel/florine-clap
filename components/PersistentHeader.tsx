@@ -4,7 +4,7 @@ import { usePathname } from 'next/navigation'
 import Navigation from './Header/Navigation'
 import { useAnimation } from '@/contexts/AnimationContext'
 
-export default function Header() {
+export default function PersistentHeader() {
   const pathname = usePathname()
   const isHomePage = pathname === '/'
   const { showAnimations } = useAnimation()

@@ -333,14 +333,36 @@ body {
   width: 100%;
 }
 
+/* Empêcher le zoom sur les images des cartes */
+.categories-section img {
+  transform: scale(1);
+  transition: none !important;
+}
+
+.categories-section img:hover {
+  transform: scale(1);
+}
+
 /* Positionnement pour le contenu hover en dessous du titre */
 .card-hover-content {
   position: absolute;
   top: 28.57%;
   left: 50%;
-  transform: translateX(-50%);
   margin-top: 8rem;
   width: 500px;
+  transform: translateX(-50%) translateY(2rem);
+  transition: all 0.7s ease-out;
+}
+
+/* Animation d'apparition depuis le bas au hover */
+.card-hover-content:hover,
+.group:hover .card-hover-content {
+  transform: translateX(-50%) translateY(0);
+}
+
+/* Animation pour le hover forcé */
+.card-hover-content.md\:opacity-100 {
+  transform: translateX(-50%) translateY(0);
 }
 
 /* Animations d'apparition pour le header et hero */

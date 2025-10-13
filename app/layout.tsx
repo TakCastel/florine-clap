@@ -1,9 +1,10 @@
 'use client'
 
 import './globals.css'
-import Header from '@/components/Header'
+import PersistentHeader from '@/components/PersistentHeader'
 import Footer from '@/components/Footer'
 import { usePathname } from 'next/navigation'
+import { AnimationProvider } from '@/contexts/AnimationContext'
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname()
@@ -16,11 +17,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link rel="preload" href="/andalemono.ttf" as="font" type="font/ttf" crossOrigin="anonymous" />
       </head>
       <body className={`bg-gray-100 ${isHomePage ? 'scrollbar-hide' : ''}`}>
-        <Header />
-        <main className={isHomePage ? 'overflow-hidden max-h-screen pt-20' : 'pt-20'}>
-          {children}
-        </main>
-        <Footer />
+        <AnimationProvider>
+          <PersistentHeader />
+          <main className={isHomePage ? 'overflow-hidden max-h-screen pt-20' : 'pt-20'}>
+            {children}
+          </main>
+          <Footer />
+        </AnimationProvider>
       </body>
     </html>
   )
