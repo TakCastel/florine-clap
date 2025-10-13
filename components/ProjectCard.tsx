@@ -108,7 +108,7 @@ export default function ProjectCard({
         </div>
       )}
       
-      <div className="p-6 flex flex-col gap-4 flex-1 justify-start" style={{ paddingTop: '40%' }}>
+      <div className="p-6 flex flex-col gap-4 flex-1 justify-start">
         <div className="flex-grow">
           <h3 className={styles.title}>{title}</h3>
           {subtitle && <p className={styles.subtitle}>{subtitle}</p>}

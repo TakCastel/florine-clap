@@ -62,8 +62,11 @@ export const Actu = defineDocumentType(() => ({
   contentType: 'mdx',
   fields: {
     title: { type: 'string', required: true },
+    subtitle: { type: 'string', required: false },
     date: { type: 'date', required: true },
     excerpt: { type: 'string', required: false },
+    cover: { type: 'string', required: false },
+    location: { type: 'string', required: false },
     tags: { type: 'list', of: { type: 'string' }, required: false },
   },
   computedFields,
