@@ -22,7 +22,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <main className={isHomePage ? 'overflow-hidden max-h-screen pt-20' : 'pt-20'}>
             {children}
           </main>
-          <Footer />
+          {!isHomePage && <Footer />}
         </AnimationProvider>
       </body>
     </html>
