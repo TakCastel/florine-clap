@@ -73,15 +73,15 @@ export default function FilmsPage() {
 
   return (
     <div className="min-h-screen bg-white">
+      <Breadcrumb 
+        items={[
+          { label: 'Accueil', href: '/' },
+          { label: 'Films' }
+        ]}
+        variant="default"
+      />
+      
       <div className="max-w-6xl mx-auto px-4 py-12">
-        <Breadcrumb 
-          items={[
-            { label: 'Accueil', href: '/' },
-            { label: 'Films' }
-          ]}
-          variant="blue"
-        />
-        
         <h1 className="text-4xl md:text-6xl lg:text-8xl font-andale-mono font-bold tracking-wide mb-12 text-theme-blue">Films</h1>
         
         {/* Layout alterné avec images et textes */}

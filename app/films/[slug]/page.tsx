@@ -36,19 +36,14 @@ export default function FilmPage({ params }: FilmPageProps) {
 
   return (
     <div className="min-h-screen bg-white">
-      {/* Breadcrumb */}
-      <div className="bg-theme-dark">
-        <div className="max-w-6xl mx-auto px-4 py-4">
-          <Breadcrumb 
-            items={[
-              { label: 'Accueil', href: '/' },
-              { label: 'Films', href: '/films' },
-              { label: film.title }
-            ]}
-            variant="white"
-          />
-        </div>
-      </div>
+      <Breadcrumb 
+        items={[
+          { label: 'Accueil', href: '/' },
+          { label: 'Films', href: '/films' },
+          { label: film.title }
+        ]}
+        variant="white"
+      />
 
       {/* Section vidéo Vimeo */}
       {film.vimeoId && (

@@ -5,7 +5,6 @@ import { notFound } from 'next/navigation'
 import { Metadata } from 'next'
 import { canonical } from '@/lib/seo'
 import { buildMetadata } from '@/components/Seo'
-import { Calendar, Clock } from 'lucide-react'
 import Image from 'next/image'
 
 export const dynamic = 'error'
@@ -36,19 +35,14 @@ export default function ActuPage({ params }: ActuPageProps) {
 
   return (
     <div className="min-h-screen bg-white">
-      {/* Breadcrumb */}
-      <div className="bg-theme-dark">
-        <div className="max-w-6xl mx-auto px-4 py-4">
-          <Breadcrumb 
-            items={[
-              { label: 'Accueil', href: '/' },
-              { label: 'Actualités', href: '/actus' },
-              { label: actu.title }
-            ]}
-            variant="white"
-          />
-        </div>
-      </div>
+      <Breadcrumb 
+        items={[
+          { label: 'Accueil', href: '/' },
+          { label: 'Actualités', href: '/actus' },
+          { label: actu.title }
+        ]}
+        variant="white"
+      />
 
       {/* Contenu principal */}
       <div className="max-w-6xl mx-auto px-4 py-12">
@@ -57,30 +51,6 @@ export default function ActuPage({ params }: ActuPageProps) {
           {/* Contenu principal */}
           <div className="lg:col-span-2">
             <div className="bg-white">
-              {/* En-tête de l'actualité */}
-              <div className="bg-theme-blue text-white p-8">
-                <h1 className="text-4xl font-bold mb-4">{actu.title}</h1>
-                <div className="flex items-center space-x-6 text-lg">
-                  <span className="flex items-center gap-2">
-                    <Calendar className="w-5 h-5" />
-                    {new Date(actu.date).toLocaleDateString('fr-FR', {
-                      year: 'numeric',
-                      month: 'long',
-                      day: 'numeric'
-                    })}
-                  </span>
-                </div>
-              </div>
-
-
-              {/* Extrait */}
-              {actu.excerpt && (
-                <div className="p-8 border-b border-gray-200">
-                  <h2 className="text-2xl font-bold text-theme-blue mb-4">Résumé</h2>
-                  <p className="text-gray-700 leading-relaxed text-lg">{actu.excerpt}</p>
-                </div>
-              )}
-
               {/* Contenu MDX */}
               <div className="p-8">
                 <MdxRenderer code={actu.body.code} />

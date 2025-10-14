@@ -53,10 +53,11 @@ export default function ProjectCard({
         }
       case 'actus':
         return {
-          container: 'group block overflow-hidden bg-theme-yellow hover:shadow-sm h-full flex flex-col',
-          title: 'text-base font-semibold text-theme-dark',
-          subtitle: 'text-sm text-theme-yellow/80',
-          excerpt: 'mt-2 text-sm text-theme-dark line-clamp-2'
+          container: 'group block overflow-hidden bg-theme-yellow border border-theme-yellow hover:border-theme-dark/20 transition-all duration-300 h-full flex flex-col',
+          title: 'text-xl font-bold text-theme-dark group-hover:text-theme-dark transition-colors',
+          subtitle: 'text-sm text-theme-dark/70 font-medium',
+          excerpt: 'mt-3 text-theme-dark/80 line-clamp-3 leading-relaxed',
+          button: 'mt-4 inline-flex items-center text-theme-dark font-medium hover:text-theme-dark/70 transition-colors relative after:content-[""] after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-0.5 after:bg-theme-dark after:transition-all after:duration-300 group-hover:after:w-full'
         }
       default:
         return {
@@ -97,14 +98,13 @@ export default function ProjectCard({
   return (
     <Link href={href} className={styles.container}>
       {imageSrc && (
-        <div className="aspect-video relative overflow-hidden">
+        <div className="relative overflow-hidden" style={{ aspectRatio: '594/458' }}>
           <Image 
             src={imageSrc} 
             alt={title} 
             fill
-            className="object-cover transition-transform group-hover:scale-105 duration-300" 
+            className="object-cover" 
           />
-          <div className="absolute inset-x-0 bottom-0 top-1 bg-black/80 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
         </div>
       )}
       
@@ -141,7 +141,7 @@ export default function ProjectCard({
           </div>
           
           {/* Synopsis ou excerpt */}
-          {(synopsis || excerpt) && (
+          {(synopsis || excerpt) && (synopsis || excerpt).trim() !== '.' && (
             <p className={styles.excerpt}>
               {synopsis || excerpt}
             </p>
@@ -155,6 +155,15 @@ export default function ProjectCard({
             <svg className="ml-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
             </svg>
+          </div>
+        )}
+        
+        {/* Bouton "Lire plus" pour les actualités */}
+        {variant === 'actus' && (
+          <div className="mt-auto pt-4">
+            <span className={styles.button}>
+              Lire plus →
+            </span>
           </div>
         )}
       </div>

@@ -9,15 +9,15 @@ export default function MediationsPage() {
 
   return (
     <div className="min-h-screen bg-white">
+      <Breadcrumb 
+        items={[
+          { label: 'Accueil', href: '/' },
+          { label: 'Médiations' }
+        ]}
+        variant="default"
+      />
+      
       <div className="max-w-6xl mx-auto px-4 py-12">
-        <Breadcrumb 
-          items={[
-            { label: 'Accueil', href: '/' },
-            { label: 'Médiations' }
-          ]}
-          variant="default"
-        />
-        
         <h1 className="text-4xl md:text-6xl lg:text-8xl font-andale-mono font-bold tracking-wide mb-12 text-theme-green">Médiations</h1>
         
         <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-8">

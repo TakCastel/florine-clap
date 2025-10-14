@@ -34,15 +34,16 @@ export default function MediationPage({ params }: MediationPageProps) {
 
   return (
     <div className="min-h-screen bg-white">
+      <Breadcrumb 
+        items={[
+          { label: 'Accueil', href: '/' },
+          { label: 'Mediations', href: '/mediations' },
+          { label: mediation.title }
+        ]}
+        variant="default"
+      />
+      
       <div className="max-w-4xl mx-auto px-4 py-8">
-        <Breadcrumb 
-          items={[
-            { label: 'Accueil', href: '/' },
-            { label: 'Mediations', href: '/mediations' },
-            { label: mediation.title }
-          ]}
-          variant="default"
-        />
         
         <article className="bg-orange-100 rounded-lg shadow-lg overflow-hidden">
           {/* En-tete de la mediation */}
