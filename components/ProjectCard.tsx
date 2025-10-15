@@ -141,7 +141,7 @@ export default function ProjectCard({
           </div>
           
           {/* Synopsis ou excerpt */}
-          {(synopsis || excerpt) && (synopsis || excerpt).trim() !== '.' && (
+          {(synopsis || excerpt) && (synopsis || excerpt)?.trim() !== '.' && (
             <p className={styles.excerpt}>
               {synopsis || excerpt}
             </p>
