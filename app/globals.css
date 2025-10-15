@@ -23,7 +23,7 @@
 /* Andale Mono pour les titres et éléments spéciaux */
 .font-andale-mono,
 h1, h2, h3, h4, h5, h6 {
-  font-family: 'Andale Mono', monospace !important;
+  font-family: 'Andale Mono', monospace;
 }
 
 
@@ -34,7 +34,7 @@ h1, h2, h3, h4, h5, h6 {
 .prose h4,
 .prose h5,
 .prose h6 {
-  font-family: 'Andale Mono', monospace !important;
+  font-family: 'Andale Mono', monospace;
   color: #26436C; /* theme-blue de votre palette */
   font-weight: bold;
 }
@@ -71,7 +71,7 @@ h1, h2, h3, h4, h5, h6 {
 
 /* Source Sans Pro pour le texte normal */
 .font-sans {
-  font-family: 'Source Sans Pro', sans-serif !important;
+  font-family: 'Source Sans Pro', sans-serif;
 }
 
 /* Animations personnalisées pour les sections sticky */
@@ -266,11 +266,11 @@ body.scrollbar-hide::-webkit-scrollbar {
 /* Transition personnalisée pour les filtres hover */
 .hover-filter {
   opacity: 0;
-  transition: opacity 0.5s ease-in-out !important;
+  transition: opacity 0.5s ease-in-out;
 }
 
 .group:hover .hover-filter {
-  opacity: 1 !important;
+  opacity: 1;
 }
 
 /* Solution simple avec Tailwind uniquement */
@@ -282,29 +282,58 @@ html {
 
 /* Styles pour les liens dans le contenu */
 .prose a {
-  text-decoration: none !important;
-  color: #26436C !important;
-  font-family: 'Andale Mono', monospace !important;
+  text-decoration: none;
+  color: #26436C;
+  font-family: 'Andale Mono', monospace;
   transition: color 0.3s ease;
 }
 
 .prose a:hover {
-  color: #0B1426 !important;
+  color: #0B1426;
 }
 
 /* Styles pour les titres avec ancres */
 .prose h1, .prose h2, .prose h3, .prose h4, .prose h5, .prose h6 {
   scroll-margin-top: 5rem; /* 80px pour le header */
-  display: block !important;
-  visibility: visible !important;
-  opacity: 1 !important;
+  display: block;
+  visibility: visible;
+  opacity: 1;
 }
 
 /* Force l'affichage des titres */
 .prose h1, .prose h2, .prose h3, .prose h4, .prose h5, .prose h6 {
-  color: #26436C !important;
-  font-family: 'Andale Mono', monospace !important;
-  font-weight: bold !important;
+  color: #26436C;
+  font-family: 'Andale Mono', monospace;
+  font-weight: bold;
+}
+
+/* Styles spécifiques pour les pages de films (fond noir) */
+.bg-black .prose h1, 
+.bg-black .prose h2, 
+.bg-black .prose h3, 
+.bg-black .prose h4, 
+.bg-black .prose h5, 
+.bg-black .prose h6 {
+  color: white;
+}
+
+.bg-black .prose p,
+.bg-black .prose li,
+.bg-black .prose strong,
+.bg-black .prose b,
+.bg-black .prose em,
+.bg-black .prose span,
+.bg-black .prose div {
+  color: white;
+}
+
+.bg-black .prose a {
+  color: white;
+  text-decoration: underline;
+}
+
+.bg-black .prose a:hover {
+  color: #f0f0f0;
 }
 
 .scroll-section {
@@ -341,9 +370,9 @@ html {
 
 /* Forcer le scroll en haut au chargement de la page */
 html, body {
-  scroll-behavior: auto !important;
-  scroll-margin: 0 !important;
-  scroll-padding: 0 !important;
+  scroll-behavior: auto;
+  scroll-margin: 0;
+  scroll-padding: 0;
 }
 
 body {
@@ -422,7 +451,7 @@ body {
 /* Empêcher le zoom sur les images des cartes */
 .categories-section img {
   transform: scale(1);
-  transition: none !important;
+  transition: none;
 }
 
 .categories-section img:hover {
