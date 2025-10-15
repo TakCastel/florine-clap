@@ -34,7 +34,7 @@ export default function FilmCard({
             ></div>
             <div className="relative z-10 p-6 md:p-8 h-full flex flex-col justify-end">
               <div className="max-w-xl">
-                <div className="flex items-center gap-4 text-white text-sm font-andale-mono mb-2">
+                <div className="flex items-center gap-4 text-white text-sm font-display mb-2">
                   {duree && (
                     <span className="flex items-center gap-1">
                       <Clock className="w-4 h-4" />
@@ -48,7 +48,7 @@ export default function FilmCard({
                     </span>
                   )}
                 </div>
-                <h3 className="text-2xl md:text-3xl lg:text-4xl font-andale-mono font-bold text-white mb-3 leading-tight">
+                <h3 className="text-2xl md:text-3xl lg:text-4xl font-display font-bold text-white mb-3 leading-tight">
                   {title}
                 </h3>
                 {synopsis && (
@@ -56,7 +56,7 @@ export default function FilmCard({
                     {synopsis}
                   </p>
                 )}
-                <div className="inline-flex items-center text-white font-andale-mono font-medium group-hover:text-white/80 transition-colors">
+                <div className="inline-flex items-center text-white font-display font-medium group-hover:text-white/80 transition-colors">
                   Découvrir le film
                   <svg className="ml-2 w-4 h-4 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
@@ -79,14 +79,14 @@ export default function FilmCard({
           
           {/* Badge de lecture si Vimeo disponible */}
           {vimeoId && (
-            <div className="absolute top-3 right-3 bg-white text-black px-2 py-1 rounded-full text-xs font-andale-mono font-medium flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+            <div className="absolute top-3 right-3 bg-white text-black px-2 py-1 rounded-full text-xs font-display font-medium flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
               <Play className="w-3 h-3" />
               Voir
             </div>
           )}
           
           <div className="relative z-10 p-4 h-full flex flex-col justify-end">
-            <div className="flex items-center gap-3 text-white/80 text-xs font-andale-mono mb-2">
+            <div className="flex items-center gap-3 text-white/80 text-xs font-display mb-2">
               {duree && (
                 <span className="flex items-center gap-1">
                   <Clock className="w-3 h-3" />
@@ -100,7 +100,7 @@ export default function FilmCard({
                 </span>
               )}
             </div>
-            <h3 className="text-sm font-andale-mono font-bold text-white mb-1 leading-tight line-clamp-2 group-hover:text-white/90 transition-colors">
+            <h3 className="text-sm font-display font-bold text-white mb-1 leading-tight line-clamp-2 group-hover:text-white/90 transition-colors">
               {title}
             </h3>
           </div>

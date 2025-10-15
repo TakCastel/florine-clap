@@ -69,21 +69,21 @@ export default function Breadcrumb({ items, variant = 'default' }: Props) {
   return (
     <div className={`${styles.container} py-4`}>
       <div className="max-w-6xl mx-auto px-4">
-        <nav className={`flex items-center text-sm font-andale-mono ${styles.text}`} aria-label="Breadcrumb">
+        <nav className={`flex items-center text-sm font-display ${styles.text}`} aria-label="Breadcrumb">
           {items.map((item, index) => (
             <div key={index} className="flex items-center">
               {index > 0 && (
-                <span className={`mx-8 ${styles.separator} font-andale-mono`}>/</span>
+                <span className={`mx-3 ${styles.separator} font-display`}>/</span>
               )}
               {item.href ? (
                 <a 
                   href={item.href} 
-                  className={`${styles.hover} transition-colors font-andale-mono`}
+                  className={`${styles.hover} transition-colors font-display`}
                 >
                   {item.label}
                 </a>
               ) : (
-                <span className={`${styles.current} font-medium font-andale-mono`}>{item.label}</span>
+                <span className={`${styles.current} font-medium font-display`}>{item.label}</span>
               )}
             </div>
           ))}

@@ -10,12 +10,12 @@ export default function Header() {
   const { showAnimations } = useAnimation()
 
   return (
-    <header className={`fixed top-0 left-0 right-0 z-50 h-20 flex items-center justify-between px-6 ${
+    <header className={`fixed top-0 left-0 right-0 z-50 h-20 flex items-center justify-between px-6 shadow-lg ${
       isHomePage ? 'bg-black' : 'bg-white border-b border-gray-200'
     }`}>
       <a 
         href="/" 
-        className={`font-bold text-xl font-andale-mono transition-colors duration-200 ${
+        className={`font-bold text-xl font-display transition-colors duration-200 ${
           showAnimations ? 'header-logo-animation' : ''
         } ${
           isHomePage 

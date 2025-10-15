@@ -7,12 +7,12 @@ const components = {
     <Image {...props} alt={props.alt || ''} width={1200} height={800} />
   ),
   a: (props: any) => (
-    <a {...props} className="text-theme-blue hover:text-theme-dark transition-colors font-andale-mono no-underline" />
+    <a {...props} className="text-theme-blue hover:text-theme-dark transition-colors font-display no-underline" />
   ),
   h1: (props: any) => {
     const { children, ...restProps } = props
     return (
-      <h1 {...restProps} className="font-andale-mono text-3xl font-bold mb-4 text-theme-blue">
+      <h1 {...restProps} className="font-display text-3xl font-bold mb-4 text-theme-blue">
         {children}
       </h1>
     )
@@ -20,7 +20,7 @@ const components = {
   h2: (props: any) => {
     const { children, ...restProps } = props
     return (
-      <h2 {...restProps} className="font-andale-mono text-2xl font-bold mb-3 text-theme-blue">
+      <h2 {...restProps} className="font-display text-2xl font-bold mb-3 text-theme-blue">
         {children}
       </h2>
     )
@@ -28,7 +28,7 @@ const components = {
   h3: (props: any) => {
     const { children, ...restProps } = props
     return (
-      <h3 {...restProps} className="font-andale-mono text-xl font-bold mb-2 text-theme-blue">
+      <h3 {...restProps} className="font-display text-xl font-bold mb-2 text-theme-blue">
         {children}
       </h3>
     )
@@ -36,7 +36,7 @@ const components = {
   h4: (props: any) => {
     const { children, ...restProps } = props
     return (
-      <h4 {...restProps} className="font-andale-mono text-lg font-bold mb-2 text-theme-blue">
+      <h4 {...restProps} className="font-display text-lg font-bold mb-2 text-theme-blue">
         {children}
       </h4>
     )
@@ -44,7 +44,7 @@ const components = {
   h5: (props: any) => {
     const { children, ...restProps } = props
     return (
-      <h5 {...restProps} className="font-andale-mono text-base font-bold mb-2 text-theme-blue">
+      <h5 {...restProps} className="font-display text-base font-bold mb-2 text-theme-blue">
         {children}
       </h5>
     )
@@ -52,7 +52,7 @@ const components = {
   h6: (props: any) => {
     const { children, ...restProps } = props
     return (
-      <h6 {...restProps} className="font-andale-mono text-sm font-bold mb-2 text-theme-blue">
+      <h6 {...restProps} className="font-display text-sm font-bold mb-2 text-theme-blue">
         {children}
       </h6>
     )

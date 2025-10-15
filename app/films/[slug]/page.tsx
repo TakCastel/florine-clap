@@ -41,7 +41,7 @@ export default function FilmPage({ params }: FilmPageProps) {
         <div className="relative z-10 h-full flex items-end">
           <div className="max-w-6xl mx-auto px-4 pb-16 w-full">
             <div className="max-w-3xl">
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-andale-mono font-bold mb-6 leading-tight">
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-display font-bold mb-6 leading-tight">
                 {film.title}
               </h1>
               <div className="flex items-center gap-6 text-lg mb-4">
@@ -69,8 +69,8 @@ export default function FilmPage({ params }: FilmPageProps) {
         <section className="py-16 bg-black">
           <div className="max-w-6xl mx-auto px-4">
             <div className="text-center mb-8">
-              <h2 className="text-3xl font-andale-mono font-bold text-white mb-4">Regarder le film</h2>
-              <p className="text-white/70">Découvrez {film.title} en intégralité</p>
+              <h2 className="text-3xl font-display font-bold text-white mb-4">Vidéo</h2>
+              <p className="text-white/70">Découvrez {film.title}</p>
             </div>
             
             <div className="relative bg-black rounded-lg overflow-hidden shadow-2xl">
@@ -98,7 +98,7 @@ export default function FilmPage({ params }: FilmPageProps) {
             {/* Synopsis */}
             {film.shortSynopsis && (
               <div className="mb-12">
-                <h2 className="text-2xl font-andale-mono font-bold text-white mb-4">Synopsis</h2>
+                <h2 className="text-2xl font-display font-bold text-white mb-4">Synopsis</h2>
                 <p className="text-white leading-relaxed text-lg">{film.shortSynopsis}</p>
               </div>
             )}
@@ -112,7 +112,7 @@ export default function FilmPage({ params }: FilmPageProps) {
           {/* Sidebar avec informations techniques */}
           <div className="lg:col-span-1">
             <div className="sticky top-8">
-              <h3 className="text-2xl font-andale-mono font-bold text-white mb-6">Fiche technique</h3>
+              <h3 className="text-2xl font-display font-bold text-white mb-6">Fiche technique</h3>
               
               <div className="space-y-6">
                 {/* Réalisation */}

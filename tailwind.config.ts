@@ -24,13 +24,13 @@ const config: Config = {
         'theme-slate': '#4A5568',        // Ardoise froide
       },
       fontFamily: {
-        // Source Sans Pro pour les paragraphes et texte courant
-        sans: ['Source Sans Pro', 'sans-serif'],
-        // Andale Mono pour les titres et éléments spéciaux
-        'andale-mono': ['Andale Mono', 'monospace'],
+        // Solway pour les paragraphes et texte courant
+        sans: ['Solway', 'sans-serif'],
+        // JetBrains Mono pour les titres et éléments spéciaux
+        'display': ['JetBrains Mono', 'monospace'],
         // Configuration par défaut
-        serif: ['Source Sans Pro', 'sans-serif'],
-        mono: ['Andale Mono', 'monospace'],
+        serif: ['Solway', 'sans-serif'],
+        mono: ['JetBrains Mono', 'monospace'],
       },
       height: {
         '0.75': '0.1875rem', // 3px

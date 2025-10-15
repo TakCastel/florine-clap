@@ -1,5 +1,11 @@
 import MdxRenderer from '@/components/MdxRenderer'
 import Breadcrumb from '@/components/Breadcrumb'
+import dynamicImport from 'next/dynamic'
+
+const LogoMarquee = dynamicImport(() => import('@/components/LogoMarquee'), {
+  ssr: false,
+  loading: () => <div className="h-20 bg-gray-200 animate-pulse rounded"></div>
+})
 import { allPages } from '.contentlayer/generated'
 import { buildMetadata } from '@/components/Seo'
 import { Metadata } from 'next'
@@ -29,39 +35,56 @@ export default function BioPage() {
 
   return (
     <div className="min-h-screen bg-white">
-      <div className="max-w-4xl mx-auto px-4 py-8">
-        <Breadcrumb 
-          items={[
-            { label: 'Accueil', href: '/' },
-            { label: 'A propos' }
-          ]}
-          variant="default"
-        />
-        
-        <article className="bg-orange-100 rounded-lg shadow-lg overflow-hidden">
-          {/* En-tete avec portrait */}
-          <div className="bg-theme-navy text-white p-8">
-            <div className="flex flex-col md:flex-row items-center gap-8">
-              {page.portrait && (
+      <Breadcrumb 
+        items={[
+          { label: 'Accueil', href: '/' },
+          { label: 'A propos' }
+        ]}
+        variant="default"
+      />
+      
+      {/* Hero Section avec portrait */}
+      <section className="py-20 bg-gradient-to-br from-theme-blue/5 via-white to-theme-yellow/10">
+        <div className="max-w-6xl mx-auto px-4">
+          <div className="grid md:grid-cols-2 gap-12 items-center">
+            <div>
+              <h1 className="text-5xl font-display font-bold text-theme-dark mb-6">
+                Florine Clap
+              </h1>
+              <p className="text-xl text-theme-blue font-medium mb-6">
+                Réalisatrice et formatrice en médiations vidéo
+              </p>
+            </div>
+            
+            {page.portrait && (
+              <div className="relative">
                 <img 
                   src={page.portrait} 
-                  alt={page.title}
-                  className="w-32 h-32 rounded-full object-cover border-4 border-white"
+                  alt="Florine Clap"
+                  className="w-full rounded-2xl shadow-xl"
                 />
-              )}
-              <div>
-                <h1 className="text-4xl font-bold mb-2">{page.title}</h1>
-                <p className="text-lg opacity-90">Realisatrice et formatrice en mediations video</p>
               </div>
-            </div>
+            )}
           </div>
+        </div>
+      </section>
 
-          {/* Contenu principal */}
-          <div className="p-8">
+      {/* Contenu MDX principal */}
+      <section className="py-20 bg-white">
+        <div className="max-w-6xl mx-auto px-4">
+          <div className="prose prose-lg max-w-none">
             <MdxRenderer code={page.body.code} />
           </div>
-        </article>
-      </div>
+        </div>
+      </section>
+
+      {/* Section Partenaires */}
+      <section className="py-20 bg-gray-50">
+        <div className="max-w-6xl mx-auto px-4">
+          <h2 className="text-4xl font-display font-bold text-center mb-16 text-theme-dark">Ils me font confiance</h2>
+          <LogoMarquee />
+        </div>
+      </section>
     </div>
   )
 }

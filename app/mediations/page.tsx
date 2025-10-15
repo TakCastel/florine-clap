@@ -18,7 +18,7 @@ export default function MediationsPage() {
       />
       
       <div className="max-w-6xl mx-auto px-4 py-12">
-        <h1 className="text-4xl md:text-6xl lg:text-8xl font-andale-mono font-bold tracking-wide mb-12 text-theme-green">Médiations</h1>
+        <h1 className="text-4xl md:text-6xl lg:text-8xl font-display font-bold tracking-wide mb-12 text-theme-green">Médiations</h1>
         
         <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-8">
           {items.map((mediation, index) => (

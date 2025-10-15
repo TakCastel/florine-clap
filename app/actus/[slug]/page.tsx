@@ -53,14 +53,14 @@ export default function ActuPage({ params }: ActuPageProps) {
         )}
         <div className="relative z-10 h-full flex items-center justify-center">
           <div className="text-center max-w-4xl px-8">
-            <div className="text-theme-yellow text-sm font-andale-mono mb-2">
+            <div className="text-theme-yellow text-sm font-display mb-2">
               {new Date(actu.date).toLocaleDateString('fr-FR', {
                 year: 'numeric',
                 month: 'long',
                 day: 'numeric'
               })}
             </div>
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-andale-mono font-bold text-white mb-4 leading-tight">
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-display font-bold text-white mb-4 leading-tight">
               {actu.title}
             </h1>
             {actu.excerpt && actu.excerpt.trim() !== '.' && actu.excerpt.trim().length > 2 && (
@@ -89,13 +89,13 @@ export default function ActuPage({ params }: ActuPageProps) {
           {/* Sidebar avec informations */}
           <div className="lg:col-span-1">
             <div className="bg-white/95 rounded-lg shadow-lg p-6 sticky top-8">
-              <h3 className="text-xl font-andale-mono font-bold text-theme-dark mb-6">Informations</h3>
+              <h3 className="text-xl font-display font-bold text-theme-dark mb-6">Informations</h3>
               
               <div className="space-y-6">
                 {/* Date */}
                 <div>
                   <p className="text-sm text-theme-dark/70 font-medium mb-1">Date de publication</p>
-                  <p className="text-theme-dark font-andale-mono font-semibold">
+                  <p className="text-theme-dark font-display font-semibold">
                     {new Date(actu.date).toLocaleDateString('fr-FR', {
                       year: 'numeric',
                       month: 'long',
@@ -112,7 +112,7 @@ export default function ActuPage({ params }: ActuPageProps) {
                       {actu.tags.map((tag, index) => (
                         <span 
                           key={index}
-                          className="px-3 py-1 bg-theme-dark text-white text-sm rounded-full font-andale-mono"
+                          className="px-3 py-1 bg-theme-dark text-white text-sm rounded-full font-display"
                         >
                           {tag}
                         </span>
@@ -125,7 +125,7 @@ export default function ActuPage({ params }: ActuPageProps) {
                 <div className="pt-6 border-t border-theme-dark/20">
                   <a 
                     href="/actus"
-                    className="inline-flex items-center text-theme-dark hover:text-theme-dark/70 transition-colors font-andale-mono font-medium"
+                    className="inline-flex items-center text-theme-dark hover:text-theme-dark/70 transition-colors font-display font-medium"
                   >
                     ← Retour aux actualités
                   </a>

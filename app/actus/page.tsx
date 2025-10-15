@@ -31,12 +31,12 @@ export default function ActusPage({ searchParams }: ActusPageProps) {
       />
       
       <div className="max-w-6xl mx-auto px-4 py-12">
-        <h1 className="text-4xl md:text-6xl lg:text-8xl font-andale-mono font-bold tracking-wide mb-12 text-theme-dark">Actualités</h1>
+        <h1 className="text-4xl md:text-6xl lg:text-8xl font-display font-bold tracking-wide mb-12 text-theme-dark">Actualités</h1>
         
         {/* Mur des 3 dernières actualités - Affiché seulement sur la première page */}
         {currentPage === 1 && (
           <div className="mb-16">
-            <h2 className="text-2xl font-andale-mono font-bold text-theme-dark mb-8">Dernières actualités</h2>
+            <h2 className="text-2xl font-display font-bold text-theme-dark mb-8">Dernières actualités</h2>
             
             {/* Layout: 1 carte principale à gauche, 2 petites à droite */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -51,13 +51,13 @@ export default function ActusPage({ searchParams }: ActusPageProps) {
                       ></div>
                       <div className="relative z-10 p-8 md:p-12 h-full flex flex-col justify-end">
                         <div className="max-w-2xl">
-                          <div className="text-theme-yellow text-sm font-andale-mono mb-2">
+                          <div className="text-theme-yellow text-sm font-display mb-2">
                             {new Date(items[0].date).toLocaleDateString('fr-FR')}
                           </div>
-                          <h3 className="text-3xl md:text-4xl lg:text-5xl font-andale-mono font-bold text-white mb-4 leading-tight">
+                          <h3 className="text-3xl md:text-4xl lg:text-5xl font-display font-bold text-white mb-4 leading-tight">
                             {items[0].title}
                           </h3>
-                          <div className="inline-flex items-center text-theme-yellow font-andale-mono font-medium group-hover:text-white transition-colors">
+                          <div className="inline-flex items-center text-theme-yellow font-display font-medium group-hover:text-white transition-colors">
                             Lire l'article
                             <svg className="ml-2 w-4 h-4 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
@@ -81,10 +81,10 @@ export default function ActusPage({ searchParams }: ActusPageProps) {
                           className="absolute inset-0 bg-gradient-to-t from-theme-dark/0 via-theme-dark/0 to-theme-dark/0 group-hover:from-theme-dark/80 group-hover:via-theme-dark/40 group-hover:to-theme-dark/20 opacity-0 group-hover:opacity-100 transition-opacity duration-700 ease-in-out"
                         ></div>
                         <div className="relative z-10 p-4 h-full flex flex-col justify-end">
-                          <div className="text-theme-yellow text-xs font-andale-mono mb-1">
+                          <div className="text-theme-yellow text-xs font-display mb-1">
                             {new Date(actu.date).toLocaleDateString('fr-FR')}
                           </div>
-                          <h4 className="text-sm md:text-base font-andale-mono font-bold text-white mb-2 leading-tight line-clamp-2">
+                          <h4 className="text-sm md:text-base font-display font-bold text-white mb-2 leading-tight line-clamp-2">
                             {actu.title}
                           </h4>
                         </div>
@@ -99,7 +99,7 @@ export default function ActusPage({ searchParams }: ActusPageProps) {
         
         {/* Toutes les actualités */}
         <div className="mb-8">
-          <h2 className="text-2xl font-andale-mono font-bold text-theme-dark mb-8">Toutes les actualités</h2>
+          <h2 className="text-2xl font-display font-bold text-theme-dark mb-8">Toutes les actualités</h2>
           {/* Informations de pagination */}
           <div className="mb-8 text-sm text-theme-dark/70">
             Page {currentPage} sur {totalPages} • {items.length} actualités au total
@@ -135,7 +135,7 @@ export default function ActusPage({ searchParams }: ActusPageProps) {
         {/* Pagination */}
         {totalPages > 1 && (
           <div className="mt-16 flex justify-center">
-            <nav className="flex flex-col sm:flex-row items-center gap-6 sm:gap-8 font-andale-mono text-sm sm:text-lg" aria-label="Pagination">
+            <nav className="flex flex-col sm:flex-row items-center gap-6 sm:gap-8 font-display text-sm sm:text-lg" aria-label="Pagination">
               {/* Page précédente */}
               {currentPage > 1 ? (
                 <Link 

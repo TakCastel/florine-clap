@@ -36,7 +36,7 @@ export default function BioSection() {
           {/* Texte - 2/3 de la page en desktop, pleine largeur en mobile */}
           <div className="w-full md:w-2/3 h-full flex items-center justify-center p-8 relative overflow-hidden">
             <div className="relative z-10">
-              <h2 className="text-2xl md:text-5xl lg:text-7xl font-bold text-theme-blue mb-8 font-andale-mono">
+              <h2 className="text-2xl md:text-5xl lg:text-7xl font-bold text-theme-blue mb-8 font-display">
                 Mon parcours
               </h2>
               

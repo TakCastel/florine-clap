@@ -22,10 +22,10 @@ export default function ActuCard({
           <div className="absolute inset-0 bg-gradient-to-t from-theme-dark/60 to-transparent"></div>
           <div className="absolute inset-0 bg-gradient-to-t from-theme-dark/0 via-theme-dark/0 to-theme-dark/0 group-hover:from-theme-dark/80 group-hover:via-theme-dark/40 group-hover:to-theme-dark/20 opacity-0 group-hover:opacity-100 transition-opacity duration-700 ease-in-out"></div>
           <div className="relative z-10 p-4 h-full flex flex-col justify-end">
-            <div className="text-theme-yellow text-xs font-andale-mono mb-1">
+            <div className="text-theme-yellow text-xs font-display mb-1">
               {new Date(date).toLocaleDateString('fr-FR')}
             </div>
-            <h3 className="text-base font-andale-mono font-bold text-white mb-1 leading-tight line-clamp-2 group-hover:text-white/90 transition-colors">
+            <h3 className="text-base font-display font-bold text-white mb-1 leading-tight line-clamp-2 group-hover:text-white/90 transition-colors">
               {title}
             </h3>
           </div>
