@@ -55,7 +55,7 @@ export default function Navigation({ isHomePage = false }: NavigationProps) {
               href={item.href} 
               className={`text-xl font-andale-mono font-bold transition-colors duration-300 uppercase cursor-pointer relative after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-0.5 after:transition-all after:duration-300 hover:after:w-full ${
                 isHomePage 
-                  ? 'text-white hover:text-theme-yellow after:bg-theme-yellow' 
+                  ? 'text-white/70 hover:text-white after:bg-white' 
                   : 'text-theme-dark hover:text-black after:bg-theme-dark'
               }`}
             >
@@ -63,7 +63,7 @@ export default function Navigation({ isHomePage = false }: NavigationProps) {
             </a>
             {index < navItems.length - 1 && (
               <span className={`mx-8 font-andale-mono transition-opacity duration-300 ${
-                isHomePage ? 'text-white/60' : 'text-gray-400'
+                isHomePage ? 'text-white/50' : 'text-gray-400'
               }`}>
                 /
               </span>

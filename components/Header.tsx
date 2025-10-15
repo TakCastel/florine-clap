@@ -19,7 +19,7 @@ export default function Header() {
           showAnimations ? 'header-logo-animation' : ''
         } ${
           isHomePage 
-            ? 'text-white hover:text-theme-yellow' 
+            ? 'text-white/70 hover:text-white' 
             : 'text-theme-dark hover:text-black'
         }`}
       >
