@@ -44,6 +44,21 @@ h1, h2, h3, h4, h5, h6 {
   }
 }
 
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.6s ease-out;
+}
+
 @keyframes float {
   0%, 100% {
     transform: translateY(0px);
@@ -182,12 +197,12 @@ h1, h2, h3, h4, h5, h6 {
 /* Smooth scrolling pour les navigateurs qui le supportent */
 html {
   scroll-behavior: smooth;
-  scroll-snap-type: y mandatory;
+  /* scroll-snap-type: y mandatory; */
 }
 
 body {
-  scroll-snap-type: y mandatory;
-  overflow-y: hidden;
+  /* scroll-snap-type: y mandatory; */
+  /* overflow-y: hidden; */
 }
 
 /* Système de scroll snap pur */

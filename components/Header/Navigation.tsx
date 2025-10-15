@@ -5,9 +5,10 @@ import { useAnimation } from '@/contexts/AnimationContext'
 
 interface NavigationProps {
   isHomePage?: boolean
+  isScrolled?: boolean
 }
 
-export default function Navigation({ isHomePage = false }: NavigationProps) {
+export default function Navigation({ isHomePage = false, isScrolled = false }: NavigationProps) {
   const { showAnimations } = useAnimation()
   const [visibleItems, setVisibleItems] = useState<number[]>([])
   
@@ -44,7 +45,9 @@ export default function Navigation({ isHomePage = false }: NavigationProps) {
         return (
           <div 
             key={item.href} 
-            className="flex items-center mr-8"
+            className={`flex items-center transition-all duration-300 ${
+              index < navItems.length - 1 ? (isScrolled ? 'mr-6' : 'mr-8') : ''
+            }`}
             style={{
               opacity: isVisible ? 1 : 0,
               transform: isVisible ? 'translateX(0)' : 'translateX(30px)',
@@ -53,7 +56,9 @@ export default function Navigation({ isHomePage = false }: NavigationProps) {
           >
             <a 
               href={item.href} 
-              className={`text-xl font-display font-bold transition-colors duration-300 uppercase cursor-pointer relative after:content-[''] after:absolute after:-bottom-0.5 after:left-0 after:w-0 after:h-0.75 after:transition-all after:duration-300 hover:after:w-full ${
+              className={`font-display font-bold transition-all duration-300 uppercase cursor-pointer relative after:content-[''] after:absolute after:-bottom-0.5 after:left-0 after:w-0 after:h-0.75 after:transition-all after:duration-300 hover:after:w-full ${
+                isScrolled ? 'text-base' : 'text-xl'
+              } ${
                 isHomePage 
                   ? 'text-white/70 hover:text-white after:bg-white' 
                   : 'text-theme-dark hover:text-black after:bg-theme-dark'

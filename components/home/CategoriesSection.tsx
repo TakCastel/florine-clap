@@ -1,137 +1,108 @@
 'use client'
 
-import { useHover } from '@/contexts/HoverContext'
-import ScrollIndicator from '@/components/ScrollIndicator'
+import { useEffect, useRef, useState } from 'react'
+import CategoryCard from '@/components/CategoryCard'
 
 export default function CategoriesSection() {
-  const { forceHoverIndex, setForceHoverIndex } = useHover()
-  
-  const scrollToBio = () => {
-    const bioSection = document.getElementById('bio-section')
-    const container = document.querySelector('.scroll-container') as HTMLElement
-    
-    if (bioSection && container) {
-      const elementTop = bioSection.offsetTop
-      const headerHeight = 80 // Hauteur du header fixe
-      const offsetPosition = elementTop - headerHeight
-      
-      container.scrollTo({
-        top: offsetPosition,
-        behavior: 'smooth'
-      })
+  const [isVisible, setIsVisible] = useState(false)
+  const sectionRef = useRef<HTMLElement>(null)
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true)
+        }
+      },
+      { threshold: 0.1 }
+    )
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current)
     }
-  }
+
+    return () => observer.disconnect()
+  }, [])
+  const cards = [
+    {
+      href: '/films',
+      title: 'Films',
+      description: 'Découvrez mes créations cinématographiques, mes courts-métrages et mes projets artistiques',
+      linkText: 'Découvrir',
+      imageSrc: 'https://picsum.photos/800/1200?random=2',
+      imageAlt: 'Découvrir mes films',
+      bgColor: 'bg-white/85',
+      hoverBgColor: 'group-hover:bg-white/90',
+      textColor: 'text-theme-dark',
+      linkColor: 'text-theme-dark/80',
+      hoverLinkColor: 'hover:text-theme-dark',
+      underlineClass: 'after:bg-theme-dark'
+    },
+    {
+      href: '/mediations',
+      title: 'Médiations',
+      description: 'Explorez mes médiations de médiation culturelle et mes formations pour tous publics',
+      linkText: 'Explorer',
+      imageSrc: 'https://picsum.photos/800/1200?random=3',
+      imageAlt: 'Découvrir mes médiations',
+      bgColor: 'bg-theme-dark/85',
+      hoverBgColor: 'group-hover:bg-theme-dark/90',
+      textColor: 'text-white',
+      linkColor: 'text-white/80',
+      hoverLinkColor: 'hover:text-white',
+      underlineClass: 'after:bg-white'
+    },
+    {
+      href: '/actus',
+      title: 'Actualités',
+      description: 'Suivez mes dernières actualités, événements et projets en cours',
+      linkText: 'Lire',
+      imageSrc: 'https://picsum.photos/800/1200?random=4',
+      imageAlt: 'Découvrir mes actualités',
+      bgColor: 'bg-theme-yellow/85',
+      hoverBgColor: 'group-hover:bg-theme-yellow/90',
+      textColor: 'text-theme-dark',
+      linkColor: 'text-theme-dark/80',
+      hoverLinkColor: 'hover:text-theme-dark',
+      underlineClass: 'after:bg-theme-dark'
+    }
+  ]
+
   return (
-    <section id="categories-section" className="categories-section scroll-section w-full z-20 border-t-4 border-black" style={{ height: 'calc(100vh - 80px)' }}>
-      <div className="w-full h-full flex flex-col md:flex-row">
-        {/* Films - 1/3 de la page */}
-        <a href="/films" className={`w-full md:w-1/3 h-1/3 md:h-full relative overflow-hidden group cursor-pointer transition-all duration-500 hover:w-full md:hover:w-[45%] ${forceHoverIndex === 0 ? 'w-full md:w-[45%]' : ''}`}>
-          <img 
-            src="https://picsum.photos/800/1200?random=2" 
-            alt="Decouvrir mes films"
-            className="w-full h-full object-cover grayscale transition-none"
-          />
-          <div className={`absolute inset-0 bg-white/90 flex items-center justify-center group-hover:bg-white/95 transition-all duration-700 ease-in-out ${forceHoverIndex === 0 ? 'bg-white/95' : ''}`}>
-            <div className="text-center flex flex-col items-center justify-center w-full h-full relative">
-              {/* Titre horizontal - position fixe */}
-              <div className="card-content-position">
-                <h3 className="font-bold text-theme-dark mb-6 text-2xl md:text-4xl lg:text-6xl relative inline-block after:content-[''] after:absolute after:-bottom-2 after:left-1/2 after:transform after:-translate-x-1/2 after:w-0 after:h-1.5 after:bg-theme-dark after:transition-all after:duration-500 group-hover:after:w-[97.5%]">
-                  Films
-                </h3>
-              </div>
-              
-              {/* Contenu qui apparaît au hover - positionné en dessous du titre */}
-              <div className={`card-hover-content transition-all duration-700 text-center flex flex-col items-center justify-center opacity-100 md:opacity-0 md:group-hover:opacity-100 touch:opacity-100 ${forceHoverIndex === 0 ? 'md:opacity-100' : ''}`}>
-                {/* Texte explicatif */}
-                <p className="text-theme-dark mb-8 text-xs md:text-xs lg:text-base leading-relaxed text-center">
-                  Découvrez mes créations cinématographiques, mes courts-métrages et mes projets artistiques
-                </p>
-                {/* Bouton d'incitation au clic */}
-                <span className="text-theme-dark/80 font-medium hover:text-theme-dark transition-all duration-300 relative after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-0.5 after:bg-theme-dark after:transition-all after:duration-300 hover:after:w-full after:opacity-0 hover:after:opacity-100 text-xs md:text-xs lg:text-base">
-                  Découvrir →
-                </span>
-              </div>
+    <section ref={sectionRef} id="categories-section" className="w-full h-screen bg-black flex items-center justify-center">
+      <div className="w-full px-6">
+        <div className="w-full flex flex-col md:flex-row gap-8 md:gap-12 md:items-stretch">
+          {cards.map((card, index) => (
+            <div
+              key={index}
+              className={`flex-1 hover:flex-[1.14] h-[50vh] ${
+                isVisible 
+                  ? 'opacity-100 translate-y-0' 
+                  : 'opacity-0 translate-y-8'
+              }`}
+              style={{
+                transition: isVisible 
+                  ? `opacity 0.6s ease-out ${index * 200}ms, transform 0.6s ease-out ${index * 200}ms, flex 0.5s cubic-bezier(0.4, 0, 0.2, 1)`
+                  : 'opacity 0.6s ease-out, transform 0.6s ease-out, flex 0.5s cubic-bezier(0.4, 0, 0.2, 1)',
+                transitionDelay: isVisible ? '' : '0ms'
+              }}
+            >
+              <CategoryCard
+                href={card.href}
+                title={card.title}
+                description={card.description}
+                linkText={card.linkText}
+                imageSrc={card.imageSrc}
+                imageAlt={card.imageAlt}
+                bgColor={card.bgColor}
+                hoverBgColor={card.hoverBgColor}
+                textColor={card.textColor}
+                linkColor={card.linkColor}
+                hoverLinkColor={card.hoverLinkColor}
+                underlineClass={card.underlineClass}
+              />
             </div>
-          </div>
-        </a>
-        
-        {/* Médiations - 1/3 de la page */}
-        <a 
-          href="/mediations" 
-          className={`w-full md:w-1/3 h-1/3 md:h-full relative overflow-hidden group cursor-pointer transition-all duration-500 hover:w-full md:hover:w-[45%] ${forceHoverIndex === 1 ? 'w-full md:w-[45%]' : ''}`}
-          onMouseLeave={() => {
-            // Reinitialiser le hover force quand on quitte la carte
-            if (forceHoverIndex === 1) {
-              setForceHoverIndex(-1)
-            }
-          }}
-        >
-          <img 
-            src="https://picsum.photos/800/1200?random=3" 
-            alt="Decouvrir mes mediations"
-            className="w-full h-full object-cover grayscale transition-none"
-          />
-          <div className={`absolute inset-0 bg-theme-dark/90 flex items-center justify-center group-hover:bg-theme-dark/95 transition-all duration-700 ease-in-out ${forceHoverIndex === 1 ? 'bg-theme-dark/95' : ''}`}>
-            <div className="text-center flex flex-col items-center justify-center w-full h-full relative">
-              {/* Titre horizontal - position fixe */}
-              <div className="card-content-position">
-                <h3 className="font-bold text-white mb-6 text-2xl md:text-4xl lg:text-6xl relative inline-block after:content-[''] after:absolute after:-bottom-2 after:left-1/2 after:transform after:-translate-x-1/2 after:w-0 after:h-1.5 after:bg-white after:transition-all after:duration-500 group-hover:after:w-[97.5%]">
-                  Médiations
-                </h3>
-              </div>
-              
-              {/* Contenu qui apparaît au hover - positionné en dessous du titre */}
-              <div className={`card-hover-content transition-all duration-700 text-center flex flex-col items-center justify-center opacity-100 md:opacity-0 md:group-hover:opacity-100 touch:opacity-100 ${forceHoverIndex === 1 ? 'md:opacity-100' : ''}`}>
-                {/* Texte explicatif */}
-                <p className="text-white mb-8 text-xs md:text-xs lg:text-base leading-relaxed text-center">
-                  Explorez mes médiations de médiation culturelle et mes formations pour tous publics
-                </p>
-                {/* Bouton d'incitation au clic */}
-                <span className="text-white/80 font-medium hover:text-white transition-all duration-300 relative after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-0.5 after:bg-white after:transition-all after:duration-300 hover:after:w-full after:opacity-0 hover:after:opacity-100 text-xs md:text-xs lg:text-base">
-                  Explorer →
-                </span>
-              </div>
-            </div>
-          </div>
-        </a>
-        
-        {/* Actualités - 1/3 de la page */}
-        <a href="/actus" className={`w-full md:w-1/3 h-1/3 md:h-full relative overflow-hidden group cursor-pointer transition-all duration-500 hover:w-full md:hover:w-[45%] ${forceHoverIndex === 2 ? 'w-full md:w-[45%]' : ''}`}>
-          <img 
-            src="https://picsum.photos/800/1200?random=4" 
-            alt="Decouvrir mes actualites"
-            className="w-full h-full object-cover grayscale transition-none"
-          />
-          <div className={`absolute inset-0 bg-theme-yellow/90 flex items-center justify-center group-hover:bg-theme-yellow/95 transition-all duration-700 ease-in-out ${forceHoverIndex === 2 ? 'bg-theme-yellow/95' : ''}`}>
-            <div className="text-center flex flex-col items-center justify-center w-full h-full relative">
-              {/* Titre horizontal - position fixe */}
-              <div className="card-content-position">
-                <h3 className="font-bold text-theme-dark mb-6 text-2xl md:text-4xl lg:text-6xl relative inline-block after:content-[''] after:absolute after:-bottom-2 after:left-1/2 after:transform after:-translate-x-1/2 after:w-0 after:h-1.5 after:bg-theme-dark after:transition-all after:duration-500 group-hover:after:w-[97.5%]">
-                  Actualités
-                </h3>
-              </div>
-              
-              {/* Contenu qui apparaît au hover - positionné en dessous du titre */}
-              <div className={`card-hover-content transition-all duration-700 text-center flex flex-col items-center justify-center opacity-100 md:opacity-0 md:group-hover:opacity-100 touch:opacity-100 ${forceHoverIndex === 2 ? 'md:opacity-100' : ''}`}>
-                {/* Texte explicatif */}
-                <p className="text-theme-dark mb-8 text-xs md:text-xs lg:text-base leading-relaxed text-center">
-                  Suivez mes dernières actualités, événements et projets en cours
-                </p>
-                {/* Bouton d'incitation au clic */}
-                <span className="text-theme-dark/80 font-medium hover:text-theme-dark transition-all duration-300 relative after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-0.5 after:bg-theme-dark after:transition-all after:duration-300 hover:after:w-full after:opacity-0 hover:after:opacity-100 text-xs md:text-xs lg:text-base">
-                  Lire →
-                </span>
-              </div>
-            </div>
-          </div>
-        </a>
-        
-        {/* Indicateur de scroll vers la bio */}
-        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-40">
-          <ScrollIndicator
-            onClick={scrollToBio}
-            ariaLabel="Aller a la section bio"
-          />
+          ))}
         </div>
       </div>
     </section>

@@ -23,7 +23,7 @@ export default function FilmPage({ params }: FilmPageProps) {
   }
 
   return (
-    <div className="min-h-screen bg-black text-white">
+    <div className="min-h-screen bg-white text-theme-dark">
       <Breadcrumb 
         items={[
           { label: 'Accueil', href: '/' },
@@ -34,9 +34,13 @@ export default function FilmPage({ params }: FilmPageProps) {
       />
 
       {/* Hero Section avec image de fond */}
-      <section className="relative h-[60vh] bg-cover bg-center bg-no-repeat" style={{ backgroundImage: `url(${film.image})` }}>
-        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent"></div>
-        <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent"></div>
+      <section className="relative h-[60vh] overflow-hidden">
+        <div 
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat blur-md scale-110" 
+          style={{ backgroundImage: `url(${film.image})` }}
+        ></div>
+        <div className="absolute inset-0 bg-gradient-to-t from-white via-white/50 to-transparent"></div>
+        <div className="absolute inset-0 bg-gradient-to-r from-white/80 via-white/40 to-transparent"></div>
         
         <div className="relative z-10 h-full flex items-end">
           <div className="max-w-6xl mx-auto px-4 pb-16 w-full">
@@ -55,7 +59,7 @@ export default function FilmPage({ params }: FilmPageProps) {
                 </span>
               </div>
               {film.shortSynopsis && (
-                <p className="text-white/90 text-lg leading-relaxed max-w-2xl">
+                <p className="text-theme-dark/90 text-lg leading-relaxed max-w-2xl">
                   {film.shortSynopsis}
                 </p>
               )}
@@ -66,14 +70,14 @@ export default function FilmPage({ params }: FilmPageProps) {
 
       {/* Section vidéo Vimeo - Mise en valeur */}
       {film.vimeoId && (
-        <section className="py-16 bg-black">
+        <section className="py-16 bg-white">
           <div className="max-w-6xl mx-auto px-4">
             <div className="text-center mb-8">
-              <h2 className="text-3xl font-display font-bold text-white mb-4">Vidéo</h2>
-              <p className="text-white/70">Découvrez {film.title}</p>
+              <h2 className="text-3xl font-display font-bold text-theme-dark mb-4">Vidéo</h2>
+              <p className="text-theme-dark/70">Découvrez {film.title}</p>
             </div>
             
-            <div className="relative bg-black rounded-lg overflow-hidden shadow-2xl">
+            <div className="relative bg-gray-100 rounded-lg overflow-hidden shadow-2xl">
               <div className="aspect-video">
                 <VimeoPlayer
                   videoId={film.vimeoId}
@@ -98,13 +102,13 @@ export default function FilmPage({ params }: FilmPageProps) {
             {/* Synopsis */}
             {film.shortSynopsis && (
               <div className="mb-12">
-                <h2 className="text-2xl font-display font-bold text-white mb-4">Synopsis</h2>
-                <p className="text-white leading-relaxed text-lg">{film.shortSynopsis}</p>
+                <h2 className="text-2xl font-display font-bold text-theme-dark mb-4">Synopsis</h2>
+                <p className="text-theme-dark leading-relaxed text-lg">{film.shortSynopsis}</p>
               </div>
             )}
 
             {/* Contenu MDX */}
-            <div className="prose prose-lg max-w-none text-white">
+            <div className="prose prose-lg max-w-none text-theme-dark">
               <MdxRenderer code={film.body.code} />
             </div>
           </div>
@@ -112,7 +116,7 @@ export default function FilmPage({ params }: FilmPageProps) {
           {/* Sidebar avec informations techniques */}
           <div className="lg:col-span-1">
             <div className="sticky top-8">
-              <h3 className="text-2xl font-display font-bold text-white mb-6">Fiche technique</h3>
+              <h3 className="text-2xl font-display font-bold text-theme-dark mb-6">Fiche technique</h3>
               
               <div className="space-y-6">
                 {/* Réalisation */}

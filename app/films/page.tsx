@@ -68,7 +68,7 @@ export default function FilmsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-black text-white">
+    <div className="min-h-screen bg-white text-theme-dark">
       <Breadcrumb 
         items={[
           { label: 'Accueil', href: '/' },
@@ -78,7 +78,7 @@ export default function FilmsPage() {
       />
       
       <div className="max-w-6xl mx-auto px-4 py-8">
-        <h1 className="text-4xl md:text-6xl lg:text-8xl font-display font-bold tracking-wide mb-12 text-white">Films</h1>
+        <h1 className="text-4xl md:text-6xl lg:text-8xl font-display font-bold tracking-wide mb-12 text-theme-dark">Films</h1>
         
         {/* Film Hero - Premier film en grand */}
         <div className="mb-16">
@@ -97,17 +97,17 @@ export default function FilmsPage() {
         {/* Section "Films documentaires" */}
         <div className="mb-16">
           <div className="flex items-center justify-between mb-6">
-            <h2 className="text-2xl font-display font-bold text-white">Films documentaires</h2>
+            <h2 className="text-2xl font-display font-bold text-theme-dark">Films documentaires</h2>
             <div className="flex gap-2">
               <button 
                 onClick={() => scroll('left', scrollRefDoc, setScrollPositionDoc)}
-                className="p-2 bg-white/10 hover:bg-white/20 rounded-full transition-colors"
+                className="p-2 bg-theme-dark/10 hover:bg-theme-dark/20 rounded-full transition-colors"
               >
                 <ChevronLeft className="w-5 h-5" />
               </button>
               <button 
                 onClick={() => scroll('right', scrollRefDoc, setScrollPositionDoc)}
-                className="p-2 bg-white/10 hover:bg-white/20 rounded-full transition-colors"
+                className="p-2 bg-theme-dark/10 hover:bg-theme-dark/20 rounded-full transition-colors"
               >
                 <ChevronRight className="w-5 h-5" />
               </button>
@@ -139,17 +139,17 @@ export default function FilmsPage() {
         {/* Section "Films d'ateliers" */}
         <div className="mb-16">
           <div className="flex items-center justify-between mb-6">
-            <h2 className="text-2xl font-display font-bold text-white">Films d'ateliers</h2>
+            <h2 className="text-2xl font-display font-bold text-theme-dark">Films d'ateliers</h2>
             <div className="flex gap-2">
               <button 
                 onClick={() => scroll('left', scrollRefAteliers, setScrollPositionAteliers)}
-                className="p-2 bg-white/10 hover:bg-white/20 rounded-full transition-colors"
+                className="p-2 bg-theme-dark/10 hover:bg-theme-dark/20 rounded-full transition-colors"
               >
                 <ChevronLeft className="w-5 h-5" />
               </button>
               <button 
                 onClick={() => scroll('right', scrollRefAteliers, setScrollPositionAteliers)}
-                className="p-2 bg-white/10 hover:bg-white/20 rounded-full transition-colors"
+                className="p-2 bg-theme-dark/10 hover:bg-theme-dark/20 rounded-full transition-colors"
               >
                 <ChevronRight className="w-5 h-5" />
               </button>
@@ -181,18 +181,18 @@ export default function FilmsPage() {
         {/* Section "En tant que monteuse" */}
         <div className="mb-16">
           <div className="flex items-center justify-between mb-6">
-            <h2 className="text-2xl font-display font-bold text-white">En tant que monteuse</h2>
+            <h2 className="text-2xl font-display font-bold text-theme-dark">En tant que monteuse</h2>
             {filmsMontage.length > 0 && (
               <div className="flex gap-2">
                 <button 
                   onClick={() => scroll('left', scrollRefMontage, setScrollPositionMontage)}
-                  className="p-2 bg-white/10 hover:bg-white/20 rounded-full transition-colors"
+                  className="p-2 bg-theme-dark/10 hover:bg-theme-dark/20 rounded-full transition-colors"
                 >
                   <ChevronLeft className="w-5 h-5" />
                 </button>
                 <button 
                   onClick={() => scroll('right', scrollRefMontage, setScrollPositionMontage)}
-                  className="p-2 bg-white/10 hover:bg-white/20 rounded-full transition-colors"
+                  className="p-2 bg-theme-dark/10 hover:bg-theme-dark/20 rounded-full transition-colors"
                 >
                   <ChevronRight className="w-5 h-5" />
                 </button>
@@ -222,7 +222,7 @@ export default function FilmsPage() {
               ))}
             </div>
           ) : (
-            <div className="text-white/70 text-center py-8">
+            <div className="text-theme-dark/70 text-center py-8">
               <p>Section en cours de développement...</p>
               <p className="text-sm mt-2">Films à ajouter : "Et après ?" (2023)</p>
             </div>
@@ -232,18 +232,18 @@ export default function FilmsPage() {
         {/* Section "Petites formes expérimentales" */}
         <div className="mb-16">
           <div className="flex items-center justify-between mb-6">
-            <h2 className="text-2xl font-display font-bold text-white">Petites formes expérimentales</h2>
+            <h2 className="text-2xl font-display font-bold text-theme-dark">Petites formes expérimentales</h2>
             {petitesFormes.length > 0 && (
               <div className="flex gap-2">
                 <button 
                   onClick={() => scroll('left', scrollRefPetitesFormes, setScrollPositionPetitesFormes)}
-                  className="p-2 bg-white/10 hover:bg-white/20 rounded-full transition-colors"
+                  className="p-2 bg-theme-dark/10 hover:bg-theme-dark/20 rounded-full transition-colors"
                 >
                   <ChevronLeft className="w-5 h-5" />
                 </button>
                 <button 
                   onClick={() => scroll('right', scrollRefPetitesFormes, setScrollPositionPetitesFormes)}
-                  className="p-2 bg-white/10 hover:bg-white/20 rounded-full transition-colors"
+                  className="p-2 bg-theme-dark/10 hover:bg-theme-dark/20 rounded-full transition-colors"
                 >
                   <ChevronRight className="w-5 h-5" />
                 </button>
@@ -273,7 +273,7 @@ export default function FilmsPage() {
               ))}
             </div>
           ) : (
-            <div className="text-white/70 text-center py-8">
+            <div className="text-theme-dark/70 text-center py-8">
               <p>Section en cours de développement...</p>
               <p className="text-sm mt-2">Films à ajouter : "La première" (2014), "I T" (Docu-fiction)</p>
             </div>
@@ -281,10 +281,10 @@ export default function FilmsPage() {
         </div>
 
         {/* Contenu SEO */}
-        <div className="mt-16 pt-8 border-t border-white/20">
-          <div className="prose prose-lg max-w-none text-white">
-            <h2 className="text-2xl font-bold text-white mb-4">Mes créations cinématographiques</h2>
-            <p className="text-white/70 leading-relaxed">
+        <div className="mt-16 pt-8 border-t border-theme-dark/20">
+          <div className="prose prose-lg max-w-none text-theme-dark">
+            <h2 className="text-2xl font-bold text-theme-dark mb-4">Mes créations cinématographiques</h2>
+            <p className="text-theme-dark/70 leading-relaxed">
               Découvrez mes courts métrages documentaires qui explorent la relation entre l'homme et son environnement. 
               Chaque film est une invitation à regarder le monde différemment, à travers un prisme poétique et humaniste.
             </p>

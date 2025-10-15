@@ -11,7 +11,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   const isHomePage = pathname === '/'
   
   return (
-    <html lang="fr" className={isHomePage ? 'overflow-hidden' : ''}>
+    <html lang="fr">
       <head>
         {/* Préchargement de la police Solway pour de meilleures performances */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -21,13 +21,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@100;200;300;400;500;600;700;800&family=Solway:wght@300;400;500;700;800&display=swap" rel="stylesheet" />
       </head>
-      <body className={`bg-gray-100 ${isHomePage ? 'scrollbar-hide' : ''}`}>
+      <body className="bg-gray-100">
         <AnimationProvider>
           <Header />
-          <main className={isHomePage ? 'overflow-hidden max-h-screen pt-20' : 'pt-20'}>
+          <main className={isHomePage ? '' : 'pt-20'}>
             {children}
           </main>
-          {!isHomePage && <Footer />}
+          <Footer />
         </AnimationProvider>
       </body>
     </html>
