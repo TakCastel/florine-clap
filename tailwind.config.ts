@@ -18,7 +18,7 @@ const config: Config = {
         // Couleurs principales de la palette
         'theme-blue': '#26436C',         // Bleu principal de la palette
         'theme-grey': '#D9D5CC',         // Gris chaud de la palette
-        'theme-yellow': '#E8B95C',       // Jaune moutarde de la palette
+        'theme-yellow': '#FFD700',       // Jaune pop art vibrant
         'theme-sage': '#8B9A8B',         // Vert sauge
         'theme-burgundy': '#6B2C3E',     // Bordeau profond
         'theme-slate': '#4A5568',        // Ardoise froide
@@ -31,6 +31,9 @@ const config: Config = {
         // Configuration par défaut
         serif: ['Source Sans Pro', 'sans-serif'],
         mono: ['Andale Mono', 'monospace'],
+      },
+      height: {
+        '0.75': '0.1875rem', // 3px
       },
     },
   },

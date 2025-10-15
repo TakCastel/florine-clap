@@ -1,63 +1,83 @@
-"use client"
 import { useMDXComponent } from 'next-contentlayer2/hooks'
 import Image from 'next/image'
-import { useEffect, useRef } from 'react'
+
 
 const components = {
   img: (props: any) => (
     <Image {...props} alt={props.alt || ''} width={1200} height={800} />
   ),
-  h1: (props: any) => <h1 {...props} className="font-andale-mono text-3xl font-bold mb-4 text-theme-blue" />,
-  h2: (props: any) => <h2 {...props} className="font-andale-mono text-2xl font-bold mb-3 text-theme-blue" />,
-  h3: (props: any) => <h3 {...props} className="font-andale-mono text-xl font-bold mb-2 text-theme-blue" />,
-  h4: (props: any) => <h4 {...props} className="font-andale-mono text-lg font-bold mb-2 text-theme-blue" />,
-  h5: (props: any) => <h5 {...props} className="font-andale-mono text-base font-bold mb-2 text-theme-blue" />,
-  h6: (props: any) => <h6 {...props} className="font-andale-mono text-sm font-bold mb-2 text-theme-blue" />,
+  a: (props: any) => (
+    <a {...props} className="text-theme-blue hover:text-theme-dark transition-colors font-andale-mono no-underline" />
+  ),
+  h1: (props: any) => {
+    const { children, ...restProps } = props
+    return (
+      <h1 {...restProps} className="font-andale-mono text-3xl font-bold mb-4 text-theme-blue">
+        {children}
+      </h1>
+    )
+  },
+  h2: (props: any) => {
+    const { children, ...restProps } = props
+    return (
+      <h2 {...restProps} className="font-andale-mono text-2xl font-bold mb-3 text-theme-blue">
+        {children}
+      </h2>
+    )
+  },
+  h3: (props: any) => {
+    const { children, ...restProps } = props
+    return (
+      <h3 {...restProps} className="font-andale-mono text-xl font-bold mb-2 text-theme-blue">
+        {children}
+      </h3>
+    )
+  },
+  h4: (props: any) => {
+    const { children, ...restProps } = props
+    return (
+      <h4 {...restProps} className="font-andale-mono text-lg font-bold mb-2 text-theme-blue">
+        {children}
+      </h4>
+    )
+  },
+  h5: (props: any) => {
+    const { children, ...restProps } = props
+    return (
+      <h5 {...restProps} className="font-andale-mono text-base font-bold mb-2 text-theme-blue">
+        {children}
+      </h5>
+    )
+  },
+  h6: (props: any) => {
+    const { children, ...restProps } = props
+    return (
+      <h6 {...restProps} className="font-andale-mono text-sm font-bold mb-2 text-theme-blue">
+        {children}
+      </h6>
+    )
+  },
 }
 
 export default function MdxRenderer({ code }: { code: string | { raw: string; html: string } }) {
-  const Component = useMDXComponent(typeof code === 'string' ? code : code.raw)
-  const containerRef = useRef<HTMLDivElement>(null)
+  // Gérer différents formats de code
+  let mdxCode: string
+  if (typeof code === 'string') {
+    mdxCode = code
+  } else if (code && typeof code === 'object' && 'raw' in code) {
+    mdxCode = code.raw
+  } else if (code && typeof code === 'object' && 'code' in code) {
+    mdxCode = code.code
+  } else {
+    console.error('Format de code non supporté:', code)
+    return <div>Erreur de rendu du contenu</div>
+  }
   
-  useEffect(() => {
-    if (!containerRef.current) return
-    
-    // Supprimer les liens dans les titres en gardant le texte - immédiatement
-    const removeLinksFromHeadings = () => {
-      const headings = containerRef.current?.querySelectorAll('h1, h2, h3, h4, h5, h6')
-      headings?.forEach(heading => {
-        const links = heading.querySelectorAll('a')
-        links.forEach(link => {
-          // Remplacer le lien par son contenu texte
-          const textNode = document.createTextNode(link.textContent || '')
-          link.parentNode?.replaceChild(textNode, link)
-        })
-      })
-    }
-    
-    // Exécuter immédiatement
-    removeLinksFromHeadings()
-    
-    // Observer les changements du DOM pour traiter les nouveaux éléments
-    const observer = new MutationObserver(() => {
-      removeLinksFromHeadings()
-    })
-    
-    observer.observe(containerRef.current, {
-      childList: true,
-      subtree: true
-    })
-    
-    return () => {
-      observer.disconnect()
-    }
-  }, [code])
+  const Component = useMDXComponent(mdxCode)
   
   return (
-    <div ref={containerRef} className="prose prose-neutral dark:prose-invert max-w-none">
+    <div className="prose prose-neutral dark:prose-invert max-w-none">
       <Component components={components as any} />
     </div>
   )
 }
-
-

@@ -53,11 +53,19 @@ export default function ProjectCard({
         }
       case 'actus':
         return {
-          container: 'group block overflow-hidden bg-theme-yellow border border-theme-yellow hover:border-theme-dark/20 transition-all duration-300 h-full flex flex-col',
+          container: 'group block overflow-hidden bg-white/90 hover:bg-white transition-all duration-300 h-full flex flex-col shadow-lg hover:shadow-xl',
           title: 'text-xl font-bold text-theme-dark group-hover:text-theme-dark transition-colors',
           subtitle: 'text-sm text-theme-dark/70 font-medium',
           excerpt: 'mt-3 text-theme-dark/80 line-clamp-3 leading-relaxed',
           button: 'mt-4 inline-flex items-center text-theme-dark font-medium hover:text-theme-dark/70 transition-colors relative after:content-[""] after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-0.5 after:bg-theme-dark after:transition-all after:duration-300 group-hover:after:w-full'
+        }
+      case 'actus-featured':
+        return {
+          container: 'group relative block overflow-hidden bg-cover bg-center bg-no-repeat transition-all duration-300 h-96 shadow-lg hover:shadow-xl',
+          title: 'absolute bottom-0 left-0 right-0 p-6 text-white font-bold text-2xl md:text-3xl bg-gradient-to-t from-theme-dark/90 via-theme-dark/60 to-transparent',
+          subtitle: 'absolute bottom-0 left-0 right-0 p-6 pb-16 text-white/90 text-sm font-medium',
+          excerpt: 'absolute bottom-0 left-0 right-0 p-6 pb-20 text-white/80 text-base leading-relaxed line-clamp-2',
+          button: 'absolute bottom-6 left-6 inline-flex items-center text-white font-medium hover:text-white/80 transition-colors relative after:content-[""] after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-0.5 after:bg-white after:transition-all after:duration-300 group-hover:after:w-full'
         }
       default:
         return {
@@ -140,12 +148,7 @@ export default function ProjectCard({
             )}
           </div>
           
-          {/* Synopsis ou excerpt */}
-          {(synopsis || excerpt) && (synopsis || excerpt)?.trim() !== '.' && (
-            <p className={styles.excerpt}>
-              {synopsis || excerpt}
-            </p>
-          )}
+          {/* Excerpt supprimé pour éviter les points parasites */}
         </div>
         
         {/* Bouton "Voir plus" pour les films - toujours en bas */}
