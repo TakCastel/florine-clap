@@ -1,6 +1,6 @@
 backend:
   name: github
-  repo: florine-clap/wp-florine
+  repo: TakCastel/florine-clap
   branch: main
 
 media_folder: "public/images/uploads"
@@ -12,21 +12,28 @@ collections:
     folder: "content/films"
     create: true
     slug: "{{slug}}"
+    extension: "mdx"
+    format: "frontmatter"
     fields:
       - {label: "Title", name: "title", widget: "string"}
-      - {label: "Année", name: "annee", widget: "number"}
+      - {label: "Image", name: "image", widget: "string", required: false}
+      - {label: "Type", name: "type", widget: "string", required: false}
       - {label: "Durée", name: "duree", widget: "string", required: false}
-      - {label: "Synopsis", name: "synopsis", widget: "text", required: false}
-      - {label: "Statut", name: "statut", widget: "string", required: false}
-      - {label: "Excerpt", name: "excerpt", widget: "text", required: false}
-      - {label: "Cover", name: "cover", widget: "image", required: false}
-      - {label: "Gallery", name: "gallery", widget: "list", field: {label: "Image", name: "image", widget: "image"}, required: false}
+      - {label: "Année", name: "annee", widget: "string", required: false}
+      - {label: "Vimeo ID", name: "vimeoId", widget: "string", required: false}
+      - {label: "Short Synopsis", name: "shortSynopsis", widget: "text", required: false}
+      - {label: "Réalisation", name: "realisation", widget: "string", required: false}
+      - {label: "Son", name: "son", widget: "string", required: false}
+      - {label: "Production", name: "production", widget: "string", required: false}
+      - {label: "Body", name: "body", widget: "markdown", required: false}
 
   - name: "mediations"
     label: "Médiations"
     folder: "content/médiations"
     create: true
     slug: "{{slug}}"
+    extension: "mdx"
+    format: "frontmatter"
     fields:
       - {label: "Title", name: "title", widget: "string"}
       - {label: "Date", name: "date", widget: "datetime"}
@@ -42,11 +49,16 @@ collections:
     folder: "content/actus"
     create: true
     slug: "{{slug}}"
+    extension: "mdx"
+    format: "frontmatter"
     fields:
       - {label: "Title", name: "title", widget: "string"}
+      - {label: "Subtitle", name: "subtitle", widget: "string", required: false}
       - {label: "Date", name: "date", widget: "datetime"}
       - {label: "Cover", name: "cover", widget: "image", required: false}
       - {label: "Excerpt", name: "excerpt", widget: "text", required: false}
+      - {label: "Tags", name: "tags", widget: "list", required: false}
+      - {label: "Body", name: "body", widget: "markdown", required: false}
 
   - name: "pages"
     label: "Pages"
