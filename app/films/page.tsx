@@ -47,7 +47,7 @@ export default function FilmsPage() {
     film.title === "I T"
   )
 
-  const scroll = (direction: 'left' | 'right', ref: React.RefObject<HTMLDivElement>, setPosition: (pos: number) => void) => {
+  const scroll = (direction: 'left' | 'right', ref: React.RefObject<HTMLDivElement | null>, setPosition: (pos: number) => void) => {
     if (ref.current) {
       // Calculer la largeur d'une card + gap (320px + 24px = 344px)
       const cardWidth = 344

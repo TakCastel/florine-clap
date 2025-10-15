@@ -81,7 +81,7 @@ export default function ActuPage({ params }: ActuPageProps) {
             <div className="bg-white/95 rounded-lg shadow-lg overflow-hidden">
               {/* Contenu MDX */}
               <div className="p-8 md:p-12">
-                <MdxRenderer code={actu.body?.code || actu.body} />
+                <MdxRenderer code={actu.body.code} />
               </div>
             </div>
           </div>

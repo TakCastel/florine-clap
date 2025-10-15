@@ -5,7 +5,7 @@ import { Clock, Play, Calendar } from 'lucide-react'
 type FilmCardProps = {
   href: string
   title: string
-  cover: string
+  cover?: string
   synopsis?: string
   duree?: string
   annee?: string
@@ -27,7 +27,12 @@ export default function FilmCard({
     return (
       <Link href={href} className="group block">
         <article className="relative overflow-hidden bg-black rounded-lg shadow-2xl hover:shadow-3xl transition-all duration-500 hover:scale-[1.02] transform">
-          <div className="aspect-[16/9] bg-cover bg-center bg-no-repeat" style={{ backgroundImage: `url(${cover})` }}>
+          <div 
+            className="aspect-[16/9] bg-cover bg-center bg-no-repeat" 
+            style={{ 
+              backgroundImage: cover ? `url(${cover})` : 'linear-gradient(135deg, #1f2937 0%, #374151 100%)'
+            }}
+          >
             <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent"></div>
             <div 
               className="absolute inset-0 bg-gradient-to-t from-black/0 via-black/0 to-black/0 group-hover:from-black/90 group-hover:via-black/60 group-hover:to-black/30 opacity-0 group-hover:opacity-100 transition-opacity duration-700 ease-in-out"
@@ -73,7 +78,12 @@ export default function FilmCard({
   return (
     <Link href={href} className="group block">
       <article className="relative overflow-hidden bg-black rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 transform">
-        <div className="aspect-video bg-cover bg-center bg-no-repeat" style={{ backgroundImage: `url(${cover})` }}>
+        <div 
+          className="aspect-video bg-cover bg-center bg-no-repeat" 
+          style={{ 
+            backgroundImage: cover ? `url(${cover})` : 'linear-gradient(135deg, #1f2937 0%, #374151 100%)'
+          }}
+        >
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
           <div className="absolute inset-0 bg-gradient-to-t from-black/0 via-black/0 to-black/0 group-hover:from-black/80 group-hover:via-black/40 group-hover:to-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-in-out"></div>
           

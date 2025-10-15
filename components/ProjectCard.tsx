@@ -13,7 +13,7 @@ type Props = {
   synopsis?: string
   placeholderImage?: string
   vimeoId?: string
-  variant?: 'default' | 'films' | 'mediations' | 'actus'
+  variant?: 'default' | 'films' | 'mediations' | 'actus' | 'actus-featured'
   category?: string
   role?: string
 }

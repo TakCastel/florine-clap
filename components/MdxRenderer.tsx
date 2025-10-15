@@ -59,7 +59,7 @@ const components = {
   },
 }
 
-export default function MdxRenderer({ code }: { code: string | { raw: string; html: string } }) {
+export default function MdxRenderer({ code }: { code: string | { raw: string; html: string } | { code: string } }) {
   // Gérer différents formats de code
   let mdxCode: string
   if (typeof code === 'string') {
