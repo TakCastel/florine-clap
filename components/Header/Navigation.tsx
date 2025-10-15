@@ -53,10 +53,10 @@ export default function Navigation({ isHomePage = false }: NavigationProps) {
           >
             <a 
               href={item.href} 
-              className={`text-xl font-andale-mono font-bold transition-colors duration-300 uppercase cursor-pointer ${
+              className={`text-xl font-andale-mono font-bold transition-colors duration-300 uppercase cursor-pointer relative after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-0.5 after:transition-all after:duration-300 hover:after:w-full ${
                 isHomePage 
-                  ? 'text-white hover:text-theme-yellow' 
-                  : 'text-theme-dark hover:text-black'
+                  ? 'text-white hover:text-theme-yellow after:bg-theme-yellow' 
+                  : 'text-theme-dark hover:text-black after:bg-theme-dark'
               }`}
             >
               {item.label}
