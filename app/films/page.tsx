@@ -82,7 +82,7 @@ export default function FilmsPage() {
       />
       
       <div className="max-w-6xl mx-auto px-4 py-12">
-        <h1 className="text-4xl md:text-6xl lg:text-8xl font-andale-mono font-bold tracking-wide mb-12 text-theme-blue">Films</h1>
+        <h1 className="text-3xl md:text-4xl lg:text-5xl font-andale-mono font-bold tracking-wide mb-12 text-theme-blue">Films</h1>
         
         {/* Layout alterné avec images et textes */}
         <div className="space-y-32">
@@ -112,7 +112,7 @@ export default function FilmsPage() {
                   {/* Texte */}
                   <div className="w-full lg:w-1/2">
                     <div className="space-y-8">
-                      <h2 className="text-4xl lg:text-5xl font-andale-mono font-bold text-theme-blue leading-tight" itemProp="name">
+                      <h2 className="text-2xl lg:text-3xl font-andale-mono font-bold text-theme-blue leading-tight" itemProp="name">
                         {film.title}
                       </h2>
                       
