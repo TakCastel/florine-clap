@@ -31,12 +31,12 @@ export default function CategoriesSection() {
       linkText: 'Découvrir',
       imageSrc: 'https://picsum.photos/800/1200?random=2',
       imageAlt: 'Découvrir mes films',
-      bgColor: 'bg-white/85',
-      hoverBgColor: 'group-hover:bg-white/90',
-      textColor: 'text-theme-dark',
-      linkColor: 'text-theme-dark/80',
-      hoverLinkColor: 'hover:text-theme-dark',
-      underlineClass: 'after:bg-theme-dark'
+      bgColor: 'bg-theme-blue/85',
+      hoverBgColor: 'group-hover:bg-theme-blue/90',
+      textColor: 'text-white',
+      linkColor: 'text-white/80',
+      hoverLinkColor: 'hover:text-white',
+      underlineClass: 'after:bg-white'
     },
     {
       href: '/mediations',
@@ -45,8 +45,8 @@ export default function CategoriesSection() {
       linkText: 'Explorer',
       imageSrc: 'https://picsum.photos/800/1200?random=3',
       imageAlt: 'Découvrir mes médiations',
-      bgColor: 'bg-theme-dark/85',
-      hoverBgColor: 'group-hover:bg-theme-dark/90',
+      bgColor: 'bg-black/85',
+      hoverBgColor: 'group-hover:bg-black/90',
       textColor: 'text-white',
       linkColor: 'text-white/80',
       hoverLinkColor: 'hover:text-white',
@@ -69,21 +69,21 @@ export default function CategoriesSection() {
   ]
 
   return (
-    <section ref={sectionRef} id="categories-section" className="w-full h-screen bg-black flex items-center justify-center">
-      <div className="w-full px-6">
-        <div className="w-full flex flex-col md:flex-row gap-8 md:gap-12 md:items-stretch">
+    <section ref={sectionRef} id="categories-section" className="w-full min-h-screen bg-black flex items-center justify-center py-24">
+      <div className="w-full px-6 md:px-10 lg:px-16 max-w-[1800px] mx-auto">
+        <div className="w-full flex flex-col md:flex-row gap-4 md:gap-6 lg:gap-8 md:items-stretch">
           {cards.map((card, index) => (
             <div
               key={index}
-              className={`flex-1 hover:flex-[1.14] h-[50vh] ${
+              className={`flex-1 h-[65vh] md:h-[70vh] lg:h-[75vh] ${
                 isVisible 
                   ? 'opacity-100 translate-y-0' 
-                  : 'opacity-0 translate-y-8'
+                  : 'opacity-0 translate-y-16'
               }`}
               style={{
                 transition: isVisible 
-                  ? `opacity 0.6s ease-out ${index * 200}ms, transform 0.6s ease-out ${index * 200}ms, flex 0.5s cubic-bezier(0.4, 0, 0.2, 1)`
-                  : 'opacity 0.6s ease-out, transform 0.6s ease-out, flex 0.5s cubic-bezier(0.4, 0, 0.2, 1)',
+                  ? `opacity 1s cubic-bezier(0.16, 1, 0.3, 1) ${index * 180}ms, transform 1s cubic-bezier(0.16, 1, 0.3, 1) ${index * 180}ms`
+                  : 'opacity 1s cubic-bezier(0.16, 1, 0.3, 1), transform 1s cubic-bezier(0.16, 1, 0.3, 1)',
                 transitionDelay: isVisible ? '' : '0ms'
               }}
             >

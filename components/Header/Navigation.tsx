@@ -50,21 +50,25 @@ export default function Navigation({ isHomePage = false, isScrolled = false }: N
             }`}
             style={{
               opacity: isVisible ? 1 : 0,
-              transform: isVisible ? 'translateX(0)' : 'translateX(30px)',
+              transform: isVisible ? 'translateY(0)' : 'translateY(-30px)',
               transition: 'all 0.6s ease-out'
             }}
           >
             <a 
               href={item.href} 
-              className={`font-display font-bold transition-all duration-300 uppercase cursor-pointer relative after:content-[''] after:absolute after:-bottom-0.5 after:left-0 after:w-0 after:h-0.75 after:transition-all after:duration-300 hover:after:w-full ${
-                isScrolled ? 'text-base' : 'text-xl'
+              className={`group font-display font-bold transition-all duration-500 uppercase cursor-pointer relative after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-0.75 after:transition-all after:duration-500 after:ease-out hover:after:w-full tracking-wide ${
+                isScrolled ? 'text-sm' : 'text-base'
               } ${
                 isHomePage 
-                  ? 'text-white/70 hover:text-white after:bg-white' 
-                  : 'text-theme-dark hover:text-black after:bg-theme-dark'
+                  ? 'text-white/75 hover:text-white after:bg-white' 
+                  : 'text-theme-dark/80 hover:text-black after:bg-theme-dark'
+              } ${
+                isHomePage && !isScrolled ? 'drop-shadow-[0_2px_8px_rgba(0,0,0,0.5)]' : ''
               }`}
             >
-              {item.label}
+              <span className="transition-all duration-300 group-hover:tracking-wider inline-block">
+                {item.label}
+              </span>
             </a>
           </div>
         )

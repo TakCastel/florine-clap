@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import FilmCard from '@/components/FilmCard'
 import Breadcrumb from '@/components/Breadcrumb'
 import { allFilms } from '.contentlayer/generated'
@@ -9,6 +9,7 @@ import { ChevronLeft, ChevronRight } from 'lucide-react'
 export const dynamic = 'force-dynamic'
 
 export default function FilmsPage() {
+  const [isVisible, setIsVisible] = useState(false)
   const [scrollPosition, setScrollPosition] = useState(0)
   const [scrollPositionDoc, setScrollPositionDoc] = useState(0)
   const [scrollPositionAteliers, setScrollPositionAteliers] = useState(0)
@@ -19,6 +20,10 @@ export default function FilmsPage() {
   const scrollRefAteliers = useRef<HTMLDivElement>(null)
   const scrollRefMontage = useRef<HTMLDivElement>(null)
   const scrollRefPetitesFormes = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    setIsVisible(true)
+  }, [])
   
   // Organiser les films par catégories
   const recentFilms = [...allFilms].sort((a, b) => new Date(b.annee || '2020').getTime() - new Date(a.annee || '2020').getTime())
@@ -68,7 +73,11 @@ export default function FilmsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-white text-theme-dark">
+    <div className="min-h-screen bg-white text-theme-dark relative overflow-hidden">
+      {/* Éléments décoratifs subtils */}
+      <div className="absolute top-40 right-10 w-32 h-32 border border-theme-dark/5 rounded-full"></div>
+      <div className="absolute bottom-40 left-16 w-48 h-48 border border-theme-dark/5 rotate-45"></div>
+
       <Breadcrumb 
         items={[
           { label: 'Accueil', href: '/' },
@@ -77,8 +86,50 @@ export default function FilmsPage() {
         variant="default"
       />
       
-      <div className="max-w-6xl mx-auto px-4 py-8">
-        <h1 className="text-4xl md:text-6xl lg:text-8xl font-display font-bold tracking-wide mb-12 text-theme-dark">Films</h1>
+      <div className="max-w-7xl mx-auto px-6 md:px-10 lg:px-16 py-12 md:py-20">
+        {/* Titre de la page avec animation */}
+        <div className="mb-16 md:mb-24">
+          <div 
+            className="overflow-hidden mb-6"
+            style={{
+              opacity: isVisible ? 1 : 0,
+              transform: isVisible ? 'translateY(0)' : 'translateY(40px)',
+              transition: 'opacity 1s cubic-bezier(0.16, 1, 0.3, 1) 0.2s, transform 1s cubic-bezier(0.16, 1, 0.3, 1) 0.2s',
+            }}
+          >
+            <h1 
+              className="text-6xl md:text-7xl lg:text-9xl font-bold leading-none tracking-tighter text-theme-dark"
+              style={{
+                fontFamily: 'var(--font-andalemo), sans-serif',
+                letterSpacing: '-0.05em',
+              }}
+            >
+              Films
+            </h1>
+          </div>
+          
+          {/* Ligne décorative animée */}
+          <div className="h-[2px] bg-theme-dark/10 w-full max-w-md overflow-hidden">
+            <div 
+              className="h-full bg-theme-dark transition-all duration-1000 ease-out"
+              style={{
+                width: isVisible ? '100%' : '0%',
+                transitionDelay: '0.4s',
+              }}
+            ></div>
+          </div>
+
+          <p 
+            className="mt-6 text-lg md:text-xl text-theme-dark/70 max-w-2xl"
+            style={{
+              opacity: isVisible ? 1 : 0,
+              transform: isVisible ? 'translateY(0)' : 'translateY(20px)',
+              transition: 'opacity 0.8s ease-out 0.6s, transform 0.8s ease-out 0.6s',
+            }}
+          >
+            Découvrez mes créations cinématographiques, documentaires et ateliers créatifs
+          </p>
+        </div>
         
         {/* Film Hero - Premier film en grand */}
         <div className="mb-16">
@@ -95,28 +146,39 @@ export default function FilmsPage() {
         </div>
 
         {/* Section "Films documentaires" */}
-        <div className="mb-16">
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="text-2xl font-display font-bold text-theme-dark">Films documentaires</h2>
-            <div className="flex gap-2">
+        <div className="mb-20 md:mb-28">
+          <div className="flex items-end justify-between mb-8">
+            <div>
+              <div className="text-theme-dark/40 text-sm uppercase tracking-[0.3em] mb-3 font-medium">Catégorie 01</div>
+              <h2 
+                className="text-3xl md:text-4xl lg:text-5xl font-bold text-theme-dark leading-none tracking-tight"
+                style={{
+                  fontFamily: 'var(--font-andalemo), sans-serif',
+                  letterSpacing: '-0.03em',
+                }}
+              >
+                Films documentaires
+              </h2>
+            </div>
+            <div className="flex gap-3">
               <button 
                 onClick={() => scroll('left', scrollRefDoc, setScrollPositionDoc)}
-                className="p-2 bg-theme-dark/10 hover:bg-theme-dark/20 rounded-full transition-colors"
+                className="group w-12 h-12 border-2 border-theme-dark/20 hover:border-theme-dark hover:bg-theme-dark/5 rounded-full transition-all duration-500 flex items-center justify-center"
               >
-                <ChevronLeft className="w-5 h-5" />
+                <ChevronLeft className="w-5 h-5 text-theme-dark/60 group-hover:text-theme-dark transition-colors duration-300" />
               </button>
               <button 
                 onClick={() => scroll('right', scrollRefDoc, setScrollPositionDoc)}
-                className="p-2 bg-theme-dark/10 hover:bg-theme-dark/20 rounded-full transition-colors"
+                className="group w-12 h-12 border-2 border-theme-dark/20 hover:border-theme-dark hover:bg-theme-dark/5 rounded-full transition-all duration-500 flex items-center justify-center"
               >
-                <ChevronRight className="w-5 h-5" />
+                <ChevronRight className="w-5 h-5 text-theme-dark/60 group-hover:text-theme-dark transition-colors duration-300" />
               </button>
             </div>
           </div>
           
           <div 
             ref={scrollRefDoc}
-            className="flex gap-6 overflow-x-auto scrollbar-hide pb-4"
+            className="flex gap-6 overflow-x-auto scrollbar-hide pt-4 pb-8"
             style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
           >
             {filmsDocumentaires.map((film) => (
@@ -137,28 +199,39 @@ export default function FilmsPage() {
         </div>
 
         {/* Section "Films d'ateliers" */}
-        <div className="mb-16">
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="text-2xl font-display font-bold text-theme-dark">Films d'ateliers</h2>
-            <div className="flex gap-2">
+        <div className="mb-20 md:mb-28">
+          <div className="flex items-end justify-between mb-8">
+            <div>
+              <div className="text-theme-dark/40 text-sm uppercase tracking-[0.3em] mb-3 font-medium">Catégorie 02</div>
+              <h2 
+                className="text-3xl md:text-4xl lg:text-5xl font-bold text-theme-dark leading-none tracking-tight"
+                style={{
+                  fontFamily: 'var(--font-andalemo), sans-serif',
+                  letterSpacing: '-0.03em',
+                }}
+              >
+                Films d'ateliers
+              </h2>
+            </div>
+            <div className="flex gap-3">
               <button 
                 onClick={() => scroll('left', scrollRefAteliers, setScrollPositionAteliers)}
-                className="p-2 bg-theme-dark/10 hover:bg-theme-dark/20 rounded-full transition-colors"
+                className="group w-12 h-12 border-2 border-theme-dark/20 hover:border-theme-dark hover:bg-theme-dark/5 rounded-full transition-all duration-500 flex items-center justify-center"
               >
-                <ChevronLeft className="w-5 h-5" />
+                <ChevronLeft className="w-5 h-5 text-theme-dark/60 group-hover:text-theme-dark transition-colors duration-300" />
               </button>
               <button 
                 onClick={() => scroll('right', scrollRefAteliers, setScrollPositionAteliers)}
-                className="p-2 bg-theme-dark/10 hover:bg-theme-dark/20 rounded-full transition-colors"
+                className="group w-12 h-12 border-2 border-theme-dark/20 hover:border-theme-dark hover:bg-theme-dark/5 rounded-full transition-all duration-500 flex items-center justify-center"
               >
-                <ChevronRight className="w-5 h-5" />
+                <ChevronRight className="w-5 h-5 text-theme-dark/60 group-hover:text-theme-dark transition-colors duration-300" />
               </button>
             </div>
           </div>
           
           <div 
             ref={scrollRefAteliers}
-            className="flex gap-6 overflow-x-auto scrollbar-hide pb-4"
+            className="flex gap-6 overflow-x-auto scrollbar-hide pt-4 pb-8"
             style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
           >
             {filmsAteliers.map((film) => (
@@ -179,22 +252,33 @@ export default function FilmsPage() {
         </div>
 
         {/* Section "En tant que monteuse" */}
-        <div className="mb-16">
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="text-2xl font-display font-bold text-theme-dark">En tant que monteuse</h2>
+        <div className="mb-20 md:mb-28">
+          <div className="flex items-end justify-between mb-8">
+            <div>
+              <div className="text-theme-dark/40 text-sm uppercase tracking-[0.3em] mb-3 font-medium">Catégorie 03</div>
+              <h2 
+                className="text-3xl md:text-4xl lg:text-5xl font-bold text-theme-dark leading-none tracking-tight"
+                style={{
+                  fontFamily: 'var(--font-andalemo), sans-serif',
+                  letterSpacing: '-0.03em',
+                }}
+              >
+                En tant que monteuse
+              </h2>
+            </div>
             {filmsMontage.length > 0 && (
-              <div className="flex gap-2">
+              <div className="flex gap-3">
                 <button 
                   onClick={() => scroll('left', scrollRefMontage, setScrollPositionMontage)}
-                  className="p-2 bg-theme-dark/10 hover:bg-theme-dark/20 rounded-full transition-colors"
+                  className="group w-12 h-12 border-2 border-theme-dark/20 hover:border-theme-dark hover:bg-theme-dark/5 rounded-full transition-all duration-500 flex items-center justify-center"
                 >
-                  <ChevronLeft className="w-5 h-5" />
+                  <ChevronLeft className="w-5 h-5 text-theme-dark/60 group-hover:text-theme-dark transition-colors duration-300" />
                 </button>
                 <button 
                   onClick={() => scroll('right', scrollRefMontage, setScrollPositionMontage)}
-                  className="p-2 bg-theme-dark/10 hover:bg-theme-dark/20 rounded-full transition-colors"
+                  className="group w-12 h-12 border-2 border-theme-dark/20 hover:border-theme-dark hover:bg-theme-dark/5 rounded-full transition-all duration-500 flex items-center justify-center"
                 >
-                  <ChevronRight className="w-5 h-5" />
+                  <ChevronRight className="w-5 h-5 text-theme-dark/60 group-hover:text-theme-dark transition-colors duration-300" />
                 </button>
               </div>
             )}
@@ -203,7 +287,7 @@ export default function FilmsPage() {
           {filmsMontage.length > 0 ? (
             <div 
               ref={scrollRefMontage}
-              className="flex gap-6 overflow-x-auto scrollbar-hide pb-4"
+              className="flex gap-6 overflow-x-auto scrollbar-hide pt-4 pb-8"
               style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
             >
               {filmsMontage.map((film) => (
@@ -230,22 +314,33 @@ export default function FilmsPage() {
         </div>
 
         {/* Section "Petites formes expérimentales" */}
-        <div className="mb-16">
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="text-2xl font-display font-bold text-theme-dark">Petites formes expérimentales</h2>
+        <div className="mb-20 md:mb-28">
+          <div className="flex items-end justify-between mb-8">
+            <div>
+              <div className="text-theme-dark/40 text-sm uppercase tracking-[0.3em] mb-3 font-medium">Catégorie 04</div>
+              <h2 
+                className="text-3xl md:text-4xl lg:text-5xl font-bold text-theme-dark leading-none tracking-tight"
+                style={{
+                  fontFamily: 'var(--font-andalemo), sans-serif',
+                  letterSpacing: '-0.03em',
+                }}
+              >
+                Petites formes expérimentales
+              </h2>
+            </div>
             {petitesFormes.length > 0 && (
-              <div className="flex gap-2">
+              <div className="flex gap-3">
                 <button 
                   onClick={() => scroll('left', scrollRefPetitesFormes, setScrollPositionPetitesFormes)}
-                  className="p-2 bg-theme-dark/10 hover:bg-theme-dark/20 rounded-full transition-colors"
+                  className="group w-12 h-12 border-2 border-theme-dark/20 hover:border-theme-dark hover:bg-theme-dark/5 rounded-full transition-all duration-500 flex items-center justify-center"
                 >
-                  <ChevronLeft className="w-5 h-5" />
+                  <ChevronLeft className="w-5 h-5 text-theme-dark/60 group-hover:text-theme-dark transition-colors duration-300" />
                 </button>
                 <button 
                   onClick={() => scroll('right', scrollRefPetitesFormes, setScrollPositionPetitesFormes)}
-                  className="p-2 bg-theme-dark/10 hover:bg-theme-dark/20 rounded-full transition-colors"
+                  className="group w-12 h-12 border-2 border-theme-dark/20 hover:border-theme-dark hover:bg-theme-dark/5 rounded-full transition-all duration-500 flex items-center justify-center"
                 >
-                  <ChevronRight className="w-5 h-5" />
+                  <ChevronRight className="w-5 h-5 text-theme-dark/60 group-hover:text-theme-dark transition-colors duration-300" />
                 </button>
               </div>
             )}
@@ -254,7 +349,7 @@ export default function FilmsPage() {
           {petitesFormes.length > 0 ? (
             <div 
               ref={scrollRefPetitesFormes}
-              className="flex gap-6 overflow-x-auto scrollbar-hide pb-4"
+              className="flex gap-6 overflow-x-auto scrollbar-hide pt-4 pb-8"
               style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
             >
               {petitesFormes.map((film) => (
@@ -281,10 +376,15 @@ export default function FilmsPage() {
         </div>
 
         {/* Contenu SEO */}
-        <div className="mt-16 pt-8 border-t border-theme-dark/20">
-          <div className="prose prose-lg max-w-none text-theme-dark">
-            <h2 className="text-2xl font-bold text-theme-dark mb-4">Mes créations cinématographiques</h2>
-            <p className="text-theme-dark/70 leading-relaxed">
+        <div className="mt-24 pt-12 border-t border-theme-dark/10">
+          <div className="max-w-4xl">
+            <h2 className="text-2xl md:text-3xl font-bold text-theme-dark mb-6" style={{
+              fontFamily: 'var(--font-andalemo), sans-serif',
+              letterSpacing: '-0.02em',
+            }}>
+              Mes créations cinématographiques
+            </h2>
+            <p className="text-theme-dark/70 text-lg leading-relaxed">
               Découvrez mes courts métrages documentaires qui explorent la relation entre l'homme et son environnement. 
               Chaque film est une invitation à regarder le monde différemment, à travers un prisme poétique et humaniste.
             </p>

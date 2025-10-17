@@ -1,57 +1,206 @@
 'use client'
 
+import { useState, useEffect, useRef } from 'react'
+
 export default function BioSection() {
+  const [isVisible, setIsVisible] = useState(false)
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
+  const sectionRef = useRef<HTMLElement>(null)
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true)
+        }
+      },
+      { threshold: 0.2 }
+    )
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current)
+    }
+
+    return () => observer.disconnect()
+  }, [])
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect()
+    const x = ((e.clientX - rect.left) / rect.width - 0.5) * 30
+    const y = ((e.clientY - rect.top) / rect.height - 0.5) * 30
+    setMousePosition({ x, y })
+  }
+
   return (
-    <section id="bio-section" className="w-full py-16 md:py-24 bg-black">
-      <div className="max-w-6xl mx-auto px-4">
-        <div className="flex flex-col lg:flex-row gap-8 lg:gap-12 items-center">
-          {/* Image - 1/3 de la page - cachée en mobile */}
-          <div className="hidden lg:block w-full lg:w-1/3 relative overflow-hidden group">
-            <img 
-              src="https://picsum.photos/800/1200?random=5" 
-              alt="Florine Clap - Portrait"
-              className="w-full h-96 lg:h-[500px] object-cover grayscale group-hover:grayscale-0 transition-all duration-700 rounded-lg"
-            />
-            <div className="absolute inset-0 bg-white/20 group-hover:bg-white/10 transition-all duration-700 rounded-lg"></div>
+    <section 
+      ref={sectionRef}
+      id="bio-section" 
+      className="w-full min-h-screen bg-black flex items-center justify-center py-24 md:py-32 relative overflow-hidden"
+      onMouseMove={handleMouseMove}
+    >
+      {/* Éléments décoratifs en arrière-plan */}
+      <div className="absolute top-20 right-20 w-32 h-32 border border-white/5 rounded-full"></div>
+      <div className="absolute bottom-32 left-16 w-48 h-48 border border-white/5 rotate-45"></div>
+
+      <div className="max-w-7xl mx-auto px-6 md:px-10 lg:px-16 w-full">
+        <div className="flex flex-col lg:flex-row gap-12 lg:gap-16 items-center">
+          
+          {/* Image avec effet sophistiqué */}
+          <div 
+            className="w-full lg:w-5/12 relative group"
+            style={{
+              opacity: isVisible ? 1 : 0,
+              transform: isVisible ? 'translateX(0)' : 'translateX(-60px)',
+              transition: 'opacity 1s cubic-bezier(0.16, 1, 0.3, 1) 0.2s, transform 1s cubic-bezier(0.16, 1, 0.3, 1) 0.2s',
+            }}
+          >
+            {/* Numéro décoratif */}
+            <div className="absolute -top-8 -left-4 text-8xl md:text-9xl font-bold text-white/5 leading-none z-0 pointer-events-none">
+              01
+            </div>
+
+            {/* Image principale */}
+            <div className="relative overflow-hidden">
+              <div 
+                className="relative overflow-hidden transition-transform duration-700 ease-out"
+                style={{
+                  clipPath: 'polygon(12% 0, 100% 0, 88% 100%, 0 100%)',
+                }}
+              >
+                <img 
+                  src="https://picsum.photos/800/1200?random=5" 
+                  alt="Florine Clap - Portrait"
+                  className="w-full h-[500px] md:h-[600px] object-cover transition-transform duration-700 group-hover:scale-110"
+                  style={{
+                    transform: `translate(${mousePosition.x * 0.1}px, ${mousePosition.y * 0.1}px)`,
+                  }}
+                />
+                {/* Overlay coloré subtil */}
+                <div className="absolute inset-0 bg-white/10 group-hover:bg-white/5 transition-all duration-700"></div>
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+              </div>
+
+              {/* Ligne décorative animée */}
+              <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-white/40 to-transparent transform -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
+            </div>
           </div>
           
-          {/* Texte - 2/3 de la page en desktop, pleine largeur en mobile */}
-          <div className="w-full lg:w-2/3">
-            <h2 className="text-3xl md:text-5xl lg:text-6xl font-bold text-white mb-8 font-display">
-              Bio
-            </h2>
+          {/* Contenu texte */}
+          <div className="w-full lg:w-7/12 relative">
+            {/* Titre avec animation */}
+            <div 
+              className="overflow-hidden mb-12"
+              style={{
+                opacity: isVisible ? 1 : 0,
+                transform: isVisible ? 'translateY(0)' : 'translateY(30px)',
+                transition: 'opacity 1s cubic-bezier(0.16, 1, 0.3, 1) 0.4s, transform 1s cubic-bezier(0.16, 1, 0.3, 1) 0.4s',
+              }}
+            >
+              <h2 
+                className="text-white font-bold text-6xl md:text-7xl lg:text-8xl leading-none tracking-tighter mb-4"
+                style={{
+                  fontFamily: 'var(--font-andalemo), sans-serif',
+                  letterSpacing: '-0.05em',
+                }}
+              >
+                Qui suis-je ?
+              </h2>
+              
+              {/* Ligne de séparation animée */}
+              <div className="h-[2px] bg-white/20 w-full max-w-xs overflow-hidden">
+                <div 
+                  className="h-full bg-white transition-all duration-1000 ease-out"
+                  style={{
+                    width: isVisible ? '100%' : '0%',
+                    transitionDelay: '0.6s',
+                  }}
+                ></div>
+              </div>
+            </div>
             
-            <div className="space-y-6 text-white/90 text-base md:text-lg lg:text-xl leading-relaxed font-sans">
-              <p>
-                Née à Avignon en 1988, je me passionne très tôt pour le théâtre et le cinéma. 
+            {/* Texte bio avec animations séquentielles */}
+            <div className="space-y-8 text-white/85 text-lg md:text-xl leading-relaxed">
+              <p
+                style={{
+                  opacity: isVisible ? 1 : 0,
+                  transform: isVisible ? 'translateY(0)' : 'translateY(20px)',
+                  transition: 'opacity 0.8s ease-out 0.6s, transform 0.8s ease-out 0.6s',
+                }}
+              >
+                Née à <span className="text-white font-medium">Avignon en 1988</span>, je me passionne très tôt pour le théâtre et le cinéma. 
                 Diplômée en esthétique et pratique du cinéma à l'université Paris I Panthéon-Sorbonne.
               </p>
               
-              <p>
-                Ma filmographie révèle un intérêt renouvelé pour le cinéma, le théâtre et la danse, 
+              <p
+                style={{
+                  opacity: isVisible ? 1 : 0,
+                  transform: isVisible ? 'translateY(0)' : 'translateY(20px)',
+                  transition: 'opacity 0.8s ease-out 0.8s, transform 0.8s ease-out 0.8s',
+                }}
+              >
+                Ma filmographie révèle un intérêt renouvelé pour le <span className="text-white font-medium">cinéma, le théâtre et la danse</span>, 
                 m'ayant menée de l'Académie du spectacle équestre de Bartabas à la réalisation de 
                 documentaires d'art et sur l'art.
               </p>
               
-              <p>
+              <p
+                style={{
+                  opacity: isVisible ? 1 : 0,
+                  transform: isVisible ? 'translateY(0)' : 'translateY(20px)',
+                  transition: 'opacity 0.8s ease-out 1s, transform 0.8s ease-out 1s',
+                }}
+              >
                 Mes films explorent des figures atypiques et des structures associatives, 
-                témoignant d'une sensibilité sociale et artistique qui m'oriente aujourd'hui 
+                témoignant d'une <span className="text-white font-medium">sensibilité sociale et artistique</span> qui m'oriente aujourd'hui 
                 vers la fiction et le docu-fiction.
               </p>
             </div>
             
-            {/* Bouton d'action */}
-            <div className="mt-8">
+            {/* Bouton CTA sophistiqué */}
+            <div 
+              className="mt-12"
+              style={{
+                opacity: isVisible ? 1 : 0,
+                transform: isVisible ? 'translateY(0)' : 'translateY(20px)',
+                transition: 'opacity 0.8s ease-out 1.2s, transform 0.8s ease-out 1.2s',
+              }}
+            >
               <a 
                 href="/bio" 
-                className="inline-flex items-center text-white text-lg md:text-xl font-medium hover:text-white/80 transition-all duration-300 relative after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-0.5 after:bg-white after:transition-all after:duration-300 hover:after:w-full font-sans"
+                className="group inline-flex items-center gap-4 text-white font-medium text-lg md:text-xl uppercase tracking-wider transition-all duration-500"
               >
-                Découvrir ma bio complète →
+                <span className="transition-all duration-300 group-hover:tracking-widest">
+                  En savoir plus
+                </span>
+                
+                <div className="flex items-center gap-2">
+                  <div 
+                    className="h-[2px] bg-white transition-all duration-500 group-hover:w-16"
+                    style={{ width: '32px' }}
+                  ></div>
+                  <svg 
+                    className="w-6 h-6 transition-transform duration-500 group-hover:translate-x-2" 
+                    fill="none" 
+                    stroke="currentColor" 
+                    strokeWidth="2.5" 
+                    viewBox="0 0 24 24"
+                  >
+                    <path d="M13 7l5 5m0 0l-5 5m5-5H6"/>
+                  </svg>
+                </div>
               </a>
             </div>
           </div>
         </div>
       </div>
+
+      {/* Effet de brillance qui suit la souris */}
+      <div 
+        className="absolute inset-0 opacity-20 pointer-events-none transition-opacity duration-500"
+        style={{
+          background: `radial-gradient(circle 800px at ${50 + (mousePosition.x / 30) * 100}% ${50 + (mousePosition.y / 30) * 100}%, rgba(255,255,255,0.05) 0%, transparent 70%)`,
+        }}
+      ></div>
     </section>
   )
 }
