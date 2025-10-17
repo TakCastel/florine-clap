@@ -2,6 +2,7 @@
 
 import { usePathname } from 'next/navigation'
 import { useState, useEffect } from 'react'
+import Image from 'next/image'
 import Navigation from './Header/Navigation'
 import { useAnimation } from '@/contexts/AnimationContext'
 
@@ -10,6 +11,8 @@ export default function Header() {
   const isHomePage = pathname === '/'
   const { showAnimations } = useAnimation()
   const [isScrolled, setIsScrolled] = useState(false)
+  const [isHovered, setIsHovered] = useState(false)
+  const [animationState, setAnimationState] = useState<'idle' | 'clapping' | 'reverse'>('idle')
 
   useEffect(() => {
     const handleScroll = () => {
@@ -28,7 +31,7 @@ export default function Header() {
         : 'top-0 w-full'
     }`}>
       <div className={`grid grid-cols-[1fr_auto_1fr] items-center transition-all duration-700 ${
-        isScrolled ? 'px-8 py-3' : 'px-8 py-5'
+        isScrolled ? 'px-8 py-3' : 'px-8 py-4'
       } ${
         isHomePage 
           ? isScrolled 
@@ -42,10 +45,10 @@ export default function Header() {
             ? '' 
             : ''
       }`}>
-        {/* Logo à gauche - sur deux lignes */}
+        {/* Logo à gauche - avec image et texte en V comme un faisceau lumineux */}
         <a 
           href="/" 
-          className={`font-bold font-display leading-tight transition-all duration-500 tracking-tight group ${
+          className={`flex items-center gap-3 font-bold font-display leading-tight transition-all duration-500 tracking-tight group ${
             isScrolled ? 'text-sm' : 'text-lg'
           } ${
             showAnimations ? 'header-logo-animation' : ''
@@ -56,9 +59,58 @@ export default function Header() {
           } ${
             isHomePage && !isScrolled ? 'drop-shadow-[0_2px_8px_rgba(0,0,0,0.5)]' : ''
           }`}
+          onMouseEnter={() => {
+            setIsHovered(true)
+            setAnimationState('clapping')
+          }}
+          onMouseLeave={() => {
+            setIsHovered(false)
+            setAnimationState('reverse')
+          }}
         >
-          <span className="block transition-transform duration-300 group-hover:translate-x-0.5">Florine</span>
-          <span className="block transition-transform duration-300 group-hover:translate-x-0.5">Clap</span>
+          <div className={`relative transition-all duration-500 ${
+            isScrolled ? 'w-10 h-10' : 'w-12 h-12'
+          }`}>
+            <Image
+              src={isHomePage ? "/images/logos/logo-white.png" : "/images/logos/logo-black.png"}
+              alt="Logo Florine Clap"
+              fill
+              className="object-contain transition-transform duration-300 scale-110 group-hover:scale-125"
+            />
+          </div>
+          <div className="relative flex flex-col items-start">
+            <span 
+              className={`block origin-left ${
+                isScrolled ? '' : 'tracking-wide'
+              } ${
+                animationState === 'clapping' ? 'clap-animation-top' : 
+                animationState === 'reverse' ? 'clap-animation-top-reverse' : ''
+              }`} 
+              style={animationState === 'idle' ? { 
+                transform: isHovered ? 'rotate(-1.5deg) translateY(-0.5px)' : 'rotate(-3deg) translateY(-1px)' 
+              } : undefined}
+              onAnimationEnd={() => {
+                if (animationState === 'clapping' || animationState === 'reverse') {
+                  setAnimationState('idle')
+                }
+              }}
+            >
+              Florine
+            </span>
+            <span 
+              className={`block origin-left ${
+                isScrolled ? '' : 'tracking-wide'
+              } ${
+                animationState === 'clapping' ? 'clap-animation-bottom' : 
+                animationState === 'reverse' ? 'clap-animation-bottom-reverse' : ''
+              }`}
+              style={animationState === 'idle' ? { 
+                transform: isHovered ? 'rotate(1.5deg) translateY(0.5px)' : 'rotate(3deg) translateY(1px)' 
+              } : undefined}
+            >
+              Clap
+            </span>
+          </div>
         </a>
 
         {/* Navigation au centre */}

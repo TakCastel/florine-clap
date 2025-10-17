@@ -90,8 +90,86 @@ h1, h2, h3, h4, h5, h6 {
   animation: marquee 30s linear infinite;
 }
 
-.animate-marquee:hover {
+.animate-marquee.hover\:pause:hover {
   animation-play-state: paused;
+}
+
+/* Animation "clap" pour le logo - ligne du haut (entrée au hover) */
+@keyframes clap-top {
+  0% {
+    transform: rotate(-3deg) translateY(-1px);
+    animation-timing-function: ease-out;
+  }
+  15% {
+    transform: rotate(-5deg) translateY(-2px);
+    animation-timing-function: cubic-bezier(0.25, 0.1, 0.25, 1);
+  }
+  35% {
+    transform: rotate(2deg) translateY(1px);
+    animation-timing-function: ease-in-out;
+  }
+  100% {
+    transform: rotate(-1.5deg) translateY(-0.5px);
+  }
+}
+
+/* Animation "clap" pour le logo - ligne du bas (entrée au hover) */
+@keyframes clap-bottom {
+  0% {
+    transform: rotate(3deg) translateY(1px);
+    animation-timing-function: ease-out;
+  }
+  15% {
+    transform: rotate(5deg) translateY(2px);
+    animation-timing-function: cubic-bezier(0.25, 0.1, 0.25, 1);
+  }
+  35% {
+    transform: rotate(-2deg) translateY(-1px);
+    animation-timing-function: ease-in-out;
+  }
+  100% {
+    transform: rotate(1.5deg) translateY(0.5px);
+  }
+}
+
+/* Animation retour rapide - ligne du haut (sortie du hover) */
+@keyframes clap-top-reverse {
+  0% {
+    transform: rotate(-1.5deg) translateY(-0.5px);
+  }
+  100% {
+    transform: rotate(-3deg) translateY(-1px);
+  }
+}
+
+/* Animation retour rapide - ligne du bas (sortie du hover) */
+@keyframes clap-bottom-reverse {
+  0% {
+    transform: rotate(1.5deg) translateY(0.5px);
+  }
+  100% {
+    transform: rotate(3deg) translateY(1px);
+  }
+}
+
+.clap-animation-top {
+  animation: clap-top 0.7s;
+  animation-fill-mode: forwards;
+}
+
+.clap-animation-bottom {
+  animation: clap-bottom 0.7s;
+  animation-fill-mode: forwards;
+}
+
+.clap-animation-top-reverse {
+  animation: clap-top-reverse 0.3s cubic-bezier(0.4, 0.0, 0.6, 1);
+  animation-fill-mode: forwards;
+}
+
+.clap-animation-bottom-reverse {
+  animation: clap-bottom-reverse 0.3s cubic-bezier(0.4, 0.0, 0.6, 1);
+  animation-fill-mode: forwards;
 }
 
 .bio-card-hover {

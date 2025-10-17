@@ -81,8 +81,28 @@ export default function BioPage() {
       {/* Section Partenaires */}
       <section className="py-20 bg-gray-50">
         <div className="max-w-6xl mx-auto px-4">
-          <h2 className="text-4xl font-display font-bold text-center mb-16 text-theme-dark">Ils me font confiance</h2>
-          <LogoMarquee />
+          {/* Titre avec le même style que la page d'accueil */}
+          <div className="text-center mb-16">
+            <div className="text-theme-dark/40 text-sm uppercase tracking-[0.3em] mb-4 font-medium">
+              Partenaires
+            </div>
+            <h2 
+              className="text-theme-dark font-bold text-4xl md:text-5xl lg:text-6xl leading-none tracking-tight"
+              style={{
+                fontFamily: 'var(--font-andalemo), sans-serif',
+                letterSpacing: '-0.03em',
+              }}
+            >
+              Ils me font confiance
+            </h2>
+            
+            {/* Ligne décorative */}
+            <div className="h-[2px] bg-theme-dark/20 w-32 mx-auto mt-6">
+              <div className="h-full bg-theme-dark"></div>
+            </div>
+          </div>
+          
+          <LogoMarquee pauseOnHover={false} />
         </div>
       </section>
     </div>
