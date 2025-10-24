@@ -56,7 +56,7 @@ export default function Navigation({ isHomePage = false, isScrolled = false }: N
           >
             <a 
               href={item.href} 
-              className={`group font-display font-bold transition-all duration-500 uppercase cursor-pointer relative after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-0.75 after:transition-all after:duration-500 after:ease-out hover:after:w-full tracking-wide ${
+              className={`group font-display font-normal transition-all duration-500 uppercase cursor-pointer relative after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-0.75 after:transition-all after:duration-500 after:ease-out hover:after:w-full tracking-wide ${
                 isScrolled ? 'text-sm' : 'text-base'
               } ${
                 isHomePage 

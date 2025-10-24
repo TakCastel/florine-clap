@@ -22,15 +22,16 @@ const config: Config = {
         'theme-sage': '#8B9A8B',         // Vert sauge
         'theme-burgundy': '#6B2C3E',     // Bordeau profond
         'theme-slate': '#4A5568',        // Ardoise froide
+        'theme-cream': '#F5F3F0',        // Beige cassé pour fond
       },
       fontFamily: {
-        // Solway pour les paragraphes et texte courant
-        sans: ['Solway', 'sans-serif'],
-        // JetBrains Mono pour les titres et éléments spéciaux
-        'display': ['JetBrains Mono', 'monospace'],
+        // Andale Mono pour les paragraphes et texte courant
+        sans: ['Andale Mono', 'Monaco', 'Menlo', 'monospace'],
+        // Andale Mono pour les titres et éléments spéciaux
+        'display': ['Andale Mono', 'Monaco', 'Menlo', 'monospace'],
         // Configuration par défaut
-        serif: ['Solway', 'sans-serif'],
-        mono: ['JetBrains Mono', 'monospace'],
+        serif: ['Andale Mono', 'Monaco', 'Menlo', 'monospace'],
+        mono: ['Andale Mono', 'Monaco', 'Menlo', 'monospace'],
       },
       height: {
         '0.75': '0.1875rem', // 3px

@@ -30,7 +30,7 @@ export default function Header() {
         ? 'top-6 w-[92%] max-w-7xl' 
         : 'top-0 w-full'
     }`}>
-      <div className={`grid grid-cols-[1fr_auto_1fr] items-center transition-all duration-700 ${
+      <div className={`flex justify-between items-center transition-all duration-700 ${
         isScrolled ? 'px-8 py-3' : 'px-8 py-4'
       } ${
         isHomePage 
@@ -113,31 +113,11 @@ export default function Header() {
           </div>
         </a>
 
-        {/* Navigation au centre */}
+        {/* Navigation à droite */}
         <div className={showAnimations ? 'header-nav-animation' : ''}>
           <Navigation isHomePage={isHomePage} isScrolled={isScrolled} />
         </div>
 
-        {/* CTA à droite */}
-        <div className="flex justify-end">
-          <a 
-            href="/bio#contact" 
-            className={`group font-display font-bold transition-all duration-500 uppercase rounded-full relative overflow-hidden ${
-              isScrolled ? 'text-sm px-5 py-2' : 'text-base px-6 py-2.5'
-            } ${
-              isHomePage 
-                ? 'bg-white text-black hover:bg-white hover:shadow-[0_0_20px_rgba(255,255,255,0.3)]' 
-                : 'bg-theme-dark text-white hover:bg-black hover:shadow-[0_0_20px_rgba(0,0,0,0.2)]'
-            } ${
-              isHomePage && !isScrolled ? 'drop-shadow-[0_4px_12px_rgba(0,0,0,0.6)]' : ''
-            }`}
-          >
-            <span className="relative z-10 tracking-wider">Échanger</span>
-            <div className={`absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 ${
-              isHomePage ? 'bg-white/10' : 'bg-black/10'
-            }`}></div>
-          </a>
-        </div>
       </div>
     </header>
   )

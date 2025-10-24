@@ -2,21 +2,21 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Configuration de Solway comme typographie d'affichage */
+/* Configuration d'Andale Mono comme typographie d'affichage */
 
-/* Application de Solway par défaut avec optimisations de performance */
+/* Application d'Andale Mono par défaut avec optimisations de performance */
 * {
-  font-family: 'Solway', sans-serif;
+  font-family: 'Andale Mono', 'Monaco', 'Menlo', monospace;
   /* Optimisations de rendu pour de meilleures performances */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
 }
 
-/* JetBrains Mono pour les titres et éléments spéciaux */
+/* Andale Mono pour les titres et éléments spéciaux */
 .font-display,
 h1, h2, h3, h4, h5, h6 {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: 'Andale Mono', 'Monaco', 'Menlo', monospace;
 }
 
 
@@ -27,7 +27,7 @@ h1, h2, h3, h4, h5, h6 {
 .prose h4,
 .prose h5,
 .prose h6 {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: 'Andale Mono', 'Monaco', 'Menlo', monospace;
   color: #26436C; /* theme-blue de votre palette */
   font-weight: bold;
 }
@@ -211,9 +211,9 @@ h1, h2, h3, h4, h5, h6 {
   margin-bottom: 0.5rem;
 }
 
-/* Solway pour le texte normal */
+/* Andale Mono pour le texte normal */
 .font-sans {
-  font-family: 'Solway', sans-serif;
+  font-family: 'Andale Mono', 'Monaco', 'Menlo', monospace;
 }
 
 /* Animations personnalisées pour les sections sticky */
@@ -426,7 +426,7 @@ html {
 .prose a {
   text-decoration: none;
   color: #26436C;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: 'Andale Mono', 'Monaco', 'Menlo', monospace;
   transition: color 0.3s ease;
 }
 
@@ -445,7 +445,7 @@ html {
 /* Force l'affichage des titres */
 .prose h1, .prose h2, .prose h3, .prose h4, .prose h5, .prose h6 {
   color: #26436C;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: 'Andale Mono', 'Monaco', 'Menlo', monospace;
   font-weight: bold;
 }
 

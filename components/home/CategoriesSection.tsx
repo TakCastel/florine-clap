@@ -69,7 +69,7 @@ export default function CategoriesSection() {
   ]
 
   return (
-    <section ref={sectionRef} id="categories-section" className="w-full min-h-screen bg-black flex items-center justify-center py-24">
+    <section ref={sectionRef} id="categories-section" className="w-full min-h-screen bg-white flex items-center justify-center py-24">
       <div className="w-full px-6 md:px-10 lg:px-16 max-w-[1800px] mx-auto">
         <div className="w-full flex flex-col md:flex-row gap-4 md:gap-6 lg:gap-8 md:items-stretch">
           {cards.map((card, index) => (

@@ -29,7 +29,7 @@ export default function ActusPage({ searchParams }: ActusPageProps) {
   }, [])
 
   return (
-    <div className="min-h-screen bg-theme-yellow relative overflow-hidden">
+    <div className="min-h-screen bg-white relative overflow-hidden">
       {/* Éléments décoratifs */}
       <div className="absolute top-40 right-10 w-32 h-32 border border-theme-dark/5 rounded-full"></div>
       <div className="absolute bottom-40 left-16 w-48 h-48 border border-theme-dark/5 rotate-45"></div>

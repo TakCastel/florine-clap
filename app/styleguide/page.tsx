@@ -114,10 +114,10 @@ function TypographySection() {
         </div>
       </div>
 
-      {/* Police de texte - Solway */}
+      {/* Police de texte - Andale Mono */}
       <div className="mb-12">
         <h3 className="text-2xl font-display font-bold text-theme-blue mb-6">
-          Police de texte - Solway
+          Police de texte - Andale Mono
         </h3>
         <div className="space-y-6">
           <div>
@@ -184,7 +184,7 @@ function TypographySection() {
           
           <div>
             <h4 className="text-lg font-display font-semibold text-gray-700 mb-2">
-              Solway
+              Andale Mono
             </h4>
             <div className="space-y-2">
               <p className="font-sans font-light text-lg">Light (300)</p>

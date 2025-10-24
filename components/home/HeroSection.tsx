@@ -36,9 +36,6 @@ export default function HeroSection() {
             Votre navigateur ne supporte pas la lecture de vidéos.
           </video>
           
-          {/* Overlay sombre avec gradient */}
-          <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/80"></div>
-          <div className="absolute inset-0 bg-gradient-to-r from-black/30 via-transparent to-black/30"></div>
         </div>
 
         {/* Contenu principal */}

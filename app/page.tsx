@@ -9,7 +9,7 @@ import { HoverProvider } from '@/contexts/HoverContext'
 export default function HomePage() {
   return (
     <HoverProvider>
-      <div className="relative">
+      <div className="relative bg-white min-h-screen">
         <HeroSection />
         <CategoriesSection />
         <BioSection />
