@@ -65,6 +65,7 @@ export const Mediation = defineDocumentType(() => ({
     modalites: { type: 'string', required: false },
     lien_inscription: { type: 'string', required: false },
     excerpt: { type: 'string', required: false },
+    cover: { type: 'string', required: false },
     tags: { type: 'list', of: { type: 'string' }, required: false },
   },
   computedFields,
