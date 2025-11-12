@@ -9,6 +9,7 @@ interface CategoryCardProps {
   linkText: string
   imageSrc: string
   imageAlt: string
+  theme?: 'films' | 'mediations' | 'actus' | 'videos-art'
   bgColor: string
   hoverBgColor: string
   textColor: string
@@ -26,6 +27,7 @@ export default function CategoryCard({
   linkText,
   imageSrc,
   imageAlt,
+  theme,
   bgColor,
   hoverBgColor,
   textColor,
@@ -74,15 +76,34 @@ export default function CategoryCard({
           <img 
             src={imageSrc} 
             alt={imageAlt}
-            className="w-full h-full object-cover"
+            className={`w-full h-full object-cover ${
+              theme === 'films' ? 'filter-[sepia(20%)_saturate(150%)_hue-rotate(340deg)_brightness(0.9)]' :
+              theme === 'mediations' ? 'filter-[sepia(10%)_saturate(120%)_hue-rotate(200deg)_brightness(0.7)]' :
+              theme === 'actus' ? 'filter-[sepia(30%)_saturate(180%)_hue-rotate(15deg)_brightness(0.95)]' :
+              theme === 'videos-art' ? 'filter-[sepia(0%)_saturate(100%)_brightness(0.8)]' :
+              ''
+            }`}
           />
-          {/* Overlay coloré avec teinte forte */}
+          {/* Overlay coloré avec teinte forte - plus visible pour Films comme Actualités */}
           <div 
-            className={`absolute inset-0 ${bgColor.replace('/85', '')} opacity-75 group-hover:opacity-65 transition-all duration-700`}
+            className={`absolute inset-0 ${bgColor.replace('/85', '')} transition-all duration-700`}
+            style={{
+              opacity: theme === 'films' ? (isHovered ? 0.75 : 0.80) : theme === 'actus' ? (isHovered ? 0.70 : 0.75) : theme === 'videos-art' ? (isHovered ? 0.75 : 0.80) : (isHovered ? 0.65 : 0.75)
+            }}
           ></div>
-          {/* Overlay avec gradient créatif */}
-          <div className="absolute inset-0 bg-gradient-to-br from-black/30 via-transparent to-transparent transition-opacity duration-700"></div>
-          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent"></div>
+          {/* Overlay avec gradient créatif - très réduit pour Films et Actualités pour laisser voir la couleur */}
+          <div 
+            className="absolute inset-0 bg-gradient-to-br from-black/30 via-transparent to-transparent transition-opacity duration-700"
+            style={{
+              opacity: theme === 'films' || theme === 'actus' || theme === 'videos-art' ? 0.1 : 1
+            }}
+          ></div>
+          <div 
+            className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent"
+            style={{
+              opacity: theme === 'films' || theme === 'actus' || theme === 'videos-art' ? 0.2 : 1
+            }}
+          ></div>
         </div>
       </div>
 
@@ -91,19 +112,8 @@ export default function CategoryCard({
       
       {/* Contenu */}
       <div className="relative h-full flex flex-col justify-between p-8 md:p-10">
-        {/* Numéro décoratif en haut */}
-        <div className="flex justify-between items-start">
-          <div className="overflow-hidden">
-            <div 
-              className="text-white/20 font-bold text-6xl md:text-7xl leading-none transition-transform duration-700 ease-out"
-              style={{
-                transform: isHovered ? 'translateY(0)' : 'translateY(-100%)',
-              }}
-            >
-              {title === 'Films' ? '01' : title === 'Médiations' ? '02' : '03'}
-            </div>
-          </div>
-          
+        {/* Cercle interactif en haut */}
+        <div className="flex justify-end items-start">
           {/* Cercle interactif */}
           <div 
             className="w-16 h-16 rounded-full border-2 border-white/30 flex items-center justify-center transition-all duration-500 group-hover:border-white group-hover:rotate-90"
@@ -127,7 +137,7 @@ export default function CategoryCard({
         <div className="mt-auto">
           <div className="overflow-hidden mb-4 pb-2">
             <h3 
-              className="text-white font-bold text-5xl md:text-6xl lg:text-7xl leading-tight tracking-tighter transition-transform duration-700 ease-out"
+              className="text-white font-bold text-6xl leading-tight tracking-tighter transition-transform duration-700 ease-out"
               style={{
                 fontFamily: 'var(--font-andalemo), sans-serif',
                 transform: isHovered ? 'translateY(0)' : 'translateY(10%)',

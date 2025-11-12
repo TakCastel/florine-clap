@@ -35,13 +35,9 @@ export default function BioSection() {
     <section 
       ref={sectionRef}
       id="bio-section" 
-      className="w-full min-h-screen bg-white flex items-center justify-center py-24 md:py-32 relative overflow-hidden"
+      className="w-full min-h-screen bg-theme-cream flex items-center justify-center py-24 md:py-32 relative overflow-hidden"
       onMouseMove={handleMouseMove}
     >
-      {/* Éléments décoratifs en arrière-plan */}
-      <div className="absolute top-20 right-20 w-32 h-32 border border-black/5 rounded-full"></div>
-      <div className="absolute bottom-32 left-16 w-48 h-48 border border-black/5 rotate-45"></div>
-
       <div className="max-w-7xl mx-auto px-6 md:px-10 lg:px-16 w-full">
         <div className="flex flex-col lg:flex-row gap-12 lg:gap-16 items-center">
           
@@ -54,11 +50,6 @@ export default function BioSection() {
               transition: 'opacity 1s cubic-bezier(0.16, 1, 0.3, 1) 0.2s, transform 1s cubic-bezier(0.16, 1, 0.3, 1) 0.2s',
             }}
           >
-            {/* Numéro décoratif */}
-            <div className="absolute -top-8 -left-4 text-8xl md:text-9xl font-bold text-black/5 leading-none z-0 pointer-events-none">
-              01
-            </div>
-
             {/* Image principale */}
             <div className="relative overflow-hidden">
               <div 
@@ -96,15 +87,15 @@ export default function BioSection() {
                 transition: 'opacity 1s cubic-bezier(0.16, 1, 0.3, 1) 0.4s, transform 1s cubic-bezier(0.16, 1, 0.3, 1) 0.4s',
               }}
             >
-              <h2 
-                className="text-black font-bold text-6xl md:text-7xl lg:text-8xl leading-none tracking-tighter mb-4"
+              <h3 
+                className="text-black font-bold text-6xl leading-tight tracking-tighter mb-4"
                 style={{
                   fontFamily: 'var(--font-andalemo), sans-serif',
                   letterSpacing: '-0.05em',
                 }}
               >
                 Qui suis-je ?
-              </h2>
+              </h3>
               
               {/* Ligne de séparation animée */}
               <div className="h-[2px] bg-black/20 w-full max-w-xs overflow-hidden">

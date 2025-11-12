@@ -55,11 +55,11 @@ export default function Breadcrumb({ items, variant = 'default' }: Props) {
         }
       default:
         return {
-          container: 'bg-theme-dark',
-          text: 'text-white/80',
-          separator: 'text-white/60',
-          hover: 'hover:text-white',
-          current: 'text-white'
+          container: 'bg-theme-cream',
+          text: 'text-theme-dark/80',
+          separator: 'text-theme-dark/60',
+          hover: 'hover:text-theme-dark',
+          current: 'text-theme-dark'
         }
     }
   }
@@ -67,8 +67,8 @@ export default function Breadcrumb({ items, variant = 'default' }: Props) {
   const styles = getVariantStyles()
 
   return (
-    <div className={`${styles.container} py-4`}>
-      <div className="max-w-6xl mx-auto px-4">
+    <div className={`${styles.container} py-4 border-b border-theme-dark/10`}>
+      <div className="max-w-7xl mx-auto px-6 md:px-10 lg:px-16">
         <nav className={`flex items-center text-sm font-display ${styles.text}`} aria-label="Breadcrumb">
           {items.map((item, index) => (
             <div key={index} className="flex items-center">

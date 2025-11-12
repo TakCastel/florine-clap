@@ -456,7 +456,7 @@ function CardsSection() {
                     Synopsis du film qui décrit brièvement le contenu et l'approche documentaire.
                   </p>
                   <div className="inline-flex items-center text-white font-display font-medium group-hover:text-white/80 transition-colors">
-                    Voir le film
+                    Voir la page du film
                     <svg className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                     </svg>

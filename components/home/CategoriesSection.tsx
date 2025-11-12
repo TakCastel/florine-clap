@@ -5,6 +5,8 @@ import CategoryCard from '@/components/CategoryCard'
 
 export default function CategoriesSection() {
   const [isVisible, setIsVisible] = useState(false)
+  const [isMobile, setIsMobile] = useState(false)
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
   const sectionRef = useRef<HTMLElement>(null)
 
   useEffect(() => {
@@ -14,7 +16,7 @@ export default function CategoriesSection() {
           setIsVisible(true)
         }
       },
-      { threshold: 0.1 }
+      { threshold: 0.05, rootMargin: '50px' }
     )
 
     if (sectionRef.current) {
@@ -23,7 +25,33 @@ export default function CategoriesSection() {
 
     return () => observer.disconnect()
   }, [])
-  const cards = [
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768)
+    }
+    
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    
+    return () => window.removeEventListener('resize', checkMobile)
+  }, [])
+
+  const cards: Array<{
+    href: string
+    title: string
+    description: string
+    linkText: string
+    imageSrc: string
+    imageAlt: string
+    theme: 'films' | 'mediations' | 'actus' | 'videos-art'
+    bgColor: string
+    hoverBgColor: string
+    textColor: string
+    linkColor: string
+    hoverLinkColor: string
+    underlineClass: string
+  }> = [
     {
       href: '/films',
       title: 'Films',
@@ -31,12 +59,13 @@ export default function CategoriesSection() {
       linkText: 'Découvrir',
       imageSrc: 'https://picsum.photos/800/1200?random=2',
       imageAlt: 'Découvrir mes films',
-      bgColor: 'bg-theme-blue/85',
-      hoverBgColor: 'group-hover:bg-theme-blue/90',
-      textColor: 'text-white',
-      linkColor: 'text-white/80',
-      hoverLinkColor: 'hover:text-white',
-      underlineClass: 'after:bg-white'
+      theme: 'films',
+      bgColor: 'bg-theme-films/85',
+      hoverBgColor: 'group-hover:bg-theme-films/90',
+      textColor: 'text-theme-films-text',
+      linkColor: 'text-theme-films-text/80',
+      hoverLinkColor: 'hover:text-theme-films-text',
+      underlineClass: 'after:bg-theme-films-text'
     },
     {
       href: '/mediations',
@@ -45,12 +74,28 @@ export default function CategoriesSection() {
       linkText: 'Explorer',
       imageSrc: 'https://picsum.photos/800/1200?random=3',
       imageAlt: 'Découvrir mes médiations',
-      bgColor: 'bg-black/85',
-      hoverBgColor: 'group-hover:bg-black/90',
-      textColor: 'text-white',
-      linkColor: 'text-white/80',
-      hoverLinkColor: 'hover:text-white',
-      underlineClass: 'after:bg-white'
+      theme: 'mediations',
+      bgColor: 'bg-theme-mediations/85',
+      hoverBgColor: 'group-hover:bg-theme-mediations/90',
+      textColor: 'text-theme-mediations-text',
+      linkColor: 'text-theme-mediations-text/80',
+      hoverLinkColor: 'hover:text-theme-mediations-text',
+      underlineClass: 'after:bg-theme-mediations-text'
+    },
+    {
+      href: '/videos-art',
+      title: 'Vidéos/art',
+      description: 'Découvrez mes créations vidéo artistiques et mes projets expérimentaux',
+      linkText: 'Explorer',
+      imageSrc: 'https://picsum.photos/800/1200?random=5',
+      imageAlt: 'Découvrir mes vidéos artistiques',
+      theme: 'videos-art',
+      bgColor: 'bg-theme-videos-art/85',
+      hoverBgColor: 'group-hover:bg-theme-videos-art/90',
+      textColor: 'text-theme-videos-art-text',
+      linkColor: 'text-theme-videos-art-text/80',
+      hoverLinkColor: 'hover:text-theme-videos-art-text',
+      underlineClass: 'after:bg-theme-videos-art-text'
     },
     {
       href: '/actus',
@@ -59,32 +104,53 @@ export default function CategoriesSection() {
       linkText: 'Lire',
       imageSrc: 'https://picsum.photos/800/1200?random=4',
       imageAlt: 'Découvrir mes actualités',
-      bgColor: 'bg-theme-yellow/85',
-      hoverBgColor: 'group-hover:bg-theme-yellow/90',
-      textColor: 'text-theme-dark',
-      linkColor: 'text-theme-dark/80',
-      hoverLinkColor: 'hover:text-theme-dark',
-      underlineClass: 'after:bg-theme-dark'
+      theme: 'actus',
+      bgColor: 'bg-theme-actus/85',
+      hoverBgColor: 'group-hover:bg-theme-actus/90',
+      textColor: 'text-theme-actus-text',
+      linkColor: 'text-theme-actus-text/80',
+      hoverLinkColor: 'hover:text-theme-actus-text',
+      underlineClass: 'after:bg-theme-actus-text'
     }
   ]
 
   return (
-    <section ref={sectionRef} id="categories-section" className="w-full min-h-screen bg-white flex items-center justify-center py-24">
+    <section ref={sectionRef} id="categories-section" className="w-full min-h-screen bg-theme-cream flex items-center justify-center py-12 md:py-16">
       <div className="w-full px-6 md:px-10 lg:px-16 max-w-[1800px] mx-auto">
-        <div className="w-full flex flex-col md:flex-row gap-4 md:gap-6 lg:gap-8 md:items-stretch">
+        <div className="w-full flex flex-col md:grid md:grid-cols-2 2xl:flex 2xl:flex-row gap-3 md:gap-4 2xl:gap-6">
           {cards.map((card, index) => (
             <div
               key={index}
-              className={`flex-1 h-[65vh] md:h-[70vh] lg:h-[75vh] ${
+              className={`flex-1 group ${
                 isVisible 
                   ? 'opacity-100 translate-y-0' 
-                  : 'opacity-0 translate-y-16'
+                  : 'opacity-0 translate-y-8'
+              } ${
+                hoveredIndex === index 
+                  ? '2xl:flex-[1.6]' 
+                  : '2xl:flex-[1]'
+              } ${
+                isMobile 
+                  ? 'h-[calc((100vh-12rem)/4)]' 
+                  : 'md:h-[calc((100vh-8rem)/2)] 2xl:h-[calc(100vh-8rem)]'
               }`}
               style={{
                 transition: isVisible 
-                  ? `opacity 1s cubic-bezier(0.16, 1, 0.3, 1) ${index * 180}ms, transform 1s cubic-bezier(0.16, 1, 0.3, 1) ${index * 180}ms`
-                  : 'opacity 1s cubic-bezier(0.16, 1, 0.3, 1), transform 1s cubic-bezier(0.16, 1, 0.3, 1)',
+                  ? `opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1) ${index * 50}ms, transform 0.5s cubic-bezier(0.16, 1, 0.3, 1) ${index * 50}ms, flex 0.6s cubic-bezier(0.16, 1, 0.3, 1)`
+                  : 'opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), transform 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
                 transitionDelay: isVisible ? '' : '0ms'
+              }}
+              onMouseEnter={() => {
+                setHoveredIndex(index)
+              }}
+              onMouseLeave={() => {
+                setHoveredIndex(null)
+              }}
+              onTouchStart={() => {
+                // Sur mobile/tablette tactile, on peut aussi agrandir au touch
+                if (window.innerWidth >= 768) {
+                  setHoveredIndex(index)
+                }
               }}
             >
               <CategoryCard
@@ -94,6 +160,7 @@ export default function CategoriesSection() {
                 linkText={card.linkText}
                 imageSrc={card.imageSrc}
                 imageAlt={card.imageAlt}
+                theme={card.theme}
                 bgColor={card.bgColor}
                 hoverBgColor={card.hoverBgColor}
                 textColor={card.textColor}

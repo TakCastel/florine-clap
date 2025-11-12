@@ -27,11 +27,7 @@ export default function Footer() {
 
   return (
     <footer ref={footerRef} className="bg-black text-white relative overflow-hidden">
-      {/* Éléments décoratifs */}
       <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
-      <div className="absolute top-10 left-10 w-24 h-24 border border-white/5 rounded-full"></div>
-      <div className="absolute bottom-20 right-20 w-32 h-32 border border-white/5 rotate-45"></div>
-
       <div className="max-w-7xl mx-auto px-6 md:px-10 lg:px-16 py-20 md:py-24">
         
         {/* Section principale */}
@@ -129,15 +125,21 @@ export default function Footer() {
                 Navigation
               </h4>
               <nav className="flex flex-col space-y-4">
-                {['Films', 'Médiations', 'Actualités', 'Bio'].map((item, index) => (
+                {[
+                  { label: 'Films', href: '/films' },
+                  { label: 'Médiations', href: '/mediations' },
+                  { label: 'Vidéos/art', href: '/videos-art' },
+                  { label: 'Actualités', href: '/actus' },
+                  { label: 'Bio', href: '/bio' }
+                ].map((item, index) => (
                   <Link 
-                    key={item}
-                    href={`/${item.toLowerCase()}`}
+                    key={item.href}
+                    href={item.href}
                     className="group inline-flex items-center gap-3 text-white/75 hover:text-white transition-all duration-500 text-lg"
                   >
                     <div className="w-0 h-[2px] bg-white group-hover:w-8 transition-all duration-500"></div>
                     <span className="group-hover:translate-x-2 transition-transform duration-500">
-                      {item}
+                      {item.label}
                     </span>
                   </Link>
                 ))}

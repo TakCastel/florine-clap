@@ -14,15 +14,46 @@ const config: Config = {
         'theme-beige': '#D9D5CC',        // Gris chaud de la palette
         'theme-orange': '#E8B95C',       // Jaune moutarde de la palette
         'theme-navy': '#26436C',         // Bleu sombre de la palette
-        'theme-dark': '#0B1426',         // Bleu nuit profond
+        'theme-dark': '#1e3a5f',         // Bleu sombre visible pour médiations
         // Couleurs principales de la palette
         'theme-blue': '#26436C',         // Bleu principal de la palette
+        'theme-film': '#9B1A33',         // Rouge pourpre cerise sombre pour les films
+        'theme-mediation': '#1e3a5f',     // Bleu sombre pour médiations
         'theme-grey': '#D9D5CC',         // Gris chaud de la palette
-        'theme-yellow': '#FFD700',       // Jaune pop art vibrant
+        'theme-yellow': '#B8860B',       // Jaune moutarde sombre
         'theme-sage': '#8B9A8B',         // Vert sauge
         'theme-burgundy': '#6B2C3E',     // Bordeau profond
         'theme-slate': '#4A5568',        // Ardoise froide
         'theme-cream': '#F5F3F0',        // Beige cassé pour fond
+        // Classes globales par thème
+        'theme-films': {
+          DEFAULT: '#9B1A33',             // Rouge pourpre cerise sombre principal
+          light: '#B91C3A',               // Rouge pourpre plus clair
+          dark: '#7A1529',                // Rouge pourpre très sombre
+          text: '#FFFFFF',                // Texte blanc
+          border: '#FFFFFF',              // Bordure blanche
+        },
+        'theme-mediations': {
+          DEFAULT: '#1e3a5f',            // Bleu sombre principal
+          light: '#2d4a6f',              // Bleu plus clair
+          dark: '#0f1a2f',               // Bleu plus sombre
+          text: '#FFFFFF',               // Texte blanc
+          border: '#FFFFFF',             // Bordure blanche
+        },
+        'theme-actus': {
+          DEFAULT: '#B8860B',            // Jaune moutarde sombre principal
+          light: '#D4AF37',              // Jaune moutarde plus clair
+          dark: '#8B6914',               // Jaune moutarde plus sombre
+          text: '#FFFFFF',               // Texte blanc
+          border: '#0B1426',            // Bordure sombre
+        },
+        'theme-videos-art': {
+          DEFAULT: '#000000',            // Noir principal
+          light: '#1a1a1a',              // Noir plus clair
+          dark: '#000000',               // Noir très sombre
+          text: '#FFFFFF',               // Texte blanc
+          border: '#FFFFFF',             // Bordure blanche
+        },
       },
       fontFamily: {
         // Andale Mono pour les paragraphes et texte courant

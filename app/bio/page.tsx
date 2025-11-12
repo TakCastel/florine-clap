@@ -45,7 +45,7 @@ export default function BioPage() {
       
       {/* Hero Section avec portrait */}
       <section className="py-20 bg-gradient-to-br from-theme-blue/5 via-white to-theme-yellow/10">
-        <div className="max-w-6xl mx-auto px-4">
+        <div className="max-w-7xl mx-auto px-6 md:px-10 lg:px-16">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div>
               <h1 className="text-5xl font-display font-bold text-theme-dark mb-6">
@@ -71,7 +71,7 @@ export default function BioPage() {
 
       {/* Contenu MDX principal */}
       <section className="py-20 bg-white">
-        <div className="max-w-6xl mx-auto px-4">
+        <div className="max-w-7xl mx-auto px-6 md:px-10 lg:px-16">
           <div className="prose prose-lg max-w-none">
             <MdxRenderer code={page.body.code} />
           </div>
@@ -80,7 +80,7 @@ export default function BioPage() {
 
       {/* Section Partenaires */}
       <section className="py-20 bg-gray-50">
-        <div className="max-w-6xl mx-auto px-4">
+        <div className="max-w-7xl mx-auto px-6 md:px-10 lg:px-16">
           {/* Titre avec le même style que la page d'accueil */}
           <div className="text-center mb-16">
             <div className="text-theme-dark/40 text-sm uppercase tracking-[0.3em] mb-4 font-medium">

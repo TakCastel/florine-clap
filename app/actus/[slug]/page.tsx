@@ -34,7 +34,7 @@ export default function ActuPage({ params }: ActuPageProps) {
   }
 
   return (
-    <div className="min-h-screen bg-theme-yellow">
+    <div className="min-h-screen bg-theme-cream">
       <Breadcrumb 
         items={[
           { label: 'Accueil', href: '/' },
@@ -45,90 +45,99 @@ export default function ActuPage({ params }: ActuPageProps) {
       />
 
       {/* Hero section avec image */}
-      <div className="relative h-96">
+      <div className="relative h-[45vh] min-h-[300px]">
         {actu.cover && (
-          <div className="absolute inset-0 bg-cover bg-center bg-no-repeat" style={{ backgroundImage: `url(${actu.cover})` }}>
-            <div className="absolute inset-0 bg-black/20 backdrop-blur-sm"></div>
+          <div className="absolute inset-0 bg-cover bg-center bg-no-repeat blur-sm" style={{ backgroundImage: `url(${actu.cover})` }}>
+            <div className="absolute inset-0 bg-gradient-to-t from-theme-cream via-theme-cream/50 to-transparent"></div>
+            <div className="absolute inset-0 bg-gradient-to-r from-theme-cream/80 via-theme-cream/40 to-transparent"></div>
           </div>
         )}
-        <div className="relative z-10 h-full flex items-center justify-center">
-          <div className="text-center max-w-4xl px-8">
-            <div className="text-theme-yellow text-sm font-display mb-2">
-              {new Date(actu.date).toLocaleDateString('fr-FR', {
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric'
-              })}
+        <div className="relative z-10 h-full flex items-end">
+          <div className="max-w-7xl mx-auto px-6 md:px-10 lg:px-16 pb-16 w-full">
+            <div className="text-center max-w-4xl mx-auto">
+              <div className="text-theme-dark/60 text-sm uppercase tracking-[0.2em] mb-4 font-light">
+                {new Date(actu.date).toLocaleDateString('fr-FR', {
+                  year: 'numeric',
+                  month: 'long',
+                  day: 'numeric'
+                })}
+              </div>
+              <h1 
+                className="text-4xl md:text-5xl lg:text-6xl font-display font-bold text-theme-dark leading-tight"
+                style={{
+                  fontFamily: 'var(--font-andalemo), sans-serif',
+                  letterSpacing: '-0.03em',
+                }}
+              >
+                {actu.title}
+              </h1>
             </div>
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-display font-bold text-white mb-4 leading-tight">
-              {actu.title}
-            </h1>
-            {actu.excerpt && actu.excerpt.trim() !== '.' && actu.excerpt.trim().length > 2 && (
-              <p className="text-white/90 text-xl leading-relaxed max-w-3xl mx-auto">
-                {actu.excerpt}
-              </p>
-            )}
           </div>
         </div>
       </div>
 
       {/* Contenu principal */}
-      <div className="max-w-6xl mx-auto px-4 py-12">
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-12">
+      <div className="max-w-7xl mx-auto px-6 md:px-10 lg:px-16 py-16 md:py-24">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
           
           {/* Contenu principal */}
-          <div className="lg:col-span-3">
-            <div className="bg-white/95 rounded-lg shadow-lg overflow-hidden">
-              {/* Contenu MDX */}
-              <div className="p-8 md:p-12">
-                <MdxRenderer code={actu.body.code} />
-              </div>
+          <div className="lg:col-span-2">
+            {/* Contenu MDX */}
+            <div className="prose prose-lg max-w-none text-theme-dark">
+              <MdxRenderer code={actu.body.code} />
             </div>
           </div>
 
           {/* Sidebar avec informations */}
           <div className="lg:col-span-1">
-            <div className="bg-white/95 rounded-lg shadow-lg p-6 sticky top-8">
-              <h3 className="text-xl font-display font-bold text-theme-dark mb-6">Informations</h3>
-              
-              <div className="space-y-6">
-                {/* Date */}
-                <div>
-                  <p className="text-sm text-theme-dark/70 font-medium mb-1">Date de publication</p>
-                  <p className="text-theme-dark font-display font-semibold">
-                    {new Date(actu.date).toLocaleDateString('fr-FR', {
-                      year: 'numeric',
-                      month: 'long',
-                      day: 'numeric'
-                    })}
-                  </p>
-                </div>
-
-                {/* Tags */}
-                {actu.tags && actu.tags.length > 0 && (
+            <div className="sticky top-8">
+              <div className="border-t border-theme-dark/10 pt-8">
+                <h3 className="text-xl font-display font-bold text-theme-dark mb-6" style={{
+                  fontFamily: 'var(--font-andalemo), sans-serif',
+                  letterSpacing: '-0.02em',
+                }}>
+                  Informations
+                </h3>
+                
+                <div className="space-y-6">
+                  {/* Date */}
                   <div>
-                    <p className="text-sm text-theme-dark/70 font-medium mb-3">Tags</p>
-                    <div className="flex flex-wrap gap-2">
-                      {actu.tags.map((tag, index) => (
-                        <span 
-                          key={index}
-                          className="px-3 py-1 bg-theme-dark text-white text-sm rounded-full font-display"
-                        >
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
+                    <p className="text-xs text-theme-dark/50 uppercase tracking-[0.2em] mb-2 font-light">Date</p>
+                    <p className="text-theme-dark font-display font-medium">
+                      {new Date(actu.date).toLocaleDateString('fr-FR', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric'
+                      })}
+                    </p>
                   </div>
-                )}
 
-                {/* Retour aux actualités */}
-                <div className="pt-6 border-t border-theme-dark/20">
-                  <a 
-                    href="/actus"
-                    className="inline-flex items-center text-theme-dark hover:text-theme-dark/70 transition-colors font-display font-medium"
-                  >
-                    ← Retour aux actualités
-                  </a>
+                  {/* Tags */}
+                  {actu.tags && actu.tags.length > 0 && (
+                    <div>
+                      <p className="text-xs text-theme-dark/50 uppercase tracking-[0.2em] mb-3 font-light">Tags</p>
+                      <div className="flex flex-wrap gap-2">
+                        {actu.tags.map((tag, index) => (
+                          <span 
+                            key={index}
+                            className="px-3 py-1.5 bg-theme-dark/5 border border-theme-dark/10 text-theme-dark text-sm rounded-full font-display font-light"
+                          >
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Retour aux actualités */}
+                  <div className="pt-6 border-t border-theme-dark/10">
+                    <a 
+                      href="/actus"
+                      className="inline-flex items-center gap-2 text-theme-dark/70 hover:text-theme-dark transition-colors font-display font-light text-sm uppercase tracking-[0.1em]"
+                    >
+                      ← Retour aux actualités
+                    </a>
+                  </div>
                 </div>
               </div>
             </div>

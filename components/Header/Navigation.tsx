@@ -5,16 +5,16 @@ import { useAnimation } from '@/contexts/AnimationContext'
 
 interface NavigationProps {
   isHomePage?: boolean
-  isScrolled?: boolean
 }
 
-export default function Navigation({ isHomePage = false, isScrolled = false }: NavigationProps) {
+export default function Navigation({ isHomePage = false }: NavigationProps) {
   const { showAnimations } = useAnimation()
   const [visibleItems, setVisibleItems] = useState<number[]>([])
   
   const navItems = [
     { href: '/films', label: 'FILMS' },
     { href: '/mediations', label: 'MÉDIATIONS' },
+    { href: '/videos-art', label: 'VIDÉOS/ART' },
     { href: '/actus', label: 'ACTUALITÉS' },
     { href: '/bio', label: 'BIO' }
   ]
@@ -23,12 +23,12 @@ export default function Navigation({ isHomePage = false, isScrolled = false }: N
   useEffect(() => {
     if (!showAnimations) {
       // Si pas d'animation, afficher tous les éléments immédiatement
-      setVisibleItems([0, 1, 2, 3])
+      setVisibleItems([0, 1, 2, 3, 4])
       return
     }
 
     // Animation séquentielle avec délais - commence immédiatement
-    const delays = [0, 100, 200, 300]
+    const delays = [0, 100, 200, 300, 400]
     
     delays.forEach((delay, index) => {
       setTimeout(() => {
@@ -46,7 +46,7 @@ export default function Navigation({ isHomePage = false, isScrolled = false }: N
           <div 
             key={item.href} 
             className={`flex items-center transition-all duration-300 ${
-              index < navItems.length - 1 ? (isScrolled ? 'mr-6' : 'mr-8') : ''
+              index < navItems.length - 1 ? 'mr-8' : ''
             }`}
             style={{
               opacity: isVisible ? 1 : 0,
@@ -56,19 +56,13 @@ export default function Navigation({ isHomePage = false, isScrolled = false }: N
           >
             <a 
               href={item.href} 
-              className={`group font-display font-normal transition-all duration-500 uppercase cursor-pointer relative after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-0.75 after:transition-all after:duration-500 after:ease-out hover:after:w-full tracking-wide ${
-                isScrolled ? 'text-sm' : 'text-base'
-              } ${
+              className={`font-display font-normal uppercase cursor-pointer relative after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-px after:transition-all after:duration-500 after:ease-out hover:after:w-full tracking-wide transition-colors duration-300 text-base ${
                 isHomePage 
-                  ? 'text-white/75 hover:text-white after:bg-white' 
+                  ? 'text-white/75 hover:text-white after:bg-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.5)]' 
                   : 'text-theme-dark/80 hover:text-black after:bg-theme-dark'
-              } ${
-                isHomePage && !isScrolled ? 'drop-shadow-[0_2px_8px_rgba(0,0,0,0.5)]' : ''
               }`}
             >
-              <span className="transition-all duration-300 group-hover:tracking-wider inline-block">
-                {item.label}
-              </span>
+              {item.label}
             </a>
           </div>
         )

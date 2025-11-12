@@ -14,6 +14,7 @@ const computedFields = {
       if (doc.type === 'mediation') return `/mediations/${doc._raw.flattenedPath.split('/').pop()}`
       if (doc.type === 'film') return `/films/${doc._raw.flattenedPath.split('/').pop()}`
       if (doc.type === 'actu') return `/actus/${doc._raw.flattenedPath.split('/').pop()}`
+      if (doc.type === 'video-art') return `/videos-art/${doc._raw.flattenedPath.split('/').pop()}`
       return `/${doc._raw.flattenedPath}`
     },
   },
@@ -29,12 +30,25 @@ export const Film = defineDocumentType(() => ({
     type: { type: 'string', required: false },
     duree: { type: 'string', required: false },
     annee: { type: 'string', required: false },
+    order: { type: 'number', required: false },
     vimeoId: { type: 'string', required: false },
     shortSynopsis: { type: 'string', required: false },
+    // Fiche technique
     realisation: { type: 'string', required: false },
     mixage: { type: 'string', required: false },
+    son: { type: 'string', required: false },
     texte: { type: 'string', required: false },
+    musique: { type: 'string', required: false },
+    montage: { type: 'string', required: false },
+    avec: { type: 'string', required: false },
     production: { type: 'string', required: false },
+    // Diffusion/Sélection
+    diffusion: { type: 'list', of: { type: 'string' }, required: false },
+    selection: { type: 'list', of: { type: 'string' }, required: false },
+    // Lien film
+    lienFilm: { type: 'string', required: false },
+    // Remerciements
+    remerciements: { type: 'string', required: false },
   },
   computedFields,
 }))
@@ -72,6 +86,26 @@ export const Actu = defineDocumentType(() => ({
   computedFields,
 }))
 
+export const VideoArt = defineDocumentType(() => ({
+  name: 'VideoArt',
+  filePathPattern: `videos-art/**/*.mdx`,
+  contentType: 'mdx',
+  fields: {
+    title: { type: 'string', required: true },
+    image: { type: 'string', required: false },
+    type: { type: 'string', required: false },
+    duree: { type: 'string', required: false },
+    annee: { type: 'string', required: false },
+    vimeoId: { type: 'string', required: false },
+    shortSynopsis: { type: 'string', required: false },
+    realisation: { type: 'string', required: false },
+    mixage: { type: 'string', required: false },
+    texte: { type: 'string', required: false },
+    production: { type: 'string', required: false },
+  },
+  computedFields,
+}))
+
 export const Page = defineDocumentType(() => ({
   name: 'Page',
   filePathPattern: `pages/**/*.mdx`,
@@ -88,7 +122,7 @@ export const Page = defineDocumentType(() => ({
 
 export default makeSource({
   contentDirPath: 'content',
-  documentTypes: [Film, Mediation, Actu, Page],
+  documentTypes: [Film, Mediation, Actu, VideoArt, Page],
   disableImportAliasWarning: true,
   mdx: {
     remarkPlugins: [remarkGfm],

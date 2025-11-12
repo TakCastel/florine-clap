@@ -2,120 +2,68 @@
 
 import { usePathname } from 'next/navigation'
 import { useState, useEffect } from 'react'
-import Image from 'next/image'
 import Navigation from './Header/Navigation'
 import { useAnimation } from '@/contexts/AnimationContext'
+import MobileMenu from './MobileMenu'
 
 export default function Header() {
   const pathname = usePathname()
   const isHomePage = pathname === '/'
   const { showAnimations } = useAnimation()
-  const [isScrolled, setIsScrolled] = useState(false)
-  const [isHovered, setIsHovered] = useState(false)
-  const [animationState, setAnimationState] = useState<'idle' | 'clapping' | 'reverse'>('idle')
+  const [isLogoVisible, setIsLogoVisible] = useState(false)
 
+  // Animation d'apparition du logo comme les liens de navigation
   useEffect(() => {
-    const handleScroll = () => {
-      // Le header se rétrécit après 50px de scroll
-      setIsScrolled(window.scrollY > 50)
+    if (!showAnimations) {
+      setIsLogoVisible(true)
+      return
     }
 
-    window.addEventListener('scroll', handleScroll)
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
+    // Animation avec le même délai que le premier lien (0ms)
+    setTimeout(() => {
+      setIsLogoVisible(true)
+    }, 0)
+  }, [showAnimations])
 
   return (
-    <header className={`fixed left-1/2 -translate-x-1/2 z-50 transition-all duration-700 ease-out ${
-      isScrolled 
-        ? 'top-6 w-[92%] max-w-7xl' 
-        : 'top-0 w-full'
+    <header className={`w-full z-[60] top-0 left-0 right-0 ${
+      isHomePage 
+        ? 'absolute' 
+        : 'fixed md:relative'
     }`}>
-      <div className={`flex justify-between items-center transition-all duration-700 ${
-        isScrolled ? 'px-8 py-3' : 'px-8 py-4'
-      } ${
+      <div className={`flex justify-between items-center px-6 md:px-10 lg:px-16 py-4 ${
         isHomePage 
-          ? isScrolled 
-            ? 'backdrop-blur-xl bg-black/70' 
-            : '' 
-          : 'backdrop-blur-xl bg-white/85 border-b border-gray-200'
-      } ${
-        isScrolled 
-          ? 'rounded-full shadow-[0_8px_32px_rgba(0,0,0,0.3)]'
-          : isHomePage 
-            ? '' 
-            : ''
+          ? 'bg-theme-cream/95 backdrop-blur-md md:bg-transparent md:backdrop-blur-none' 
+          : 'backdrop-blur-xl bg-theme-cream/85 border-b border-gray-200'
       }`}>
-        {/* Logo à gauche - avec image et texte en V comme un faisceau lumineux */}
-        <a 
-          href="/" 
-          className={`flex items-center gap-3 font-bold font-display leading-tight transition-all duration-500 tracking-tight group ${
-            isScrolled ? 'text-sm' : 'text-lg'
-          } ${
-            showAnimations ? 'header-logo-animation' : ''
-          } ${
-            isHomePage 
-              ? 'text-white/80 hover:text-white' 
-              : 'text-theme-dark hover:text-black'
-          } ${
-            isHomePage && !isScrolled ? 'drop-shadow-[0_2px_8px_rgba(0,0,0,0.5)]' : ''
-          }`}
-          onMouseEnter={() => {
-            setIsHovered(true)
-            setAnimationState('clapping')
-          }}
-          onMouseLeave={() => {
-            setIsHovered(false)
-            setAnimationState('reverse')
+        {/* Logo - style simple comme les liens de navigation */}
+        <div
+          style={{
+            opacity: isLogoVisible ? 1 : 0,
+            transform: isLogoVisible ? 'translateY(0)' : 'translateY(-30px)',
+            transition: 'all 0.6s ease-out'
           }}
         >
-          <div className={`relative transition-all duration-500 ${
-            isScrolled ? 'w-10 h-10' : 'w-12 h-12'
-          }`}>
-            <Image
-              src={isHomePage ? "/images/logos/logo-white.png" : "/images/logos/logo-black.png"}
-              alt="Logo Florine Clap"
-              fill
-              className="object-contain transition-transform duration-300 scale-110 group-hover:scale-125"
-            />
-          </div>
-          <div className="relative flex flex-col items-start">
-            <span 
-              className={`block origin-left ${
-                isScrolled ? '' : 'tracking-wide'
-              } ${
-                animationState === 'clapping' ? 'clap-animation-top' : 
-                animationState === 'reverse' ? 'clap-animation-top-reverse' : ''
-              }`} 
-              style={animationState === 'idle' ? { 
-                transform: isHovered ? 'rotate(-1.5deg) translateY(-0.5px)' : 'rotate(-3deg) translateY(-1px)' 
-              } : undefined}
-              onAnimationEnd={() => {
-                if (animationState === 'clapping' || animationState === 'reverse') {
-                  setAnimationState('idle')
-                }
-              }}
-            >
-              Florine
-            </span>
-            <span 
-              className={`block origin-left ${
-                isScrolled ? '' : 'tracking-wide'
-              } ${
-                animationState === 'clapping' ? 'clap-animation-bottom' : 
-                animationState === 'reverse' ? 'clap-animation-bottom-reverse' : ''
-              }`}
-              style={animationState === 'idle' ? { 
-                transform: isHovered ? 'rotate(1.5deg) translateY(0.5px)' : 'rotate(3deg) translateY(1px)' 
-              } : undefined}
-            >
-              Clap
-            </span>
-          </div>
-        </a>
+          <a 
+            href="/" 
+            className={`font-display font-normal uppercase cursor-pointer relative after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-px after:transition-all after:duration-500 after:ease-out hover:after:w-full tracking-wide transition-colors duration-300 text-base ${
+              isHomePage 
+                ? 'text-white/75 hover:text-white after:bg-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.5)]' 
+                : 'text-theme-dark/80 hover:text-black after:bg-theme-dark'
+            }`}
+          >
+            FLORINE CLAP
+          </a>
+        </div>
 
-        {/* Navigation à droite */}
+        {/* Navigation desktop à droite */}
         <div className={showAnimations ? 'header-nav-animation' : ''}>
-          <Navigation isHomePage={isHomePage} isScrolled={isScrolled} />
+          <Navigation isHomePage={isHomePage} />
+        </div>
+
+        {/* Menu burger mobile */}
+        <div className="md:hidden">
+          <MobileMenu isHomePage={isHomePage} />
         </div>
 
       </div>

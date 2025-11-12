@@ -25,26 +25,24 @@ export default function Header() {
     <header className={`fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 transition-all duration-300 ${
       isScrolled ? 'h-14' : 'h-20'
     } ${
-      isHomePage ? 'bg-black' : 'bg-white border-b border-gray-200'
+      isHomePage ? 'bg-black' : 'bg-theme-cream border-b border-gray-200'
     } ${
       isScrolled ? 'shadow-lg' : ''
     }`}>
       <a 
         href="/" 
-        className={`font-bold font-display transition-all duration-300 ${
-          isScrolled ? 'text-lg' : 'text-xl'
-        } ${
-          showAnimations ? 'header-logo-animation' : ''
+        className={`font-display font-normal uppercase cursor-pointer relative after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-px after:transition-all after:duration-500 after:ease-out hover:after:w-full tracking-wide ${
+          isScrolled ? 'text-sm' : 'text-base'
         } ${
           isHomePage 
-            ? 'text-white/70 hover:text-white' 
-            : 'text-theme-dark hover:text-black'
+            ? 'text-white/75 after:bg-white' 
+            : 'text-theme-dark/80 after:bg-theme-dark'
         }`}
       >
-        Florine Clap
+        FLORINE CLAP
       </a>
       <div className={showAnimations ? 'header-nav-animation' : ''}>
-        <Navigation isHomePage={isHomePage} isScrolled={isScrolled} />
+        <Navigation isHomePage={isHomePage} />
       </div>
     </header>
   )

@@ -43,7 +43,7 @@ export default function MediationPage({ params }: MediationPageProps) {
         variant="default"
       />
       
-      <div className="max-w-4xl mx-auto px-4 py-8">
+      <div className="max-w-7xl mx-auto px-6 md:px-10 lg:px-16 py-8">
         
         <article className="bg-orange-100 rounded-lg shadow-lg overflow-hidden">
           {/* En-tete de la mediation */}

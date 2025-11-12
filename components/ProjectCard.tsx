@@ -37,27 +37,27 @@ export default function ProjectCard({
     switch (variant) {
       case 'films':
         return {
-          container: 'group block overflow-hidden bg-black hover:shadow-xl hover:scale-[1.02] transition-all duration-300 h-full flex flex-col',
-          title: 'text-2xl font-bold text-white',
-          subtitle: 'text-base text-theme-yellow/80',
-          excerpt: 'mt-2 text-base text-white line-clamp-3',
-          meta: 'text-sm text-theme-yellow/60',
-          button: 'mt-auto inline-flex items-center px-4 py-2 bg-theme-yellow text-theme-dark text-base font-medium hover:bg-theme-yellow/90 transition-colors w-fit'
+          container: 'group block overflow-hidden bg-theme-films hover:shadow-xl hover:scale-[1.02] transition-all duration-300 h-full flex flex-col',
+          title: 'text-2xl font-bold text-theme-films-text',
+          subtitle: 'text-base text-theme-films-text/80',
+          excerpt: 'mt-2 text-base text-theme-films-text line-clamp-3',
+          meta: 'text-sm text-theme-films-text/60',
+          button: 'mt-auto inline-flex items-center px-4 py-2 bg-theme-films-text text-theme-films text-base font-medium hover:bg-theme-films-text/90 transition-colors w-fit'
         }
       case 'mediations':
         return {
-          container: 'group block overflow-hidden bg-theme-grey hover:shadow-sm h-full flex flex-col',
-          title: 'text-base font-semibold text-theme-blue',
-          subtitle: 'text-sm text-theme-yellow/80',
-          excerpt: 'mt-2 text-sm text-theme-blue line-clamp-2'
+          container: 'group block overflow-hidden bg-theme-mediations hover:shadow-sm h-full flex flex-col',
+          title: 'text-base font-semibold text-theme-mediations-text',
+          subtitle: 'text-sm text-theme-mediations-text/80',
+          excerpt: 'mt-2 text-sm text-theme-mediations-text line-clamp-2'
         }
       case 'actus':
         return {
-          container: 'group block overflow-hidden bg-white/90 hover:bg-white transition-all duration-300 h-full flex flex-col shadow-lg hover:shadow-xl',
-          title: 'text-xl font-bold text-theme-dark group-hover:text-theme-dark transition-colors',
-          subtitle: 'text-sm text-theme-dark/70 font-medium',
-          excerpt: 'mt-3 text-theme-dark/80 line-clamp-3 leading-relaxed',
-          button: 'mt-4 inline-flex items-center text-theme-dark font-medium hover:text-theme-dark/70 transition-colors relative after:content-[""] after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-0.5 after:bg-theme-dark after:transition-all after:duration-300 group-hover:after:w-full'
+          container: 'group block overflow-hidden bg-theme-actus/90 hover:bg-theme-actus transition-all duration-300 h-full flex flex-col shadow-lg hover:shadow-xl',
+          title: 'text-xl font-bold text-theme-actus-text group-hover:text-theme-actus-text transition-colors',
+          subtitle: 'text-sm text-theme-actus-text/70 font-medium',
+          excerpt: 'mt-3 text-theme-actus-text/80 line-clamp-3 leading-relaxed',
+          button: 'mt-4 inline-flex items-center text-theme-actus-text font-medium hover:text-theme-actus-text/70 transition-colors relative after:content-[""] after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-0.5 after:bg-theme-actus-text after:transition-all after:duration-300 group-hover:after:w-full'
         }
       case 'actus-featured':
         return {
@@ -111,7 +111,12 @@ export default function ProjectCard({
             src={imageSrc} 
             alt={title} 
             fill
-            className="object-cover" 
+            className={`object-cover ${
+              variant === 'films' ? 'filter-[sepia(20%)_saturate(150%)_hue-rotate(340deg)_brightness(0.9)]' :
+              variant === 'mediations' ? 'filter-[sepia(10%)_saturate(120%)_hue-rotate(200deg)_brightness(0.7)]' :
+              variant === 'actus' ? 'filter-[sepia(30%)_saturate(180%)_hue-rotate(15deg)_brightness(0.95)]' :
+              ''
+            }`}
           />
         </div>
       )}

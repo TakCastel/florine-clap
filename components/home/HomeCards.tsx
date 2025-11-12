@@ -22,7 +22,7 @@ export default function HomeCards({ innerRef }: HomeCardsProps) {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
             {/* Carte Films */}
             <Link href="/films" className="group transition-all duration-1000 ease-out opacity-100 translate-y-0">
-              <div className="relative w-full h-80 overflow-hidden bg-white transition-all duration-500 group-hover:brightness-110 group-hover:scale-105 cursor-pointer">
+              <div className="relative w-full h-80 overflow-hidden bg-theme-films transition-all duration-500 group-hover:brightness-110 group-hover:scale-105 cursor-pointer">
                 {/* Image en filigrane */}
                 <Image
                   src="https://picsum.photos/600/600?random=2"
@@ -37,18 +37,18 @@ export default function HomeCards({ innerRef }: HomeCardsProps) {
                   </svg>
                 </div>
                 <div className="absolute inset-0 flex items-center justify-center">
-                  <h3 className="text-2xl md:text-4xl font-display font-bold tracking-wider text-theme-dark relative after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-1 after:bg-current after:transition-all after:duration-300 group-hover:after:w-full">
+                  <h3 className="text-2xl md:text-4xl font-display font-bold tracking-wider text-theme-films-text relative after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-1 after:bg-current after:transition-all after:duration-300 group-hover:after:w-full">
                     Films
                   </h3>
                 </div>
                 {/* Bordure qui apparaît au hover */}
-                <div className="absolute inset-0 border-2 border-theme-dark opacity-0 group-hover:opacity-30 transition-opacity duration-300"></div>
+                <div className="absolute inset-0 border-2 border-theme-films-border opacity-0 group-hover:opacity-30 transition-opacity duration-300"></div>
               </div>
             </Link>
 
             {/* Carte Médiations */}
             <Link href="/m�diations" className="group transition-all duration-1000 ease-out opacity-100 translate-y-0">
-              <div className="relative w-full h-80 overflow-hidden bg-theme-dark transition-all duration-500 group-hover:brightness-110 group-hover:scale-105 cursor-pointer">
+              <div className="relative w-full h-80 overflow-hidden bg-theme-mediations transition-all duration-500 group-hover:brightness-110 group-hover:scale-105 cursor-pointer">
                 {/* Image en filigrane */}
                 <Image
                   src="https://picsum.photos/600/600?random=3"
@@ -63,18 +63,18 @@ export default function HomeCards({ innerRef }: HomeCardsProps) {
                   </svg>
                 </div>
                 <div className="absolute inset-0 flex items-center justify-center">
-                  <h3 className="text-2xl md:text-4xl font-display font-bold tracking-wider text-white relative after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-1 after:bg-current after:transition-all after:duration-300 group-hover:after:w-full">
+                  <h3 className="text-2xl md:text-4xl font-display font-bold tracking-wider text-theme-mediations-text relative after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-1 after:bg-current after:transition-all after:duration-300 group-hover:after:w-full">
                     Médiations
                   </h3>
                 </div>
                 {/* Bordure qui apparaît au hover */}
-                <div className="absolute inset-0 border-2 border-white opacity-0 group-hover:opacity-30 transition-opacity duration-300"></div>
+                <div className="absolute inset-0 border-2 border-theme-mediations-border opacity-0 group-hover:opacity-30 transition-opacity duration-300"></div>
               </div>
             </Link>
 
             {/* Carte Actualités */}
             <Link href="/actus" className="group transition-all duration-1000 ease-out opacity-100 translate-y-0">
-              <div className="relative w-full h-80 overflow-hidden bg-theme-yellow transition-all duration-500 group-hover:brightness-110 group-hover:scale-105 cursor-pointer">
+              <div className="relative w-full h-80 overflow-hidden bg-theme-actus transition-all duration-500 group-hover:brightness-110 group-hover:scale-105 cursor-pointer">
                 {/* Image en filigrane */}
                 <Image
                   src="https://picsum.photos/600/600?random=4"
@@ -89,12 +89,12 @@ export default function HomeCards({ innerRef }: HomeCardsProps) {
                   </svg>
                 </div>
                 <div className="absolute inset-0 flex items-center justify-center">
-                  <h3 className="text-2xl md:text-4xl font-display font-bold tracking-wider text-theme-dark relative after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-1 after:bg-current after:transition-all after:duration-300 group-hover:after:w-full">
+                  <h3 className="text-2xl md:text-4xl font-display font-bold tracking-wider text-theme-actus-text relative after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-1 after:bg-current after:transition-all after:duration-300 group-hover:after:w-full">
                     Actualités
                   </h3>
                 </div>
                 {/* Bordure qui apparaît au hover */}
-                <div className="absolute inset-0 border-2 border-theme-dark opacity-0 group-hover:opacity-30 transition-opacity duration-300"></div>
+                <div className="absolute inset-0 border-2 border-theme-actus-border opacity-0 group-hover:opacity-30 transition-opacity duration-300"></div>
               </div>
             </Link>
           </div>

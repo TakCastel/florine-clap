@@ -33,44 +33,20 @@ export default function PartnersSection() {
     <section 
       ref={sectionRef}
       id="partners-section" 
-      className="w-full bg-white py-24 md:py-32 relative overflow-hidden"
+      className="w-full bg-theme-cream py-24 md:py-32 relative overflow-hidden"
     >
-      {/* Éléments décoratifs en arrière-plan */}
-      <div className="absolute top-20 left-20 w-32 h-32 border border-black/5 rounded-full"></div>
-      <div className="absolute bottom-32 right-16 w-48 h-48 border border-black/5 rotate-45"></div>
-
       <div className="max-w-7xl mx-auto px-6 md:px-10 lg:px-16 w-full">
-        {/* Titre avec animation */}
+        {/* Titre léger */}
         <div 
-          className="text-center mb-16"
+          className="text-center mb-8"
           style={{
             opacity: isVisible ? 1 : 0,
-            transform: isVisible ? 'translateY(0)' : 'translateY(30px)',
-            transition: 'opacity 1s cubic-bezier(0.16, 1, 0.3, 1) 0.2s, transform 1s cubic-bezier(0.16, 1, 0.3, 1) 0.2s',
+            transform: isVisible ? 'translateY(0)' : 'translateY(10px)',
+            transition: 'opacity 0.6s ease-out 0.2s, transform 0.6s ease-out 0.2s',
           }}
         >
-          <div className="text-black/40 text-sm uppercase tracking-[0.3em] mb-4 font-medium">
+          <div className="text-black/30 text-xs uppercase tracking-[0.2em] font-light">
             Partenaires
-          </div>
-          <h2 
-            className="text-black font-bold text-4xl md:text-5xl lg:text-6xl leading-none tracking-tight"
-            style={{
-              fontFamily: 'var(--font-andalemo), sans-serif',
-              letterSpacing: '-0.03em',
-            }}
-          >
-            Ils me font confiance
-          </h2>
-          
-          {/* Ligne décorative animée */}
-          <div className="h-[2px] bg-black/20 w-32 mx-auto mt-6 overflow-hidden">
-            <div 
-              className="h-full bg-black transition-all duration-1000 ease-out"
-              style={{
-                width: isVisible ? '100%' : '0%',
-                transitionDelay: '0.4s',
-              }}
-            ></div>
           </div>
         </div>
 
@@ -78,8 +54,8 @@ export default function PartnersSection() {
         <div 
           style={{
             opacity: isVisible ? 1 : 0,
-            transform: isVisible ? 'translateY(0)' : 'translateY(20px)',
-            transition: 'opacity 0.8s ease-out 0.6s, transform 0.8s ease-out 0.6s',
+            transform: isVisible ? 'translateY(0)' : 'translateY(10px)',
+            transition: 'opacity 0.6s ease-out 0.4s, transform 0.6s ease-out 0.4s',
           }}
         >
           <LogoMarquee 

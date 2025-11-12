@@ -16,7 +16,7 @@ export function usePageTransition() {
     // Reset de la transition après un court délai
     setTimeout(() => {
       setIsTransitioning(false)
-    }, 300)
+    }, 150)
   }
 
   return {

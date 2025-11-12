@@ -41,61 +41,12 @@ export default function HeroSection() {
         {/* Contenu principal */}
         <div className="relative h-full flex flex-col items-center justify-center px-6 md:px-10">
           
-          {/* Ligne décorative supérieure */}
-          <div className="absolute top-20 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-white/30 to-transparent"></div>
-          
-          {/* Éléments décoratifs animés - très subtils */}
-          <div 
-            className="absolute top-24 left-12 w-16 h-16 border border-white/10 rounded-full transition-transform duration-1000 ease-out opacity-30"
-            style={{
-              transform: `translate(${mousePosition.x * 0.2}px, ${mousePosition.y * 0.2}px)`,
-            }}
-          ></div>
-          <div 
-            className="absolute bottom-32 right-16 w-24 h-24 border border-white/10 transition-transform duration-1000 ease-out opacity-30"
-            style={{
-              transform: `rotate(45deg) translate(${-mousePosition.x * 0.15}px, ${-mousePosition.y * 0.15}px)`,
-            }}
-          ></div>
-
-          {/* Contenu central */}
-          <div className="text-center max-w-6xl mx-auto">
-            
-            {/* Citation */}
-            <div 
-              className="overflow-hidden max-w-4xl mx-auto"
-              style={{
-                opacity: isLoaded ? 1 : 0,
-                transform: isLoaded ? 'translateY(0)' : 'translateY(30px)',
-                transition: 'opacity 1.2s ease-out 0.4s, transform 1.2s ease-out 0.4s',
-              }}
-            >
-              <blockquote className="relative">
-                {/* Guillemet d'ouverture décoratif */}
-                <span className="absolute -top-4 -left-4 md:-left-8 text-6xl md:text-8xl text-white/10 font-serif leading-none">"</span>
-                
-                <p className="text-white/85 text-xl md:text-2xl lg:text-3xl mx-auto leading-relaxed font-light italic px-8 md:px-12">
-                  Si on ouvre les yeux, on voit ce qu'on regarde. Si on ouvre le cœur, on voit ce qui nous regarde
-                </p>
-                
-                {/* Guillemet de fermeture décoratif */}
-                <span className="absolute -bottom-8 -right-4 md:-right-8 text-6xl md:text-8xl text-white/10 font-serif leading-none">"</span>
-              </blockquote>
-              
-              {/* Auteur de la citation */}
-              <div className="mt-8 flex items-center justify-center gap-4">
-                <div className="h-[1px] w-12 bg-white/30"></div>
-                <p className="text-white/60 text-sm md:text-base uppercase tracking-[0.3em] font-medium">
-                  Agnès Varda
-                </p>
-                <div className="h-[1px] w-12 bg-white/30"></div>
-              </div>
-            </div>
-          </div>
+          {/* Ligne décorative supérieure - 57px du bord */}
+          <div className="absolute top-[57px] left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-white/30 to-transparent"></div>
 
           {/* Bouton de navigation en bas avec effet parallax */}
           <div 
-            className="absolute bottom-16 left-1/2 transform -translate-x-1/2"
+            className="absolute bottom-[121px] left-1/2 transform -translate-x-1/2"
             style={{
               opacity: isLoaded ? 1 : 0,
               transform: `translateX(-50%) translateY(${isLoaded ? 0 : 20}px)`,
@@ -134,8 +85,8 @@ export default function HeroSection() {
             </button>
           </div>
 
-          {/* Ligne décorative inférieure */}
-          <div className="absolute bottom-8 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-white/30 to-transparent"></div>
+          {/* Ligne décorative inférieure - 57px du bord */}
+          <div className="absolute bottom-[57px] left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-white/30 to-transparent"></div>
         </div>
 
         {/* Effet de brillance qui suit la souris */}

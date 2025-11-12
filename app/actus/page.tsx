@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import ActuCard from '@/components/ActuCard'
 import Breadcrumb from '@/components/Breadcrumb'
+import ScrollRevealCard from '@/components/ScrollRevealCard'
 import { allActus } from '.contentlayer/generated'
 import Link from 'next/link'
 
@@ -25,15 +26,14 @@ export default function ActusPage({ searchParams }: ActusPageProps) {
   const paginatedItems = items.slice(startIndex, endIndex)
 
   useEffect(() => {
-    setIsVisible(true)
+    // Déclencher l'animation immédiatement sans délai
+    requestAnimationFrame(() => {
+      setIsVisible(true)
+    })
   }, [])
 
   return (
-    <div className="min-h-screen bg-white relative overflow-hidden">
-      {/* Éléments décoratifs */}
-      <div className="absolute top-40 right-10 w-32 h-32 border border-theme-dark/5 rounded-full"></div>
-      <div className="absolute bottom-40 left-16 w-48 h-48 border border-theme-dark/5 rotate-45"></div>
-
+    <div className="min-h-screen bg-theme-cream relative overflow-hidden">
       <Breadcrumb 
         items={[
           { label: 'Accueil', href: '/' },
@@ -49,12 +49,12 @@ export default function ActusPage({ searchParams }: ActusPageProps) {
             className="overflow-hidden mb-6"
             style={{
               opacity: isVisible ? 1 : 0,
-              transform: isVisible ? 'translateY(0)' : 'translateY(40px)',
-              transition: 'opacity 1s cubic-bezier(0.16, 1, 0.3, 1) 0.2s, transform 1s cubic-bezier(0.16, 1, 0.3, 1) 0.2s',
+              transform: isVisible ? 'translateY(0)' : 'translateY(10px)',
+              transition: 'opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1) 0.05s, transform 0.4s cubic-bezier(0.16, 1, 0.3, 1) 0.05s',
             }}
           >
             <h1 
-              className="text-6xl md:text-7xl lg:text-9xl font-bold leading-none tracking-tighter text-theme-dark"
+              className="text-6xl md:text-7xl lg:text-9xl font-bold leading-none tracking-tighter text-theme-actus"
               style={{
                 fontFamily: 'var(--font-andalemo), sans-serif',
                 letterSpacing: '-0.05em',
@@ -67,10 +67,10 @@ export default function ActusPage({ searchParams }: ActusPageProps) {
           {/* Ligne décorative animée */}
           <div className="h-[2px] bg-theme-dark/10 w-full max-w-md overflow-hidden">
             <div 
-              className="h-full bg-theme-dark transition-all duration-1000 ease-out"
+              className="h-full bg-theme-actus transition-all duration-500 ease-out"
               style={{
                 width: isVisible ? '100%' : '0%',
-                transitionDelay: '0.4s',
+                transitionDelay: '0.1s',
               }}
             ></div>
           </div>
@@ -79,15 +79,15 @@ export default function ActusPage({ searchParams }: ActusPageProps) {
             className="mt-6 text-lg md:text-xl text-theme-dark/70 max-w-2xl"
             style={{
               opacity: isVisible ? 1 : 0,
-              transform: isVisible ? 'translateY(0)' : 'translateY(20px)',
-              transition: 'opacity 0.8s ease-out 0.6s, transform 0.8s ease-out 0.6s',
+              transform: isVisible ? 'translateY(0)' : 'translateY(8px)',
+              transition: 'opacity 0.4s ease-out 0.15s, transform 0.4s ease-out 0.15s',
             }}
           >
             Découvrez mes dernières actualités, sélections en festival et projets en cours
           </p>
         </div>
         
-        {/* Mur des 3 dernières actualités - Affiché seulement sur la première page */}
+        {/* Dernière actualité - Affiché seulement sur la première page */}
         {currentPage === 1 && (
           <div className="mb-20 md:mb-28">
             <div className="mb-10">
@@ -99,97 +99,20 @@ export default function ActusPage({ searchParams }: ActusPageProps) {
                   letterSpacing: '-0.03em',
                 }}
               >
-                Dernières actualités
+                Dernière actualité
               </h2>
             </div>
             
-            {/* Layout: 1 carte principale à gauche, 2 petites à droite */}
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-              {/* Actualité principale - Format hero (2/3 de la largeur) */}
-              <div className="lg:col-span-2">
-                <a href={`/actus/${items[0].slug}`} className="group block">
-                  <article className="relative overflow-hidden bg-theme-dark rounded-2xl shadow-2xl transition-all duration-700 ease-out group-hover:shadow-3xl">
-                    <div className="aspect-video relative overflow-hidden">
-                      <div 
-                        className="absolute inset-0 bg-cover bg-center bg-no-repeat transition-transform duration-700 ease-out group-hover:scale-105" 
-                        style={{ backgroundImage: `url(${items[0].cover})` }}
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-r from-theme-dark/80 via-theme-dark/40 to-transparent"></div>
-                      <div className="absolute inset-0 bg-gradient-to-t from-theme-dark/90 via-theme-dark/40 to-transparent"></div>
-                      <div className="absolute inset-0 bg-theme-dark/0 group-hover:bg-theme-dark/20 transition-all duration-700"></div>
-                      
-                      {/* Ligne décorative */}
-                      <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-theme-yellow/60 to-transparent transform -translate-x-full group-hover:translate-x-full transition-transform duration-[1200ms]"></div>
-                      
-                      <div className="relative z-10 p-8 md:p-12 h-full flex flex-col justify-end">
-                        <div className="max-w-2xl">
-                          <div className="flex items-center gap-2 text-theme-yellow text-sm mb-4 bg-theme-yellow/10 backdrop-blur-sm px-3 py-1.5 rounded-full w-fit border border-theme-yellow/20">
-                            <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                              <path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-                            </svg>
-                            {new Date(items[0].date).toLocaleDateString('fr-FR')}
-                          </div>
-                          <h3 
-                            className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4 leading-tight tracking-tight"
-                            style={{
-                              fontFamily: 'var(--font-andalemo), sans-serif',
-                              letterSpacing: '-0.03em',
-                            }}
-                          >
-                            {items[0].title}
-                          </h3>
-                          <div className="inline-flex items-center gap-3 text-theme-yellow font-medium text-base uppercase tracking-wider transition-all duration-500">
-                            <span className="transition-all duration-300 group-hover:tracking-widest">Lire</span>
-                            <div className="flex items-center gap-2">
-                              <div className="h-[2px] bg-theme-yellow w-8 group-hover:w-12 transition-all duration-500"></div>
-                              <svg className="w-5 h-5 transition-transform duration-500 group-hover:translate-x-0 -translate-x-2" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
-                                <path d="M13 7l5 5m0 0l-5 5m5-5H6"/>
-                              </svg>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </article>
-                </a>
-              </div>
-
-              {/* Les 2 actualités suivantes - Format compact (1/3 de la largeur) */}
-              <div className="lg:col-span-1 space-y-6">
-                {items.slice(1, 3).map((actu, index) => (
-                  <a key={actu._id} href={`/actus/${actu.slug}`} className="group block">
-                    <article className="relative overflow-hidden bg-white rounded-xl shadow-lg transition-all duration-500 ease-out group-hover:-translate-y-1 group-hover:shadow-2xl">
-                      <div className="aspect-video relative overflow-hidden">
-                        <div 
-                          className="absolute inset-0 bg-cover bg-center bg-no-repeat transition-transform duration-700 ease-out group-hover:scale-110" 
-                          style={{ backgroundImage: `url(${actu.cover})` }}
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-theme-dark/80 via-theme-dark/30 to-transparent"></div>
-                        <div className="absolute inset-0 bg-theme-dark/0 group-hover:bg-theme-dark/30 transition-all duration-500"></div>
-                        
-                        <div className="relative z-10 p-5 h-full flex flex-col justify-end">
-                          <div className="text-theme-yellow text-xs mb-2 font-medium">
-                            {new Date(actu.date).toLocaleDateString('fr-FR')}
-                          </div>
-                          <h4 
-                            className="text-base md:text-lg font-bold text-white leading-tight line-clamp-2"
-                            style={{
-                              fontFamily: 'var(--font-andalemo), sans-serif',
-                              letterSpacing: '-0.02em',
-                            }}
-                          >
-                            {actu.title}
-                          </h4>
-                          <div className="mt-2 h-[2px] bg-white/20 overflow-hidden">
-                            <div className="h-full bg-theme-yellow w-0 group-hover:w-full transition-all duration-700 ease-out"></div>
-                          </div>
-                        </div>
-                      </div>
-                    </article>
-                  </a>
-                ))}
-              </div>
-            </div>
+            {/* Première actualité - Grande card */}
+            <ScrollRevealCard key={items[0]._id} delay={0}>
+              <ActuCard
+                href={`/actus/${items[0].slug}`}
+                title={items[0].title}
+                cover={items[0].cover}
+                excerpt={items[0].excerpt}
+                date={items[0].date}
+              />
+            </ScrollRevealCard>
           </div>
         )}
         
@@ -215,30 +138,28 @@ export default function ActusPage({ searchParams }: ActusPageProps) {
           </div>
         </div>
         
-        {/* Liste en 3 colonnes des actualités */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
-          {currentPage === 1 
-            ? paginatedItems.slice(3).map((actu, index) => (
+        {/* Liste en 2 colonnes des actualités */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 mb-16">
+          {(() => {
+            // Pour la première page, on exclut la première card déjà affichée
+            const itemsToShow = currentPage === 1 ? paginatedItems.slice(1) : paginatedItems
+            // S'assurer qu'on a un nombre pair de cards pour la grille de 2 colonnes
+            const evenItems = itemsToShow.length % 2 === 0 
+              ? itemsToShow 
+              : itemsToShow.slice(0, -1)
+            
+            return evenItems.map((actu, index) => (
+              <ScrollRevealCard key={actu._id} delay={index * 0.05}>
                 <ActuCard
-                  key={actu._id}
                   href={`/actus/${actu.slug}`}
                   title={actu.title}
                   cover={actu.cover}
                   excerpt={actu.excerpt}
                   date={actu.date}
                 />
-              ))
-            : paginatedItems.map((actu, index) => (
-                <ActuCard
-                  key={actu._id}
-                  href={`/actus/${actu.slug}`}
-                  title={actu.title}
-                  cover={actu.cover}
-                  excerpt={actu.excerpt}
-                  date={actu.date}
-                />
-              ))
-          }
+              </ScrollRevealCard>
+            ))
+          })()}
         </div>
 
         {/* Pagination */}
@@ -327,7 +248,7 @@ export default function ActusPage({ searchParams }: ActusPageProps) {
         {/* Contenu SEO */}
         <div className="mt-24 pt-12 border-t border-theme-dark/10">
           <div className="max-w-4xl">
-            <h2 className="text-2xl md:text-3xl font-bold text-theme-dark mb-6" style={{
+            <h2 className="text-2xl md:text-3xl font-bold text-theme-actus mb-6" style={{
               fontFamily: 'var(--font-andalemo), sans-serif',
               letterSpacing: '-0.02em',
             }}>

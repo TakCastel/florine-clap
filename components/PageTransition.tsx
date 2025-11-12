@@ -14,10 +14,10 @@ export default function PageTransition({ children, isTransitioning = false }: Pa
     if (isTransitioning) {
       setIsVisible(false)
     } else {
-      // Petit délai pour permettre à la nouvelle page de se charger
+      // Délai minimal pour permettre à la nouvelle page de se charger
       const timer = setTimeout(() => {
         setIsVisible(true)
-      }, 50)
+      }, 10)
       return () => clearTimeout(timer)
     }
   }, [isTransitioning])
@@ -26,10 +26,10 @@ export default function PageTransition({ children, isTransitioning = false }: Pa
     <div className="relative">
       {/* Contenu avec transition fluide */}
       <div 
-        className={`transition-all duration-300 ease-out ${
+        className={`transition-all duration-150 ease-out ${
           isVisible 
             ? 'opacity-100 translate-y-0' 
-            : 'opacity-0 translate-y-2'
+            : 'opacity-0 translate-y-1'
         }`}
       >
         {children}

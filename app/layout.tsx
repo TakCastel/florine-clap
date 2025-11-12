@@ -3,6 +3,7 @@
 import './globals.css'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
+import BackToTop from '@/components/BackToTop'
 import { usePathname } from 'next/navigation'
 import { AnimationProvider } from '@/contexts/AnimationContext'
 
@@ -42,10 +43,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className="bg-gray-100">
         <AnimationProvider>
           <Header />
-          <main className={isHomePage ? '' : 'pt-20'}>
+          <main className={isHomePage ? '' : 'pt-16 md:pt-0'}>
             {children}
           </main>
           <Footer />
+          <BackToTop />
         </AnimationProvider>
       </body>
     </html>
