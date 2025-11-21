@@ -1,0 +1,62 @@
+backend:
+  name: git-gateway
+  branch: main
+
+media_folder: "public/images/uploads"
+public_folder: "/images/uploads"
+
+collections:
+  - name: "films"
+    label: "Films"
+    folder: "content/films"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - {label: "Title", name: "title", widget: "string"}
+      - {label: "Année", name: "annee", widget: "number"}
+      - {label: "Durée", name: "duree", widget: "string", required: false}
+      - {label: "Synopsis", name: "synopsis", widget: "text", required: false}
+      - {label: "Statut", name: "statut", widget: "string", required: false}
+      - {label: "Excerpt", name: "excerpt", widget: "text", required: false}
+      - {label: "Cover", name: "cover", widget: "image", required: false}
+      - {label: "Gallery", name: "gallery", widget: "list", field: {label: "Image", name: "image", widget: "image"}, required: false}
+
+  - name: "mediations"
+    label: "Médiations"
+    folder: "content/médiations"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - {label: "Title", name: "title", widget: "string"}
+      - {label: "Date", name: "date", widget: "datetime"}
+      - {label: "Lieu", name: "lieu", widget: "string"}
+      - {label: "Durée", name: "duree", widget: "string", required: false}
+      - {label: "Modalités", name: "modalites", widget: "markdown", required: false}
+      - {label: "Lien inscription", name: "lien_inscription", widget: "string", required: false}
+      - {label: "Gallery", name: "gallery", widget: "list", field: {label: "Image", name: "image", widget: "image"}, required: false}
+      - {label: "Excerpt", name: "excerpt", widget: "text", required: false}
+
+  - name: "actus"
+    label: "Actualités"
+    folder: "content/actus"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - {label: "Title", name: "title", widget: "string"}
+      - {label: "Date", name: "date", widget: "datetime"}
+      - {label: "Cover", name: "cover", widget: "image", required: false}
+      - {label: "Excerpt", name: "excerpt", widget: "text", required: false}
+
+  - name: "pages"
+    label: "Pages"
+    folder: "content/pages"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - {label: "Title", name: "title", widget: "string"}
+      - {label: "Portrait", name: "portrait", widget: "image", required: false}
+      - {label: "Hero Video", name: "hero_video", widget: "string", required: false}
+      - {label: "Hero Image", name: "hero_image", widget: "image", required: false}
+      - {label: "CTA Text", name: "cta_text", widget: "string", required: false}
+      - {label: "CTA Link", name: "cta_link", widget: "string", required: false}
+      - {label: "Content", name: "body", widget: "markdown"}
