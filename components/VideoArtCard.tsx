@@ -115,10 +115,10 @@ export default function VideoArtCard({
                   )}
 
                   <CtaLink
-                    href={href}
                     label="Découvrir"
                     tone="light"
                     isActive={isHovered}
+                    as="span"
                   />
                 </div>
               </div>

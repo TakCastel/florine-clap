@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { useAnimation } from '@/contexts/AnimationContext'
+import { UnderlineLink } from '@/components/ui/UnderlineLink'
 
 interface NavigationProps {
   isHomePage?: boolean
@@ -54,16 +55,9 @@ export default function Navigation({ isHomePage = false }: NavigationProps) {
               transition: 'all 0.6s ease-out'
             }}
           >
-            <a 
-              href={item.href} 
-              className={`font-display font-normal uppercase cursor-pointer relative after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-px after:transition-all after:duration-500 after:ease-out hover:after:w-full tracking-wide transition-colors duration-300 text-base ${
-                isHomePage 
-                  ? 'text-white/75 hover:text-white after:bg-white' 
-                  : 'text-theme-dark/80 hover:text-black after:bg-theme-dark'
-              }`}
-            >
+            <UnderlineLink href={item.href} variant={isHomePage ? 'light' : 'dark'}>
               {item.label}
-            </a>
+            </UnderlineLink>
           </div>
         )
       })}

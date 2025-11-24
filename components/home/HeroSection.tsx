@@ -1,6 +1,8 @@
 'use client'
 
 import { useEffect, useMemo, useState } from 'react'
+import { motion } from 'framer-motion'
+import { Reveal } from '@/components/ui/Reveal'
 
 const HERO_VIDEO_URL =
   process.env.NEXT_PUBLIC_HERO_VIDEO_URL ||
@@ -8,7 +10,6 @@ const HERO_VIDEO_URL =
 
 export default function HeroSection() {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
-  const [isLoaded, setIsLoaded] = useState(false)
   const [videoSrc, setVideoSrc] = useState<string | null>(null)
   const [isVideoReady, setIsVideoReady] = useState(false)
   const [hasVideoError, setHasVideoError] = useState(false)
@@ -20,10 +21,6 @@ export default function HeroSection() {
     } catch {
       return null
     }
-  }, [])
-
-  useEffect(() => {
-    setIsLoaded(true)
   }, [])
 
   useEffect(() => {
@@ -79,14 +76,15 @@ export default function HeroSection() {
         {/* Vidéo de fond */}
         <div className="absolute inset-0 overflow-hidden bg-black">
           {/* Uniform dark fallback before the video becomes available */}
-          <div
-            className={`absolute inset-0 bg-black transition-opacity duration-700 ${
-              isVideoReady ? 'opacity-0' : 'opacity-100'
-            }`}
-          ></div>
+          <motion.div
+            initial={{ opacity: 1 }}
+            animate={{ opacity: isVideoReady ? 0 : 1 }}
+            transition={{ duration: 0.7 }}
+            className="absolute inset-0 bg-black"
+          ></motion.div>
 
           {videoSrc && !hasVideoError && (
-            <video
+            <motion.video
               key={videoSrc}
               src={videoSrc}
               autoPlay
@@ -94,9 +92,10 @@ export default function HeroSection() {
               muted
               playsInline
               preload="metadata"
-              className={`w-full h-full object-cover scale-110 transition-opacity duration-700 bg-black ${
-                isVideoReady ? 'opacity-100' : 'opacity-0'
-              }`}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: isVideoReady ? 1 : 0 }}
+              transition={{ duration: 1 }}
+              className="w-full h-full object-cover scale-110 bg-black"
               onLoadedData={() => setIsVideoReady(true)}
               onError={() => {
                 setHasVideoError(true)
@@ -104,7 +103,7 @@ export default function HeroSection() {
               }}
             >
               Votre navigateur ne supporte pas la lecture de vidéos.
-            </video>
+            </motion.video>
           )}
 
           {hasVideoError && (
@@ -118,60 +117,66 @@ export default function HeroSection() {
         <div className="relative h-full flex flex-col items-center justify-center px-6 md:px-10">
           
           {/* Ligne décorative supérieure - 57px du bord */}
-          <div className="absolute top-[57px] left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-white/30 to-transparent"></div>
+          <motion.div 
+            initial={{ scaleX: 0, opacity: 0 }}
+            animate={{ scaleX: 1, opacity: 1 }}
+            transition={{ duration: 1.5, ease: "easeOut", delay: 0.5 }}
+            className="absolute top-[57px] left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-white/30 to-transparent"
+          />
 
           {/* Bouton de navigation en bas avec effet parallax */}
-          <div 
-            className="absolute bottom-[90px] left-1/2 transform -translate-x-1/2"
-            style={{
-              opacity: isLoaded ? 1 : 0,
-              transform: `translateX(-50%) translateY(${isLoaded ? 0 : 20}px)`,
-              transition: 'opacity 1s ease-out 1s, transform 1s ease-out 1s',
-            }}
-          >
-            <button 
-              onClick={() => {
-                const categoriesSection = document.getElementById('categories-section')
-                if (categoriesSection) {
-                  categoriesSection.scrollIntoView({ behavior: 'smooth', block: 'start' })
-                }
-              }}
-              className="group relative inline-flex flex-col items-center gap-3"
-            >
-              {/* Texte */}
-              <span className="text-white/70 text-sm uppercase tracking-widest font-medium group-hover:text-white transition-colors duration-300">
-                Découvrir
-              </span>
-              
-              {/* Cercle avec flèche animée */}
-              <div className="relative w-14 h-14 rounded-full border-2 border-white/30 flex items-center justify-center transition-all duration-500 group-hover:border-white group-hover:scale-110">
-                <svg 
-                  className="w-6 h-6 text-white transition-transform duration-300 group-hover:translate-y-1" 
-                  fill="none" 
-                  stroke="currentColor" 
-                  strokeWidth="2" 
-                  viewBox="0 0 24 24"
-                >
-                  <path d="M19 14l-7 7m0 0l-7-7m7 7V3"/>
-                </svg>
+          <div className="absolute bottom-[90px] left-1/2 transform -translate-x-1/2">
+            <Reveal delay={1.2} direction="up">
+              <button 
+                onClick={() => {
+                  const categoriesSection = document.getElementById('categories-section')
+                  if (categoriesSection) {
+                    categoriesSection.scrollIntoView({ behavior: 'smooth', block: 'start' })
+                  }
+                }}
+                className="group relative inline-flex flex-col items-center gap-3"
+              >
+                {/* Texte */}
+                <span className="text-white/70 text-sm uppercase tracking-widest font-medium group-hover:text-white transition-colors duration-300">
+                  Découvrir
+                </span>
                 
-                {/* Cercle animé qui pulse */}
-                <div className="absolute inset-0 rounded-full border-2 border-white/50 animate-ping opacity-0 group-hover:opacity-100"></div>
-              </div>
-            </button>
+                {/* Cercle avec flèche animée */}
+                <div className="relative w-14 h-14 rounded-full border-2 border-white/30 flex items-center justify-center transition-all duration-500 group-hover:border-white group-hover:scale-110">
+                  <svg 
+                    className="w-6 h-6 text-white transition-transform duration-300 group-hover:translate-y-1" 
+                    fill="none" 
+                    stroke="currentColor" 
+                    strokeWidth="2" 
+                    viewBox="0 0 24 24"
+                  >
+                    <path d="M19 14l-7 7m0 0l-7-7m7 7V3"/>
+                  </svg>
+                  
+                  {/* Cercle animé qui pulse */}
+                  <div className="absolute inset-0 rounded-full border-2 border-white/50 animate-ping opacity-0 group-hover:opacity-100"></div>
+                </div>
+              </button>
+            </Reveal>
           </div>
 
           {/* Ligne décorative inférieure - 57px du bord */}
-          <div className="absolute bottom-[57px] left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-white/30 to-transparent"></div>
+          <motion.div 
+            initial={{ scaleX: 0, opacity: 0 }}
+            animate={{ scaleX: 1, opacity: 1 }}
+            transition={{ duration: 1.5, ease: "easeOut", delay: 0.5 }}
+            className="absolute bottom-[57px] left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-white/30 to-transparent"
+          />
         </div>
 
         {/* Effet de brillance qui suit la souris */}
-        <div 
-          className="absolute inset-0 opacity-30 pointer-events-none transition-opacity duration-300"
-          style={{
-            background: `radial-gradient(circle 600px at ${50 + (mousePosition.x / 30) * 100}% ${50 + (mousePosition.y / 30) * 100}%, rgba(255,255,255,0.1) 0%, transparent 100%)`,
+        <motion.div 
+          className="absolute inset-0 opacity-30 pointer-events-none"
+          animate={{
+            background: `radial-gradient(circle 600px at ${50 + (mousePosition.x / 30) * 100}% ${50 + (mousePosition.y / 30) * 100}%, rgba(255,255,255,0.1) 0%, transparent 100%)`
           }}
-        ></div>
+          transition={{ type: "tween", ease: "linear", duration: 0.2 }}
+        />
       </div>
     </section>
   )

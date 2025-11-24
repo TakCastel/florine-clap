@@ -1,14 +1,14 @@
 'use client'
 
-import { useEffect, useRef, useState, useMemo } from 'react'
+import { useEffect, useState, useMemo } from 'react'
+import { motion, LayoutGroup } from 'framer-motion'
 import CategoryCard from '@/components/CategoryCard'
 import { getRandomCardImage } from '@/lib/images'
+import { StaggerContainer, StaggerItem } from '@/components/ui/StaggerContainer'
 
 export default function CategoriesSection() {
-  const [isVisible, setIsVisible] = useState(false)
   const [isMobile, setIsMobile] = useState(false)
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
-  const sectionRef = useRef<HTMLElement>(null)
   const [randomImages, setRandomImages] = useState({
     films: '',
     mediations: '',
@@ -17,35 +17,16 @@ export default function CategoriesSection() {
   })
 
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true)
-        }
-      },
-      { threshold: 0.05, rootMargin: '50px' }
-    )
-
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current)
-    }
-
-    return () => observer.disconnect()
-  }, [])
-
-  useEffect(() => {
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 768)
     }
     
     checkMobile()
     window.addEventListener('resize', checkMobile)
-    
     return () => window.removeEventListener('resize', checkMobile)
   }, [])
 
   useEffect(() => {
-    // Générer des images aléatoires à chaque montage du composant
     setRandomImages({
       films: getRandomCardImage('films'),
       mediations: getRandomCardImage('mediations'),
@@ -118,62 +99,56 @@ export default function CategoriesSection() {
   ], [randomImages])
 
   return (
-    <section ref={sectionRef} id="categories-section" className="w-full min-h-screen bg-theme-cream flex items-center justify-center py-12 md:py-16">
+    <section id="categories-section" className="w-full min-h-screen bg-theme-cream flex items-center justify-center py-12 md:py-16">
       <div className="w-full px-6 md:px-10 lg:px-16 max-w-[1800px] mx-auto">
-        <div className="w-full flex flex-col md:grid md:grid-cols-2 2xl:flex 2xl:flex-row gap-3 md:gap-4 2xl:gap-6">
-          {cards.map((card, index) => (
-            <div
-              key={index}
-              className={`flex-1 group ${
-                isVisible 
-                  ? 'opacity-100 translate-y-0' 
-                  : 'opacity-0 translate-y-8'
-              } ${
-                hoveredIndex === index 
-                  ? '2xl:flex-[1.6]' 
-                  : '2xl:flex-[1]'
-              } ${
-                isMobile 
-                  ? 'h-[calc((100vh-12rem)/4)]' 
-                  : 'md:h-[calc((100vh-8rem)/2)] 2xl:h-[calc(100vh-8rem)]'
-              }`}
-              style={{
-                transition: isVisible 
-                  ? `opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1) ${index * 50}ms, transform 0.5s cubic-bezier(0.16, 1, 0.3, 1) ${index * 50}ms, flex 0.6s cubic-bezier(0.16, 1, 0.3, 1)`
-                  : 'opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), transform 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
-                transitionDelay: isVisible ? '' : '0ms'
-              }}
-              onMouseEnter={() => {
-                setHoveredIndex(index)
-              }}
-              onMouseLeave={() => {
-                setHoveredIndex(null)
-              }}
-              onTouchStart={() => {
-                // Sur mobile/tablette tactile, on peut aussi agrandir au touch
-                if (window.innerWidth >= 768) {
-                  setHoveredIndex(index)
-                }
-              }}
-            >
-              <CategoryCard
-                href={card.href}
-                title={card.title}
-                description={card.description}
-                linkText={card.linkText}
-                imageSrc={card.imageSrc}
-                imageAlt={card.imageAlt}
-                theme={card.theme}
-                bgColor={card.bgColor}
-                hoverBgColor={card.hoverBgColor}
-                textColor={card.textColor}
-                linkColor={card.linkColor}
-                hoverLinkColor={card.hoverLinkColor}
-                underlineClass={card.underlineClass}
-              />
-            </div>
-          ))}
-        </div>
+        <StaggerContainer 
+          className="w-full flex flex-col md:grid md:grid-cols-2 2xl:flex 2xl:flex-row gap-3 md:gap-4 2xl:gap-6"
+          staggerChildren={0.1}
+        >
+          <LayoutGroup>
+            {cards.map((card, index) => (
+              <StaggerItem 
+                key={index} 
+                className={`flex-1 group transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+                  hoveredIndex === index 
+                    ? '2xl:flex-[1.6]' 
+                    : '2xl:flex-[1]'
+                } ${
+                  isMobile 
+                    ? 'h-[240px]'
+                    : 'md:h-[320px] lg:h-[360px] 2xl:h-[480px]'
+                }`}
+              >
+                <div
+                  className="w-full h-full"
+                  onMouseEnter={() => setHoveredIndex(index)}
+                  onMouseLeave={() => setHoveredIndex(null)}
+                  onTouchStart={() => {
+                    if (window.innerWidth >= 768) {
+                      setHoveredIndex(index)
+                    }
+                  }}
+                >
+                  <CategoryCard
+                    href={card.href}
+                    title={card.title}
+                    description={card.description}
+                    linkText={card.linkText}
+                    imageSrc={card.imageSrc}
+                    imageAlt={card.imageAlt}
+                    theme={card.theme}
+                    bgColor={card.bgColor}
+                    hoverBgColor={card.hoverBgColor}
+                    textColor={card.textColor}
+                    linkColor={card.linkColor}
+                    hoverLinkColor={card.hoverLinkColor}
+                    underlineClass={card.underlineClass}
+                  />
+                </div>
+              </StaggerItem>
+            ))}
+          </LayoutGroup>
+        </StaggerContainer>
       </div>
     </section>
   )

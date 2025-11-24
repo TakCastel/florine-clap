@@ -28,15 +28,22 @@ export default function FilmCard({
   isHero = false
 }: FilmCardProps) {
   const [isHovered, setIsHovered] = useState(false)
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
 
   if (isHero) {
     return (
       <Link href={href} className="group block">
-        <article 
-          className="relative overflow-visible transition-all duration-700 ease-out"
-          onMouseEnter={() => setIsHovered(true)}
-          onMouseLeave={() => setIsHovered(false)}
-        >
+      <article 
+        className="relative overflow-visible transition-all duration-700 ease-out"
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+        onMouseMove={(e) => {
+          const rect = e.currentTarget.getBoundingClientRect()
+          const x = ((e.clientX - rect.left) / rect.width) * 100
+          const y = ((e.clientY - rect.top) / rect.height) * 100
+          setMousePosition({ x, y })
+        }}
+      >
           {/* Container avec clip-path en biais */}
           <div 
             className="relative transition-all duration-[800ms] ease-out"
@@ -121,17 +128,33 @@ export default function FilmCard({
                     as="span"
                   />
                 </div>
-              </div>
             </div>
           </div>
-        </article>
-      </Link>
-    )
+        </div>
+
+        {/* Effet de brillance au hover */}
+        <div 
+          className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none z-10"
+          style={{
+            background: `radial-gradient(circle at ${mousePosition.x}% ${mousePosition.y}%, rgba(255,255,255,0.1) 0%, transparent 50%)`,
+          }}
+        ></div>
+      </article>
+    </Link>
+  )
   }
 
   return (
     <Link href={href} className="group block">
-      <article className="relative overflow-hidden bg-black rounded-xl shadow-lg transition-all duration-500 ease-out group-hover:-translate-y-2 group-hover:shadow-2xl">
+      <article 
+        className="relative overflow-hidden bg-black rounded-xl shadow-lg transition-all duration-500 ease-out group-hover:-translate-y-2 group-hover:shadow-2xl"
+        onMouseMove={(e) => {
+          const rect = e.currentTarget.getBoundingClientRect()
+          const x = ((e.clientX - rect.left) / rect.width) * 100
+          const y = ((e.clientY - rect.top) / rect.height) * 100
+          setMousePosition({ x, y })
+        }}
+      >
         <div className="aspect-video relative overflow-hidden">
           {/* Image de fond */}
           <div 
@@ -187,6 +210,14 @@ export default function FilmCard({
             </div>
           </div>
         </div>
+
+        {/* Effet de brillance au hover */}
+        <div 
+          className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none z-10"
+          style={{
+            background: `radial-gradient(circle at ${mousePosition.x}% ${mousePosition.y}%, rgba(255,255,255,0.1) 0%, transparent 50%)`,
+          }}
+        ></div>
       </article>
     </Link>
   )

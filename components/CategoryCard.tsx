@@ -118,9 +118,6 @@ export default function CategoryCard({
           ></div>
         </div>
       </div>
-
-      {/* Ligne décorative animée */}
-      <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-white/50 to-transparent transform -translate-x-full group-hover:translate-x-full transition-transform duration-[1200ms] ease-out"></div>
       
       {/* Contenu */}
       <div className="relative h-full flex flex-col justify-between p-8 md:p-10">

@@ -35,7 +35,6 @@ h1, h2, h3, h4, h5, h6 {
   font-family: 'Andale Mono', 'Monaco', 'Menlo', monospace;
   font-weight: 700;
   letter-spacing: -0.03em;
-  color: inherit;
 }
 
 .heading-display {
@@ -340,57 +339,19 @@ h1, h2, h3, h4, h5, h6 {
   will-change: transform;
 }
 
-/* Smooth scrolling pour les navigateurs qui le supportent */
+/* Smooth scrolling managed by Lenis */
 html {
-  scroll-behavior: smooth;
-  /* scroll-snap-type: y mandatory; */
+  /* scroll-behavior: smooth; - Disable native smooth scroll to let Lenis handle it */
 }
 
 body {
-  /* scroll-snap-type: y mandatory; */
   /* overflow-y: hidden; */
-}
-
-/* Système de scroll snap pur */
-.scroll-container {
-  scroll-snap-type: y mandatory;
-  overflow-y: scroll;
-  height: 100vh;
-  /* Forcer le scroll en haut */
-  scroll-behavior: auto;
-  scroll-margin: 0;
-  scroll-padding: 0;
-  /* S'assurer que le scroll commence en haut */
-  scroll-snap-align: start;
-}
-
-.scroll-section {
-  scroll-snap-align: start;
-  scroll-snap-stop: always;
-  height: 100vh;
-  /* Forcer la première section à être visible */
-  scroll-margin: 0;
-  scroll-padding: 0;
-}
-
-/* Forcer la première section à être active */
-.scroll-container > *:first-child {
-  scroll-snap-align: start;
-  scroll-snap-stop: always;
-  scroll-margin: 0;
-  scroll-padding: 0;
 }
 
 /* Footer sans scroll snap pour permettre l'accès */
 footer,
 .scroll-section-footer {
-  scroll-snap-align: none;
-  scroll-snap-stop: normal;
-}
-
-/* Forcer la première section à être active */
-.scroll-container:not(:focus) {
-  scroll-snap-align: start;
+  /* scroll-snap-align: none; */
 }
 
 /* Amélioration des performances pour les animations */
@@ -757,4 +718,14 @@ body {
 .hero-quote-animation {
   animation: fadeInSlow 1.5s ease-out 0.5s forwards;
   opacity: 0;
+}
+
+/* Optimisations pour les transitions de page */
+.page-transition-wrapper {
+  width: 100%;
+  min-height: 100%;
+  will-change: transform, opacity;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
 }

@@ -1,44 +1,51 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
+import { usePathname } from 'next/navigation'
+import { ReactNode } from 'react'
 
 interface PageTransitionProps {
-  children: React.ReactNode
-  isTransitioning?: boolean
+  children: ReactNode
 }
 
-export default function PageTransition({ children, isTransitioning = false }: PageTransitionProps) {
-  const [isVisible, setIsVisible] = useState(true)
+const pageVariants = {
+  initial: {
+    opacity: 0,
+    y: 20,
+  },
+  animate: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.4,
+      ease: [0.22, 1, 0.36, 1], // Custom easing pour une transition plus fluide
+    },
+  },
+  exit: {
+    opacity: 0,
+    y: -20,
+    transition: {
+      duration: 0.3,
+      ease: [0.22, 1, 0.36, 1],
+    },
+  },
+}
 
-  useEffect(() => {
-    if (isTransitioning) {
-      setIsVisible(false)
-    } else {
-      // Délai minimal pour permettre à la nouvelle page de se charger
-      const timer = setTimeout(() => {
-        setIsVisible(true)
-      }, 10)
-      return () => clearTimeout(timer)
-    }
-  }, [isTransitioning])
+export default function PageTransition({ children }: PageTransitionProps) {
+  const pathname = usePathname()
 
   return (
-    <div className="relative">
-      {/* Contenu avec transition fluide */}
-      <div 
-        className={`transition-all duration-150 ease-out ${
-          isVisible 
-            ? 'opacity-100 translate-y-0' 
-            : 'opacity-0 translate-y-1'
-        }`}
+    <AnimatePresence mode="wait" initial={false}>
+      <motion.div
+        key={pathname}
+        variants={pageVariants}
+        initial="initial"
+        animate="animate"
+        exit="exit"
+        className="page-transition-wrapper"
       >
         {children}
-      </div>
-
-      {/* Overlay de transition subtil */}
-      {isTransitioning && (
-        <div className="fixed inset-0 z-50 bg-orange-100/80 backdrop-blur-sm transition-opacity duration-300" />
-      )}
-    </div>
+      </motion.div>
+    </AnimatePresence>
   )
 }
