@@ -26,7 +26,7 @@ export default function HeroSection() {
         {/* Vidéo de fond */}
         <div className="absolute inset-0 overflow-hidden">
           <video
-            src="/videos/INTRO_VIDEO_FLORINE_CLAP.mp4"
+            src="http://51.77.245.224/videos/INTRO_VIDEO_FLORINE_CLAP.mp4"
             autoPlay
             loop
             muted
@@ -35,7 +35,6 @@ export default function HeroSection() {
           >
             Votre navigateur ne supporte pas la lecture de vidéos.
           </video>
-          
         </div>
 
         {/* Contenu principal */}

@@ -5,4 +5,10 @@ node_modules
 .DS_Store
 .contentlayer
 
+# Vidéos locales (hébergées sur serveur distant)
+public/videos/*.mp4
+public/videos/*.mov
+public/videos/*.avi
+public/videos/*.webm
+
 

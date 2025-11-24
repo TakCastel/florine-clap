@@ -1,16 +1,11 @@
-'use client'
-
 import './globals.css'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import BackToTop from '@/components/BackToTop'
-import { usePathname } from 'next/navigation'
 import { AnimationProvider } from '@/contexts/AnimationContext'
+import LayoutWrapper from './LayoutWrapper'
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
-  const pathname = usePathname()
-  const isHomePage = pathname === '/'
-  
   return (
     <html lang="fr">
       <head>
@@ -41,14 +36,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link rel="apple-touch-icon" href="/images/logos/logo-white.png" />
       </head>
       <body className="bg-gray-100">
-        <AnimationProvider>
-          <Header />
-          <main className={isHomePage ? '' : 'pt-16 md:pt-0'}>
-            {children}
-          </main>
-          <Footer />
-          <BackToTop />
-        </AnimationProvider>
+        <LayoutWrapper>
+          {children}
+        </LayoutWrapper>
       </body>
     </html>
   )

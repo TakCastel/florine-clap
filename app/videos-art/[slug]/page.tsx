@@ -86,6 +86,19 @@ export default function VideoArtPage({ params }: VideoArtPageProps) {
               </div>
             )}
             
+            {/* Player vidéo directe (URL) */}
+            {videoArt.videoUrl && !videoArt.vimeoId && (
+              <div className="relative aspect-video rounded-lg overflow-hidden mb-8">
+                <video
+                  src={videoArt.videoUrl}
+                  controls
+                  className="w-full h-full object-contain"
+                >
+                  Votre navigateur ne supporte pas la lecture de vidéos.
+                </video>
+              </div>
+            )}
+            
             {/* Contenu MDX */}
             <div className="prose prose-lg max-w-none text-theme-dark">
               <MdxRenderer code={videoArt.body.code} />
