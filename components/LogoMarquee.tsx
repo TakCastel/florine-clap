@@ -1,5 +1,7 @@
 'use client'
 
+import Image from 'next/image'
+
 interface LogoMarqueeProps {
   title?: string
   className?: string
@@ -46,13 +48,22 @@ function LogoMarquee({ title, className = '', invertColors = false, pauseOnHover
                 filterClass = 'invert'
               }
               
+              const heightClass = logo.isLarge ? 'h-20' : logo.isMedium ? 'h-14' : 'h-12'
+              const widthClass = logo.isLarge ? 'w-44' : logo.isMedium ? 'w-36' : 'w-28'
+
               return (
-                <img
+                <div
                   key={`first-${index}`}
-                  src={logo.src}
-                  alt={logo.alt}
-                  className={`${logo.isLarge ? 'h-20' : logo.isMedium ? 'h-14' : 'h-12'} w-auto object-contain filter ${filterClass} opacity-90 transition-all duration-300 flex-shrink-0`}
-                />
+                  className={`relative ${heightClass} ${widthClass} flex-shrink-0`}
+                >
+                  <Image
+                    src={logo.src}
+                    alt={logo.alt}
+                    fill
+                    sizes="140px"
+                    className={`object-contain filter ${filterClass} opacity-90 transition-all duration-300`}
+                  />
+                </div>
               )
             })}
             {/* Espace pour simuler le défilement */}
@@ -77,13 +88,22 @@ function LogoMarquee({ title, className = '', invertColors = false, pauseOnHover
                 filterClass = 'invert'
               }
               
+              const heightClass = logo.isLarge ? 'h-20' : logo.isMedium ? 'h-14' : 'h-12'
+              const widthClass = logo.isLarge ? 'w-44' : logo.isMedium ? 'w-36' : 'w-28'
+
               return (
-                <img
+                <div
                   key={`second-${index}`}
-                  src={logo.src}
-                  alt={logo.alt}
-                  className={`${logo.isLarge ? 'h-20' : logo.isMedium ? 'h-14' : 'h-12'} w-auto object-contain filter ${filterClass} opacity-90 transition-all duration-300 flex-shrink-0`}
-                />
+                  className={`relative ${heightClass} ${widthClass} flex-shrink-0`}
+                >
+                  <Image
+                    src={logo.src}
+                    alt={logo.alt}
+                    fill
+                    sizes="140px"
+                    className={`object-contain filter ${filterClass} opacity-90 transition-all duration-300`}
+                  />
+                </div>
               )
             })}
             {/* Espace pour simuler le défilement */}

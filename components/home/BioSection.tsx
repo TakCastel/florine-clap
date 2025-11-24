@@ -1,7 +1,9 @@
 'use client'
 
+import Image from 'next/image'
 import { useState, useEffect, useRef } from 'react'
 import { bioPhoto } from '@/lib/images'
+import CtaLink from '@/components/CtaLink'
 
 export default function BioSection() {
   const [isVisible, setIsVisible] = useState(false)
@@ -59,19 +61,23 @@ export default function BioSection() {
                   clipPath: 'polygon(12% 0, 100% 0, 88% 100%, 0 100%)',
                 }}
               >
-                <img 
-                  src={bioPhoto} 
-                  alt="Florine Clap - Portrait"
-                  className="w-full h-[400px] md:h-[500px] lg:h-[600px] object-cover transition-transform duration-700 group-hover:scale-110"
+                <div 
+                  className="relative w-full h-[400px] md:h-[500px] lg:h-[600px] transition-transform duration-700 ease-out"
                   style={{
                     transform: `translate(${mousePosition.x * 0.1}px, ${mousePosition.y * 0.1}px)`,
-                    filter: 'contrast(1.05) brightness(1.02)',
-                    imageRendering: 'auto',
                   }}
-                />
-                {/* Overlay coloré subtil */}
-                <div className="absolute inset-0 bg-black/10 group-hover:bg-black/5 transition-all duration-700"></div>
-                <div className="absolute inset-0 bg-gradient-to-t from-white/60 via-transparent to-transparent"></div>
+                >
+                  <Image 
+                    src={bioPhoto} 
+                    alt="Florine Clap - Portrait"
+                    fill
+                    sizes="(max-width: 768px) 100vw, (max-width: 1024px) 60vw, 40vw"
+                    className="object-cover transition-transform duration-700 group-hover:scale-110"
+                  />
+                  {/* Overlay coloré subtil */}
+                  <div className="absolute inset-0 bg-black/10 group-hover:bg-black/5 transition-all duration-700"></div>
+                  <div className="absolute inset-0 bg-gradient-to-t from-white/60 via-transparent to-transparent"></div>
+                </div>
               </div>
 
               {/* Ligne décorative animée */}
@@ -90,14 +96,8 @@ export default function BioSection() {
                 transition: 'opacity 1s cubic-bezier(0.16, 1, 0.3, 1) 0.3s, transform 1s cubic-bezier(0.16, 1, 0.3, 1) 0.3s',
               }}
             >
-              <h3 
-                className="text-black font-bold text-6xl leading-tight tracking-tighter mb-4"
-                style={{
-                  fontFamily: 'var(--font-andalemo), sans-serif',
-                  letterSpacing: '-0.05em',
-                }}
-              >
-                Qui suis-je ?
+              <h3 className="heading-section text-black mb-4">
+                Florine Clap
               </h3>
               
               {/* Ligne de séparation animée */}
@@ -116,7 +116,7 @@ export default function BioSection() {
             <div className="space-y-5 text-black/85 text-sm md:text-base leading-relaxed">
               {/* Membres d'associations */}
               <div
-                className="mb-5 pb-5 border-b border-black/10"
+                className="mb-5 pb-5 border-b border-black/10 inline-block"
                 style={{
                   opacity: isVisible ? 1 : 0,
                   transform: isVisible ? 'translateY(0)' : 'translateY(20px)',
@@ -130,6 +130,7 @@ export default function BioSection() {
 
               {/* Introduction */}
               <p
+                className="body-text text-black/85"
                 style={{
                   opacity: isVisible ? 1 : 0,
                   transform: isVisible ? 'translateY(0)' : 'translateY(20px)',
@@ -141,6 +142,7 @@ export default function BioSection() {
               
               {/* Parcours cinématographique - premier paragraphe */}
               <p
+                className="body-text text-black/85"
                 style={{
                   opacity: isVisible ? 1 : 0,
                   transform: isVisible ? 'translateY(0)' : 'translateY(20px)',
@@ -155,6 +157,7 @@ export default function BioSection() {
           {/* Paragraphes suivants qui passent en dessous de l'image */}
           <div className="clear-both space-y-5 text-black/85 text-sm md:text-base leading-relaxed mt-8">
             <p
+              className="body-text text-black/85"
               style={{
                 opacity: isVisible ? 1 : 0,
                 transform: isVisible ? 'translateY(0)' : 'translateY(20px)',
@@ -165,6 +168,7 @@ export default function BioSection() {
             </p>
             
             <p
+              className="body-text text-black/85"
               style={{
                 opacity: isVisible ? 1 : 0,
                 transform: isVisible ? 'translateY(0)' : 'translateY(20px)',
@@ -176,6 +180,7 @@ export default function BioSection() {
             
             {/* Médiations */}
             <p
+              className="body-text text-black/85"
               style={{
                 opacity: isVisible ? 1 : 0,
                 transform: isVisible ? 'translateY(0)' : 'translateY(20px)',
@@ -187,67 +192,20 @@ export default function BioSection() {
             
             {/* Bouton CTA sophistiqué */}
             <div 
-              className="mt-8"
+              className="mt-16 md:mt-20"
               style={{
                 opacity: isVisible ? 1 : 0,
                 transform: isVisible ? 'translateY(0)' : 'translateY(20px)',
                 transition: 'opacity 0.8s ease-out 1.1s, transform 0.8s ease-out 1.1s',
               }}
             >
-              <a 
-                href="/bio" 
-                className="group inline-flex items-center gap-4 text-black font-medium text-lg md:text-xl uppercase tracking-wider transition-all duration-500"
-              >
-                <span className="transition-all duration-300 group-hover:tracking-widest">
-                  En savoir plus
-                </span>
-                
-                <div className="flex items-center gap-2">
-                  <div 
-                    className="h-[2px] bg-black transition-all duration-500 group-hover:w-16"
-                    style={{ width: '32px' }}
-                  ></div>
-                  <svg 
-                    className="w-6 h-6 transition-transform duration-500 group-hover:translate-x-2" 
-                    fill="none" 
-                    stroke="currentColor" 
-                    strokeWidth="2.5" 
-                    viewBox="0 0 24 24"
-                  >
-                    <path d="M13 7l5 5m0 0l-5 5m5-5H6"/>
-                  </svg>
-                </div>
-              </a>
+              <CtaLink
+                href="/bio"
+                label="En savoir plus"
+                tone="dark"
+              />
             </div>
             
-            {/* Citation Agnès Varda - au milieu */}
-            <div
-              className="mt-12 pt-8 mx-auto text-center max-w-2xl"
-              style={{
-                opacity: isVisible ? 1 : 0,
-                transform: isVisible ? 'translateY(0)' : 'translateY(20px)',
-                transition: 'opacity 0.8s ease-out 1.2s, transform 0.8s ease-out 1.2s',
-              }}
-            >
-              <div className="relative">
-                {/* Guillemets décoratifs */}
-                <div className="absolute -top-4 -left-4 text-black/10 text-6xl md:text-7xl font-serif leading-none" style={{ fontFamily: 'Georgia, serif' }}>
-                  "
-                </div>
-                <blockquote className="text-black/80 italic text-lg md:text-xl leading-relaxed font-light relative z-10 pl-8">
-                  Je suis curieuse.<br />
-                  Je trouve tout intéressant.<br />
-                  La vraie vie, la fausse vie.<br />
-                  Les objets, les fleurs, les chats.<br />
-                  Mais surtout les gens.
-                </blockquote>
-                <div className="mt-4 pt-4 border-t border-black/20">
-                  <p className="text-black/60 text-sm md:text-base font-medium tracking-wide">
-                    Agnès Varda
-                  </p>
-                </div>
-              </div>
-            </div>
           </div>
           
           {/* Clear float pour forcer le contenu suivant à passer en dessous */}

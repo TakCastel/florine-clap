@@ -44,11 +44,7 @@ export default function Footer() {
               }}
             >
               <h3 
-                className="text-white font-bold text-5xl md:text-6xl leading-none tracking-tighter mb-6"
-                style={{
-                  fontFamily: 'var(--font-andalemo), sans-serif',
-                  letterSpacing: '-0.03em',
-                }}
+                className="heading-section text-white mb-6"
               >
                 Florine Clap
               </h3>
@@ -65,7 +61,7 @@ export default function Footer() {
               </div>
 
               <p 
-                className="text-white/75 text-lg leading-relaxed mb-8"
+                className="body-text text-white/75 mb-8"
                 style={{
                   opacity: isVisible ? 1 : 0,
                   transform: isVisible ? 'translateY(0)' : 'translateY(20px)',

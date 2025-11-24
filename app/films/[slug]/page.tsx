@@ -53,11 +53,7 @@ export default function FilmPage({ params }: FilmPageProps) {
                 )}
               </div>
               <h1 
-                className="text-4xl md:text-5xl lg:text-6xl font-display font-bold leading-tight text-theme-dark"
-                style={{
-                  fontFamily: 'var(--font-andalemo), sans-serif',
-                  letterSpacing: '-0.03em',
-                }}
+                className="heading-page text-theme-dark"
               >
                 {film.title}
               </h1>
@@ -110,10 +106,7 @@ export default function FilmPage({ params }: FilmPageProps) {
             <div className="sticky top-8">
               {/* Fiche technique */}
               <div className="border-t border-theme-dark/10 pt-8 mb-8">
-                <h3 className="text-xl font-display font-bold text-theme-dark mb-6" style={{
-                  fontFamily: 'var(--font-andalemo), sans-serif',
-                  letterSpacing: '-0.02em',
-                }}>
+                <h3 className="heading-subtitle text-theme-dark mb-6">
                   Fiche technique
                 </h3>
                 
@@ -198,10 +191,7 @@ export default function FilmPage({ params }: FilmPageProps) {
               {/* Diffusion/Sélection */}
               {(film.diffusion && film.diffusion.length > 0) || (film.selection && film.selection.length > 0) ? (
                 <div className="border-t border-theme-dark/10 pt-8 mb-8">
-                  <h3 className="text-xl font-display font-bold text-theme-dark mb-6" style={{
-                    fontFamily: 'var(--font-andalemo), sans-serif',
-                    letterSpacing: '-0.02em',
-                  }}>
+                  <h3 className="heading-subtitle text-theme-dark mb-6">
                     Diffusion / Sélection
                   </h3>
                   
@@ -238,10 +228,7 @@ export default function FilmPage({ params }: FilmPageProps) {
               {/* Voir le film */}
               {film.lienFilm && (
                 <div className="border-t border-theme-dark/10 pt-8 mb-8">
-                  <h3 className="text-xl font-display font-bold text-theme-dark mb-6" style={{
-                    fontFamily: 'var(--font-andalemo), sans-serif',
-                    letterSpacing: '-0.02em',
-                  }}>
+                  <h3 className="heading-subtitle text-theme-dark mb-6">
                     Voir le film
                   </h3>
                   
@@ -259,14 +246,11 @@ export default function FilmPage({ params }: FilmPageProps) {
               {/* Remerciements */}
               {film.remerciements && (
                 <div className="border-t border-theme-dark/10 pt-8">
-                  <h3 className="text-xl font-display font-bold text-theme-dark mb-6" style={{
-                    fontFamily: 'var(--font-andalemo), sans-serif',
-                    letterSpacing: '-0.02em',
-                  }}>
+                  <h3 className="heading-subtitle text-theme-dark mb-6">
                     Remerciements
                   </h3>
                   
-                  <p className="text-theme-dark font-display font-medium text-sm leading-relaxed">
+                  <p className="body-text-sm text-theme-dark font-display font-medium">
                     {film.remerciements}
                   </p>
                 </div>

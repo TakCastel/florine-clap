@@ -1,6 +1,8 @@
 'use client'
 
-import { useState } from 'react'
+import Image from 'next/image'
+import { useEffect, useState } from 'react'
+import CtaLink from '@/components/CtaLink'
 
 interface CategoryCardProps {
   href: string
@@ -39,6 +41,11 @@ export default function CategoryCard({
 }: CategoryCardProps) {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
   const [isHovered, setIsHovered] = useState(false)
+  const [isImageLoaded, setIsImageLoaded] = useState(false)
+
+  useEffect(() => {
+    setIsImageLoaded(false)
+  }, [imageSrc])
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     const rect = e.currentTarget.getBoundingClientRect()
@@ -66,23 +73,28 @@ export default function CategoryCard({
       >
         {/* Image de fond avec parallax */}
         <div 
-          className="absolute inset-0 transition-transform duration-[600ms] ease-out scale-110"
+          className="relative h-full w-full transition-transform duration-[600ms] ease-out scale-110"
           style={{
             transform: isHovered 
               ? `scale(1.15) translate(${mousePosition.x}px, ${mousePosition.y}px)` 
               : 'scale(1.1)',
           }}
         >
-          <img 
+          <Image 
             src={imageSrc} 
             alt={imageAlt}
-            className={`w-full h-full object-cover ${
+            fill
+            sizes="(max-width: 768px) 100vw, (max-width: 1536px) 50vw, 33vw"
+            className={`object-cover transition duration-700 ease-out ${
+              isImageLoaded ? 'opacity-100 blur-0 scale-100' : 'opacity-40 blur-lg scale-105'
+            } ${
               theme === 'films' ? 'filter-[sepia(20%)_saturate(150%)_hue-rotate(340deg)_brightness(0.9)]' :
               theme === 'mediations' ? 'filter-[sepia(10%)_saturate(120%)_hue-rotate(200deg)_brightness(0.7)]' :
               theme === 'actus' ? 'filter-[sepia(30%)_saturate(180%)_hue-rotate(15deg)_brightness(0.95)]' :
               theme === 'videos-art' ? 'filter-[sepia(0%)_saturate(100%)_brightness(0.8)]' :
               ''
             }`}
+            onLoadingComplete={() => setIsImageLoaded(true)}
           />
           {/* Overlay coloré avec teinte forte - plus visible pour Films comme Actualités */}
           <div 
@@ -137,11 +149,9 @@ export default function CategoryCard({
         <div className="mt-auto">
           <div className="overflow-hidden mb-4 pb-2">
             <h3 
-              className="text-white font-bold text-6xl leading-tight tracking-tighter transition-transform duration-700 ease-out"
+              className="heading-light transition-transform duration-700 ease-out"
               style={{
-                fontFamily: 'var(--font-andalemo), sans-serif',
                 transform: isHovered ? 'translateY(0)' : 'translateY(10%)',
-                letterSpacing: '-0.05em',
               }}
             >
               {title}
@@ -166,7 +176,7 @@ export default function CategoryCard({
               opacity: isHovered ? 1 : 0,
             }}
           >
-            <p className="text-white/90 text-base md:text-lg leading-relaxed mb-6" style={{
+            <p className="body-text-light mb-6" style={{
               transform: isHovered ? 'translateY(0)' : 'translateY(-20px)',
               transition: 'transform 0.6s ease-out 0.1s',
             }}>
@@ -174,32 +184,12 @@ export default function CategoryCard({
             </p>
           </div>
 
-          {/* Call to action */}
-          <div className="flex items-center gap-3 text-white font-medium text-sm md:text-base tracking-wide">
-            <span className="uppercase transition-all duration-300 group-hover:tracking-wider">
-              {linkText}
-            </span>
-            <div className="flex items-center gap-1">
-              <div 
-                className="w-12 h-[2px] bg-white transition-all duration-500"
-                style={{
-                  width: isHovered ? '48px' : '24px',
-                }}
-              ></div>
-              <svg 
-                className="w-5 h-5 transition-transform duration-500" 
-                style={{
-                  transform: isHovered ? 'translateX(0)' : 'translateX(-8px)',
-                }}
-                fill="none" 
-                stroke="currentColor" 
-                strokeWidth="2.5" 
-                viewBox="0 0 24 24"
-              >
-                <path d="M13 7l5 5m0 0l-5 5m5-5H6"/>
-              </svg>
-            </div>
-          </div>
+          <CtaLink
+            href={href}
+            label={linkText}
+            tone="light"
+            isActive={isHovered}
+          />
         </div>
       </div>
 

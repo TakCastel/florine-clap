@@ -48,7 +48,7 @@ export default function BioPage() {
         {page.portrait ? (
           <>
             <div 
-              className="absolute inset-0 bg-cover bg-center bg-no-repeat blur-sm" 
+              className="absolute inset-0 bg-cover bg-center bg-no-repeat" 
               style={{ backgroundImage: `url(${page.portrait})` }}
             ></div>
             <div className="absolute inset-0 bg-gradient-to-t from-theme-cream via-theme-cream/50 to-transparent"></div>
@@ -62,11 +62,7 @@ export default function BioPage() {
           <div className="max-w-7xl mx-auto px-6 md:px-10 lg:px-16 pb-16 w-full">
             <div className="text-center max-w-4xl mx-auto">
               <h1 
-                className="text-4xl md:text-5xl lg:text-6xl font-display font-bold leading-tight text-theme-dark"
-                style={{
-                  fontFamily: 'var(--font-andalemo), sans-serif',
-                  letterSpacing: '-0.03em',
-                }}
+                className="heading-page text-theme-dark"
               >
                 {page.title}
               </h1>
@@ -93,11 +89,7 @@ export default function BioPage() {
               Partenaires
             </div>
             <h2 
-              className="text-theme-dark font-bold text-4xl md:text-5xl lg:text-6xl leading-none tracking-tight"
-              style={{
-                fontFamily: 'var(--font-andalemo), sans-serif',
-                letterSpacing: '-0.03em',
-              }}
+              className="heading-section text-theme-dark leading-none"
             >
               Ils me font confiance
             </h2>

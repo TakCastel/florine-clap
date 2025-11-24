@@ -1,14 +1,67 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useEffect, useMemo, useState } from 'react'
+
+const HERO_VIDEO_URL =
+  process.env.NEXT_PUBLIC_HERO_VIDEO_URL ||
+  'http://51.77.245.224/videos/INTRO_VIDEO_FLORINE_CLAP.mp4'
 
 export default function HeroSection() {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
   const [isLoaded, setIsLoaded] = useState(false)
+  const [videoSrc, setVideoSrc] = useState<string | null>(null)
+  const [isVideoReady, setIsVideoReady] = useState(false)
+  const [hasVideoError, setHasVideoError] = useState(false)
+
+  const videoHost = useMemo(() => {
+    if (!HERO_VIDEO_URL) return null
+    try {
+      return new URL(HERO_VIDEO_URL).origin
+    } catch {
+      return null
+    }
+  }, [])
 
   useEffect(() => {
     setIsLoaded(true)
   }, [])
+
+  useEffect(() => {
+    if (!HERO_VIDEO_URL) return
+
+    // Small delay to let the hero paint before the heavy video kicks in
+    const timeout = window.setTimeout(() => {
+      setVideoSrc(HERO_VIDEO_URL)
+    }, 150)
+
+    return () => window.clearTimeout(timeout)
+  }, [])
+
+  useEffect(() => {
+    if (!videoHost) return
+
+    const existingPreconnect = document.querySelector<HTMLLinkElement>(
+      'link[data-hero-preconnect="true"]'
+    )
+    if (!existingPreconnect) {
+      const preconnectLink = document.createElement('link')
+      preconnectLink.rel = 'preconnect'
+      preconnectLink.href = videoHost
+      preconnectLink.crossOrigin = 'anonymous'
+      preconnectLink.dataset.heroPreconnect = 'true'
+      document.head.appendChild(preconnectLink)
+    }
+
+    if (!document.querySelector<HTMLLinkElement>('link[data-hero-preload="true"]') && HERO_VIDEO_URL) {
+      const preloadLink = document.createElement('link')
+      preloadLink.rel = 'preload'
+      preloadLink.as = 'video'
+      preloadLink.href = HERO_VIDEO_URL
+      preloadLink.crossOrigin = 'anonymous'
+      preloadLink.dataset.heroPreload = 'true'
+      document.head.appendChild(preloadLink)
+    }
+  }, [videoHost])
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     const x = (e.clientX / window.innerWidth - 0.5) * 30
@@ -24,17 +77,41 @@ export default function HeroSection() {
     >
       <div className="relative h-full overflow-hidden">
         {/* Vidéo de fond */}
-        <div className="absolute inset-0 overflow-hidden">
-          <video
-            src="http://51.77.245.224/videos/INTRO_VIDEO_FLORINE_CLAP.mp4"
-            autoPlay
-            loop
-            muted
-            playsInline
-            className="w-full h-full object-cover scale-110"
-          >
-            Votre navigateur ne supporte pas la lecture de vidéos.
-          </video>
+        <div className="absolute inset-0 overflow-hidden bg-black">
+          {/* Uniform dark fallback before the video becomes available */}
+          <div
+            className={`absolute inset-0 bg-black transition-opacity duration-700 ${
+              isVideoReady ? 'opacity-0' : 'opacity-100'
+            }`}
+          ></div>
+
+          {videoSrc && !hasVideoError && (
+            <video
+              key={videoSrc}
+              src={videoSrc}
+              autoPlay
+              loop
+              muted
+              playsInline
+              preload="metadata"
+              className={`w-full h-full object-cover scale-110 transition-opacity duration-700 bg-black ${
+                isVideoReady ? 'opacity-100' : 'opacity-0'
+              }`}
+              onLoadedData={() => setIsVideoReady(true)}
+              onError={() => {
+                setHasVideoError(true)
+                setIsVideoReady(false)
+              }}
+            >
+              Votre navigateur ne supporte pas la lecture de vidéos.
+            </video>
+          )}
+
+          {hasVideoError && (
+            <div className="absolute inset-0 flex items-center justify-center bg-black/70 text-white text-sm tracking-widest uppercase">
+              Vidéo indisponible pour le moment
+            </div>
+          )}
         </div>
 
         {/* Contenu principal */}
@@ -45,7 +122,7 @@ export default function HeroSection() {
 
           {/* Bouton de navigation en bas avec effet parallax */}
           <div 
-            className="absolute bottom-[121px] left-1/2 transform -translate-x-1/2"
+            className="absolute bottom-[90px] left-1/2 transform -translate-x-1/2"
             style={{
               opacity: isLoaded ? 1 : 0,
               transform: `translateX(-50%) translateY(${isLoaded ? 0 : 20}px)`,
