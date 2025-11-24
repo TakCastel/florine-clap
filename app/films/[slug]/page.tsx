@@ -86,6 +86,19 @@ export default function FilmPage({ params }: FilmPageProps) {
               </div>
             )}
             
+            {/* Player vidéo directe (URL) */}
+            {film.videoUrl && !film.vimeoId && (
+              <div className="relative aspect-video rounded-lg overflow-hidden mb-8">
+                <video
+                  src={film.videoUrl}
+                  controls
+                  className="w-full h-full object-contain"
+                >
+                  Votre navigateur ne supporte pas la lecture de vidéos.
+                </video>
+              </div>
+            )}
+            
             {/* Contenu MDX */}
             <div className="prose prose-lg max-w-none text-theme-dark">
               <MdxRenderer code={film.body.code} />

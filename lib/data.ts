@@ -204,7 +204,7 @@ export const pages: Page[] = [
     title: "A propos",
     slug: "bio",
     portrait: "/images/florine-portrait.jpg",
-    hero_video: "/videos/INTRO_VIDEO_FLORINE_CLAP.mp4",
+    hero_video: process.env.NEXT_PUBLIC_HERO_VIDEO_URL || "",
     cta_text: "Decouvrir mes films",
     cta_link: "/films",
     body: `
