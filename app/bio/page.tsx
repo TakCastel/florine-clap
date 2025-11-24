@@ -1,6 +1,7 @@
 import MdxRenderer from '@/components/MdxRenderer'
 import Breadcrumb from '@/components/Breadcrumb'
 import dynamicImport from 'next/dynamic'
+import { bioPhoto } from '@/lib/images'
 
 const LogoMarquee = dynamicImport(() => import('@/components/LogoMarquee'), {
   ssr: false,
@@ -35,30 +36,25 @@ export default function BioPage() {
 
   return (
     <div className="min-h-screen bg-theme-cream text-theme-dark">
-      <Breadcrumb 
-        items={[
-          { label: 'Accueil', href: '/' },
-          { label: 'A propos' }
-        ]}
-        variant="default"
-      />
-
       {/* Hero Section avec image de fond - même style que les pages films */}
       <section className="relative h-[45vh] min-h-[300px] overflow-hidden">
-        {page.portrait ? (
-          <>
-            <div 
-              className="absolute inset-0 bg-cover bg-center bg-no-repeat" 
-              style={{ backgroundImage: `url(${page.portrait})` }}
-            ></div>
-            <div className="absolute inset-0 bg-gradient-to-t from-theme-cream via-theme-cream/50 to-transparent"></div>
-            <div className="absolute inset-0 bg-gradient-to-r from-theme-cream/80 via-theme-cream/40 to-transparent"></div>
-          </>
-        ) : (
-          <div className="absolute inset-0 bg-theme-cream"></div>
-        )}
+        <div 
+          className="absolute inset-0 bg-cover bg-top bg-no-repeat blur-[2px] filter-[sepia(20%)_saturate(150%)_hue-rotate(340deg)_brightness(0.9)]" 
+          style={{ backgroundImage: `url(${bioPhoto})` }}
+        ></div>
+        <div className="absolute inset-0 bg-gradient-to-t from-theme-cream via-theme-cream/50 to-transparent"></div>
+        <div className="absolute inset-0 bg-gradient-to-r from-theme-cream/80 via-theme-cream/40 to-transparent"></div>
+        <div className="absolute top-0 left-0 right-0 z-30">
+          <Breadcrumb 
+            items={[
+              { label: 'Accueil', href: '/' },
+              { label: 'Bio' }
+            ]}
+            variant="default"
+          />
+        </div>
         
-        <div className="relative z-10 h-full flex items-end">
+        <div className="relative z-10 h-full flex items-end pt-24 md:pt-28">
           <div className="max-w-7xl mx-auto px-6 md:px-10 lg:px-16 pb-16 w-full">
             <div className="text-center max-w-4xl mx-auto">
               <h1 
@@ -72,9 +68,9 @@ export default function BioPage() {
       </section>
 
       {/* Contenu MDX principal */}
-      <section className="py-16 md:py-24 bg-theme-cream">
+      <section className="relative z-30 py-16 md:py-24 bg-theme-cream -mt-10 md:-mt-16">
         <div className="max-w-7xl mx-auto px-6 md:px-10 lg:px-16">
-          <div className="prose prose-lg max-w-none text-theme-dark">
+          <div className="prose prose-lg max-w-none text-theme-dark [&_p]:text-justify [&_li]:text-justify">
             <MdxRenderer code={page.body.code} />
           </div>
         </div>

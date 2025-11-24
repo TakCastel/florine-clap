@@ -87,7 +87,6 @@ export default function ActusPage({ searchParams }: ActusPageProps) {
         {currentPage === 1 && (
           <div className="mb-20 md:mb-28">
             <div className="mb-10">
-              <div className="text-theme-dark/40 text-sm uppercase tracking-[0.3em] mb-3 font-medium">À la une</div>
               <h2 
               className="heading-section text-theme-actus mb-2 leading-none"
               >
@@ -112,7 +111,6 @@ export default function ActusPage({ searchParams }: ActusPageProps) {
         <div className="mb-12">
           <div className="flex items-end justify-between mb-8">
             <div>
-              <div className="text-theme-dark/40 text-sm uppercase tracking-[0.3em] mb-3 font-medium">Archives</div>
               <h2 
               className="heading-section text-theme-actus leading-none"
               >

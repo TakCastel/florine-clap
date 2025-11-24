@@ -15,7 +15,7 @@ export default function Breadcrumb({ items, variant = 'default' }: Props) {
     switch (variant) {
       case 'blue':
         return {
-          container: 'bg-theme-blue',
+          container: 'bg-theme-blue/80 backdrop-blur-md',
           text: 'text-white/80',
           separator: 'text-white/60',
           hover: 'hover:text-white',
@@ -23,7 +23,7 @@ export default function Breadcrumb({ items, variant = 'default' }: Props) {
         }
       case 'grey':
         return {
-          container: 'bg-gray-100',
+          container: 'bg-gray-100/80 backdrop-blur-md',
           text: 'text-theme-blue/80',
           separator: 'text-theme-blue/60',
           hover: 'hover:text-theme-blue',
@@ -31,7 +31,7 @@ export default function Breadcrumb({ items, variant = 'default' }: Props) {
         }
       case 'yellow':
         return {
-          container: 'bg-theme-yellow',
+          container: 'bg-theme-yellow/80 backdrop-blur-md',
           text: 'text-theme-dark/80',
           separator: 'text-theme-dark/60',
           hover: 'hover:text-theme-dark',
@@ -39,7 +39,7 @@ export default function Breadcrumb({ items, variant = 'default' }: Props) {
         }
       case 'dark':
         return {
-          container: 'bg-theme-dark',
+          container: 'bg-theme-dark/70 backdrop-blur-md',
           text: 'text-white/80',
           separator: 'text-white/60',
           hover: 'hover:text-white',
@@ -47,7 +47,7 @@ export default function Breadcrumb({ items, variant = 'default' }: Props) {
         }
       case 'white':
         return {
-          container: 'bg-theme-dark',
+          container: 'bg-white/70 backdrop-blur-md',
           text: 'text-white/80',
           separator: 'text-white/60',
           hover: 'hover:text-white',
@@ -55,7 +55,7 @@ export default function Breadcrumb({ items, variant = 'default' }: Props) {
         }
       default:
         return {
-          container: 'bg-theme-cream',
+          container: 'bg-theme-cream/80 backdrop-blur-md',
           text: 'text-theme-dark/80',
           separator: 'text-theme-dark/60',
           hover: 'hover:text-theme-dark',

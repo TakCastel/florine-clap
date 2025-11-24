@@ -23,6 +23,7 @@ export default function MediationCard({
   lieu
 }: MediationCardProps) {
   const [isHovered, setIsHovered] = useState(false)
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
 
   return (
     <Link href={href} className="group block">
@@ -30,6 +31,12 @@ export default function MediationCard({
         className="relative overflow-visible transition-all duration-700 ease-out"
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
+        onMouseMove={(e) => {
+          const rect = e.currentTarget.getBoundingClientRect()
+          const x = ((e.clientX - rect.left) / rect.width) * 100
+          const y = ((e.clientY - rect.top) / rect.height) * 100
+          setMousePosition({ x, y })
+        }}
       >
         {/* Container avec clip-path en biais */}
         <div 
@@ -132,6 +139,14 @@ export default function MediationCard({
             </div>
           </div>
         </div>
+
+        {/* Effet de brillance au hover */}
+        <div 
+          className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none z-10"
+          style={{
+            background: `radial-gradient(circle at ${mousePosition.x}% ${mousePosition.y}%, rgba(255,255,255,0.1) 0%, transparent 50%)`,
+          }}
+        ></div>
       </article>
     </Link>
   )

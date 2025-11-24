@@ -22,27 +22,28 @@ export default function MediationPage({ params }: MediationPageProps) {
 
   return (
     <div className="min-h-screen bg-theme-cream text-theme-dark">
-      <Breadcrumb 
-        items={[
-          { label: 'Accueil', href: '/' },
-          { label: 'Médiations', href: '/mediations' },
-          { label: mediation.title }
-        ]}
-        variant="default"
-      />
-
       {/* Hero Section avec image de fond */}
       <section className="relative h-[45vh] min-h-[300px] overflow-hidden">
         {mediation.cover && (
           <div 
-            className="absolute inset-0 bg-cover bg-center bg-no-repeat blur-sm filter-[sepia(20%)_saturate(150%)_hue-rotate(340deg)_brightness(0.9)]" 
+            className="absolute inset-0 bg-cover bg-top bg-no-repeat blur-[2px] filter-[sepia(20%)_saturate(150%)_hue-rotate(340deg)_brightness(0.9)]" 
             style={{ backgroundImage: `url(${mediation.cover})` }}
           ></div>
         )}
         <div className="absolute inset-0 bg-gradient-to-t from-theme-cream via-theme-cream/50 to-transparent"></div>
         <div className="absolute inset-0 bg-gradient-to-r from-theme-cream/80 via-theme-cream/40 to-transparent"></div>
+        <div className="absolute top-0 left-0 right-0 z-30">
+          <Breadcrumb 
+            items={[
+              { label: 'Accueil', href: '/' },
+              { label: 'Médiations', href: '/mediations' },
+              { label: mediation.title }
+            ]}
+            variant="default"
+          />
+        </div>
         
-        <div className="relative z-10 h-full flex items-end">
+        <div className="relative z-10 h-full flex items-end pt-24 md:pt-28">
           <div className="max-w-7xl mx-auto px-6 md:px-10 lg:px-16 pb-16 w-full">
             <div className="text-center max-w-4xl mx-auto">
               <div className="flex items-center justify-center gap-6 text-theme-dark/60 text-sm uppercase tracking-[0.2em] mb-4 font-light">
@@ -75,13 +76,13 @@ export default function MediationPage({ params }: MediationPageProps) {
       </section>
 
       {/* Contenu principal */}
-      <div className="max-w-7xl mx-auto px-6 md:px-10 lg:px-16 py-16 md:py-24">
+      <div className="relative z-30 max-w-7xl mx-auto px-6 md:px-10 lg:px-16 py-16 md:py-24 -mt-10 md:-mt-16">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
           
           {/* Contenu principal */}
           <div className="lg:col-span-2">
             {/* Contenu MDX */}
-            <div className="prose prose-lg max-w-none text-theme-dark">
+            <div className="prose prose-lg max-w-none text-theme-dark [&_p]:text-justify [&_li]:text-justify">
               <MdxRenderer code={mediation.body.code} />
             </div>
           </div>

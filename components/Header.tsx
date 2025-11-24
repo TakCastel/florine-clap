@@ -5,6 +5,7 @@ import { useState, useEffect } from 'react'
 import Navigation from './Header/Navigation'
 import { useAnimation } from '@/contexts/AnimationContext'
 import MobileMenu from './MobileMenu'
+import { UnderlineLink } from '@/components/ui/UnderlineLink'
 
 export default function Header() {
   const pathname = usePathname()
@@ -44,16 +45,9 @@ export default function Header() {
             transition: 'all 0.6s ease-out'
           }}
         >
-          <a 
-            href="/" 
-            className={`font-display font-normal uppercase cursor-pointer relative after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-px after:transition-all after:duration-500 after:ease-out hover:after:w-full tracking-wide transition-colors duration-300 text-base ${
-              isHomePage 
-                ? 'text-white/75 hover:text-white after:bg-white' 
-                : 'text-theme-dark/80 hover:text-black after:bg-theme-dark'
-            }`}
-          >
+          <UnderlineLink href="/" variant={isHomePage ? 'light' : 'dark'}>
             FLORINE CLAP
-          </a>
+          </UnderlineLink>
         </div>
 
         {/* Navigation desktop à droite */}
