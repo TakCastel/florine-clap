@@ -43,11 +43,7 @@ export default function VideosArtPage() {
             }}
           >
             <h1 
-              className="text-6xl md:text-7xl lg:text-9xl font-bold leading-none tracking-tighter text-theme-videos-art"
-              style={{
-                fontFamily: 'var(--font-andalemo), sans-serif',
-                letterSpacing: '-0.05em',
-              }}
+              className="heading-display text-theme-videos-art"
             >
               Vidéos/art
             </h1>
@@ -65,7 +61,7 @@ export default function VideosArtPage() {
           </div>
 
           <p 
-            className="mt-6 text-lg md:text-xl text-theme-dark/70 max-w-2xl"
+            className="body-text text-theme-videos-art/80 mt-6 max-w-2xl"
             style={{
               opacity: isVisible ? 1 : 0,
               transform: isVisible ? 'translateY(0)' : 'translateY(8px)',
@@ -97,13 +93,10 @@ export default function VideosArtPage() {
         {/* Contenu SEO */}
         <div className="mt-24 pt-12 border-t border-theme-dark/10">
           <div className="max-w-4xl">
-            <h2 className="text-2xl md:text-3xl font-bold text-theme-videos-art mb-6" style={{
-              fontFamily: 'var(--font-andalemo), sans-serif',
-              letterSpacing: '-0.02em',
-            }}>
+            <h2 className="heading-section text-black mb-6">
               Mes créations vidéo artistiques
             </h2>
-            <p className="text-theme-dark/70 text-lg leading-relaxed">
+            <p className="body-text text-theme-videos-art/80">
               Découvrez mes vidéos artistiques qui explorent les frontières entre le cinéma et l'art contemporain. 
               Chaque création est une invitation à expérimenter de nouvelles formes narratives et visuelles.
             </p>

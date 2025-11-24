@@ -87,7 +87,7 @@ export default function BackToTop() {
         className={`relative w-14 h-14 rounded-full border-2 flex items-center justify-center transition-all duration-500 group-hover:scale-110 ${
           isOnFooter 
             ? 'border-white/30 group-hover:border-white bg-black/90' 
-            : 'border-black/30 group-hover:border-black bg-gray-100/90'
+            : 'border-black/30 group-hover:border-black bg-theme-cream/90'
         }`}
       >
         <svg 

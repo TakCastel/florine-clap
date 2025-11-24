@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 import { useState } from 'react'
+import CtaLink from '@/components/CtaLink'
 
 type ActuCardProps = {
   href: string
@@ -66,11 +67,7 @@ export default function ActuCard({
 
               {/* Titre */}
               <h3 
-                className="text-lg md:text-xl font-bold text-white leading-tight line-clamp-2 mb-3 transition-colors duration-300" 
-                style={{
-                  fontFamily: 'var(--font-andalemo), sans-serif',
-                  letterSpacing: '-0.02em',
-                }}
+                className="heading-subtitle text-white leading-tight line-clamp-2 mb-3 transition-colors duration-300" 
               >
                 {title}
               </h3>
@@ -85,29 +82,13 @@ export default function ActuCard({
                 ></div>
               </div>
 
-              {/* CTA */}
-              <div className="inline-flex items-center gap-3 text-white font-medium text-sm md:text-base uppercase tracking-wider transition-all duration-500 mt-4">
-                <span className="transition-all duration-300 group-hover:tracking-widest">Lire</span>
-                <div className="flex items-center gap-2">
-                  <div 
-                    className="h-[2px] bg-white transition-all duration-500"
-                    style={{
-                      width: isHovered ? '48px' : '24px',
-                    }}
-                  ></div>
-                  <svg 
-                    className="w-5 h-5 transition-transform duration-500" 
-                    style={{
-                      transform: isHovered ? 'translateX(0)' : 'translateX(-8px)',
-                    }}
-                    fill="none" 
-                    stroke="currentColor" 
-                    strokeWidth="2.5" 
-                    viewBox="0 0 24 24"
-                  >
-                    <path d="M13 7l5 5m0 0l-5 5m5-5H6"/>
-                  </svg>
-                </div>
+              <div className="mt-4">
+                <CtaLink
+                  href={href}
+                  label="Lire"
+                  tone="light"
+                  isActive={isHovered}
+                />
               </div>
             </div>
           </div>

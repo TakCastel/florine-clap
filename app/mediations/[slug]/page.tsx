@@ -65,11 +65,7 @@ export default function MediationPage({ params }: MediationPageProps) {
                 )}
               </div>
               <h1 
-                className="text-4xl md:text-5xl lg:text-6xl font-display font-bold leading-tight text-theme-dark"
-                style={{
-                  fontFamily: 'var(--font-andalemo), sans-serif',
-                  letterSpacing: '-0.03em',
-                }}
+                className="heading-page text-theme-dark"
               >
                 {mediation.title}
               </h1>
@@ -95,10 +91,7 @@ export default function MediationPage({ params }: MediationPageProps) {
             <div className="sticky top-8">
               {/* Informations */}
               <div className="border-t border-theme-dark/10 pt-8 mb-8">
-                <h3 className="text-xl font-display font-bold text-theme-dark mb-6" style={{
-                  fontFamily: 'var(--font-andalemo), sans-serif',
-                  letterSpacing: '-0.02em',
-                }}>
+                <h3 className="heading-subtitle text-theme-dark mb-6">
                   Informations
                 </h3>
                 

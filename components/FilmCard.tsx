@@ -4,6 +4,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { Clock, Play, Calendar } from 'lucide-react'
 import { useState } from 'react'
+import CtaLink from '@/components/CtaLink'
 
 type FilmCardProps = {
   href: string
@@ -91,11 +92,7 @@ export default function FilmCard({
 
                   {/* Titre */}
                   <h3 
-                    className="text-4xl md:text-5xl lg:text-7xl font-bold text-white mb-5 leading-none tracking-tight"
-                    style={{
-                      fontFamily: 'var(--font-andalemo), sans-serif',
-                      letterSpacing: '-0.04em',
-                    }}
+                    className="heading-light mb-5"
                   >
                     {title}
                   </h3>
@@ -112,35 +109,17 @@ export default function FilmCard({
 
                   {/* Synopsis */}
                   {synopsis && (
-                    <p className="text-white/85 text-lg md:text-xl lg:text-2xl mb-8 line-clamp-2 leading-relaxed">
+                    <p className="body-text-light mb-8 line-clamp-2">
                       {synopsis}
                     </p>
                   )}
 
-                  {/* CTA */}
-                  <div className="inline-flex items-center gap-3 text-white font-medium text-base md:text-lg uppercase tracking-wider transition-all duration-500">
-                    <span className="transition-all duration-300 group-hover:tracking-widest">Découvrir</span>
-                    <div className="flex items-center gap-2">
-                      <div 
-                        className="h-[2px] bg-white transition-all duration-500"
-                        style={{
-                          width: isHovered ? '56px' : '32px',
-                        }}
-                      ></div>
-                      <svg 
-                        className="w-6 h-6 transition-transform duration-500" 
-                        style={{
-                          transform: isHovered ? 'translateX(0)' : 'translateX(-8px)',
-                        }}
-                        fill="none" 
-                        stroke="currentColor" 
-                        strokeWidth="2.5" 
-                        viewBox="0 0 24 24"
-                      >
-                        <path d="M13 7l5 5m0 0l-5 5m5-5H6"/>
-                      </svg>
-                    </div>
-                  </div>
+                  <CtaLink
+                    label="Découvrir"
+                    tone="light"
+                    isActive={isHovered}
+                    as="span"
+                  />
                 </div>
               </div>
             </div>
@@ -197,11 +176,7 @@ export default function FilmCard({
 
             {/* Titre */}
             <h3 
-              className="text-xl md:text-2xl font-bold text-white leading-tight line-clamp-2 mb-3 transition-colors duration-300" 
-              style={{
-                fontFamily: 'var(--font-andalemo), sans-serif',
-                letterSpacing: '-0.02em',
-              }}
+              className="heading-subtitle text-white leading-tight line-clamp-2 mb-3 transition-colors duration-300"
             >
               {title}
             </h3>

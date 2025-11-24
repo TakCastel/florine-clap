@@ -29,11 +29,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           `
         }} />
         
-        {/* Favicons - adaptés selon le thème système */}
-        <link rel="icon" type="image/png" href="/images/logos/logo-white.png" media="(prefers-color-scheme: dark)" />
-        <link rel="icon" type="image/png" href="/images/logos/logo-black.png" media="(prefers-color-scheme: light)" />
-        <link rel="icon" type="image/png" href="/images/logos/logo-black.png" />
-        <link rel="apple-touch-icon" href="/images/logos/logo-white.png" />
+        {/* Favicon Florine Clap */}
+        <link rel="icon" type="image/png" href="/images/florine-clap-favicon.png" />
+        <link rel="apple-touch-icon" href="/images/florine-clap-favicon.png" />
       </head>
       <body className="bg-gray-100">
         <LayoutWrapper>

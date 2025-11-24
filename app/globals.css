@@ -19,69 +19,72 @@ h1, h2, h3, h4, h5, h6 {
   font-family: 'Andale Mono', 'Monaco', 'Menlo', monospace;
 }
 
-/* Réduction globale des tailles de titres */
-h1 {
-  font-size: 2.5rem; /* text-4xl au lieu de text-6xl+ */
+:root {
+  --heading-display: clamp(2.5rem, 6vw, 4.5rem);
+  --heading-page: clamp(2.125rem, 4vw, 3.5rem);
+  --heading-section: clamp(1.75rem, 3vw, 2.75rem);
+  --heading-subtitle: clamp(1.25rem, 2.5vw, 2rem);
+  --body-large: clamp(0.9rem, 1.4vw, 1.05rem);
+  --body-base: clamp(0.8rem, 1vw, 0.95rem);
+}
+
+.heading-display,
+.heading-page,
+.heading-section,
+.heading-subtitle {
+  font-family: 'Andale Mono', 'Monaco', 'Menlo', monospace;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: inherit;
+}
+
+.heading-display {
+  font-size: var(--heading-display);
+  line-height: 1.05;
+}
+
+.heading-page {
+  font-size: var(--heading-page);
+  line-height: 1.1;
+}
+
+.heading-section {
+  font-size: var(--heading-section);
+  line-height: 1.15;
+}
+
+.heading-subtitle {
+  font-size: var(--heading-subtitle);
   line-height: 1.2;
 }
-
-h2 {
-  font-size: 2rem; /* text-3xl au lieu de text-4xl+ */
-  line-height: 1.3;
+ 
+.heading-light {
+  font-size: var(--heading-section);
+  line-height: 1.15;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: white;
 }
 
-h3 {
-  font-size: 1.5rem; /* text-2xl au lieu de text-3xl+ */
-  line-height: 1.4;
+.body-text {
+  font-size: var(--body-large);
+  line-height: 1.8;
+  font-weight: 400;
+  color: inherit;
 }
 
-h4 {
-  font-size: 1.25rem; /* text-xl */
-  line-height: 1.4;
+.body-text-light {
+  font-size: var(--body-large);
+  line-height: 1.8;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.92);
 }
 
-h5 {
-  font-size: 1.125rem; /* text-lg */
-  line-height: 1.5;
-}
-
-h6 {
-  font-size: 1rem; /* text-base */
-  line-height: 1.5;
-}
-
-/* Réduction des classes Tailwind de grande taille pour les titres */
-h1.text-6xl, h1.text-7xl, h1.text-8xl, h1.text-9xl {
-  font-size: 2.5rem; /* text-4xl */
-}
-
-h2.text-4xl, h2.text-5xl {
-  font-size: 2rem; /* text-3xl */
-}
-
-h3.text-3xl, h3.text-4xl {
-  font-size: 1.5rem; /* text-2xl */
-}
-
-/* Responsive - ajustements pour mobile */
-@media (min-width: 768px) {
-  h1 {
-    font-size: 3rem; /* text-5xl sur md */
-  }
-  
-  h1.text-6xl, h1.text-7xl, h1.text-8xl, h1.text-9xl {
-    font-size: 3rem;
-  }
-}
-
-@media (min-width: 1024px) {
-  h1 {
-    font-size: 3.5rem; /* text-6xl sur lg */
-  }
-  
-  h1.text-6xl, h1.text-7xl, h1.text-8xl, h1.text-9xl {
-    font-size: 3.5rem;
-  }
+.body-text-sm {
+  font-size: var(--body-base);
+  line-height: 1.6;
+  font-weight: 400;
+  color: inherit;
 }
 
 
@@ -247,32 +250,32 @@ h3.text-3xl, h3.text-4xl {
 }
 
 .prose h1 {
-  font-size: 2rem; /* text-3xl réduit */
+  font-size: 1.75rem; /* text-2xl */
   margin-bottom: 1rem;
 }
 
 .prose h2 {
-  font-size: 1.5rem; /* text-2xl réduit */
+  font-size: 1.375rem; /* text-xl */
   margin-bottom: 0.75rem;
 }
 
 .prose h3 {
-  font-size: 1.25rem; /* text-xl réduit */
-  margin-bottom: 0.5rem;
-}
-
-.prose h4 {
   font-size: 1.125rem; /* text-lg */
   margin-bottom: 0.5rem;
 }
 
-.prose h5 {
+.prose h4 {
   font-size: 1rem; /* text-base */
   margin-bottom: 0.5rem;
 }
 
-.prose h6 {
+.prose h5 {
   font-size: 0.875rem; /* text-sm */
+  margin-bottom: 0.5rem;
+}
+
+.prose h6 {
+  font-size: 0.75rem; /* text-xs */
   margin-bottom: 0.5rem;
 }
 

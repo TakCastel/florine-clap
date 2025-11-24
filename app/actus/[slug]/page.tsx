@@ -63,11 +63,7 @@ export default function ActuPage({ params }: ActuPageProps) {
                 })}
               </div>
               <h1 
-                className="text-4xl md:text-5xl lg:text-6xl font-display font-bold text-theme-dark leading-tight"
-                style={{
-                  fontFamily: 'var(--font-andalemo), sans-serif',
-                  letterSpacing: '-0.03em',
-                }}
+                className="heading-page text-theme-dark"
               >
                 {actu.title}
               </h1>
@@ -92,10 +88,7 @@ export default function ActuPage({ params }: ActuPageProps) {
           <div className="lg:col-span-1">
             <div className="sticky top-8">
               <div className="border-t border-theme-dark/10 pt-8">
-                <h3 className="text-xl font-display font-bold text-theme-dark mb-6" style={{
-                  fontFamily: 'var(--font-andalemo), sans-serif',
-                  letterSpacing: '-0.02em',
-                }}>
+                <h3 className="heading-subtitle text-theme-dark mb-6">
                   Informations
                 </h3>
                 

@@ -54,11 +54,7 @@ export default function ActusPage({ searchParams }: ActusPageProps) {
             }}
           >
             <h1 
-              className="text-6xl md:text-7xl lg:text-9xl font-bold leading-none tracking-tighter text-theme-actus"
-              style={{
-                fontFamily: 'var(--font-andalemo), sans-serif',
-                letterSpacing: '-0.05em',
-              }}
+              className="heading-display text-theme-actus"
             >
               Actualités
             </h1>
@@ -76,7 +72,7 @@ export default function ActusPage({ searchParams }: ActusPageProps) {
           </div>
 
           <p 
-            className="mt-6 text-lg md:text-xl text-theme-dark/70 max-w-2xl"
+            className="body-text text-theme-actus/80 mt-6 max-w-2xl"
             style={{
               opacity: isVisible ? 1 : 0,
               transform: isVisible ? 'translateY(0)' : 'translateY(8px)',
@@ -93,11 +89,7 @@ export default function ActusPage({ searchParams }: ActusPageProps) {
             <div className="mb-10">
               <div className="text-theme-dark/40 text-sm uppercase tracking-[0.3em] mb-3 font-medium">À la une</div>
               <h2 
-                className="text-3xl md:text-4xl lg:text-5xl font-bold text-theme-dark leading-none tracking-tight"
-                style={{
-                  fontFamily: 'var(--font-andalemo), sans-serif',
-                  letterSpacing: '-0.03em',
-                }}
+              className="heading-section text-theme-actus mb-2 leading-none"
               >
                 Dernière actualité
               </h2>
@@ -122,11 +114,7 @@ export default function ActusPage({ searchParams }: ActusPageProps) {
             <div>
               <div className="text-theme-dark/40 text-sm uppercase tracking-[0.3em] mb-3 font-medium">Archives</div>
               <h2 
-                className="text-3xl md:text-4xl lg:text-5xl font-bold text-theme-dark leading-none tracking-tight"
-                style={{
-                  fontFamily: 'var(--font-andalemo), sans-serif',
-                  letterSpacing: '-0.03em',
-                }}
+              className="heading-section text-theme-actus leading-none"
               >
                 Toutes les actualités
               </h2>
