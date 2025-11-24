@@ -32,6 +32,7 @@ export const Film = defineDocumentType(() => ({
     annee: { type: 'string', required: false },
     order: { type: 'number', required: false },
     vimeoId: { type: 'string', required: false },
+    videoUrl: { type: 'string', required: false },
     shortSynopsis: { type: 'string', required: false },
     // Fiche technique
     realisation: { type: 'string', required: false },
@@ -98,6 +99,7 @@ export const VideoArt = defineDocumentType(() => ({
     duree: { type: 'string', required: false },
     annee: { type: 'string', required: false },
     vimeoId: { type: 'string', required: false },
+    videoUrl: { type: 'string', required: false },
     shortSynopsis: { type: 'string', required: false },
     realisation: { type: 'string', required: false },
     mixage: { type: 'string', required: false },
@@ -117,6 +119,7 @@ export const Page = defineDocumentType(() => ({
     hero_video: { type: 'string', required: false },
     hero_image: { type: 'string', required: false },
     cta_text: { type: 'string', required: false },
+    cta_link: { type: 'string', required: false },
   },
   computedFields,
 }))
