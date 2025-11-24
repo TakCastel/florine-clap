@@ -16,7 +16,13 @@ const nextConfig = {
     mdxRs: true,
   },
   webpack: (config, { isServer }) => {
-    // Exclure ssh2-sftp-client et ssh2 du bundling client
+    // Exclure ssh2-sftp-client/ssh2 du bundle pour éviter l'import du binaire .node
+    config.externals = config.externals || []
+    config.externals.push({
+      'ssh2-sftp-client': 'commonjs ssh2-sftp-client',
+      ssh2: 'commonjs ssh2',
+    })
+
     if (!isServer) {
       config.resolve.fallback = {
         ...config.resolve.fallback,
@@ -25,11 +31,6 @@ const nextConfig = {
         tls: false,
         crypto: false,
       }
-      config.externals = config.externals || []
-      config.externals.push({
-        'ssh2-sftp-client': 'commonjs ssh2-sftp-client',
-        'ssh2': 'commonjs ssh2',
-      })
     }
     return config
   },
