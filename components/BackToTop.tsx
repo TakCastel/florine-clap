@@ -9,8 +9,10 @@ export default function BackToTop() {
 
   useEffect(() => {
     const toggleVisibility = () => {
-      // Afficher le bouton après 300px de scroll
-      if (window.scrollY > 300) {
+      // Afficher le bouton après 300px de scroll sur desktop, 800px sur mobile
+      const isMobile = window.innerWidth < 768
+      const threshold = isMobile ? 800 : 300
+      if (window.scrollY > threshold) {
         setIsVisible(true)
       } else {
         setIsVisible(false)
@@ -75,20 +77,23 @@ export default function BackToTop() {
     <button
       ref={buttonRef}
       onClick={scrollToTop}
-      className="group fixed bottom-8 right-8 z-50 inline-flex items-center justify-center transition-all duration-500"
+      className="back-to-top-button group fixed bottom-8 right-8 z-50 inline-flex items-center justify-center transition-all duration-500"
       style={{
         opacity: isVisible ? 1 : 0,
         transform: isVisible ? 'translateY(0)' : 'translateY(20px)',
+        backgroundColor: 'transparent',
+        background: 'none',
       }}
       aria-label="Remonter en haut de la page"
     >
       {/* Cercle avec flèche animée */}
       <div 
-        className={`relative w-14 h-14 rounded-full border-2 flex items-center justify-center transition-all duration-500 group-hover:scale-110 ${
+        className={`back-to-top-circle relative w-14 h-14 rounded-full border-2 flex items-center justify-center transition-all duration-500 group-hover:scale-110 ${
           isOnFooter 
-            ? 'border-white/30 group-hover:border-white bg-black/90' 
-            : 'border-black/30 group-hover:border-black bg-theme-cream/90'
+            ? 'border-white/30 group-hover:border-white' 
+            : 'border-black/30 group-hover:border-black'
         }`}
+        style={{ backgroundColor: 'transparent', background: 'none' }}
       >
         <svg 
           className={`w-6 h-6 transition-transform duration-300 group-hover:-translate-y-1 ${

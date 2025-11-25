@@ -70,7 +70,7 @@ export default function QuoteSection() {
           }}
         >
           <motion.span 
-            className="pointer-events-none select-none absolute -top-12 -left-8 text-7xl md:text-8xl lg:text-9xl font-serif text-white/10 leading-none"
+            className="pointer-events-none select-none absolute -top-8 left-0 md:-top-12 md:-left-8 text-7xl md:text-8xl lg:text-9xl font-serif text-white/10 leading-none"
             style={{
               opacity: useTransform(scrollYProgress, [0, 0.5], [0, 1]),
               scale: useTransform(scrollYProgress, [0, 0.5], [0.5, 1]),
@@ -89,7 +89,7 @@ export default function QuoteSection() {
           </p>
 
           <motion.span 
-            className="pointer-events-none select-none absolute -bottom-12 -right-8 text-7xl md:text-8xl lg:text-9xl font-serif text-white/10 leading-none"
+            className="pointer-events-none select-none absolute -bottom-8 right-0 md:-bottom-12 md:-right-8 text-7xl md:text-8xl lg:text-9xl font-serif text-white/10 leading-none"
             style={{
               opacity: useTransform(scrollYProgress, [0, 0.5], [0, 1]),
               scale: useTransform(scrollYProgress, [0, 0.5], [0.5, 1]),
