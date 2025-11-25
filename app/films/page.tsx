@@ -1,9 +1,8 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import FilmCard from '@/components/FilmCard'
 import Breadcrumb from '@/components/Breadcrumb'
-import ScrollRevealCard from '@/components/ScrollRevealCard'
+import StackScroll from '@/components/StackScroll'
 import { allFilms } from '.contentlayer/generated'
 
 export const dynamic = 'force-dynamic'
@@ -29,7 +28,7 @@ export default function FilmsPage() {
   })
 
   return (
-    <div className="min-h-screen bg-theme-cream text-theme-dark relative overflow-hidden">
+    <div className="min-h-screen bg-theme-cream text-theme-dark relative">
       <Breadcrumb 
         items={[
           { label: 'Accueil', href: '/' },
@@ -38,9 +37,9 @@ export default function FilmsPage() {
         variant="default"
       />
       
-      <div className="max-w-7xl mx-auto px-6 md:px-10 lg:px-16 py-12 md:py-20">
+      <div className="max-w-7xl mx-auto px-6 md:px-10 lg:px-16 pt-12 md:pt-20 pb-0">
         {/* Titre de la page avec animation */}
-        <div className="mb-16 md:mb-24">
+        <div className="mb-8 md:mb-12">
           <div 
             className="overflow-hidden mb-6"
             style={{
@@ -78,27 +77,14 @@ export default function FilmsPage() {
             Découvrez mes créations cinématographiques, documentaires et ateliers créatifs
           </p>
         </div>
-        
-        {/* Liste de tous les films en grandes cards */}
-        <div className="space-y-12 md:space-y-16">
-          {sortedFilms.map((film, index) => (
-            <ScrollRevealCard key={film._id} delay={index * 0.05}>
-              <FilmCard
-                href={`/films/${film.slug}`}
-                title={film.title}
-                cover={film.image}
-                synopsis={film.shortSynopsis}
-                duree={film.duree}
-                annee={film.annee}
-                vimeoId={film.vimeoId}
-                isHero={true}
-              />
-            </ScrollRevealCard>
-          ))}
-        </div>
-
-        {/* Contenu SEO */}
-        <div className="mt-24 pt-12 border-t border-theme-dark/10">
+      </div>
+      
+      {/* Section avec effet de pile progressive */}
+      <StackScroll films={sortedFilms} />
+      
+      {/* Contenu SEO */}
+      <div className="max-w-7xl mx-auto px-6 md:px-10 lg:px-16 py-12 md:py-20">
+        <div className="pt-12 border-t border-theme-dark/10">
           <div className="max-w-4xl">
             <h2 className="heading-section text-theme-film mb-6">
               Mes créations cinématographiques

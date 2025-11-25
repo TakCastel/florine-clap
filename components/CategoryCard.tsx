@@ -1,7 +1,7 @@
 'use client'
 
 import Image from 'next/image'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import CtaLink from '@/components/CtaLink'
 
 interface CategoryCardProps {
@@ -30,157 +30,93 @@ export default function CategoryCard({
   imageSrc,
   imageAlt,
   theme,
-  bgColor,
-  hoverBgColor,
-  textColor,
-  linkColor,
-  hoverLinkColor,
-  underlineClass,
-  className,
+  bgColor, // On utilisera les couleurs du thème pour l'overlay
   style
 }: CategoryCardProps) {
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
   const [isHovered, setIsHovered] = useState(false)
-  const [isImageLoaded, setIsImageLoaded] = useState(false)
 
-  useEffect(() => {
-    setIsImageLoaded(false)
-  }, [imageSrc])
-
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    const rect = e.currentTarget.getBoundingClientRect()
-    const x = ((e.clientX - rect.left) / rect.width - 0.5) * 20
-    const y = ((e.clientY - rect.top) / rect.height - 0.5) * 20
-    setMousePosition({ x, y })
+  // Extraction de la couleur de base pour l'overlay (simplification des classes Tailwind)
+  const getOverlayColor = () => {
+    switch (theme) {
+      case 'films': return 'bg-theme-films'
+      case 'mediations': return 'bg-theme-mediations'
+      case 'actus': return 'bg-theme-actus'
+      case 'videos-art': return 'bg-black'
+      default: return 'bg-black'
+    }
   }
 
   return (
     <div 
-      className="group relative overflow-hidden w-full h-full flex flex-col cursor-pointer"
+      className="group relative w-full h-full overflow-hidden bg-gray-900 cursor-pointer rounded-3xl md:rounded-[2rem] transition-all duration-500 ease-out group-hover:shadow-2xl group-hover:shadow-black/40 flex"
       style={style}
-      onMouseMove={handleMouseMove}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      {/* Container principal avec clip-path animé */}
-      <div 
-        className="absolute inset-0 transition-all duration-[800ms] ease-out"
-        style={{
-          clipPath: isHovered 
-            ? 'polygon(0 0, 100% 0, 100% 100%, 0 100%)' 
-            : 'polygon(8% 0, 100% 0, 92% 100%, 0 100%)',
-        }}
-      >
-        {/* Image de fond avec parallax */}
-        <div 
-          className="relative h-full w-full transition-transform duration-[600ms] ease-out scale-110"
-          style={{
-            transform: isHovered 
-              ? `scale(1.15) translate(${mousePosition.x}px, ${mousePosition.y}px)` 
-              : 'scale(1.1)',
-          }}
-        >
+      {/* 1. IMAGE DE FOND - Optimisée pour performance */}
+      <div className="absolute inset-0 z-0">
+        {imageSrc && (
           <Image 
             src={imageSrc} 
             alt={imageAlt}
             fill
-            sizes="(max-width: 768px) 100vw, (max-width: 1536px) 50vw, 33vw"
-            className={`object-cover transition duration-700 ease-out ${
-              isImageLoaded ? 'opacity-100 blur-0 scale-100' : 'opacity-40 blur-lg scale-105'
-            } ${
-              theme === 'films' ? 'filter-[sepia(20%)_saturate(150%)_hue-rotate(340deg)_brightness(0.9)]' :
-              theme === 'mediations' ? 'filter-[sepia(10%)_saturate(120%)_hue-rotate(200deg)_brightness(0.7)]' :
-              theme === 'actus' ? 'filter-[sepia(30%)_saturate(180%)_hue-rotate(15deg)_brightness(0.95)]' :
-              theme === 'videos-art' ? 'filter-[sepia(0%)_saturate(100%)_brightness(0.8)]' :
-              ''
-            }`}
-            onLoadingComplete={() => setIsImageLoaded(true)}
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            className={`object-cover transition-opacity duration-500 ease-out ${isHovered ? 'opacity-20' : 'opacity-100'}`}
+            priority={false}
           />
-          {/* Overlay coloré avec teinte forte - plus visible pour Films comme Actualités */}
-          <div 
-            className={`absolute inset-0 ${bgColor.replace('/85', '')} transition-all duration-700`}
-            style={{
-              opacity: theme === 'films' ? (isHovered ? 0.75 : 0.80) : theme === 'actus' ? (isHovered ? 0.70 : 0.75) : theme === 'videos-art' ? (isHovered ? 0.75 : 0.80) : (isHovered ? 0.65 : 0.75)
-            }}
-          ></div>
-          {/* Overlay avec gradient créatif - très réduit pour Films et Actualités pour laisser voir la couleur */}
-          <div 
-            className="absolute inset-0 bg-gradient-to-br from-black/30 via-transparent to-transparent transition-opacity duration-700"
-            style={{
-              opacity: theme === 'films' || theme === 'actus' || theme === 'videos-art' ? 0.1 : 1
-            }}
-          ></div>
-          <div 
-            className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent"
-            style={{
-              opacity: theme === 'films' || theme === 'actus' || theme === 'videos-art' ? 0.2 : 1
-            }}
-          ></div>
-        </div>
+        )}
       </div>
+
+      {/* 2. OVERLAY COULEUR THEME - Légèrement transparent pour voir l'image */}
+      <div 
+        className={`absolute inset-0 ${getOverlayColor()} z-10 transition-opacity duration-500 ease-out ${isHovered ? 'opacity-85' : 'opacity-0'}`} 
+      />
       
-      {/* Contenu */}
-      <div className="relative h-full flex flex-col justify-between p-8 md:p-10">
-        {/* Cercle interactif en haut */}
+      {/* 3. Overlay sombre par défaut (Repos) */}
+      <div 
+        className={`absolute inset-0 bg-black/30 z-10 transition-opacity duration-500 ease-out ${isHovered ? 'opacity-0' : 'opacity-100'}`} 
+      />
+
+      {/* 4. OVERLAY DE BASE - Gradient très atténué pour lisibilité du texte en bas */}
+      <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent z-20 pointer-events-none" />
+
+      {/* 5. CONTENU */}
+      <div className="absolute inset-0 z-30 p-8 md:p-10 flex flex-col justify-between">
+        
+        {/* En-tête: Flèche harmonisée (Style Hero/BackToTop) */}
         <div className="flex justify-end items-start">
-          {/* Cercle interactif */}
-          <div 
-            className="w-16 h-16 rounded-full border-2 border-white/30 flex items-center justify-center transition-all duration-500 group-hover:border-white group-hover:rotate-90"
-            style={{
-              transform: `rotate(${mousePosition.x * 2}deg)`,
-            }}
-          >
-            <svg 
-              className="w-6 h-6 text-white transition-transform duration-500 group-hover:scale-110" 
-              fill="none" 
-              stroke="currentColor" 
-              strokeWidth="2" 
-              viewBox="0 0 24 24"
-            >
-              <path d="M7 17L17 7M17 7H7M17 7V17"/>
-            </svg>
-          </div>
+           <div className="relative w-14 h-14 rounded-full border-2 border-white/30 bg-white/5 backdrop-blur-xl flex items-center justify-center transition-all duration-500 group-hover:border-white group-hover:scale-110 group-hover:bg-white/20 shadow-lg">
+              <svg 
+                className="w-6 h-6 text-white transition-transform duration-500 group-hover:rotate-45" 
+                fill="none" 
+                stroke="currentColor" 
+                strokeWidth="2" 
+                viewBox="0 0 24 24"
+              >
+                <path d="M7 17L17 7M17 7H7M17 7V17" />
+              </svg>
+           </div>
         </div>
 
-        {/* Titre principal avec effet split */}
-        <div className="mt-auto">
-          <div className="overflow-hidden mb-4 pb-2">
-            <h3 
-              className="heading-light transition-transform duration-700 ease-out"
-              style={{
-                transform: isHovered ? 'translateY(0)' : 'translateY(10%)',
-              }}
-            >
-              {title}
-            </h3>
-          </div>
+        {/* Centre: Titre Principal */}
+        <div className="mt-auto mb-4 transition-all duration-500 transform translate-y-4 group-hover:translate-y-0">
+          <h3 className="text-[clamp(2rem,4vw,3.5rem)] font-display text-white font-bold tracking-tight leading-[1.1] mb-3 drop-shadow-lg">
+            {title}
+          </h3>
           
-          {/* Ligne de séparation animée */}
-          <div className="h-[2px] bg-white/20 mb-6 overflow-hidden">
-            <div 
-              className="h-full bg-white transition-all duration-700 ease-out"
-              style={{
-                width: isHovered ? '100%' : '0%',
-              }}
-            ></div>
-          </div>
+          {/* Ligne animée */}
+          <div className="h-[3px] bg-white w-16 transition-all duration-500 ease-out group-hover:w-full opacity-90 rounded-full shadow-lg" />
+        </div>
 
-          {/* Description avec animation */}
-          <div 
-            className="overflow-hidden transition-all duration-500"
-            style={{
-              maxHeight: isHovered ? '200px' : '0px',
-              opacity: isHovered ? 1 : 0,
-            }}
-          >
-            <p className="body-text-light mb-6" style={{
-              transform: isHovered ? 'translateY(0)' : 'translateY(-20px)',
-              transition: 'transform 0.6s ease-out 0.1s',
-            }}>
-              {description}
-            </p>
-          </div>
+        {/* Bas: Description (Apparaît au survol) */}
+        <div className="overflow-hidden transition-all duration-500 max-h-0 opacity-0 group-hover:max-h-[80px] group-hover:opacity-100">
+          <p className="text-white/90 text-sm md:text-base font-sans leading-relaxed mb-4 pt-4 line-clamp-2 min-h-[4rem]">
+            {description}
+          </p>
+        </div>
 
+        {/* CTA toujours visible */}
+        <div className="mt-2">
           <CtaLink
             href={href}
             label={linkText}
@@ -190,20 +126,11 @@ export default function CategoryCard({
         </div>
       </div>
 
-      {/* Effet de brillance au hover */}
-      <div 
-        className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"
-        style={{
-          background: `radial-gradient(circle at ${50 + mousePosition.x}% ${50 + mousePosition.y}%, rgba(255,255,255,0.1) 0%, transparent 50%)`,
-        }}
-      ></div>
-
-      {/* Lien cliquable */}
-      <a 
-        href={href} 
-        className="absolute inset-0 z-20"
-        aria-label={`Aller à ${title}`}
-      />
+      {/* Lien global */}
+      <a href={href} className="absolute inset-0 z-40" aria-label={title} />
+      
+      {/* Bordure fine au survol */}
+      <div className="absolute inset-0 border-[2px] border-white/0 transition-all duration-500 z-30 pointer-events-none group-hover:border-white/30 group-hover:inset-2 rounded-3xl md:rounded-[2rem]" />
     </div>
   )
 }

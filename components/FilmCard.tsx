@@ -1,10 +1,6 @@
 'use client'
 
-import Link from 'next/link'
-import Image from 'next/image'
-import { Clock, Play, Calendar } from 'lucide-react'
-import { useState } from 'react'
-import CtaLink from '@/components/CtaLink'
+import ContentCard from '@/components/ContentCard'
 
 type FilmCardProps = {
   href: string
@@ -27,198 +23,22 @@ export default function FilmCard({
   vimeoId,
   isHero = false
 }: FilmCardProps) {
-  const [isHovered, setIsHovered] = useState(false)
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
-
-  if (isHero) {
-    return (
-      <Link href={href} className="group block">
-      <article 
-        className="relative overflow-visible transition-all duration-700 ease-out"
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
-        onMouseMove={(e) => {
-          const rect = e.currentTarget.getBoundingClientRect()
-          const x = ((e.clientX - rect.left) / rect.width) * 100
-          const y = ((e.clientY - rect.top) / rect.height) * 100
-          setMousePosition({ x, y })
-        }}
-      >
-          {/* Container avec clip-path en biais */}
-          <div 
-            className="relative transition-all duration-[800ms] ease-out"
-            style={{
-              clipPath: isHovered 
-                ? 'polygon(0 0, 100% 0, 100% 100%, 0 100%)' 
-                : 'polygon(8% 0, 100% 0, 92% 100%, 0 100%)',
-            }}
-          >
-            <div className="flex flex-col md:flex-row min-h-[500px]">
-              {/* Partie image à gauche - Format 16:9 */}
-              <div className="relative w-full md:w-1/2 aspect-video overflow-hidden">
-                <div 
-                  className="absolute inset-0 bg-cover bg-center bg-no-repeat transition-transform duration-700 ease-out group-hover:scale-105 filter-[sepia(20%)_saturate(150%)_hue-rotate(340deg)_brightness(0.9)]" 
-                  style={{ 
-                    backgroundImage: cover ? `url(${cover})` : 'linear-gradient(135deg, #1f2937 0%, #374151 100%)'
-                  }}
-                />
-                <div className="absolute inset-0 bg-gradient-to-r from-theme-films/30 to-transparent"></div>
-              </div>
-
-              {/* Partie texte avec fond couleur à droite */}
-              <div className="relative w-full md:w-1/2 bg-theme-films p-8 md:p-12 lg:p-16 flex flex-col justify-center">
-                {/* Ligne décorative supérieure */}
-                <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-white/40 to-transparent"></div>
-                
-                {/* Ligne décorative animée */}
-                <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-white/60 to-transparent transform -translate-x-full group-hover:translate-x-full transition-transform duration-[1200ms]"></div>
-
-                <div className="max-w-2xl">
-                  {/* Métadonnées */}
-                  <div className="flex flex-wrap items-center gap-3 md:gap-4 text-white/80 text-sm mb-6 opacity-90 group-hover:opacity-100 transition-opacity duration-500">
-                    {duree && (
-                      <span className="flex items-center gap-2 bg-white/10 backdrop-blur-md px-3 md:px-4 py-2 rounded-full border border-white/10 whitespace-nowrap">
-                        <Clock className="w-4 h-4" />
-                        {duree}
-                      </span>
-                    )}
-                    {annee && (
-                      <span className="flex items-center gap-2 bg-white/10 backdrop-blur-md px-3 md:px-4 py-2 rounded-full border border-white/10 whitespace-nowrap">
-                        <Calendar className="w-4 h-4" />
-                        {annee}
-                      </span>
-                    )}
-                    {vimeoId && (
-                      <span className="flex items-center gap-2 bg-white/10 backdrop-blur-md px-3 md:px-4 py-2 rounded-full border border-white/10 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-500 whitespace-nowrap">
-                        <Play className="w-4 h-4" />
-                        <span className="hidden sm:inline">Voir la page du film</span>
-                        <span className="sm:hidden">Voir</span>
-                      </span>
-                    )}
-                  </div>
-
-                  {/* Titre */}
-                  <h3 
-                    className="heading-light mb-5"
-                  >
-                    {title}
-                  </h3>
-
-                  {/* Ligne séparatrice */}
-                  <div className="h-[2px] bg-white/20 mb-5 overflow-hidden rounded-full max-w-md">
-                    <div 
-                      className="h-full bg-white transition-all duration-700 ease-out"
-                      style={{
-                        width: isHovered ? '100%' : '60%',
-                      }}
-                    ></div>
-                  </div>
-
-                  {/* Synopsis */}
-                  {synopsis && (
-                    <p className="body-text-light mb-8 line-clamp-2">
-                      {synopsis}
-                    </p>
-                  )}
-
-                  <CtaLink
-                    label="Découvrir"
-                    tone="light"
-                    isActive={isHovered}
-                    as="span"
-                  />
-                </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Effet de brillance au hover */}
-        <div 
-          className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none z-10"
-          style={{
-            background: `radial-gradient(circle at ${mousePosition.x}% ${mousePosition.y}%, rgba(255,255,255,0.1) 0%, transparent 50%)`,
-          }}
-        ></div>
-      </article>
-    </Link>
-  )
-  }
-
+  
+  // Si c'est une carte Hero, on peut soit garder un style spécifique, soit utiliser une version agrandie de ContentCard
+  // Pour l'instant, j'utilise ContentCard partout pour l'uniformité
+  
   return (
-    <Link href={href} className="group block">
-      <article 
-        className="relative overflow-hidden bg-black rounded-xl shadow-lg transition-all duration-500 ease-out group-hover:-translate-y-2 group-hover:shadow-2xl"
-        onMouseMove={(e) => {
-          const rect = e.currentTarget.getBoundingClientRect()
-          const x = ((e.clientX - rect.left) / rect.width) * 100
-          const y = ((e.clientY - rect.top) / rect.height) * 100
-          setMousePosition({ x, y })
-        }}
-      >
-        <div className="aspect-video relative overflow-hidden">
-          {/* Image de fond */}
-          <div 
-            className="absolute inset-0 bg-cover bg-center bg-no-repeat transition-transform duration-700 ease-out group-hover:scale-110 filter-[sepia(20%)_saturate(150%)_hue-rotate(340deg)_brightness(0.9)]" 
-            style={{ 
-              backgroundImage: cover ? `url(${cover})` : 'linear-gradient(135deg, #1f2937 0%, #374151 100%)'
-            }}
-          />
-          
-          {/* Overlays */}
-          <div className="absolute inset-0 bg-gradient-to-t from-theme-films/55 via-theme-films/20 to-transparent"></div>
-          <div className="absolute inset-0 bg-theme-films/0 group-hover:bg-theme-films/20 transition-all duration-500"></div>
-          
-          {/* Ligne décorative en haut */}
-          <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-white/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-          
-          {/* Badge de lecture si Vimeo disponible */}
-          {vimeoId && (
-            <div className="absolute top-4 right-4 bg-white/95 backdrop-blur-sm text-black px-3 py-1.5 rounded-full text-xs font-medium flex items-center gap-1.5 opacity-0 group-hover:opacity-100 transition-all duration-500 transform translate-y-2 group-hover:translate-y-0">
-              <Play className="w-3 h-3" />
-              Voir
-            </div>
-          )}
-          
-          {/* Contenu */}
-          <div className="relative z-10 p-6 h-full flex flex-col justify-end">
-            {/* Métadonnées */}
-            <div className="flex items-center gap-3 text-white/80 text-xs mb-3 opacity-80 group-hover:opacity-100 transition-opacity duration-300">
-              {duree && (
-                <span className="flex items-center gap-1.5 bg-white/10 backdrop-blur-sm px-3 py-1.5 rounded-full border border-white/10">
-                  <Clock className="w-3 h-3" />
-                  {duree}
-                </span>
-              )}
-              {annee && (
-                <span className="flex items-center gap-1.5 bg-white/10 backdrop-blur-sm px-3 py-1.5 rounded-full border border-white/10">
-                  <Calendar className="w-3 h-3" />
-                  {annee}
-                </span>
-              )}
-            </div>
-
-            {/* Titre */}
-            <h3 
-              className="heading-subtitle text-white leading-tight line-clamp-2 mb-3 transition-colors duration-300"
-            >
-              {title}
-            </h3>
-
-            {/* Ligne décorative qui s'étend au hover */}
-            <div className="h-[2px] bg-white/20 overflow-hidden rounded-full">
-              <div className="h-full bg-white w-0 group-hover:w-full transition-all duration-700 ease-out"></div>
-            </div>
-          </div>
-        </div>
-
-        {/* Effet de brillance au hover */}
-        <div 
-          className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none z-10"
-          style={{
-            background: `radial-gradient(circle at ${mousePosition.x}% ${mousePosition.y}%, rgba(255,255,255,0.1) 0%, transparent 50%)`,
-          }}
-        ></div>
-      </article>
-    </Link>
+    <ContentCard
+      href={href}
+      title={title}
+      imageSrc={cover}
+      description={synopsis}
+      duration={duree}
+      date={annee}
+      theme="films"
+      ctaLabel="Découvrir"
+      showPlayBadge={!!vimeoId}
+      className={isHero ? "h-[500px] md:h-[600px]" : ""}
+    />
   )
 }
