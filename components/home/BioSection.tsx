@@ -1,14 +1,16 @@
 'use client'
 
 import Image from 'next/image'
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { bioPhoto } from '@/lib/images'
 import CtaLink from '@/components/CtaLink'
 import { Reveal } from '@/components/ui/Reveal'
-import { motion } from 'framer-motion'
+import { motion, useScroll, useTransform } from 'framer-motion'
 
 export default function BioSection() {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
+  const sectionRef = useRef<HTMLElement>(null)
+  const imageRef = useRef<HTMLDivElement>(null)
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     const rect = e.currentTarget.getBoundingClientRect()
@@ -17,8 +19,26 @@ export default function BioSection() {
     setMousePosition({ x, y })
   }
 
+  // Animation basée sur le scroll
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start end", "end start"]
+  })
+
+  // Translation et rotation de la photo en fonction du scroll
+  const imageY = useTransform(scrollYProgress, [0, 1], [0, -100])
+  const imageX = useTransform(scrollYProgress, [0, 1], [-150, 0])
+  const imageRotate = useTransform(scrollYProgress, [0, 1], [-5, 5])
+
+  // Opacité des paragraphes en fonction du scroll
+  const paragraph1Opacity = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [0, 1, 1, 0])
+  const paragraph2Opacity = useTransform(scrollYProgress, [0.1, 0.4, 0.8, 1], [0, 1, 1, 0])
+  const paragraph3Opacity = useTransform(scrollYProgress, [0.2, 0.5, 0.9, 1], [0, 1, 1, 0])
+  const paragraph4Opacity = useTransform(scrollYProgress, [0.3, 0.6, 1], [0, 1, 0])
+
   return (
     <section 
+      ref={sectionRef}
       id="bio-section" 
       className="w-full min-h-screen bg-theme-cream flex items-center justify-center py-24 md:py-32 relative overflow-hidden"
       onMouseMove={handleMouseMove}
@@ -30,11 +50,14 @@ export default function BioSection() {
           <div className="w-full md:w-2/5 lg:w-2/5 xl:w-2/5 relative group float-left mr-8 md:mr-12 mb-6 md:mb-8">
             <Reveal direction="left" duration={1} delay={0.2} threshold={0.2} width="100%">
               {/* Image principale */}
-              <div className="relative overflow-hidden">
-                <div 
-                  className="relative overflow-hidden transition-transform duration-700 ease-out"
+              <div className="relative overflow-visible">
+                <motion.div 
+                  ref={imageRef}
+                  className="relative overflow-hidden transition-transform duration-700 ease-out rounded-3xl md:rounded-[2rem]"
                   style={{
-                    clipPath: 'polygon(12% 0, 100% 0, 88% 100%, 0 100%)',
+                    y: imageY,
+                    x: imageX,
+                    rotate: imageRotate,
                   }}
                 >
                   <div 
@@ -49,15 +72,13 @@ export default function BioSection() {
                       fill
                       sizes="(max-width: 768px) 100vw, (max-width: 1024px) 60vw, 40vw"
                       className="object-cover transition-transform duration-700 group-hover:scale-110"
+                      style={{ filter: 'none' }}
                     />
                     {/* Overlay coloré subtil */}
                     <div className="absolute inset-0 bg-black/10 group-hover:bg-black/5 transition-all duration-700"></div>
                     <div className="absolute inset-0 bg-gradient-to-t from-white/60 via-transparent to-transparent"></div>
                   </div>
-                </div>
-
-                {/* Ligne décorative animée */}
-                <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-black/40 to-transparent transform -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
+                </motion.div>
               </div>
             </Reveal>
           </div>
@@ -94,41 +115,51 @@ export default function BioSection() {
               </Reveal>
 
               {/* Introduction */}
-              <Reveal delay={0.6} duration={0.8}>
+              <motion.div
+                style={{ opacity: paragraph1Opacity }}
+              >
                 <p className="body-text text-black/85">
                   Née à <span className="text-black font-medium">Avignon en 1988</span>, Florine Clap se passionne dès son enfance pour le théâtre et le cinéma. Se construisant depuis toujours dans une approche transversale des arts, elle accompagne de nombreux artistes plasticiens, chorégraphes, auteur·ices, architectes ou institutions culturelles avec son regard et sa caméra.
                 </p>
-              </Reveal>
+              </motion.div>
               
               {/* Parcours cinématographique - premier paragraphe */}
-              <Reveal delay={0.7} duration={0.8}>
+              <motion.div
+                style={{ opacity: paragraph2Opacity }}
+              >
                 <p className="body-text text-black/85">
                   Depuis 2013, elle réalise des films documentaires abordant des thématiques artistiques et sociales. Son premier long métrage documentaire, <span className="text-black font-medium italic">Sous le pont d'Avignon</span>, produit par les productions Image Mouvement & Avril Films, a été diffusé par le cinéma d'art et d'essai avignonnais Utopia en 2014. En parallèle, elle travaille deux ans, entre 2012 et 2014, comme assistante de la coach d'acteurs Tiffany Stern au studio l'Actors Factory. Elle tourne son deuxième film documentaire sur le studio et la direction d'acteurs de Tiffany Stern intitulé <span className="text-black font-medium italic">PLAY</span>, produit par Avril Films.
                 </p>
-              </Reveal>
+              </motion.div>
             </div>
           </div>
           
           {/* Paragraphes suivants qui passent en dessous de l'image */}
           <div className="clear-both space-y-5 text-black/85 text-sm md:text-base leading-relaxed mt-8 [&_p]:text-justify">
-            <Reveal delay={0.8} duration={0.8}>
+            <motion.div
+              style={{ opacity: paragraph3Opacity }}
+            >
               <p className="body-text text-black/85">
                 En 2015, elle réalise <span className="text-black font-medium italic">Violoncelles, vibrez !</span> produit par la Fondation Louis Vuitton & Caméra Lucida, diffusé en février 2016 par France 2 & Culture Box. En 2022, elle tourne un documentaire-fiction sur le Festival d'Avignon, <span className="text-black font-medium italic">Père Chave, ma vie au Festival d'Avignon</span>, produit par le CFRT, Jour du Seigneur et diffusé sur France 2 ainsi qu'aux territoires cinématographiques du Festival d'Avignon (en juillet 2022).
               </p>
-            </Reveal>
+            </motion.div>
             
-            <Reveal delay={0.9} duration={0.8}>
+            <motion.div
+              style={{ opacity: paragraph4Opacity }}
+            >
               <p className="body-text text-black/85">
                 Parallèlement, la réalisatrice signe des formes documentaires courtes destinées à une diffusion en festivals, comme <span className="text-black font-medium italic">Quand je vous caresse</span> (2021), le portrait d'une aide-soignante, <span className="text-black font-medium italic">Objets Trouvés</span> (2024), le portrait cinématographique d'une tapissière en siège, tous deux produits par Vert de Nuit et diffusés en festivals. Actuellement, Florine Clap est en cours d'écriture d'un film documentaire réalisant le portrait de trois enfants polyhandicapés de l'EEAP Petit Jardin, portant sur leur rapport à leur corps et à la danse ainsi qu'un documentaire sur le procès des viols de Mazan, raconté depuis la rue, depuis son quartier.
               </p>
-            </Reveal>
+            </motion.div>
             
             {/* Médiations */}
-            <Reveal delay={1.0} duration={0.8}>
+            <motion.div
+              style={{ opacity: paragraph4Opacity }}
+            >
               <p className="body-text text-black/85">
                 Par ailleurs, la réalisatrice anime des médiations cinématographiques pour le cinéma d'art et d'essai, Utopia d'Avignon, le Conservatoire à rayonnement régional du grand Avignon (2014 et 2020), CANOPÉ (réseau d'éducation à l'image), l'Institut de l'image d'Aix en Provence (pôle régional artistique et de formation au cinéma et à l'audiovisuel), l'Institut des métiers et de la communication audiovisuelle de Provence. La réalisatrice s'investit également dans des projets de médiations vidéo militantes et sociales avec l'association <span className="text-black font-medium">1,2,3 Soleil</span>, « pour un cinéma solidaire et inclusif » qui organise des tournages avec des publics fragilisés tels que des mineurs isolés sans papiers ou des résidents en EHPAD ou en IME.
               </p>
-            </Reveal>
+            </motion.div>
             
             {/* Bouton CTA sophistiqué */}
             <Reveal delay={1.1} duration={0.8} className="mt-16 md:mt-20">

@@ -1,8 +1,7 @@
 'use client'
 
-import Link from 'next/link'
-import { useState } from 'react'
-import CtaLink from '@/components/CtaLink'
+import { Calendar } from 'lucide-react'
+import ContentCard from '@/components/ContentCard'
 
 type ActuCardProps = {
   href: string
@@ -19,97 +18,15 @@ export default function ActuCard({
   excerpt, 
   date 
 }: ActuCardProps) {
-  const [isHovered, setIsHovered] = useState(false)
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
-
   return (
-    <Link href={href} className="group block">
-      <article 
-        className="relative overflow-visible transition-all duration-700 ease-out"
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
-        onMouseMove={(e) => {
-          const rect = e.currentTarget.getBoundingClientRect()
-          const x = ((e.clientX - rect.left) / rect.width) * 100
-          const y = ((e.clientY - rect.top) / rect.height) * 100
-          setMousePosition({ x, y })
-        }}
-      >
-        {/* Container avec clip-path en biais */}
-        <div 
-          className="relative transition-all duration-[800ms] ease-out"
-          style={{
-            clipPath: isHovered 
-              ? 'polygon(0 0, 100% 0, 100% 100%, 0 100%)' 
-              : 'polygon(8% 0, 100% 0, 92% 100%, 0 100%)',
-          }}
-        >
-          <div className="flex flex-col md:flex-row min-h-[300px]">
-            {/* Partie image à gauche */}
-            <div className="relative w-full md:w-1/2 h-[200px] md:h-auto overflow-hidden">
-              <div 
-                className="absolute inset-0 bg-cover bg-center bg-no-repeat transition-transform duration-700 ease-out group-hover:scale-110 filter-[sepia(30%)_saturate(180%)_hue-rotate(15deg)_brightness(0.95)]" 
-                style={{ 
-                  backgroundImage: cover ? `url(${cover})` : 'linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%)'
-                }}
-              />
-              <div className="absolute inset-0 bg-gradient-to-r from-theme-actus/30 to-transparent"></div>
-            </div>
-
-            {/* Partie texte avec fond couleur à droite */}
-            <div className="relative w-full md:w-1/2 bg-theme-actus p-5 md:p-6 flex flex-col justify-center">
-              {/* Ligne décorative supérieure */}
-              <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-white/40 to-transparent"></div>
-              
-              {/* Ligne décorative animée */}
-              <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-white/60 to-transparent transform -translate-x-full group-hover:translate-x-full transition-transform duration-[1200ms]"></div>
-              
-              {/* Date */}
-              <div className="flex items-center gap-2 text-white text-xs mb-2.5 bg-white/10 backdrop-blur-sm px-3 py-1 rounded-full w-fit border border-white/20 opacity-90 group-hover:opacity-100 transition-opacity duration-300">
-                <svg className="w-3 h-3" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                  <path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-                </svg>
-                {new Date(date).toLocaleDateString('fr-FR')}
-              </div>
-
-              {/* Titre */}
-              <h3 
-                className="heading-subtitle text-white leading-tight line-clamp-2 mb-3 transition-colors duration-300" 
-              >
-                {title}
-              </h3>
-
-              {/* Ligne décorative qui s'étend au hover */}
-              <div className="h-[2px] bg-white/20 overflow-hidden rounded-full">
-                <div 
-                  className="h-full bg-white transition-all duration-700 ease-out"
-                  style={{
-                    width: isHovered ? '100%' : '60%',
-                  }}
-                ></div>
-              </div>
-
-              <div className="mt-4">
-                <CtaLink
-                  label="Lire"
-                  tone="light"
-                  isActive={isHovered}
-                  as="span"
-                  className="pointer-events-none"
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Effet de brillance au hover */}
-        <div 
-          className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none z-10"
-          style={{
-            background: `radial-gradient(circle at ${mousePosition.x}% ${mousePosition.y}%, rgba(255,255,255,0.1) 0%, transparent 50%)`,
-          }}
-        ></div>
-      </article>
-    </Link>
+    <ContentCard
+      href={href}
+      title={title}
+      imageSrc={cover}
+      description={excerpt}
+      date={new Date(date).toLocaleDateString('fr-FR')}
+      theme="actus"
+      ctaLabel="Lire"
+    />
   )
 }

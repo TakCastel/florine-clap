@@ -37,39 +37,39 @@ export default function ProjectCard({
     switch (variant) {
       case 'films':
         return {
-          container: 'group block overflow-hidden bg-theme-films hover:shadow-xl hover:scale-[1.02] transition-all duration-300 h-full flex flex-col',
+          container: 'group block overflow-hidden bg-theme-films hover:shadow-2xl hover:shadow-black/40 hover:scale-[1.02] transition-all duration-300 h-full flex flex-col rounded-3xl md:rounded-[2rem]',
           title: 'text-2xl font-bold text-theme-films-text',
           subtitle: 'text-base text-theme-films-text/80',
           excerpt: 'mt-2 text-base text-theme-films-text line-clamp-3',
           meta: 'text-sm text-theme-films-text/60',
-          button: 'mt-auto inline-flex items-center px-4 py-2 bg-theme-films-text text-theme-films text-base font-medium hover:bg-theme-films-text/90 transition-colors w-fit'
+          button: 'mt-auto inline-flex items-center px-5 py-2.5 bg-theme-films-text text-theme-films text-base font-medium hover:bg-theme-films-text/90 transition-colors w-fit rounded-full shadow-lg'
         }
       case 'mediations':
         return {
-          container: 'group block overflow-hidden bg-theme-mediations hover:shadow-sm h-full flex flex-col',
+          container: 'group block overflow-hidden bg-theme-mediations hover:shadow-2xl hover:shadow-black/40 h-full flex flex-col rounded-3xl md:rounded-[2rem] transition-all duration-300',
           title: 'text-base font-semibold text-theme-mediations-text',
           subtitle: 'text-sm text-theme-mediations-text/80',
           excerpt: 'mt-2 text-sm text-theme-mediations-text line-clamp-2'
         }
       case 'actus':
         return {
-          container: 'group block overflow-hidden bg-theme-actus/90 hover:bg-theme-actus transition-all duration-300 h-full flex flex-col shadow-lg hover:shadow-xl',
+          container: 'group block overflow-hidden bg-theme-actus/90 hover:bg-theme-actus transition-all duration-300 h-full flex flex-col shadow-lg hover:shadow-2xl hover:shadow-black/40 rounded-3xl md:rounded-[2rem]',
           title: 'text-xl font-bold text-theme-actus-text group-hover:text-theme-actus-text transition-colors',
           subtitle: 'text-sm text-theme-actus-text/70 font-medium',
           excerpt: 'mt-3 text-theme-actus-text/80 line-clamp-3 leading-relaxed',
-          button: 'mt-4 inline-flex items-center text-theme-actus-text font-medium hover:text-theme-actus-text/70 transition-colors relative after:content-[""] after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-0.5 after:bg-theme-actus-text after:transition-all after:duration-300 group-hover:after:w-full'
+          button: 'mt-4 inline-flex items-center px-4 py-2 text-theme-actus-text font-medium hover:text-theme-actus-text/70 transition-colors relative after:content-[""] after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-0.5 after:bg-theme-actus-text after:transition-all after:duration-300 group-hover:after:w-full rounded-full'
         }
       case 'actus-featured':
         return {
-          container: 'group relative block overflow-hidden bg-cover bg-center bg-no-repeat transition-all duration-300 h-96 shadow-lg hover:shadow-xl',
-          title: 'absolute bottom-0 left-0 right-0 p-6 text-white font-bold text-2xl md:text-3xl bg-gradient-to-t from-theme-dark/90 via-theme-dark/60 to-transparent',
+          container: 'group relative block overflow-hidden bg-cover bg-center bg-no-repeat transition-all duration-300 h-96 shadow-lg hover:shadow-2xl hover:shadow-black/40 rounded-3xl md:rounded-[2rem]',
+          title: 'absolute bottom-0 left-0 right-0 p-6 text-white font-bold text-2xl md:text-3xl bg-gradient-to-t from-theme-dark/90 via-theme-dark/60 to-transparent rounded-b-3xl md:rounded-b-[2rem]',
           subtitle: 'absolute bottom-0 left-0 right-0 p-6 pb-16 text-white/90 text-sm font-medium',
           excerpt: 'absolute bottom-0 left-0 right-0 p-6 pb-20 text-white/80 text-base leading-relaxed line-clamp-2',
-          button: 'absolute bottom-6 left-6 inline-flex items-center text-white font-medium hover:text-white/80 transition-colors relative after:content-[""] after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-0.5 after:bg-white after:transition-all after:duration-300 group-hover:after:w-full'
+          button: 'absolute bottom-6 left-6 inline-flex items-center px-4 py-2 text-white font-medium hover:text-white/80 transition-colors relative after:content-[""] after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-0.5 after:bg-white after:transition-all after:duration-300 group-hover:after:w-full rounded-full bg-white/10 backdrop-blur-xl border border-white/20'
         }
       default:
         return {
-          container: 'group block overflow-hidden border hover:shadow-sm',
+          container: 'group block overflow-hidden border hover:shadow-lg rounded-3xl md:rounded-[2rem] transition-all duration-300',
           title: 'text-base font-semibold',
           subtitle: 'text-sm text-gray-500',
           excerpt: 'mt-2 text-sm text-gray-600 line-clamp-2'
@@ -106,12 +106,12 @@ export default function ProjectCard({
   return (
     <Link href={href} className={styles.container}>
       {imageSrc && (
-        <div className="relative overflow-hidden" style={{ aspectRatio: '594/458' }}>
+        <div className="relative overflow-hidden rounded-t-3xl md:rounded-t-[2rem]" style={{ aspectRatio: '594/458' }}>
           <Image 
             src={imageSrc} 
             alt={title} 
             fill
-            className={`object-cover ${
+            className={`object-cover transition-transform duration-500 group-hover:scale-105 ${
               variant === 'films' ? 'filter-[sepia(20%)_saturate(150%)_hue-rotate(340deg)_brightness(0.9)]' :
               variant === 'mediations' ? 'filter-[sepia(10%)_saturate(120%)_hue-rotate(200deg)_brightness(0.7)]' :
               variant === 'actus' ? 'filter-[sepia(30%)_saturate(180%)_hue-rotate(15deg)_brightness(0.95)]' :
@@ -130,7 +130,7 @@ export default function ProjectCard({
           {variant === 'films' && (
             <div className="flex flex-wrap gap-2 mt-2">
               {getStatusBadges().map((badge, index) => (
-                <span key={index} className={badge.className}>
+                <span key={index} className={`${badge.className} rounded-full px-3 py-1.5 shadow-lg`}>
                   {badge.text}
                 </span>
               ))}

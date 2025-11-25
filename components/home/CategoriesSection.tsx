@@ -1,10 +1,9 @@
 'use client'
 
-import { useEffect, useState, useMemo } from 'react'
-import { motion, LayoutGroup } from 'framer-motion'
+import { useEffect, useState, useMemo, useRef } from 'react'
 import CategoryCard from '@/components/CategoryCard'
 import { getRandomCardImage } from '@/lib/images'
-import { StaggerContainer, StaggerItem } from '@/components/ui/StaggerContainer'
+import { motion, useScroll, useTransform, useInView } from 'framer-motion'
 
 export default function CategoriesSection() {
   const [isMobile, setIsMobile] = useState(false)
@@ -15,6 +14,34 @@ export default function CategoriesSection() {
     'video-art': '',
     actus: ''
   })
+  const sectionRef = useRef<HTMLElement>(null)
+  const containerRef = useRef<HTMLDivElement>(null)
+  const isInView = useInView(sectionRef, { once: true, margin: "-200px" })
+  
+  // Animation basée sur le scroll - commence plus tôt et se termine avant la fin
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start 0.9", "center 0.5"]
+  })
+  
+  // Transformations parallaxes différentes pour chaque card (plus subtiles)
+  const parallaxY1 = useTransform(scrollYProgress, [0, 1], [0, -20])
+  const parallaxY2 = useTransform(scrollYProgress, [0, 1], [0, -15])
+  const parallaxY3 = useTransform(scrollYProgress, [0, 1], [0, -18])
+  const parallaxY4 = useTransform(scrollYProgress, [0, 1], [0, -25])
+  
+  // Opacité - toujours visible
+  const card0Opacity = 1
+  const card1Opacity = 1
+  const card2Opacity = 1
+  const card3Opacity = 1
+  
+  const cardAnimations = [
+    { opacity: card0Opacity },
+    { opacity: card1Opacity },
+    { opacity: card2Opacity },
+    { opacity: card3Opacity },
+  ]
 
   useEffect(() => {
     const checkMobile = () => {
@@ -99,56 +126,55 @@ export default function CategoriesSection() {
   ], [randomImages])
 
   return (
-    <section id="categories-section" className="w-full min-h-screen bg-theme-cream flex items-center justify-center py-12 md:py-16">
-      <div className="w-full px-6 md:px-10 lg:px-16 max-w-[1800px] mx-auto">
-        <StaggerContainer 
-          className="w-full flex flex-col md:grid md:grid-cols-2 2xl:flex 2xl:flex-row gap-3 md:gap-4 2xl:gap-6"
-          staggerChildren={0.1}
+    <section 
+      ref={sectionRef}
+      id="categories-section" 
+      className="w-full min-h-screen bg-theme-cream flex items-center justify-center py-12 md:py-16 overflow-hidden relative"
+    >
+      <div className="w-full max-w-[1600px] px-6 md:px-10 lg:px-16 relative z-10">
+        <motion.h2
+          initial={{ opacity: 0, y: 20 }}
+          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+          className="heading-section text-black mb-8 md:mb-12 text-center"
         >
-          <LayoutGroup>
-            {cards.map((card, index) => (
-              <StaggerItem 
-                key={index} 
-                className={`flex-1 group transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${
-                  hoveredIndex === index 
-                    ? '2xl:flex-[1.6]' 
-                    : '2xl:flex-[1]'
-                } ${
-                  isMobile 
-                    ? 'h-[240px]'
-                    : 'md:h-[320px] lg:h-[360px] 2xl:h-[480px]'
-                }`}
-              >
-                <div
-                  className="w-full h-full"
-                  onMouseEnter={() => setHoveredIndex(index)}
-                  onMouseLeave={() => setHoveredIndex(null)}
-                  onTouchStart={() => {
-                    if (window.innerWidth >= 768) {
-                      setHoveredIndex(index)
-                    }
-                  }}
-                >
-                  <CategoryCard
-                    href={card.href}
-                    title={card.title}
-                    description={card.description}
-                    linkText={card.linkText}
-                    imageSrc={card.imageSrc}
-                    imageAlt={card.imageAlt}
-                    theme={card.theme}
-                    bgColor={card.bgColor}
-                    hoverBgColor={card.hoverBgColor}
-                    textColor={card.textColor}
-                    linkColor={card.linkColor}
-                    hoverLinkColor={card.hoverLinkColor}
-                    underlineClass={card.underlineClass}
-                  />
-                </div>
-              </StaggerItem>
-            ))}
-          </LayoutGroup>
-        </StaggerContainer>
+          Découvrez mes créations
+        </motion.h2>
+        <div 
+          ref={containerRef}
+          className="w-full h-[400px] md:h-[450px] lg:h-[500px] flex flex-col md:flex-row gap-3 md:gap-4 items-stretch"
+        >
+          {cards.map((card, index) => {
+            const animation = cardAnimations[index]
+            return (
+            <motion.div 
+              key={index} 
+              className="relative flex-1 hover:flex-[2] md:hover:flex-[1.5] transition-[flex,width] duration-500 ease-out h-full"
+              onMouseEnter={() => setHoveredIndex(index)}
+              onMouseLeave={() => setHoveredIndex(null)}
+              style={{
+                opacity: 1,
+              }}
+            >
+              <CategoryCard
+                href={card.href}
+                title={card.title}
+                description={card.description}
+                linkText={card.linkText}
+                imageSrc={card.imageSrc}
+                imageAlt={card.imageAlt}
+                theme={card.theme}
+                bgColor={card.bgColor}
+                hoverBgColor={card.hoverBgColor}
+                textColor={card.textColor}
+                linkColor={card.linkColor}
+                hoverLinkColor={card.hoverLinkColor}
+                underlineClass={card.underlineClass}
+              />
+            </motion.div>
+            )
+          })}
+        </div>
       </div>
     </section>
   )
