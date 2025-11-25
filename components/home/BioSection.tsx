@@ -1,7 +1,7 @@
 'use client'
 
 import Image from 'next/image'
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { bioPhoto } from '@/lib/images'
 import CtaLink from '@/components/CtaLink'
 import { Reveal } from '@/components/ui/Reveal'
@@ -9,8 +9,18 @@ import { motion, useScroll, useTransform } from 'framer-motion'
 
 export default function BioSection() {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
+  const [isMobile, setIsMobile] = useState(false)
   const sectionRef = useRef<HTMLElement>(null)
   const imageRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768)
+    }
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    return () => window.removeEventListener('resize', checkMobile)
+  }, [])
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     const rect = e.currentTarget.getBoundingClientRect()
@@ -19,22 +29,23 @@ export default function BioSection() {
     setMousePosition({ x, y })
   }
 
-  // Animation basée sur le scroll
+  // Animation basée sur le scroll - commence plus tôt en mobile
   const { scrollYProgress } = useScroll({
     target: sectionRef,
-    offset: ["start end", "end start"]
+    offset: isMobile ? ["start 0.7", "center 0.3"] : ["start end", "end start"]
   })
 
   // Translation et rotation de la photo en fonction du scroll
-  const imageY = useTransform(scrollYProgress, [0, 1], [0, -100])
-  const imageX = useTransform(scrollYProgress, [0, 1], [-150, 0])
-  const imageRotate = useTransform(scrollYProgress, [0, 1], [-5, 5])
+  // Desktop : déplacement gauche → droite avec légère inclinaison, mobile : reste centrée
+  const imageY = useTransform(scrollYProgress, [0, 1], [0, isMobile ? 0 : -90])
+  const imageX = useTransform(scrollYProgress, [0, 1], isMobile ? [0, 0] : [-120, 120])
+  const imageRotate = useTransform(scrollYProgress, [0, 1], isMobile ? [0, 0] : [-4, 3.5])
 
-  // Opacité des paragraphes en fonction du scroll
-  const paragraph1Opacity = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [0, 1, 1, 0])
-  const paragraph2Opacity = useTransform(scrollYProgress, [0.1, 0.4, 0.8, 1], [0, 1, 1, 0])
-  const paragraph3Opacity = useTransform(scrollYProgress, [0.2, 0.5, 0.9, 1], [0, 1, 1, 0])
-  const paragraph4Opacity = useTransform(scrollYProgress, [0.3, 0.6, 1], [0, 1, 0])
+  // Opacité des paragraphes en fonction du scroll - modification pour garder le texte visible à la fin
+  const paragraph1Opacity = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [0, 1, 1, 1])
+  const paragraph2Opacity = useTransform(scrollYProgress, [0.1, 0.4, 0.8, 1], [0, 1, 1, 1])
+  const paragraph3Opacity = useTransform(scrollYProgress, [0.2, 0.5, 0.9, 1], [0, 1, 1, 1])
+  const paragraph4Opacity = useTransform(scrollYProgress, [0.3, 0.6, 1], [0, 1, 1])
 
   return (
     <section 
@@ -47,7 +58,7 @@ export default function BioSection() {
         <div className="relative">
           
           {/* Image avec effet sophistiqué - positionnée en haut à gauche */}
-          <div className="w-full md:w-2/5 lg:w-2/5 xl:w-2/5 relative group float-left mr-8 md:mr-12 mb-6 md:mb-8">
+          <div className="w-full md:w-2/5 lg:w-2/5 xl:w-2/5 relative group md:float-left md:mr-12 mb-8 md:mb-8 mx-auto md:mx-0">
             <Reveal direction="left" duration={1} delay={0.2} threshold={0.2} width="100%">
               {/* Image principale */}
               <div className="relative overflow-visible">
@@ -59,6 +70,9 @@ export default function BioSection() {
                     x: imageX,
                     rotate: imageRotate,
                   }}
+                  initial={isMobile ? { opacity: 0, y: 40 } : undefined}
+                  whileInView={isMobile ? { opacity: 1, y: 0 } : undefined}
+                  viewport={isMobile ? { once: true, amount: 0.4 } : undefined}
                 >
                   <div 
                     className="relative w-full h-[400px] md:h-[500px] lg:h-[600px] transition-transform duration-700 ease-out"

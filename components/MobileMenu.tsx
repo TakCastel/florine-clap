@@ -46,13 +46,16 @@ const BurgerIcon = ({ isOpen, color = 'black' }: { isOpen: boolean; color?: 'bla
 const BurgerButton = ({ 
   isOpen, 
   onClick, 
-  isHomePage = false 
+  isHomePage = false,
+  isMobile = false
 }: { 
   isOpen: boolean
   onClick: () => void
   isHomePage?: boolean
+  isMobile?: boolean
 }) => {
-  const iconColor = isHomePage ? 'white' : 'black'
+  // Sur mobile page d'accueil, le fond est noir donc l'icône doit être blanche
+  const iconColor = isHomePage && isMobile ? 'white' : 'black'
   
   return (
     <button
@@ -157,7 +160,7 @@ const MobileMenuOverlay = ({ isOpen, onClose, isHomePage = false }: MobileMenuPr
 }
 
 // Composant principal
-export default function MobileMenu({ isHomePage = false }: { isHomePage?: boolean }) {
+export default function MobileMenu({ isHomePage = false, isMobile = false }: { isHomePage?: boolean; isMobile?: boolean }) {
   const [isOpen, setIsOpen] = useState(false)
 
   const handleToggle = () => {
@@ -170,7 +173,7 @@ export default function MobileMenu({ isHomePage = false }: { isHomePage?: boolea
 
   return (
     <>
-      <BurgerButton isOpen={isOpen} onClick={handleToggle} isHomePage={isHomePage} />
+      <BurgerButton isOpen={isOpen} onClick={handleToggle} isHomePage={isHomePage} isMobile={isMobile} />
       <MobileMenuOverlay isOpen={isOpen} onClose={handleClose} isHomePage={isHomePage} />
     </>
   )

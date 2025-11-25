@@ -729,3 +729,11 @@ body {
   backface-visibility: hidden;
   perspective: 1000px;
 }
+
+/* Force the BackToTop button to stay transparent */
+.back-to-top-button,
+.back-to-top-circle {
+  background: none !important;
+  background-color: transparent !important;
+  box-shadow: none !important;
+}

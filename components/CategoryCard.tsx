@@ -1,7 +1,7 @@
 'use client'
 
 import Image from 'next/image'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import CtaLink from '@/components/CtaLink'
 
 interface CategoryCardProps {
@@ -34,6 +34,16 @@ export default function CategoryCard({
   style
 }: CategoryCardProps) {
   const [isHovered, setIsHovered] = useState(false)
+  const [isMobile, setIsMobile] = useState(false)
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768)
+    }
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    return () => window.removeEventListener('resize', checkMobile)
+  }, [])
 
   // Extraction de la couleur de base pour l'overlay (simplification des classes Tailwind)
   const getOverlayColor = () => {
@@ -67,23 +77,50 @@ export default function CategoryCard({
         )}
       </div>
 
-      {/* 2. OVERLAY COULEUR THEME - Légèrement transparent pour voir l'image */}
+      {/* 2. OVERLAY COULEUR THEME - Desktop seulement */}
       <div 
-        className={`absolute inset-0 ${getOverlayColor()} z-10 transition-opacity duration-500 ease-out ${isHovered ? 'opacity-85' : 'opacity-0'}`} 
+        className={`absolute inset-0 ${getOverlayColor()} z-10 transition-opacity duration-500 ease-out hidden md:block ${isHovered ? 'opacity-85' : 'opacity-0'}`} 
       />
       
-      {/* 3. Overlay sombre par défaut (Repos) */}
+      {/* 3. Overlay sombre par défaut (Repos) - Desktop seulement */}
       <div 
-        className={`absolute inset-0 bg-black/30 z-10 transition-opacity duration-500 ease-out ${isHovered ? 'opacity-0' : 'opacity-100'}`} 
+        className={`absolute inset-0 bg-black/30 z-10 transition-opacity duration-500 ease-out hidden md:block ${isHovered ? 'opacity-0' : 'opacity-100'}`} 
       />
 
-      {/* 4. OVERLAY DE BASE - Gradient très atténué pour lisibilité du texte en bas */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent z-20 pointer-events-none" />
+      {/* 4. OVERLAY MOBILE - Overlay sombre uniforme pour lisibilité */}
+      <div className={`absolute inset-0 bg-black/60 z-20 pointer-events-none md:hidden`} />
 
-      {/* 5. CONTENU */}
-      <div className="absolute inset-0 z-30 p-8 md:p-10 flex flex-col justify-between">
+      {/* 5. OVERLAY DE BASE DESKTOP - Gradient très atténué pour lisibilité du texte en bas */}
+      <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent z-20 pointer-events-none hidden md:block" />
+
+      {/* CONTENU MOBILE - Design normal : titre en haut, flèche en haut à droite */}
+      <div className="absolute inset-0 z-30 p-5 md:hidden flex flex-col">
+        {/* En-tête avec titre et flèche */}
+        <div className="flex items-start justify-between gap-3">
+          {/* Titre en haut à gauche */}
+          <h3 className="font-display text-white font-bold tracking-tight leading-[1.1] text-xl flex-1 drop-shadow-[0_2px_6px_rgba(0,0,0,0.8)]">
+            {title}
+          </h3>
+          
+          {/* Flèche en haut à droite */}
+          <div className="relative w-10 h-10 rounded-full border-2 border-white/50 bg-white/10 backdrop-blur-sm flex items-center justify-center shadow-xl flex-shrink-0">
+            <svg 
+              className="w-4 h-4 text-white" 
+              fill="none" 
+              stroke="currentColor" 
+              strokeWidth="2.5" 
+              viewBox="0 0 24 24"
+            >
+              <path d="M7 17L17 7M17 7H7M17 7V17" />
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      {/* CONTENU DESKTOP - Design complet */}
+      <div className="absolute inset-0 z-30 p-10 hidden md:flex flex-col justify-between">
         
-        {/* En-tête: Flèche harmonisée (Style Hero/BackToTop) */}
+        {/* En-tête: Flèche harmonisée */}
         <div className="flex justify-end items-start">
            <div className="relative w-14 h-14 rounded-full border-2 border-white/30 bg-white/5 backdrop-blur-xl flex items-center justify-center transition-all duration-500 group-hover:border-white group-hover:scale-110 group-hover:bg-white/20 shadow-lg">
               <svg 
@@ -99,13 +136,13 @@ export default function CategoryCard({
         </div>
 
         {/* Centre: Titre Principal */}
-        <div className="mt-auto mb-4 transition-all duration-500 transform translate-y-4 group-hover:translate-y-0">
+        <div className="mt-auto transform translate-y-4 group-hover:translate-y-0 mb-4 transition-all duration-500">
           <h3 className="text-[clamp(2rem,4vw,3.5rem)] font-display text-white font-bold tracking-tight leading-[1.1] mb-3 drop-shadow-lg">
             {title}
           </h3>
           
           {/* Ligne animée */}
-          <div className="h-[3px] bg-white w-16 transition-all duration-500 ease-out group-hover:w-full opacity-90 rounded-full shadow-lg" />
+          <div className="h-[3px] bg-white w-16 group-hover:w-full opacity-90 transition-all duration-500 ease-out rounded-full shadow-lg" />
         </div>
 
         {/* Bas: Description (Apparaît au survol) */}
@@ -129,8 +166,8 @@ export default function CategoryCard({
       {/* Lien global */}
       <a href={href} className="absolute inset-0 z-40" aria-label={title} />
       
-      {/* Bordure fine au survol */}
-      <div className="absolute inset-0 border-[2px] border-white/0 transition-all duration-500 z-30 pointer-events-none group-hover:border-white/30 group-hover:inset-2 rounded-3xl md:rounded-[2rem]" />
+      {/* Bordure fine au survol - Desktop seulement */}
+      <div className="absolute inset-0 border-[2px] border-white/0 transition-all duration-500 z-30 pointer-events-none group-hover:border-white/30 group-hover:inset-2 rounded-3xl md:rounded-[2rem] hidden md:block" />
     </div>
   )
 }

@@ -12,6 +12,16 @@ export default function Header() {
   const isHomePage = pathname === '/'
   const { showAnimations } = useAnimation()
   const [isLogoVisible, setIsLogoVisible] = useState(false)
+  const [isMobile, setIsMobile] = useState(false)
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768)
+    }
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    return () => window.removeEventListener('resize', checkMobile)
+  }, [])
 
   // Animation d'apparition du logo comme les liens de navigation
   useEffect(() => {
@@ -34,7 +44,9 @@ export default function Header() {
     }`}>
       <div className={`flex justify-between items-center px-6 md:px-10 lg:px-16 py-4 ${
         isHomePage 
-          ? 'bg-theme-cream/95 backdrop-blur-md md:bg-transparent md:backdrop-blur-none' 
+          ? isMobile
+            ? 'bg-black backdrop-blur-md md:bg-transparent md:backdrop-blur-none'
+            : 'bg-theme-cream/95 backdrop-blur-md md:bg-transparent md:backdrop-blur-none'
           : 'backdrop-blur-xl bg-theme-cream/85 border-b border-gray-200'
       }`}>
         {/* Logo - style simple comme les liens de navigation */}
@@ -45,7 +57,7 @@ export default function Header() {
             transition: 'all 0.6s ease-out'
           }}
         >
-          <UnderlineLink href="/" variant={isHomePage ? 'light' : 'dark'}>
+          <UnderlineLink href="/" variant={isHomePage && !isMobile ? 'light' : isHomePage && isMobile ? 'light' : 'dark'}>
             FLORINE CLAP
           </UnderlineLink>
         </div>
@@ -57,7 +69,7 @@ export default function Header() {
 
         {/* Menu burger mobile */}
         <div className="md:hidden">
-          <MobileMenu isHomePage={isHomePage} />
+          <MobileMenu isHomePage={isHomePage} isMobile={isMobile} />
         </div>
 
       </div>
