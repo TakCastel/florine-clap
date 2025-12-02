@@ -46,11 +46,8 @@ export default function CategoriesSection() {
         zIndex: zIndexValue,
         willChange: 'auto',
         transition: {
-          opacity: {
-            duration: 0.6,
-            ease: [0.25, 0.46, 0.45, 0.94], // Courbe très douce et progressive
-            times: [0, 1],
-          },
+          duration: 0.6,
+          ease: [0.25, 0.46, 0.45, 0.94] as const,
         },
       },
     }
