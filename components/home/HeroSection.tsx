@@ -69,7 +69,7 @@ export default function HeroSection() {
   return (
     <section 
       id="hero-section" 
-      className="w-full h-screen relative overflow-hidden"
+      className="w-full h-screen relative overflow-hidden border-b border-black/5 section-gradient"
       onMouseMove={handleMouseMove}
     >
       <div className="relative h-full overflow-hidden">

@@ -10,6 +10,7 @@ import { motion, useScroll, useTransform } from 'framer-motion'
 export default function BioSection() {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
   const [isMobile, setIsMobile] = useState(false)
+  const [initialAnimationComplete, setInitialAnimationComplete] = useState(false)
   const sectionRef = useRef<HTMLElement>(null)
   const imageRef = useRef<HTMLDivElement>(null)
 
@@ -35,11 +36,15 @@ export default function BioSection() {
     offset: isMobile ? ["start 0.7", "center 0.3"] : ["start end", "end start"]
   })
 
-  // Translation et rotation de la photo en fonction du scroll
-  // Desktop : déplacement gauche → droite avec légère inclinaison, mobile : reste centrée
+  // Translation de la photo en fonction du scroll
+  // Desktop : déplacement gauche → droite, mobile : reste centrée
+  // Le scroll ne s'active qu'après l'animation initiale
   const imageY = useTransform(scrollYProgress, [0, 1], [0, isMobile ? 0 : -90])
-  const imageX = useTransform(scrollYProgress, [0, 1], isMobile ? [0, 0] : [-120, 120])
-  const imageRotate = useTransform(scrollYProgress, [0, 1], isMobile ? [0, 0] : [-4, 3.5])
+  const imageX = useTransform(
+    scrollYProgress, 
+    [0, 1], 
+    isMobile || !initialAnimationComplete ? [0, 0] : [-80, 80]
+  )
 
   // Opacité des paragraphes en fonction du scroll - modification pour garder le texte visible à la fin
   const paragraph1Opacity = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [0, 1, 1, 1])
@@ -51,7 +56,7 @@ export default function BioSection() {
     <section 
       ref={sectionRef}
       id="bio-section" 
-      className="w-full min-h-screen bg-theme-cream flex items-center justify-center py-24 md:py-32 relative overflow-hidden"
+      className="w-full min-h-screen flex items-center justify-center py-24 md:py-32 relative overflow-hidden border-b border-black/5 section-gradient"
       onMouseMove={handleMouseMove}
     >
       <div className="max-w-7xl mx-auto px-6 md:px-10 lg:px-16 w-full">
@@ -59,20 +64,52 @@ export default function BioSection() {
           
           {/* Image avec effet sophistiqué - positionnée en haut à gauche */}
           <div className="w-full md:w-2/5 lg:w-2/5 xl:w-2/5 relative group md:float-left md:mr-12 mb-8 md:mb-8 mx-auto md:mx-0">
-            <Reveal direction="left" duration={1} delay={0.2} threshold={0.2} width="100%">
-              {/* Image principale */}
+            {/* Mobile : simple apparition */}
+            {isMobile ? (
+              <Reveal direction="left" duration={1} delay={0.2} threshold={0.2} width="100%">
+                <div className="relative overflow-visible">
+                  <motion.div 
+                    ref={imageRef}
+                    className="relative overflow-hidden"
+                    style={{
+                      skewX: '-3deg',
+                    }}
+                    initial={{ opacity: 0, y: 40 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, amount: 0.4 }}
+                    transition={{ duration: 0.8, ease: "easeOut" }}
+                  >
+                    <div className="relative w-full h-[400px] md:h-[500px] lg:h-[600px]">
+                      <Image 
+                        src={bioPhoto} 
+                        alt="Florine Clap - Portrait"
+                        fill
+                        sizes="(max-width: 768px) 100vw, (max-width: 1024px) 60vw, 40vw"
+                        className="object-cover transition-transform duration-700 group-hover:scale-110"
+                        style={{ filter: 'none' }}
+                      />
+                      <div className="absolute inset-0 bg-black/10 group-hover:bg-black/5 transition-all duration-700"></div>
+                      <div className="absolute inset-0 bg-gradient-to-t from-white/60 via-transparent to-transparent"></div>
+                    </div>
+                  </motion.div>
+                </div>
+              </Reveal>
+            ) : (
+              /* Desktop : apparition depuis la gauche puis déplacement selon scroll */
               <div className="relative overflow-visible">
                 <motion.div 
                   ref={imageRef}
-                  className="relative overflow-hidden transition-transform duration-700 ease-out rounded-3xl md:rounded-[2rem]"
+                  className="relative overflow-hidden"
                   style={{
                     y: imageY,
-                    x: imageX,
-                    rotate: imageRotate,
+                    x: initialAnimationComplete ? imageX : undefined,
+                    skewX: '-3deg',
                   }}
-                  initial={isMobile ? { opacity: 0, y: 40 } : undefined}
-                  whileInView={isMobile ? { opacity: 1, y: 0 } : undefined}
-                  viewport={isMobile ? { once: true, amount: 0.4 } : undefined}
+                  initial={{ opacity: 0, x: -200 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true, amount: 0.2 }}
+                  transition={{ duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
+                  onAnimationComplete={() => setInitialAnimationComplete(true)}
                 >
                   <div 
                     className="relative w-full h-[400px] md:h-[500px] lg:h-[600px] transition-transform duration-700 ease-out"
@@ -94,7 +131,7 @@ export default function BioSection() {
                   </div>
                 </motion.div>
               </div>
-            </Reveal>
+            )}
           </div>
           
           {/* Contenu texte avec titre intégré - le texte coule autour de l'image */}
@@ -102,7 +139,7 @@ export default function BioSection() {
             {/* Titre avec animation - à côté de l'image */}
             <div className="overflow-hidden mb-8">
               <Reveal delay={0.3} duration={1}>
-                <h3 className="heading-section text-black mb-4">
+                <h3 className="heading-main text-black mb-4">
                   Florine Clap
                 </h3>
                 

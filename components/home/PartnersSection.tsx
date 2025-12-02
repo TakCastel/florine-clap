@@ -12,7 +12,7 @@ export default function PartnersSection() {
   return (
     <section 
       id="partners-section" 
-      className="w-full bg-theme-cream py-24 md:py-32 relative overflow-hidden"
+      className="w-full py-24 md:py-32 relative overflow-hidden section-gradient"
     >
       <div className="max-w-7xl mx-auto px-6 md:px-10 lg:px-16 w-full">
         {/* Titre léger */}

@@ -29,14 +29,14 @@ export default function ImmersiveFilmCard({
 }: ImmersiveFilmCardProps) {
   const [isHovered, setIsHovered] = useState(false)
 
-  // Thème Film forcé
-  const overlayColorClass = 'bg-theme-films'
+  // Thème Film forcé - noir et blanc
+  const overlayColorClass = 'bg-black'
 
   return (
     <Link href={href} className={`group block w-full ${className}`}>
       <article 
         // Ajout de transform-gpu et isolation-isolate pour forcer le compositing layer
-        className="relative w-full h-[55vh] md:h-[65vh] overflow-hidden bg-theme-cream cursor-pointer rounded-3xl md:rounded-[2rem] transition-all duration-500 ease-out group-hover:shadow-2xl group-hover:shadow-black/40 transform-gpu isolation-isolate"
+        className="relative w-full h-[55vh] md:h-[65vh] overflow-hidden bg-theme-white cursor-pointer rounded-3xl md:rounded-[2rem] transition-all duration-500 ease-out group-hover:shadow-2xl group-hover:shadow-black/40 transform-gpu isolation-isolate"
         style={{
           WebkitMaskImage: '-webkit-radial-gradient(white, black)', // Fix Safari border-radius clipping
           maskImage: 'radial-gradient(white, black)'
@@ -69,9 +69,9 @@ export default function ImmersiveFilmCard({
           )}
         </div>
         
-        {/* 2. OVERLAY COULEUR THEME (Gradient Rouge Film étendu) */}
+        {/* 2. OVERLAY COULEUR THEME (Gradient Noir étendu) */}
         <div 
-          className={`absolute inset-0 bg-gradient-to-t from-theme-films from-10% via-theme-films/40 to-transparent z-10 transition-opacity duration-500 ease-out ${isHovered ? 'opacity-90' : 'opacity-0'}`} 
+          className={`absolute inset-0 bg-gradient-to-t from-black from-10% via-black/40 to-transparent z-10 transition-opacity duration-500 ease-out ${isHovered ? 'opacity-90' : 'opacity-0'}`} 
         />
         
         {/* 3. Overlay sombre par défaut */}
@@ -82,7 +82,7 @@ export default function ImmersiveFilmCard({
         {/* Badge Play en haut à droite (spécifique Film) */}
         <div className="absolute top-6 right-6 z-30 flex gap-2">
           {vimeoId && (
-            <div className="bg-white/10 backdrop-blur-xl text-white border border-white/20 px-4 py-2 rounded-full text-xs font-medium flex items-center gap-1.5 transition-all duration-500 ease-in-out group-hover:bg-white group-hover:text-theme-films group-hover:scale-110 shadow-lg">
+            <div className="bg-white/10 backdrop-blur-xl text-white border border-white/20 px-4 py-2 rounded-full text-xs font-medium flex items-center gap-1.5 transition-all duration-500 ease-in-out group-hover:bg-white group-hover:text-black group-hover:scale-110 shadow-lg">
               <Play className="w-3.5 h-3.5 fill-current" />
               <span className="hidden sm:inline">Bande-annonce</span>
             </div>
@@ -115,7 +115,7 @@ export default function ImmersiveFilmCard({
           </h3>
 
           {/* Ligne décorative */}
-          <div className="h-[3px] bg-theme-film overflow-hidden rounded-full w-16 group-hover:w-32 group-hover:bg-white transition-all duration-500 ease-in-out mb-6 shadow-lg"></div>
+          <div className="h-[3px] bg-white overflow-hidden rounded-full w-16 group-hover:w-32 transition-all duration-500 ease-in-out mb-6 shadow-lg"></div>
           
           {/* Description (optionnelle) */}
           {synopsis && (

@@ -33,7 +33,7 @@ export default function ActusPage({ searchParams }: ActusPageProps) {
   }, [])
 
   return (
-    <div className="min-h-screen bg-theme-cream relative overflow-hidden">
+    <div className="min-h-screen bg-theme-white relative overflow-hidden">
       <Breadcrumb 
         items={[
           { label: 'Accueil', href: '/' },
@@ -54,16 +54,16 @@ export default function ActusPage({ searchParams }: ActusPageProps) {
             }}
           >
             <h1 
-              className="heading-display text-theme-actus"
+              className="heading-display text-black"
             >
               Actualités
             </h1>
           </div>
           
           {/* Ligne décorative animée */}
-          <div className="h-[2px] bg-theme-dark/10 w-full max-w-md overflow-hidden">
+          <div className="h-[2px] bg-black/10 w-full max-w-md overflow-hidden">
             <div 
-              className="h-full bg-theme-actus transition-all duration-500 ease-out"
+              className="h-full bg-black transition-all duration-500 ease-out"
               style={{
                 width: isVisible ? '100%' : '0%',
                 transitionDelay: '0.1s',
@@ -72,7 +72,7 @@ export default function ActusPage({ searchParams }: ActusPageProps) {
           </div>
 
           <p 
-            className="body-text text-theme-actus/80 mt-6 max-w-2xl"
+            className="body-text text-black/80 mt-6 max-w-2xl"
             style={{
               opacity: isVisible ? 1 : 0,
               transform: isVisible ? 'translateY(0)' : 'translateY(8px)',
@@ -83,69 +83,26 @@ export default function ActusPage({ searchParams }: ActusPageProps) {
           </p>
         </div>
         
-        {/* Dernière actualité - Affiché seulement sur la première page */}
-        {currentPage === 1 && (
-          <div className="mb-20 md:mb-28">
-            <div className="mb-10">
-              <h2 
-              className="heading-section text-theme-actus mb-2 leading-none"
-              >
-                Dernière actualité
-              </h2>
-            </div>
-            
-            {/* Première actualité - Grande card */}
-            <ScrollRevealCard key={items[0]._id} delay={0}>
-              <ActuCard
-                href={`/actus/${items[0].slug}`}
-                title={items[0].title}
-                cover={items[0].cover}
-                excerpt={items[0].excerpt}
-                date={items[0].date}
-              />
-            </ScrollRevealCard>
-          </div>
-        )}
-        
-        {/* Toutes les actualités */}
-        <div className="mb-12">
-          <div className="flex items-end justify-between mb-8">
-            <div>
-              <h2 
-              className="heading-section text-theme-actus leading-none"
-              >
-                Toutes les actualités
-              </h2>
-            </div>
-            {/* Informations de pagination */}
-            <div className="text-sm text-theme-dark/60 font-medium">
-              Page {currentPage} / {totalPages}
-            </div>
+        {/* Informations de pagination */}
+        <div className="mb-8">
+          <div className="text-sm text-black/60 font-medium">
+            Page {currentPage} / {totalPages}
           </div>
         </div>
         
-        {/* Liste en 2 colonnes des actualités */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 mb-16">
-          {(() => {
-            // Pour la première page, on exclut la première card déjà affichée
-            const itemsToShow = currentPage === 1 ? paginatedItems.slice(1) : paginatedItems
-            // S'assurer qu'on a un nombre pair de cards pour la grille de 2 colonnes
-            const evenItems = itemsToShow.length % 2 === 0 
-              ? itemsToShow 
-              : itemsToShow.slice(0, -1)
-            
-            return evenItems.map((actu, index) => (
-              <ScrollRevealCard key={actu._id} delay={index * 0.05}>
-                <ActuCard
-                  href={`/actus/${actu.slug}`}
-                  title={actu.title}
-                  cover={actu.cover}
-                  excerpt={actu.excerpt}
-                  date={actu.date}
-                />
-              </ScrollRevealCard>
-            ))
-          })()}
+        {/* Grille des actualités - 1 colonne mobile, 2 colonnes desktop */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 md:gap-x-8 gap-y-12 md:gap-y-16 mb-16">
+          {paginatedItems.map((actu, index) => (
+            <ScrollRevealCard key={actu._id} delay={index * 0.05}>
+              <ActuCard
+                href={`/actus/${actu.slug}`}
+                title={actu.title}
+                cover={actu.cover}
+                excerpt={actu.excerpt}
+                date={actu.date}
+              />
+            </ScrollRevealCard>
+          ))}
         </div>
 
         {/* Pagination */}
@@ -156,7 +113,7 @@ export default function ActusPage({ searchParams }: ActusPageProps) {
               {currentPage > 1 ? (
                 <Link 
                   href={`/actus?page=${currentPage - 1}`}
-                  className="group flex items-center gap-2 text-theme-dark/70 hover:text-theme-dark font-medium transition-all duration-300"
+                  className="group flex items-center gap-2 text-black/70 hover:text-black font-medium transition-all duration-300"
                 >
                   <svg className="w-5 h-5 transition-transform duration-300 group-hover:-translate-x-1" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
                     <path d="M15 19l-7-7 7-7"/>
@@ -164,7 +121,7 @@ export default function ActusPage({ searchParams }: ActusPageProps) {
                   <span>Précédent</span>
                 </Link>
               ) : (
-                <div className="flex items-center gap-2 text-theme-dark/30 cursor-not-allowed">
+                <div className="flex items-center gap-2 text-black/30 cursor-not-allowed">
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
                     <path d="M15 19l-7-7 7-7"/>
                   </svg>
@@ -187,8 +144,8 @@ export default function ActusPage({ searchParams }: ActusPageProps) {
                         href={`/actus?page=${page}`}
                         className={`w-10 h-10 flex items-center justify-center font-bold transition-all duration-300 ${
                           page === currentPage
-                            ? 'text-theme-dark scale-125'
-                            : 'text-theme-dark/50 hover:text-theme-dark hover:scale-110'
+                            ? 'text-black scale-125'
+                            : 'text-black/50 hover:text-black hover:scale-110'
                         }`}
                       >
                         {page}
@@ -199,7 +156,7 @@ export default function ActusPage({ searchParams }: ActusPageProps) {
                     page === currentPage + 2
                   ) {
                     return (
-                      <span key={page} className="text-theme-dark/30 px-2">
+                      <span key={page} className="text-black/30 px-2">
                         ...
                       </span>
                     )
@@ -212,7 +169,7 @@ export default function ActusPage({ searchParams }: ActusPageProps) {
               {currentPage < totalPages ? (
                 <Link 
                   href={`/actus?page=${currentPage + 1}`}
-                  className="group flex items-center gap-2 text-theme-dark/70 hover:text-theme-dark font-medium transition-all duration-300"
+                  className="group flex items-center gap-2 text-black/70 hover:text-black font-medium transition-all duration-300"
                 >
                   <span>Suivant</span>
                   <svg className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
@@ -220,7 +177,7 @@ export default function ActusPage({ searchParams }: ActusPageProps) {
                   </svg>
                 </Link>
               ) : (
-                <div className="flex items-center gap-2 text-theme-dark/30 cursor-not-allowed">
+                <div className="flex items-center gap-2 text-black/30 cursor-not-allowed">
                   <span>Suivant</span>
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
                     <path d="M9 5l7 7-7 7"/>
@@ -232,15 +189,15 @@ export default function ActusPage({ searchParams }: ActusPageProps) {
         )}
 
         {/* Contenu SEO */}
-        <div className="mt-24 pt-12 border-t border-theme-dark/10">
+        <div className="mt-24 pt-12 border-t border-black/10">
           <div className="max-w-4xl">
-            <h2 className="text-2xl md:text-3xl font-bold text-theme-actus mb-6" style={{
+            <h2 className="text-2xl md:text-3xl font-bold text-black mb-6" style={{
               fontFamily: 'var(--font-andalemo), sans-serif',
               letterSpacing: '-0.02em',
             }}>
               Mes dernières actualités
             </h2>
-            <p className="text-theme-dark/70 text-lg leading-relaxed">
+            <p className="text-black/70 text-lg leading-relaxed">
               Suivez mes dernières actualités, sélections en festival, nouvelles créations et projets en cours. 
               Restez informé de mon actualité cinématographique et de mes prochaines médiations.
             </p>

@@ -35,15 +35,10 @@ export default function ContentCard({
 }: ContentCardProps) {
   const [isHovered, setIsHovered] = useState(false)
 
-  // Détermination des couleurs selon le thème
+  // Détermination des couleurs selon le thème - tout en noir et blanc
   const getThemeColorClass = () => {
-    switch (theme) {
-      case 'films': return 'bg-theme-films'
-      case 'mediations': return 'bg-theme-mediations'
-      case 'actus': return 'bg-theme-actus'
-      case 'videos-art': return 'bg-black' // ou une autre couleur spécifique
-      default: return 'bg-black'
-    }
+    // Tous les thèmes utilisent maintenant du noir
+    return 'bg-black'
   }
 
   // Style pour l'overlay couleur

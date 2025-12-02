@@ -11,11 +11,6 @@ import ScrollToTop from '@/components/ScrollToTop'
 export default function LayoutWrapper({ children }: { children: React.ReactNode }) {
   const pathname = usePathname()
   const isHomePage = pathname === '/'
-  const isUploadVideoPage = pathname === '/admin/upload-video'
-  
-  if (isUploadVideoPage) {
-    return <>{children}</>
-  }
   
   return (
     <AnimationProvider>
