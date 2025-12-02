@@ -32,14 +32,14 @@ export default function Breadcrumb({ items, variant = 'default' }: Props) {
       case 'yellow':
         return {
           container: 'bg-theme-yellow/80 backdrop-blur-md',
-          text: 'text-theme-dark/80',
-          separator: 'text-theme-dark/60',
-          hover: 'hover:text-theme-dark',
-          current: 'text-theme-dark'
+          text: 'text-black/80',
+          separator: 'text-black/60',
+          hover: 'hover:text-black',
+          current: 'text-black'
         }
       case 'dark':
         return {
-          container: 'bg-theme-dark/70 backdrop-blur-md',
+          container: 'bg-black/70 backdrop-blur-md',
           text: 'text-white/80',
           separator: 'text-white/60',
           hover: 'hover:text-white',
@@ -55,11 +55,11 @@ export default function Breadcrumb({ items, variant = 'default' }: Props) {
         }
       default:
         return {
-          container: 'bg-theme-cream/80 backdrop-blur-md',
-          text: 'text-theme-dark/80',
-          separator: 'text-theme-dark/60',
-          hover: 'hover:text-theme-dark',
-          current: 'text-theme-dark'
+          container: 'bg-theme-white/80 backdrop-blur-md',
+          text: 'text-black/80',
+          separator: 'text-black/60',
+          hover: 'hover:text-black',
+          current: 'text-black'
         }
     }
   }
@@ -67,7 +67,7 @@ export default function Breadcrumb({ items, variant = 'default' }: Props) {
   const styles = getVariantStyles()
 
   return (
-    <div className={`${styles.container} py-4 border-b border-theme-dark/10`}>
+    <div className={`${styles.container} py-4 sr-only`}>
       <div className="max-w-7xl mx-auto px-6 md:px-10 lg:px-16">
         <nav className={`flex items-center text-sm font-display ${styles.text}`} aria-label="Breadcrumb">
           {items.map((item, index) => (

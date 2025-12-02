@@ -22,7 +22,7 @@ export default function VideoArtPage({ params }: VideoArtPageProps) {
   }
 
   return (
-    <div className="min-h-screen bg-theme-cream text-theme-dark">
+    <div className="min-h-screen bg-theme-white text-black">
       <Breadcrumb 
         items={[
           { label: 'Accueil', href: '/' },
@@ -32,34 +32,26 @@ export default function VideoArtPage({ params }: VideoArtPageProps) {
         variant="default"
       />
 
-      {/* Hero Section avec image de fond */}
-      <section className="relative h-[45vh] min-h-[300px] overflow-hidden">
-        <div 
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat blur-sm" 
-          style={{ backgroundImage: `url(${videoArt.image})` }}
-        ></div>
-        <div className="absolute inset-0 bg-gradient-to-t from-theme-cream via-theme-cream/50 to-transparent"></div>
-        <div className="absolute inset-0 bg-gradient-to-r from-theme-cream/80 via-theme-cream/40 to-transparent"></div>
-        
-        <div className="relative z-10 h-full flex items-end">
-          <div className="max-w-7xl mx-auto px-6 md:px-10 lg:px-16 pb-16 w-full">
-            <div className="text-center max-w-4xl mx-auto">
-              <div className="flex items-center justify-center gap-6 text-theme-dark/60 text-sm uppercase tracking-[0.2em] mb-4 font-light">
-                {videoArt.duree && (
-                  <span>{videoArt.duree}</span>
-                )}
-                {videoArt.annee && (
-                  <span>{videoArt.annee}</span>
-                )}
-              </div>
-              <h1 
-                className="heading-page text-theme-dark"
-              >
-                {videoArt.title}
-              </h1>
+      {/* Section image pleine largeur */}
+      <section className="w-full">
+        {videoArt.image ? (
+          <div className="relative w-full aspect-video overflow-hidden">
+            <img
+              src={videoArt.image}
+              alt={videoArt.title}
+              className="w-full h-full object-cover"
+            />
+          </div>
+        ) : (
+          <div className="relative w-full aspect-video bg-black/5 flex items-center justify-center">
+            <div className="text-center text-black/30">
+              <svg className="w-16 h-16 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+              </svg>
+              <p className="text-sm uppercase tracking-[0.2em]">Image non disponible</p>
             </div>
           </div>
-        </div>
+        )}
       </section>
 
       {/* Contenu principal */}
@@ -68,9 +60,49 @@ export default function VideoArtPage({ params }: VideoArtPageProps) {
           
           {/* Contenu principal */}
           <div className="lg:col-span-2">
-            {/* Player Vimeo */}
-            {videoArt.vimeoId && (
-              <div className="relative aspect-video rounded-lg overflow-hidden mb-8">
+            {/* Titre et métadonnées */}
+            <div className="mb-8">
+              <div className="flex items-center gap-6 text-black/60 text-sm uppercase tracking-[0.2em] mb-4 font-light">
+                {videoArt.duree && (
+                  <span>{videoArt.duree}</span>
+                )}
+                {videoArt.annee && (
+                  <span>{videoArt.annee}</span>
+                )}
+              </div>
+              <h1 className="heading-page text-black mb-8">
+                {videoArt.title}
+              </h1>
+            </div>
+
+            {/* Image dans l'article */}
+            {videoArt.image ? (
+              <div className="relative w-full aspect-video overflow-hidden mb-8 rounded-lg">
+                <img
+                  src={videoArt.image}
+                  alt={videoArt.title}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            ) : (
+              <div className="relative w-full aspect-video bg-black/5 flex items-center justify-center mb-8 rounded-lg">
+                <div className="text-center text-black/30">
+                  <svg className="w-16 h-16 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                  </svg>
+                  <p className="text-sm uppercase tracking-[0.2em]">Image non disponible</p>
+                </div>
+              </div>
+            )}
+            
+            {/* Contenu MDX */}
+            <div className="prose prose-lg max-w-none text-black mb-12">
+              <MdxRenderer code={videoArt.body.code} />
+            </div>
+
+            {/* Player Vimeo en fin d'article */}
+            {videoArt.vimeoId ? (
+              <div className="relative w-full aspect-video overflow-hidden">
                 <VimeoPlayer
                   videoId={videoArt.vimeoId}
                   className="w-full h-full"
@@ -80,11 +112,8 @@ export default function VideoArtPage({ params }: VideoArtPageProps) {
                   controls={true}
                 />
               </div>
-            )}
-            
-            {/* Player vidéo directe (URL) */}
-            {videoArt.videoUrl && !videoArt.vimeoId && (
-              <div className="relative aspect-video rounded-lg overflow-hidden mb-8">
+            ) : videoArt.videoUrl ? (
+              <div className="relative w-full aspect-video overflow-hidden">
                 <video
                   src={videoArt.videoUrl}
                   controls
@@ -93,19 +122,23 @@ export default function VideoArtPage({ params }: VideoArtPageProps) {
                   Votre navigateur ne supporte pas la lecture de vidéos.
                 </video>
               </div>
+            ) : (
+              <div className="relative w-full aspect-video bg-black/5 flex items-center justify-center">
+                <div className="text-center text-black/30">
+                  <svg className="w-16 h-16 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                  </svg>
+                  <p className="text-sm uppercase tracking-[0.2em]">Vidéo non disponible</p>
+                </div>
+              </div>
             )}
-            
-            {/* Contenu MDX */}
-            <div className="prose prose-lg max-w-none text-theme-dark">
-              <MdxRenderer code={videoArt.body.code} />
-            </div>
           </div>
 
           {/* Sidebar avec informations techniques */}
           <div className="lg:col-span-1">
             <div className="sticky top-8">
-              <div className="border-t border-theme-dark/10 pt-8">
-                <h3 className="heading-subtitle text-theme-dark mb-6">
+              <div className="border-t border-black/10 pt-8">
+                <h3 className="heading-subtitle text-black mb-6">
                   Fiche technique
                 </h3>
                 
@@ -113,49 +146,49 @@ export default function VideoArtPage({ params }: VideoArtPageProps) {
                   {/* Réalisation */}
                   {videoArt.realisation && (
                     <div>
-                      <p className="text-xs text-theme-dark/50 uppercase tracking-[0.2em] mb-2 font-light">Réalisation</p>
-                      <p className="text-theme-dark font-display font-medium">{videoArt.realisation}</p>
+                      <p className="text-xs text-black/50 uppercase tracking-[0.2em] mb-2 font-light">Réalisation</p>
+                      <p className="text-black font-display font-medium">{videoArt.realisation}</p>
                     </div>
                   )}
 
                   {/* Mixage */}
                   {videoArt.mixage && (
                     <div>
-                      <p className="text-xs text-theme-dark/50 uppercase tracking-[0.2em] mb-2 font-light">Mixage</p>
-                      <p className="text-theme-dark font-display font-medium">{videoArt.mixage}</p>
+                      <p className="text-xs text-black/50 uppercase tracking-[0.2em] mb-2 font-light">Mixage</p>
+                      <p className="text-black font-display font-medium">{videoArt.mixage}</p>
                     </div>
                   )}
 
                   {/* Texte */}
                   {videoArt.texte && (
                     <div>
-                      <p className="text-xs text-theme-dark/50 uppercase tracking-[0.2em] mb-2 font-light">Texte</p>
-                      <p className="text-theme-dark font-display font-medium">{videoArt.texte}</p>
+                      <p className="text-xs text-black/50 uppercase tracking-[0.2em] mb-2 font-light">Texte</p>
+                      <p className="text-black font-display font-medium">{videoArt.texte}</p>
                     </div>
                   )}
 
                   {/* Production */}
                   {videoArt.production && (
                     <div>
-                      <p className="text-xs text-theme-dark/50 uppercase tracking-[0.2em] mb-2 font-light">Production</p>
-                      <p className="text-theme-dark font-display font-medium">{videoArt.production}</p>
+                      <p className="text-xs text-black/50 uppercase tracking-[0.2em] mb-2 font-light">Production</p>
+                      <p className="text-black font-display font-medium">{videoArt.production}</p>
                     </div>
                   )}
 
                   {/* Durée et année */}
                   {(videoArt.duree || videoArt.annee) && (
-                    <div className="pt-6 border-t border-theme-dark/10">
+                    <div className="pt-6 border-t border-black/10">
                       <div className="grid grid-cols-2 gap-4">
                         {videoArt.duree && (
                           <div>
-                            <p className="text-xs text-theme-dark/50 uppercase tracking-[0.2em] mb-2 font-light">Durée</p>
-                            <p className="text-theme-dark font-display font-medium">{videoArt.duree}</p>
+                            <p className="text-xs text-black/50 uppercase tracking-[0.2em] mb-2 font-light">Durée</p>
+                            <p className="text-black font-display font-medium">{videoArt.duree}</p>
                           </div>
                         )}
                         {videoArt.annee && (
                           <div>
-                            <p className="text-xs text-theme-dark/50 uppercase tracking-[0.2em] mb-2 font-light">Année</p>
-                            <p className="text-theme-dark font-display font-medium">{videoArt.annee}</p>
+                            <p className="text-xs text-black/50 uppercase tracking-[0.2em] mb-2 font-light">Année</p>
+                            <p className="text-black font-display font-medium">{videoArt.annee}</p>
                           </div>
                         )}
                       </div>

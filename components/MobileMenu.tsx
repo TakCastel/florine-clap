@@ -19,7 +19,7 @@ const MENU_ITEMS = [
 
 // Icône burger simple
 const BurgerIcon = ({ isOpen, color = 'black' }: { isOpen: boolean; color?: 'black' | 'white' }) => {
-  const barColor = color === 'white' ? 'bg-white' : 'bg-theme-dark'
+  const barColor = color === 'white' ? 'bg-white' : 'bg-black'
   
   return (
     <div className="relative w-6 h-6 flex flex-col justify-center items-center">
@@ -133,17 +133,17 @@ const MobileMenuOverlay = ({ isOpen, onClose, isHomePage = false }: MobileMenuPr
       <div className="h-16"></div>
       
       {/* Navigation centrée verticalement avec animation et fond */}
-      <nav className={`flex items-center justify-center h-[calc(100vh-4rem)] px-6 transition-all duration-300 ease-out bg-theme-cream ${
+      <nav className={`flex items-center justify-center h-[calc(100vh-4rem)] px-6 transition-all duration-300 ease-out bg-theme-white ${
         showContent ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
       }`}
-      style={{ backgroundColor: '#F5F3F0' }}>
+      style={{ backgroundColor: '#FFFFFF' }}>
         <div className="space-y-8 w-full">
           {MENU_ITEMS.map((item, index) => (
             <Link
               key={item.href}
               href={item.href}
               onClick={onClose}
-              className={`block text-3xl font-display font-normal uppercase text-theme-dark hover:text-theme-dark/60 transition-all duration-300 tracking-wide text-center py-3 ${
+              className={`block text-3xl font-display font-normal uppercase text-black hover:text-black/60 transition-all duration-300 tracking-wide text-center py-3 ${
                 showContent ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
               }`}
               style={{

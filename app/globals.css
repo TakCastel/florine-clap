@@ -20,12 +20,21 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 :root {
-  --heading-display: clamp(2.5rem, 6vw, 4.5rem);
-  --heading-page: clamp(2.125rem, 4vw, 3.5rem);
-  --heading-section: clamp(1.75rem, 3vw, 2.75rem);
+  --heading-main: clamp(1.125rem, 2.2vw, 2rem); /* Titre principal commun : cards, header, bio */
+  --heading-display: clamp(1.5rem, 3vw, 2.25rem);
+  --heading-page: clamp(1.25rem, 2.5vw, 2rem);
+  --heading-section: clamp(1.5rem, 2.5vw, 2.5rem);
   --heading-subtitle: clamp(1.25rem, 2.5vw, 2rem);
   --body-large: clamp(0.9rem, 1.4vw, 1.05rem);
   --body-base: clamp(0.8rem, 1vw, 0.95rem);
+}
+
+.heading-main {
+  font-size: var(--heading-main);
+  font-family: 'Andale Mono', 'Monaco', 'Menlo', monospace;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
 }
 
 .heading-display,
@@ -736,4 +745,9 @@ body {
   background: none !important;
   background-color: transparent !important;
   box-shadow: none !important;
+}
+
+/* Dégradé linéaire pour les sections */
+.section-gradient {
+  background: linear-gradient(92deg, white, rgb(243 244 246));
 }

@@ -19,7 +19,7 @@ export default function Footer() {
           <div className="lg:col-span-5">
             <Reveal delay={0.2} duration={0.8}>
               <div className="mb-8">
-                <h3 className="heading-section text-white mb-6">
+                <h3 className="heading-main text-white mb-6">
                   Florine Clap
                 </h3>
                 

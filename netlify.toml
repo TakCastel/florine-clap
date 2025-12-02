@@ -5,6 +5,11 @@
 [build.environment]
   NODE_VERSION = "18"
 
+# Configuration pour les fonctions serverless (API routes)
+[functions]
+  timeout = 360
+  included_files = ["**/*"]
+
 [[redirects]]
   from = "/admin/*"
   to = "/admin/index.html"

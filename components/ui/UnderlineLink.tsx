@@ -30,7 +30,7 @@ export const UnderlineLink = ({
   // Classes de couleur selon la variante
   const colorClasses = variant === 'light'
     ? 'text-white/75 hover:text-white after:bg-white' 
-    : 'text-theme-dark/80 hover:text-black after:bg-theme-dark'
+    : 'text-black/80 hover:text-black after:bg-black'
 
   const combinedClasses = `${baseClasses} ${colorClasses} ${className}`.trim()
 

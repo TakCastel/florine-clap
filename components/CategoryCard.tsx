@@ -58,7 +58,7 @@ export default function CategoryCard({
 
   return (
     <div 
-      className="group relative w-full h-full overflow-hidden bg-gray-900 cursor-pointer rounded-3xl md:rounded-[2rem] transition-all duration-500 ease-out group-hover:shadow-2xl group-hover:shadow-black/40 flex"
+      className="group relative w-full h-full overflow-hidden bg-gray-900 cursor-pointer transition-all duration-500 ease-out group-hover:shadow-2xl group-hover:shadow-black/40 flex"
       style={style}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
@@ -71,7 +71,7 @@ export default function CategoryCard({
             alt={imageAlt}
             fill
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-            className={`object-cover transition-opacity duration-500 ease-out ${isHovered ? 'opacity-20' : 'opacity-100'}`}
+            className={`object-cover transition-opacity duration-500 ease-out grayscale ${isHovered ? 'opacity-20' : 'opacity-100'}`}
             priority={false}
           />
         )}
@@ -93,51 +93,23 @@ export default function CategoryCard({
       {/* 5. OVERLAY DE BASE DESKTOP - Gradient très atténué pour lisibilité du texte en bas */}
       <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent z-20 pointer-events-none hidden md:block" />
 
-      {/* CONTENU MOBILE - Design normal : titre en haut, flèche en haut à droite */}
+      {/* CONTENU MOBILE - Design normal : titre en haut */}
       <div className="absolute inset-0 z-30 p-5 md:hidden flex flex-col">
-        {/* En-tête avec titre et flèche */}
+        {/* En-tête avec titre */}
         <div className="flex items-start justify-between gap-3">
           {/* Titre en haut à gauche */}
           <h3 className="font-display text-white font-bold tracking-tight leading-[1.1] text-xl flex-1 drop-shadow-[0_2px_6px_rgba(0,0,0,0.8)]">
             {title}
           </h3>
-          
-          {/* Flèche en haut à droite */}
-          <div className="relative w-10 h-10 rounded-full border-2 border-white/50 bg-white/10 backdrop-blur-sm flex items-center justify-center shadow-xl flex-shrink-0">
-            <svg 
-              className="w-4 h-4 text-white" 
-              fill="none" 
-              stroke="currentColor" 
-              strokeWidth="2.5" 
-              viewBox="0 0 24 24"
-            >
-              <path d="M7 17L17 7M17 7H7M17 7V17" />
-            </svg>
-          </div>
         </div>
       </div>
 
       {/* CONTENU DESKTOP - Design complet */}
       <div className="absolute inset-0 z-30 p-10 hidden md:flex flex-col justify-between">
         
-        {/* En-tête: Flèche harmonisée */}
-        <div className="flex justify-end items-start">
-           <div className="relative w-14 h-14 rounded-full border-2 border-white/30 bg-white/5 backdrop-blur-xl flex items-center justify-center transition-all duration-500 group-hover:border-white group-hover:scale-110 group-hover:bg-white/20 shadow-lg">
-              <svg 
-                className="w-6 h-6 text-white transition-transform duration-500 group-hover:rotate-45" 
-                fill="none" 
-                stroke="currentColor" 
-                strokeWidth="2" 
-                viewBox="0 0 24 24"
-              >
-                <path d="M7 17L17 7M17 7H7M17 7V17" />
-              </svg>
-           </div>
-        </div>
-
         {/* Centre: Titre Principal */}
         <div className="mt-auto transform translate-y-4 group-hover:translate-y-0 mb-4 transition-all duration-500">
-          <h3 className="text-[clamp(2rem,4vw,3.5rem)] font-display text-white font-bold tracking-tight leading-[1.1] mb-3 drop-shadow-lg">
+          <h3 className="heading-main text-white tracking-tight mb-3 drop-shadow-lg">
             {title}
           </h3>
           
@@ -165,9 +137,6 @@ export default function CategoryCard({
 
       {/* Lien global */}
       <a href={href} className="absolute inset-0 z-40" aria-label={title} />
-      
-      {/* Bordure fine au survol - Desktop seulement */}
-      <div className="absolute inset-0 border-[2px] border-white/0 transition-all duration-500 z-30 pointer-events-none group-hover:border-white/30 group-hover:inset-2 rounded-3xl md:rounded-[2rem] hidden md:block" />
     </div>
   )
 }

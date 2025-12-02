@@ -33,7 +33,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link rel="icon" type="image/png" href="/images/florine-clap-favicon.png" />
         <link rel="apple-touch-icon" href="/images/florine-clap-favicon.png" />
       </head>
-      <body className="bg-gray-100 font-sans">
+      <body className="bg-theme-white font-sans">
         <SmoothScroll>
           <LayoutWrapper>
             {children}

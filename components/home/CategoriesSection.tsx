@@ -18,30 +18,43 @@ export default function CategoriesSection() {
   const containerRef = useRef<HTMLDivElement>(null)
   const isInView = useInView(sectionRef, { once: true, margin: "-200px" })
   
-  // Animation basée sur le scroll - commence plus tôt et se termine avant la fin
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ["start 0.9", "center 0.5"]
-  })
-  
-  // Transformations parallaxes différentes pour chaque card (plus subtiles)
-  const parallaxY1 = useTransform(scrollYProgress, [0, 1], [0, -20])
-  const parallaxY2 = useTransform(scrollYProgress, [0, 1], [0, -15])
-  const parallaxY3 = useTransform(scrollYProgress, [0, 1], [0, -18])
-  const parallaxY4 = useTransform(scrollYProgress, [0, 1], [0, -25])
-  
-  // Opacité - toujours visible
-  const card0Opacity = 1
-  const card1Opacity = 1
-  const card2Opacity = 1
-  const card3Opacity = 1
-  
-  const cardAnimations = [
-    { opacity: card0Opacity },
-    { opacity: card1Opacity },
-    { opacity: card2Opacity },
-    { opacity: card3Opacity },
-  ]
+  // Variantes d'animation pour l'effet de fade in séquentiel
+  const containerVariants = {
+    hidden: { opacity: 1 }, // Container toujours visible, seule les children s'animent
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.2, // Délai entre chaque card
+        delayChildren: 0.1,
+      },
+    },
+  }
+
+  const getCardVariants = (index: number) => {
+    const skewAngle = -3 // Toutes les cards ont la même skew
+    const zIndexValue = 4 - index // z-index décroissant : 4, 3, 2, 1
+    return {
+      hidden: {
+        opacity: 0,
+        skewX: `${skewAngle}deg`,
+        zIndex: zIndexValue,
+        willChange: 'opacity',
+      },
+      visible: {
+        opacity: 1,
+        skewX: `${skewAngle}deg`,
+        zIndex: zIndexValue,
+        willChange: 'auto',
+        transition: {
+          opacity: {
+            duration: 0.6,
+            ease: [0.25, 0.46, 0.45, 0.94], // Courbe très douce et progressive
+            times: [0, 1],
+          },
+        },
+      },
+    }
+  }
 
   useEffect(() => {
     const checkMobile = () => {
@@ -66,7 +79,7 @@ export default function CategoriesSection() {
     {
       href: '/films',
       title: 'Films',
-      description: 'Découvrez mes créations cinématographiques, mes courts-métrages et mes projets artistiques',
+      description: 'Mes créations cinématographiques, mes courts-métrages et mes projets artistiques',
       linkText: 'Découvrir',
       imageSrc: randomImages.films,
       imageAlt: 'Découvrir mes films',
@@ -82,7 +95,7 @@ export default function CategoriesSection() {
       href: '/mediations',
       title: 'Médiations',
       description: 'Explorez mes médiations de médiation culturelle et mes formations pour tous publics',
-      linkText: 'Explorer',
+      linkText: 'Découvrir',
       imageSrc: randomImages.mediations,
       imageAlt: 'Découvrir mes médiations',
       theme: 'mediations' as const,
@@ -96,8 +109,8 @@ export default function CategoriesSection() {
     {
       href: '/videos-art',
       title: 'Vidéos/art',
-      description: 'Découvrez mes créations vidéo artistiques et mes projets expérimentaux',
-      linkText: 'Explorer',
+      description: 'Mes créations vidéo artistiques et mes projets expérimentaux',
+      linkText: 'Lire',
       imageSrc: randomImages['video-art'],
       imageAlt: 'Découvrir mes vidéos artistiques',
       theme: 'videos-art' as const,
@@ -129,31 +142,34 @@ export default function CategoriesSection() {
     <section 
       ref={sectionRef}
       id="categories-section" 
-      className="w-full min-h-screen bg-theme-cream flex items-center justify-center py-12 md:py-16 overflow-hidden relative"
+      className="w-full min-h-screen flex items-center justify-center py-12 md:py-16 overflow-hidden relative border-b border-black/5 section-gradient"
     >
       <div className="w-full max-w-[1600px] px-6 md:px-10 lg:px-16 relative z-10">
-        <motion.h2
-          initial={{ opacity: 0, y: 20 }}
-          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-          transition={{ duration: 0.6, ease: "easeOut" }}
-          className="heading-section text-black mb-8 md:mb-12 text-center"
-        >
-          Découvrez mes créations
-        </motion.h2>
-        <div 
+        <motion.div 
           ref={containerRef}
           className="w-full h-[400px] md:h-[450px] lg:h-[500px] flex flex-col md:flex-row gap-3 md:gap-4 items-stretch"
+          variants={containerVariants}
+          initial="hidden"
+          animate={isInView ? "visible" : "hidden"}
         >
           {cards.map((card, index) => {
-            const animation = cardAnimations[index]
+            const skewAngle = -3 // Toutes les cards ont la même skew
             return (
             <motion.div 
               key={index} 
-              className="relative flex-1 hover:flex-[2] md:hover:flex-[1.5] transition-[flex,width] duration-500 ease-out h-full"
+              className="relative flex-1 md:hover:flex-[1.5] transition-all duration-500 ease-out h-full group/card"
+              variants={getCardVariants(index)}
               onMouseEnter={() => setHoveredIndex(index)}
               onMouseLeave={() => setHoveredIndex(null)}
+              whileHover={{
+                zIndex: 50,
+                transition: { 
+                  duration: 0.4,
+                  ease: [0.16, 1, 0.3, 1]
+                },
+              }}
               style={{
-                opacity: 1,
+                skewX: `${skewAngle}deg`,
               }}
             >
               <CategoryCard
@@ -174,7 +190,7 @@ export default function CategoriesSection() {
             </motion.div>
             )
           })}
-        </div>
+        </motion.div>
       </div>
     </section>
   )

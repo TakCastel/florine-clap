@@ -24,7 +24,8 @@ const config: Config = {
         'theme-sage': '#8B9A8B',         // Vert sauge
         'theme-burgundy': '#6B2C3E',     // Bordeau profond
         'theme-slate': '#4A5568',        // Ardoise froide
-        'theme-cream': '#F5F3F0',        // Beige cassé pour fond
+        'theme-cream': '#F5F3F0',        // Beige cassé pour fond (déprécié)
+        'theme-white': '#FFFFFF',        // Blanc pur pour fond
         // Classes globales par thème
         'theme-films': {
           DEFAULT: '#9B1A33',             // Rouge pourpre cerise sombre principal

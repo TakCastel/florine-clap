@@ -46,8 +46,8 @@ export default function Header() {
         isHomePage 
           ? isMobile
             ? 'bg-black backdrop-blur-md md:bg-transparent md:backdrop-blur-none'
-            : 'bg-theme-cream/95 backdrop-blur-md md:bg-transparent md:backdrop-blur-none'
-          : 'backdrop-blur-xl bg-theme-cream/85 border-b border-gray-200'
+            : 'bg-theme-white/95 backdrop-blur-md md:bg-transparent md:backdrop-blur-none'
+          : 'backdrop-blur-xl bg-theme-white/85 border-b border-gray-200'
       }`}>
         {/* Logo - style simple comme les liens de navigation */}
         <div
