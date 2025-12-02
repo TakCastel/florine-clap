@@ -45,17 +45,6 @@ export default function CategoryCard({
     return () => window.removeEventListener('resize', checkMobile)
   }, [])
 
-  // Extraction de la couleur de base pour l'overlay (simplification des classes Tailwind)
-  const getOverlayColor = () => {
-    switch (theme) {
-      case 'films': return 'bg-theme-films'
-      case 'mediations': return 'bg-theme-mediations'
-      case 'actus': return 'bg-theme-actus'
-      case 'videos-art': return 'bg-black'
-      default: return 'bg-black'
-    }
-  }
-
   return (
     <div 
       className="group relative w-full h-full overflow-hidden bg-gray-900 cursor-pointer transition-all duration-500 ease-out group-hover:shadow-2xl group-hover:shadow-black/40 flex"
@@ -71,24 +60,25 @@ export default function CategoryCard({
             alt={imageAlt}
             fill
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-            className={`object-cover transition-opacity duration-500 ease-out grayscale ${isHovered ? 'opacity-20' : 'opacity-100'}`}
+            className="object-cover transition-opacity duration-500 ease-out"
+            style={{ filter: 'grayscale(100%) brightness(0.75)' }}
             priority={false}
           />
         )}
       </div>
-
-      {/* 2. OVERLAY COULEUR THEME - Desktop seulement */}
-      <div 
-        className={`absolute inset-0 ${getOverlayColor()} z-10 transition-opacity duration-500 ease-out hidden md:block ${isHovered ? 'opacity-85' : 'opacity-0'}`} 
-      />
       
-      {/* 3. Overlay sombre par défaut (Repos) - Desktop seulement */}
+      {/* 2. Overlay sombre léger - Desktop seulement */}
       <div 
-        className={`absolute inset-0 bg-black/30 z-10 transition-opacity duration-500 ease-out hidden md:block ${isHovered ? 'opacity-0' : 'opacity-100'}`} 
+        className="absolute inset-0 bg-black/15 z-10 transition-opacity duration-500 ease-out hidden md:block" 
+      />
+
+      {/* 3. Aplat noir au survol - Desktop seulement */}
+      <div 
+        className="absolute inset-0 bg-black z-10 transition-opacity duration-500 ease-out hidden md:block opacity-0 group-hover:opacity-60" 
       />
 
       {/* 4. OVERLAY MOBILE - Overlay sombre uniforme pour lisibilité */}
-      <div className={`absolute inset-0 bg-black/60 z-20 pointer-events-none md:hidden`} />
+      <div className={`absolute inset-0 bg-black/20 z-20 pointer-events-none md:hidden`} />
 
       {/* 5. OVERLAY DE BASE DESKTOP - Gradient très atténué pour lisibilité du texte en bas */}
       <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent z-20 pointer-events-none hidden md:block" />

@@ -7,7 +7,6 @@
 
 # Configuration pour les fonctions serverless (API routes)
 [functions]
-  timeout = 360
   included_files = ["**/*"]
 
 [[redirects]]
