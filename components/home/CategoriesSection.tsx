@@ -169,7 +169,7 @@ export default function CategoriesSection() {
                 },
               }}
               style={{
-                skewX: `${skewAngle}deg`,
+                transform: `skewX(${skewAngle}deg)`,
               }}
             >
               <CategoryCard

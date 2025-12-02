@@ -31,9 +31,9 @@ export default function SimpleFilmCard({
             {cover ? (
               <div 
                 className="relative aspect-[4/3] overflow-hidden"
-                style={{ skewX: '-3deg' }}
+                style={{ transform: 'skewX(-3deg)' }}
               >
-                <div className="relative w-full h-full" style={{ skewX: '3deg' }}>
+                <div className="relative w-full h-full" style={{ transform: 'skewX(3deg)' }}>
                   <Image
                     src={cover}
                     alt={title}
@@ -46,9 +46,9 @@ export default function SimpleFilmCard({
             ) : (
               <div 
                 className="relative aspect-[4/3] bg-gray-200"
-                style={{ skewX: '-3deg' }}
+                style={{ transform: 'skewX(-3deg)' }}
               >
-                <div className="relative w-full h-full flex items-center justify-center" style={{ skewX: '3deg' }}>
+                <div className="relative w-full h-full flex items-center justify-center" style={{ transform: 'skewX(3deg)' }}>
                   <span className="text-gray-400 font-mono text-sm uppercase">
                     Image non disponible
                   </span>
