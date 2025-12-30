@@ -196,6 +196,16 @@ export default function VideoArtPage({ params }: VideoArtPageProps) {
                   )}
                 </div>
               </div>
+
+              {/* Retour aux vidéos/art */}
+              <div className="border-t border-black/10 pt-8 mt-8">
+                <a 
+                  href="/videos-art"
+                  className="inline-flex items-center gap-2 text-black/70 hover:text-black transition-colors font-display font-light text-sm uppercase tracking-[0.1em]"
+                >
+                  ← Retour aux vidéos/art
+                </a>
+              </div>
             </div>
           </div>
         </div>

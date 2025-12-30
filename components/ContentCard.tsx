@@ -47,7 +47,7 @@ export default function ContentCard({
   return (
     <Link href={href} className={`group block h-full ${className}`}>
       <article 
-        className="relative w-full h-full overflow-hidden bg-gray-900 cursor-pointer min-h-[350px] md:min-h-[400px] rounded-3xl md:rounded-[2rem] transition-all duration-500 ease-out group-hover:shadow-2xl group-hover:shadow-black/40"
+        className="relative w-full h-full overflow-hidden bg-gray-900 cursor-pointer min-h-[350px] md:min-h-[400px] transition-all duration-500 ease-out"
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
@@ -90,13 +90,13 @@ export default function ContentCard({
         {/* Badge de catégorie ou Play */}
         <div className="absolute top-6 right-6 z-30 flex gap-2">
           {showPlayBadge && (
-            <div className="bg-white/10 backdrop-blur-xl text-white border border-white/20 px-4 py-2 rounded-full text-xs font-medium flex items-center gap-1.5 transition-all duration-300 group-hover:bg-white group-hover:text-black group-hover:scale-110 shadow-lg">
+            <div className="bg-white/10 backdrop-blur-xl text-white border border-white/20 px-4 py-2 rounded-full text-xs font-medium flex items-center gap-1.5 transition-all duration-300 group-hover:bg-white group-hover:text-black group-hover:scale-110">
               <Play className="w-3.5 h-3.5 fill-current" />
               <span className="hidden sm:inline">Voir</span>
             </div>
           )}
           {category && (
-            <div className="bg-black/50 backdrop-blur-xl text-white/90 border border-white/20 px-4 py-2 rounded-full text-xs font-medium uppercase tracking-wider shadow-lg">
+            <div className="bg-black/50 backdrop-blur-xl text-white/90 border border-white/20 px-4 py-2 rounded-full text-xs font-medium uppercase tracking-wider">
               {category}
             </div>
           )}
@@ -107,13 +107,13 @@ export default function ContentCard({
           {/* Métadonnées */}
           <div className="flex flex-wrap items-center gap-3 text-white/80 text-xs mb-4 transition-opacity duration-300">
             {duration && (
-              <span className="flex items-center gap-1.5 bg-white/10 backdrop-blur-xl px-4 py-2 rounded-full border border-white/20 shadow-lg">
+              <span className="flex items-center gap-1.5 bg-white/10 backdrop-blur-xl px-4 py-2 rounded-full border border-white/20">
                 <Clock className="w-3.5 h-3.5" />
                 {duration}
               </span>
             )}
             {date && (
-              <span className="flex items-center gap-1.5 bg-white/10 backdrop-blur-xl px-4 py-2 rounded-full border border-white/20 shadow-lg">
+              <span className="flex items-center gap-1.5 bg-white/10 backdrop-blur-xl px-4 py-2 rounded-full border border-white/20">
                 <Calendar className="w-3.5 h-3.5" />
                 {date}
               </span>
@@ -128,7 +128,7 @@ export default function ContentCard({
           </h3>
 
           {/* Ligne décorative */}
-          <div className="h-[3px] bg-white/40 overflow-hidden rounded-full w-16 group-hover:w-full transition-all duration-500 ease-out mb-4 shadow-lg"></div>
+          <div className="h-[3px] bg-white/40 overflow-hidden rounded-full w-16 group-hover:w-full transition-all duration-500 ease-out mb-4"></div>
           
           {/* Description (optionnelle) */}
           {description && (
@@ -151,7 +151,7 @@ export default function ContentCard({
         </div>
         
         {/* Bordure fine au survol */}
-        <div className="absolute inset-0 border-[2px] border-white/0 transition-all duration-500 z-30 pointer-events-none group-hover:border-white/30 group-hover:inset-2 rounded-2xl md:rounded-[1.5rem]" />
+        <div className="absolute inset-0 border-[2px] border-white/0 transition-all duration-500 z-30 pointer-events-none group-hover:border-white/30 group-hover:inset-2" />
       </article>
     </Link>
   )

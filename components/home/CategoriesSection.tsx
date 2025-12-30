@@ -14,18 +14,19 @@ export default function CategoriesSection() {
     'video-art': '',
     actus: ''
   })
+  const [isReady, setIsReady] = useState(false)
   const sectionRef = useRef<HTMLElement>(null)
   const containerRef = useRef<HTMLDivElement>(null)
-  const isInView = useInView(sectionRef, { once: true, margin: "-200px" })
+  const isInView = useInView(sectionRef, { once: true, margin: "-100px" })
   
   // Variantes d'animation pour l'effet de fade in séquentiel
   const containerVariants = {
-    hidden: { opacity: 1 }, // Container toujours visible, seule les children s'animent
+    hidden: { opacity: 0 },
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.2, // Délai entre chaque card
-        delayChildren: 0.1,
+        staggerChildren: 0.15, // Délai plus court entre chaque card
+        delayChildren: 0.05,
       },
     },
   }
@@ -36,18 +37,18 @@ export default function CategoriesSection() {
     return {
       hidden: {
         opacity: 0,
+        y: 20,
         skewX: `${skewAngle}deg`,
         zIndex: zIndexValue,
-        willChange: 'opacity',
       },
       visible: {
         opacity: 1,
+        y: 0,
         skewX: `${skewAngle}deg`,
         zIndex: zIndexValue,
-        willChange: 'auto',
         transition: {
-          duration: 0.6,
-          ease: [0.25, 0.46, 0.45, 0.94] as const,
+          duration: 0.8,
+          ease: [0.215, 0.61, 0.355, 1], // easeOutCubic
         },
       },
     }
@@ -64,12 +65,20 @@ export default function CategoriesSection() {
   }, [])
 
   useEffect(() => {
+    // On initialise les images et on marque comme prêt
     setRandomImages({
       films: getRandomCardImage('films'),
       mediations: getRandomCardImage('mediations'),
       'video-art': getRandomCardImage('video-art'),
       actus: getRandomCardImage('actus')
     })
+    
+    // Petit délai pour s'assurer que les images commencent à charger avant l'animation
+    const timer = setTimeout(() => {
+      setIsReady(true)
+    }, 50)
+    
+    return () => clearTimeout(timer)
   }, [])
 
   const cards = useMemo(() => [
@@ -147,7 +156,7 @@ export default function CategoriesSection() {
           className="w-full h-[400px] md:h-[450px] lg:h-[500px] flex flex-col md:flex-row gap-3 md:gap-4 items-stretch"
           variants={containerVariants}
           initial="hidden"
-          animate={isInView ? "visible" : "hidden"}
+          animate={isInView && isReady ? "visible" : "hidden"}
         >
           {cards.map((card, index) => {
             const skewAngle = -3 // Toutes les cards ont la même skew

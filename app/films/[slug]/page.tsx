@@ -277,6 +277,16 @@ export default function FilmPage({ params }: FilmPageProps) {
                   </p>
                 </div>
               )}
+
+              {/* Retour aux films */}
+              <div className="border-t border-black/10 pt-8 mt-8">
+                <a 
+                  href="/films"
+                  className="inline-flex items-center gap-2 text-black/70 hover:text-black transition-colors font-display font-light text-sm uppercase tracking-[0.1em]"
+                >
+                  ← Retour aux films
+                </a>
+              </div>
             </div>
           </div>
         </div>

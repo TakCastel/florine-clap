@@ -47,7 +47,7 @@ export default function CategoryCard({
 
   return (
     <div 
-      className="group relative w-full h-full overflow-hidden bg-gray-900 cursor-pointer transition-all duration-500 ease-out group-hover:shadow-2xl group-hover:shadow-black/40 flex"
+      className="group relative w-full h-full overflow-hidden bg-gray-900 cursor-pointer transition-all duration-500 ease-out flex"
       style={style}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
@@ -88,7 +88,7 @@ export default function CategoryCard({
         {/* En-tête avec titre */}
         <div className="flex items-start justify-between gap-3">
           {/* Titre en haut à gauche */}
-          <h3 className="font-display text-white font-bold tracking-tight leading-[1.1] text-xl flex-1 drop-shadow-[0_2px_6px_rgba(0,0,0,0.8)]">
+          <h3 className="font-display text-white font-bold tracking-tight leading-[1.1] text-xl flex-1">
             {title}
           </h3>
         </div>
@@ -99,12 +99,12 @@ export default function CategoryCard({
         
         {/* Centre: Titre Principal */}
         <div className="mt-auto transform translate-y-4 group-hover:translate-y-0 mb-4 transition-all duration-500">
-          <h3 className="heading-main text-white tracking-tight mb-3 drop-shadow-lg">
+          <h3 className="heading-main text-white tracking-tight mb-3">
             {title}
           </h3>
           
           {/* Ligne animée */}
-          <div className="h-[3px] bg-white w-16 group-hover:w-full opacity-90 transition-all duration-500 ease-out rounded-full shadow-lg" />
+          <div className="h-[3px] bg-white w-16 group-hover:w-full opacity-90 transition-all duration-500 ease-out rounded-full" />
         </div>
 
         {/* Bas: Description (Apparaît au survol) */}

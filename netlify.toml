@@ -9,11 +9,6 @@
 [functions]
   # Utiliser esbuild pour un bundling plus efficace et réduire la taille
   node_bundler = "esbuild"
-  # Externaliser uniquement les modules serveur volumineux qui ne sont pas nécessaires dans le bundle
-  external_node_modules = [
-    "ssh2-sftp-client",
-    "ssh2"
-  ]
 
 [[redirects]]
   from = "/admin/*"

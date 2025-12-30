@@ -30,25 +30,25 @@ export default function SimpleFilmCard({
           <div className="w-full md:w-1/2 flex-shrink-0">
             {cover ? (
               <div 
-                className="relative aspect-[4/3] overflow-hidden"
+                className="relative aspect-[4/3] overflow-hidden transition-all duration-500"
                 style={{ transform: 'skewX(-3deg)' }}
               >
-                <div className="relative w-full h-full" style={{ transform: 'skewX(3deg)' }}>
+                <div className="relative w-full h-full scale-110">
                   <Image
                     src={cover}
                     alt={title}
                     fill
                     sizes="(max-width: 768px) 100vw, 50vw"
-                    className="object-cover"
+                    className="object-cover transition-transform duration-700 group-hover:scale-105"
                   />
                 </div>
               </div>
             ) : (
               <div 
-                className="relative aspect-[4/3] bg-gray-200"
+                className="relative aspect-[4/3] bg-gray-200 overflow-hidden"
                 style={{ transform: 'skewX(-3deg)' }}
               >
-                <div className="relative w-full h-full flex items-center justify-center" style={{ transform: 'skewX(3deg)' }}>
+                <div className="relative w-full h-full flex items-center justify-center">
                   <span className="text-gray-400 font-mono text-sm uppercase">
                     Image non disponible
                   </span>

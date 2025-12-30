@@ -84,11 +84,6 @@ export default function BioPage() {
             <div className="text-theme-dark/40 text-sm uppercase tracking-[0.3em] mb-4 font-medium">
               Partenaires
             </div>
-            <h2 
-              className="heading-section text-theme-dark leading-none"
-            >
-              Ils me font confiance
-            </h2>
             
             {/* Ligne décorative */}
             <div className="h-[2px] bg-theme-dark/20 w-32 mx-auto mt-6">

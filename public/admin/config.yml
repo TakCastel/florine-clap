@@ -1,6 +1,5 @@
 backend:
-  name: github
-  repo: TakCastel/florine-clap
+  name: git-gateway
   branch: main
 
 media_folder: "public/images/uploads"
@@ -65,6 +64,8 @@ collections:
     folder: "content/pages"
     create: true
     slug: "{{slug}}"
+    extension: "mdx"
+    format: "frontmatter"
     fields:
       - {label: "Title", name: "title", widget: "string"}
       - {label: "Portrait", name: "portrait", widget: "image", required: false}
