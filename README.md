@@ -1,41 +1,77 @@
-# Florine Clap – Next.js 14 + Contentlayer + Decap CMS
+# Florine Clap - Site Web
 
-### Démarrage
+Site web avec Next.js 14 et Directus CMS.
 
-1. Installer les dépendances:
-```bash
-npm i # ou pnpm i / yarn
+## 🚀 Démarrage rapide
+
+### 1. Variables d'environnement
+
+Créez un fichier `.env` à la racine avec :
+
+```env
+POSTGRES_USER=directus
+POSTGRES_PASSWORD=directus
+POSTGRES_DB=directus
+
+DIRECTUS_KEY=change-me-to-a-random-value
+DIRECTUS_SECRET=change-me-to-a-random-value
+DIRECTUS_ADMIN_EMAIL=admin@example.com
+DIRECTUS_ADMIN_PASSWORD=admin
+DIRECTUS_PUBLIC_URL=http://localhost:8055
+DIRECTUS_CORS_ORIGIN=http://localhost:3000
+
+FRONTEND_PORT=3000
+DIRECTUS_PORT=8055
+NEXT_PUBLIC_DIRECTUS_URL=http://localhost:8055
+
+# À générer après le premier démarrage
+DIRECTUS_STATIC_TOKEN=
 ```
-2. Variables d'environnement (créez `.env.local`):
+
+### 2. Démarrer les services
+
 ```bash
-SITE_URL=https://example.com
-# Optionnel: protection /admin par Basic Auth (utile en préprod)
-BASIC_AUTH_USER=
-BASIC_AUTH_PASS=
-```
-3. Lancer le dev:
-```bash
-npm run dev
+docker-compose up -d
 ```
 
-### Contenu
-- Tous les contenus MDX dans `content/`.
-- Types générés par Contentlayer dans `.contentlayer/`.
+### 3. Configurer Directus
 
-### SEO
-- `app/sitemap.ts` et `app/robots.ts` génèrent sitemap/robots.
-- Utiliser `buildMetadata` pour title/description/images/canonical.
+```bash
+cd scripts
+npm install
+npm run setup-schema      # Crée les collections
+npm run setup-permissions  # Configure les permissions publiques
+```
 
-### Decap CMS
-- Accessible via `/admin`.
-- Config: `public/admin/config.yml` (backend GitHub par défaut).
-- Uploads d'images: `public/images/uploads`.
+**Token statique (optionnel)** : Le frontend fonctionne sans token (utilise le token admin en fallback). Pour la production, créez un token dans Directus :
 
-### Déploiement Vercel
-- Build: `contentlayer build && next build`.
-- Variables: `SITE_URL`. (Optionnel) `BASIC_AUTH_USER` / `BASIC_AUTH_PASS`.
+1. Ouvrez Directus: http://localhost:8055
+2. **Settings** > **Access Tokens** > **Create Token**
+3. Sélectionnez le rôle **Public**
+4. Copiez le token dans votre `.env` : `DIRECTUS_STATIC_TOKEN=votre-token`
+5. Redémarrez : `docker-compose restart frontend`
 
-### Extensibilité
-- Ajoutez des types via `contentlayer.config.ts` + `public/admin/config.yml`.
+### 4. Accéder aux services
 
+- Frontend: http://localhost:3000
+- Directus Admin: http://localhost:8055
 
+## 📝 Importer des contenus
+
+```bash
+cd scripts
+npm run import-videos-art -- --file ../videos-art-data.json
+```
+
+## 🛠️ Commandes utiles
+
+```bash
+# Voir les logs
+docker-compose logs -f
+
+# Redémarrer un service
+docker-compose restart frontend
+
+# Arrêter tout
+docker-compose down
+```

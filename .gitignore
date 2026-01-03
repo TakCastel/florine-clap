@@ -1,14 +1,11 @@
-.next
-.vercel
-node_modules
-.env*
-.DS_Store
-.contentlayer
-
-# Vidéos locales (hébergées sur serveur distant)
-public/videos/*.mp4
-public/videos/*.mov
-public/videos/*.avi
-public/videos/*.webm
+# Dossiers temporaires pour les images (ne pas commiter)
+temp-videos-art-images/
+temp-films-images/
+temp-mediations-images/
 
 
+# Node modules
+node_modules/
+scripts/node_modules/
+.env
+.env.local

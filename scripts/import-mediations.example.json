@@ -1,0 +1,16 @@
+[
+  {
+    "title": "Mon atelier de médiation",
+    "slug": "mon-atelier",
+    "cover": "mon-image.jpg",
+    "body": "Description détaillée de l'atelier...",
+    "excerpt": "Résumé court de l'atelier",
+    "date": "2024-01-15T10:00:00",
+    "lieu": "Lieu de l'atelier",
+    "duree": "2 heures",
+    "modalites": "Modalités d'inscription et de participation",
+    "lien_inscription": "https://example.com/inscription",
+    "tags": ["atelier", "vidéo", "médiation"]
+  }
+]
+

@@ -1,0 +1,82 @@
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: florine-clap-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-directus}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-directus}
+      POSTGRES_DB: ${POSTGRES_DB:-directus}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - florine-clap-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-directus}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  directus:
+    image: directus/directus:latest
+    container_name: florine-clap-directus
+    restart: unless-stopped
+    ports:
+      - "${DIRECTUS_PORT:-8055}:8055"
+    environment:
+      KEY: ${DIRECTUS_KEY:-change-me-to-a-random-value}
+      SECRET: ${DIRECTUS_SECRET:-change-me-to-a-random-value}
+      DB_CLIENT: pg
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_DATABASE: ${POSTGRES_DB:-directus}
+      DB_USER: ${POSTGRES_USER:-directus}
+      DB_PASSWORD: ${POSTGRES_PASSWORD:-directus}
+      ADMIN_EMAIL: ${DIRECTUS_ADMIN_EMAIL:-admin@example.com}
+      ADMIN_PASSWORD: ${DIRECTUS_ADMIN_PASSWORD:-admin}
+      PUBLIC_URL: ${DIRECTUS_PUBLIC_URL:-http://localhost:8055}
+      CORS_ENABLED: "true"
+      CORS_ORIGIN: ${DIRECTUS_CORS_ORIGIN:-http://localhost:3000}
+      ASSETS_STORAGE_LOCATIONS: local
+      STORAGE_LOCAL_ROOT: ./uploads
+      # Permettre l'accès public aux assets
+      ASSETS_ALLOW_LIST: "*"
+    volumes:
+      - directus_uploads:/directus/uploads
+      - directus_extensions:/directus/extensions
+    networks:
+      - florine-clap-network
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  frontend:
+    build:
+      context: ./front
+      dockerfile: Dockerfile
+    container_name: florine-clap-frontend
+    restart: unless-stopped
+    ports:
+      - "${FRONTEND_PORT:-3000}:3000"
+    environment:
+      NODE_ENV: production
+      # URL publique pour le navigateur (images, etc.)
+      NEXT_PUBLIC_DIRECTUS_URL: ${DIRECTUS_PUBLIC_URL:-http://localhost:8055}
+      # URL interne pour les appels serveur
+      DIRECTUS_INTERNAL_URL: http://directus:8055
+      DIRECTUS_STATIC_TOKEN: ${DIRECTUS_STATIC_TOKEN:-}
+    networks:
+      - florine-clap-network
+    depends_on:
+      directus:
+        condition: service_started
+
+volumes:
+  postgres_data:
+  directus_uploads:
+  directus_extensions:
+
+networks:
+  florine-clap-network:
+    driver: bridge
+
