@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { useState, useEffect } from 'react'
-import { motion, AnimatePresence, Variants } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 
 interface MobileMenuProps {
   isOpen: boolean
@@ -69,7 +69,7 @@ const BurgerButton = ({
 }
 
 // Variants d'animation pour le fond
-const backdropVariants: Variants = {
+const backdropVariants = {
   closed: {
     opacity: 0,
     y: '-100%',
@@ -89,7 +89,7 @@ const backdropVariants: Variants = {
 }
 
 // Variants pour les items du menu
-const menuItemVariants: Variants = {
+const menuItemVariants = {
   closed: {
     opacity: 0,
     y: 20,
@@ -110,7 +110,7 @@ const menuItemVariants: Variants = {
 }
 
 // Variants pour la ligne de séparation
-const lineVariants: Variants = {
+const lineVariants = {
   closed: {
     opacity: 0,
     scaleX: 0,

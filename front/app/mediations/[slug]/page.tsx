@@ -81,10 +81,10 @@ export default async function MediationPage({ params }: MediationPageProps) {
             )}
 
             {/* Player Vimeo en fin d'article */}
-            {(mediation as any).vimeoId ? (
+            {(mediation.vimeoId || mediation.vimeo_id) ? (
               <div className="relative w-full aspect-video overflow-hidden">
                 <VimeoPlayer
-                  videoId={(mediation as any).vimeoId}
+                  videoId={mediation.vimeoId || mediation.vimeo_id || ''}
                   className="w-full h-full"
                   autoplay={false}
                   muted={false}
@@ -92,10 +92,10 @@ export default async function MediationPage({ params }: MediationPageProps) {
                   controls={true}
                 />
               </div>
-            ) : (mediation as any).videoUrl ? (
+            ) : (mediation.videoUrl || mediation.video_url) ? (
               <div className="relative w-full aspect-video overflow-hidden">
                 <video
-                  src={(mediation as any).videoUrl}
+                  src={mediation.videoUrl || mediation.video_url || ''}
                   controls
                   className="w-full h-full object-contain"
                 >

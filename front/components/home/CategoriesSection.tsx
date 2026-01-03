@@ -183,7 +183,7 @@ export default function CategoriesSection({ homeSettings }: CategoriesSectionPro
                 zIndex: 50,
                 transition: { 
                   duration: 0.4,
-                  ease: [0.16, 1, 0.3, 1] as any
+                  ease: [0.16, 1, 0.3, 1] as [number, number, number, number]
                 },
               }}
               style={{

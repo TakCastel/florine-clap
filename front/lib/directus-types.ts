@@ -68,6 +68,10 @@ export interface Mediation {
   excerpt?: string
   tags?: string[]
   cover?: string | { id: string; filename_download: string }
+  vimeoId?: string
+  vimeo_id?: string
+  videoUrl?: string
+  video_url?: string
   body?: string
   date_created?: string
   date_updated?: string
