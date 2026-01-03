@@ -85,6 +85,7 @@ export interface Film {
   video_url?: string
   texte?: string
   remerciements?: string
+  order?: number
   body?: string
   date_created?: string
   date_updated?: string
