@@ -45,6 +45,10 @@ export interface Film {
   diffusion?: string[]
   selection?: string[]
   lien_film?: string
+  vimeo_id?: string
+  video_url?: string
+  texte?: string
+  remerciements?: string
   body?: string
   date_created?: string
   date_updated?: string
