@@ -16,9 +16,9 @@ export interface Film {
   id: string
   slug: string
   title: string
-  image?: string
-  content?: string
-  heading?: string
+  image?: string | { id: string; filename_download: string }
+  content?: string | { id: string; filename_download: string }
+  heading?: string | { id: string; filename_download: string }
   type?: string
   duree?: string
   annee?: string
@@ -64,10 +64,10 @@ export interface Mediation {
   duree?: string
   modalites?: string
   lien_inscription?: string
-  gallery?: string[]
+  gallery?: string[] | { id: string; filename_download: string }[]
   excerpt?: string
   tags?: string[]
-  cover?: string
+  cover?: string | { id: string; filename_download: string }
   body?: string
   date_created?: string
   date_updated?: string
@@ -81,7 +81,7 @@ export interface Actu {
   date: string
   excerpt?: string
   tags?: string[]
-  cover?: string
+  cover?: string | { id: string; filename_download: string }
   location?: string
   body?: string
   date_created?: string
@@ -92,9 +92,9 @@ export interface Page {
   id: string
   slug: string
   title: string
-  portrait?: string
+  portrait?: string | { id: string; filename_download: string }
   hero_video?: string
-  hero_image?: string
+  hero_image?: string | { id: string; filename_download: string }
   cta_text?: string
   cta_link?: string
   body?: string
@@ -106,7 +106,7 @@ export interface VideoArt {
   id: string
   slug: string
   title: string
-  image?: string
+  image?: string | { id: string; filename_download: string }
   type?: string
   duree?: string
   annee?: string
@@ -125,14 +125,14 @@ export interface VideoArt {
 export interface HomeSettings {
   id: string
   hero_text?: string
-  hero_image?: string
+  hero_image?: string | { id: string; filename_download: string }
   hero_video_url?: string
   bio_text?: string
-  bio_image?: string
-  category_films_image?: string
-  category_mediations_image?: string
-  category_video_art_image?: string
-  category_actus_image?: string
+  bio_image?: string | { id: string; filename_download: string }
+  category_films_image?: string | { id: string; filename_download: string }
+  category_mediations_image?: string | { id: string; filename_download: string }
+  category_video_art_image?: string | { id: string; filename_download: string }
+  category_actus_image?: string | { id: string; filename_download: string }
   date_created?: string
   date_updated?: string
 }
