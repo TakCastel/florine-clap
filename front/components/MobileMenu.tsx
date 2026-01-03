@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { useState, useEffect } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion, AnimatePresence, Variants } from 'framer-motion'
 
 interface MobileMenuProps {
   isOpen: boolean
@@ -69,13 +69,13 @@ const BurgerButton = ({
 }
 
 // Variants d'animation pour le fond
-const backdropVariants = {
+const backdropVariants: Variants = {
   closed: {
     opacity: 0,
     y: '-100%',
     transition: {
       duration: 0.4,
-      ease: [0.4, 0, 0.2, 1],
+      ease: [0.4, 0, 0.2, 1] as [number, number, number, number],
     },
   },
   open: {
@@ -83,13 +83,13 @@ const backdropVariants = {
     y: 0,
     transition: {
       duration: 0.5,
-      ease: [0.4, 0, 0.2, 1],
+      ease: [0.4, 0, 0.2, 1] as [number, number, number, number],
     },
   },
 }
 
 // Variants pour les items du menu
-const menuItemVariants = {
+const menuItemVariants: Variants = {
   closed: {
     opacity: 0,
     y: 20,
@@ -104,13 +104,13 @@ const menuItemVariants = {
     transition: {
       delay: 0.2 + index * 0.08,
       duration: 0.6,
-      ease: [0.25, 0.46, 0.45, 0.94], // Courbe élégante
+      ease: [0.25, 0.46, 0.45, 0.94] as [number, number, number, number], // Courbe élégante
     },
   }),
 }
 
 // Variants pour la ligne de séparation
-const lineVariants = {
+const lineVariants: Variants = {
   closed: {
     opacity: 0,
     scaleX: 0,
@@ -121,7 +121,7 @@ const lineVariants = {
     transition: {
       delay: 0.3,
       duration: 0.5,
-      ease: [0.4, 0, 0.2, 1],
+      ease: [0.4, 0, 0.2, 1] as [number, number, number, number],
     },
   },
 }

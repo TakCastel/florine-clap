@@ -111,7 +111,7 @@ export default function BioSection({ homeSettings }: BioSectionProps) {
                   initial={{ opacity: 0, x: -200 }}
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true, amount: 0.2 }}
-                  transition={{ duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
+                  transition={{ duration: 0.8, ease: [0.25, 0.1, 0.25, 1] as [number, number, number, number] }}
                   onAnimationComplete={() => setInitialAnimationComplete(true)}
                 >
                   <div 
