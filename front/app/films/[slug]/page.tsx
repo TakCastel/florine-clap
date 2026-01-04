@@ -25,7 +25,7 @@ export async function generateMetadata({ params }: FilmPageProps) {
 
   const imageUrl = getImageUrl(film.heading || film.image)
   const canonicalUrl = canonical(`/films/${slug}`)
-  const description = film.short_synopsis || film.shortSynopsis || `Découvrez ${film.title}, un film de Florine Clap.`
+  const description = film.short_synopsis || `Découvrez ${film.title}, un film de Florine Clap.`
 
   return buildMetadata({
     title: film.title,
@@ -61,7 +61,7 @@ export default async function FilmPage({ params }: FilmPageProps) {
   const jsonLd = generateJsonLd({
     type: 'Article',
     title: film.title,
-    description: film.short_synopsis || film.shortSynopsis || `Découvrez ${film.title}, un film de Florine Clap.`,
+    description: film.short_synopsis || `Découvrez ${film.title}, un film de Florine Clap.`,
     image: headingImageUrl || imageUrl || undefined,
     url: canonicalUrl,
     publishedTime: film.annee ? `${film.annee}-01-01` : undefined,
