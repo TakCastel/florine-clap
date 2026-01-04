@@ -7,5 +7,15 @@ temp-mediations-images/
 # Node modules
 node_modules/
 scripts/node_modules/
+
+# Fichiers d'environnement
 .env
 .env.local
+.env.example
+
+# Dumps de base de données
+*.dump
+
+# Archives
+*.tgz
+*.tar.gz
