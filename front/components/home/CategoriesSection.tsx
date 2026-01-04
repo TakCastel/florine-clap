@@ -3,7 +3,7 @@
 import { useEffect, useState, useMemo, useRef } from 'react'
 import CategoryCard from '@/components/CategoryCard'
 import { motion, useScroll, useTransform, useInView } from 'framer-motion'
-import { HomeSettings, getImageUrl } from '@/lib/directus'
+import { HomeSettings, getImageUrl, getAllFilms, getAllMediations, getAllVideoArts, getAllActus } from '@/lib/directus'
 
 interface CategoriesSectionProps {
   homeSettings?: HomeSettings | null
@@ -69,28 +69,71 @@ export default function CategoriesSection({ homeSettings }: CategoriesSectionPro
   }, [])
 
   useEffect(() => {
-    // Utiliser les images depuis Directus si disponibles
-    setRandomImages({
-      films: homeSettings?.category_films_image 
-        ? (getImageUrl(homeSettings.category_films_image) || '')
-        : '',
-      mediations: homeSettings?.category_mediations_image 
-        ? (getImageUrl(homeSettings.category_mediations_image) || '')
-        : '',
-      'video-art': homeSettings?.category_video_art_image 
-        ? (getImageUrl(homeSettings.category_video_art_image) || '')
-        : '',
-      actus: homeSettings?.category_actus_image 
-        ? (getImageUrl(homeSettings.category_actus_image) || '')
-        : ''
-    })
-    
-    // Petit délai pour s'assurer que les images commencent à charger avant l'animation
-    const timer = setTimeout(() => {
-      setIsReady(true)
-    }, 50)
-    
-    return () => clearTimeout(timer)
+    // Récupérer les images depuis les contenus de chaque catégorie
+    const fetchCategoryImages = async () => {
+      try {
+        // Films : utiliser heading en priorité, sinon image
+        const films = await getAllFilms()
+        const randomFilm = films.length > 0 ? films[Math.floor(Math.random() * films.length)] : null
+        const filmImage = randomFilm 
+          ? (getImageUrl(randomFilm.heading) || getImageUrl(randomFilm.image) || null)
+          : null
+
+        // Médiations : utiliser cover
+        const mediations = await getAllMediations()
+        const randomMediation = mediations.length > 0 ? mediations[Math.floor(Math.random() * mediations.length)] : null
+        const mediationImage = randomMediation 
+          ? (getImageUrl(randomMediation.cover) || null)
+          : null
+
+        // Videos-art : utiliser image
+        const videosArt = await getAllVideoArts()
+        const randomVideoArt = videosArt.length > 0 ? videosArt[Math.floor(Math.random() * videosArt.length)] : null
+        const videoArtImage = randomVideoArt 
+          ? (getImageUrl(randomVideoArt.image) || null)
+          : null
+
+        // Actus : utiliser cover
+        const actus = await getAllActus()
+        const randomActu = actus.length > 0 ? actus[Math.floor(Math.random() * actus.length)] : null
+        const actuImage = randomActu 
+          ? (getImageUrl(randomActu.cover) || null)
+          : null
+
+        setRandomImages({
+          films: filmImage || '',
+          mediations: mediationImage || '',
+          'video-art': videoArtImage || '',
+          actus: actuImage || ''
+        })
+      } catch (error) {
+        console.error('Erreur lors de la récupération des images de catégories:', error)
+        // En cas d'erreur, utiliser les images de homeSettings en fallback
+        setRandomImages({
+          films: homeSettings?.category_films_image 
+            ? (getImageUrl(homeSettings.category_films_image) || '')
+            : '',
+          mediations: homeSettings?.category_mediations_image 
+            ? (getImageUrl(homeSettings.category_mediations_image) || '')
+            : '',
+          'video-art': homeSettings?.category_video_art_image 
+            ? (getImageUrl(homeSettings.category_video_art_image) || '')
+            : '',
+          actus: homeSettings?.category_actus_image 
+            ? (getImageUrl(homeSettings.category_actus_image) || '')
+            : ''
+        })
+      }
+      
+      // Petit délai pour s'assurer que les images commencent à charger avant l'animation
+      const timer = setTimeout(() => {
+        setIsReady(true)
+      }, 50)
+      
+      return () => clearTimeout(timer)
+    }
+
+    fetchCategoryImages()
   }, [homeSettings])
 
   const cards = useMemo(() => [
