@@ -1,6 +1,7 @@
 node_modules
 .next
-.git
+# .git - commenté pour permettre Git LFS dans le build Docker
+# .git
 .env
 .env.local
 .env.production

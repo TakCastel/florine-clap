@@ -53,8 +53,8 @@ services:
   # Frontend en production (par défaut)
   frontend:
     build:
-      context: ./front
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: ./front/Dockerfile
       args:
         NEXT_PUBLIC_DIRECTUS_URL: ${NEXT_PUBLIC_DIRECTUS_URL:-${DIRECTUS_PUBLIC_URL:-http://localhost:8055}}
     container_name: florine-clap-frontend
@@ -78,8 +78,8 @@ services:
   # Frontend en développement
   frontend-dev:
     build:
-      context: ./front
-      dockerfile: Dockerfile.dev
+      context: .
+      dockerfile: ./front/Dockerfile.dev
     container_name: florine-clap-frontend-dev
     restart: unless-stopped
     ports:

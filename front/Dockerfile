@@ -5,16 +5,33 @@ FROM base AS deps
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
-# Copy package files
-COPY package.json package-lock.json* ./
+# Copy package files (le contexte est maintenant à la racine, donc front/package.json)
+COPY front/package.json front/package-lock.json* ./
 # Install dependencies (npm install will update lock file if needed)
 RUN npm install
 
 # Rebuild the source code only when needed
 FROM base AS builder
 WORKDIR /app
+
+# Installer Git et Git LFS pour télécharger les fichiers LFS
+RUN apk add --no-cache git git-lfs
+RUN git lfs install
+
 COPY --from=deps /app/node_modules ./node_modules
-COPY . .
+
+# Copier le dossier .git pour Git LFS (nécessaire pour git lfs pull)
+# .git doit être autorisé dans .dockerignore pour que cela fonctionne
+COPY .git ./.git
+
+# Copier les fichiers du frontend
+COPY front/ .
+
+# Télécharger les fichiers Git LFS (images, etc.)
+RUN git lfs pull || echo "Warning: Git LFS pull failed, continuing anyway"
+
+# Supprimer .git après avoir téléchargé les fichiers LFS
+RUN rm -rf .git
 
 # Build Next.js
 # Les variables NEXT_PUBLIC_* doivent être définies au moment du build
