@@ -30,8 +30,16 @@ DIRECTUS_STATIC_TOKEN=
 
 ### 2. Démarrer les services
 
+**Production (par défaut)** :
 ```bash
 docker-compose up -d
+```
+
+**Développement (avec hot reload)** :
+```bash
+docker-compose --profile dev up -d frontend-dev
+# Ou pour démarrer tous les services en dev :
+docker-compose --profile dev up -d
 ```
 
 ### 3. Configurer Directus
@@ -66,4 +74,8 @@ docker-compose restart frontend
 
 # Arrêter tout
 docker-compose down
+
+# Mode développement (avec hot reload)
+docker-compose --profile dev up -d frontend-dev
+docker-compose --profile dev logs -f frontend-dev
 ```

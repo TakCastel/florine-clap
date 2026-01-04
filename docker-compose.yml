@@ -50,12 +50,12 @@ services:
       postgres:
         condition: service_healthy
 
+  # Frontend en production (par défaut)
   frontend:
     build:
       context: ./front
       dockerfile: Dockerfile
       args:
-        # NEXT_PUBLIC_DIRECTUS_URL doit être passé au build, pas seulement au runtime
         NEXT_PUBLIC_DIRECTUS_URL: ${NEXT_PUBLIC_DIRECTUS_URL:-${DIRECTUS_PUBLIC_URL:-http://localhost:8055}}
     container_name: florine-clap-frontend
     restart: unless-stopped
@@ -63,19 +63,44 @@ services:
       - "${FRONTEND_PORT:-3000}:3000"
     environment:
       NODE_ENV: production
-      # URL publique pour le navigateur (images, etc.)
       NEXT_PUBLIC_DIRECTUS_URL: ${DIRECTUS_PUBLIC_URL:-http://localhost:8055}
-      # URL interne pour les appels serveur
       DIRECTUS_INTERNAL_URL: http://directus:8055
       DIRECTUS_STATIC_TOKEN: ${DIRECTUS_STATIC_TOKEN:-}
-    # Volume pour partager le dossier public avec nginx (si nécessaire)
-    # volumes:
-    #   - ./front/public:/app/public:ro
     networks:
       - florine-clap-network
     depends_on:
       directus:
         condition: service_started
+    profiles:
+      - production
+      - default
+
+  # Frontend en développement
+  frontend-dev:
+    build:
+      context: ./front
+      dockerfile: Dockerfile.dev
+    container_name: florine-clap-frontend-dev
+    restart: unless-stopped
+    ports:
+      - "${FRONTEND_PORT:-3000}:3000"
+    environment:
+      NODE_ENV: development
+      NEXT_PUBLIC_DIRECTUS_URL: ${DIRECTUS_PUBLIC_URL:-http://localhost:8055}
+      DIRECTUS_INTERNAL_URL: http://directus:8055
+      DIRECTUS_STATIC_TOKEN: ${DIRECTUS_STATIC_TOKEN:-}
+      WATCHPACK_POLLING: "true"
+    volumes:
+      - ./front:/app
+      - /app/node_modules
+      - /app/.next
+    networks:
+      - florine-clap-network
+    depends_on:
+      - directus
+    command: npm run dev
+    profiles:
+      - dev
 
 volumes:
   postgres_data:
@@ -85,4 +110,3 @@ volumes:
 networks:
   florine-clap-network:
     driver: bridge
-
