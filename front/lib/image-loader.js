@@ -9,6 +9,12 @@
  */
 
 export default function directusImageLoader({ src, width, quality }) {
+  // Gérer les cas null/undefined
+  if (!src || typeof src !== 'string') {
+    console.warn('Image loader received invalid src:', src)
+    return src || ''
+  }
+  
   // Si c'est un chemin statique (commence par /), utiliser l'optimisation Next.js
   if (src.startsWith('/')) {
     // Utiliser l'API d'optimisation Next.js pour les images statiques
@@ -28,14 +34,20 @@ export default function directusImageLoader({ src, width, quality }) {
     
     if (isDirectusUrl) {
       // Pour les URLs Directus, retourner directement avec les paramètres de transformation
-      const url = new URL(src)
-      if (width) {
-        url.searchParams.set('width', width.toString())
+      try {
+        const url = new URL(src)
+        if (width) {
+          url.searchParams.set('width', width.toString())
+        }
+        if (quality) {
+          url.searchParams.set('quality', quality.toString())
+        }
+        return url.toString()
+      } catch (error) {
+        console.error('Error parsing Directus URL:', src, error)
+        // Si l'URL n'est pas valide, retourner quand même l'URL originale
+        return src
       }
-      if (quality) {
-        url.searchParams.set('quality', quality.toString())
-      }
-      return url.toString()
     }
     
     // Pour les autres URLs externes (non-Directus), utiliser l'optimisation Next.js

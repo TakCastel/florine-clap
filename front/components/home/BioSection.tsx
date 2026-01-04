@@ -18,6 +18,9 @@ export default function BioSection({ homeSettings }: BioSectionProps) {
   const [initialAnimationComplete, setInitialAnimationComplete] = useState(false)
   const sectionRef = useRef<HTMLElement>(null)
   const imageRef = useRef<HTMLDivElement>(null)
+  
+  // Calculer l'URL de l'image une seule fois pour éviter les problèmes
+  const bioImageUrl = homeSettings?.bio_image ? getImageUrl(homeSettings.bio_image) : null
 
   useEffect(() => {
     const checkMobile = () => {
@@ -83,9 +86,9 @@ export default function BioSection({ homeSettings }: BioSectionProps) {
                     transition={{ duration: 0.8, ease: "easeOut" }}
                   >
                     <div className="relative w-full h-[400px] md:h-[500px] lg:h-[600px]">
-                      {homeSettings?.bio_image && getImageUrl(homeSettings.bio_image) && (
+                      {bioImageUrl && (
                         <Image 
-                          src={getImageUrl(homeSettings.bio_image)!} 
+                          src={bioImageUrl} 
                           alt="Florine Clap - Portrait"
                           fill
                           sizes="(max-width: 768px) 100vw, (max-width: 1024px) 60vw, 40vw"
@@ -121,9 +124,9 @@ export default function BioSection({ homeSettings }: BioSectionProps) {
                       transform: `translate(${mousePosition.x * 0.1}px, ${mousePosition.y * 0.1}px)`,
                     }}
                   >
-                    {homeSettings?.bio_image && getImageUrl(homeSettings.bio_image) && (
+                    {bioImageUrl && (
                       <Image 
-                        src={getImageUrl(homeSettings.bio_image)!} 
+                        src={bioImageUrl} 
                         alt="Florine Clap - Portrait"
                         fill
                         sizes="(max-width: 768px) 100vw, (max-width: 1024px) 60vw, 40vw"
