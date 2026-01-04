@@ -61,7 +61,7 @@ export default function CategoryCard({
             fill
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             className="object-cover transition-opacity duration-500 ease-out"
-            style={{ filter: 'grayscale(100%) brightness(0.75)' }}
+            style={{ filter: 'grayscale(100%) brightness(0.95)' }}
             priority={false}
           />
         )}
@@ -69,7 +69,7 @@ export default function CategoryCard({
       
       {/* 2. Overlay sombre léger - Desktop seulement */}
       <div 
-        className="absolute inset-0 bg-black/15 z-10 transition-opacity duration-500 ease-out hidden md:block" 
+        className="absolute inset-0 bg-black/10 z-10 transition-opacity duration-500 ease-out hidden md:block" 
       />
 
       {/* 3. Aplat noir au survol - Desktop seulement */}
@@ -78,7 +78,7 @@ export default function CategoryCard({
       />
 
       {/* 4. OVERLAY MOBILE - Overlay sombre uniforme pour lisibilité */}
-      <div className={`absolute inset-0 bg-black/20 z-20 pointer-events-none md:hidden`} />
+      <div className={`absolute inset-0 bg-black/15 z-20 pointer-events-none md:hidden`} />
 
       {/* 5. OVERLAY DE BASE DESKTOP - Gradient très atténué pour lisibilité du texte en bas */}
       <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent z-20 pointer-events-none hidden md:block" />
