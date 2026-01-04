@@ -18,15 +18,43 @@ export async function generateMetadata() {
 async function getVideoArts() {
   try {
     const videoArts = await getAllVideoArts()
-    // Pré-construire les URLs d'images côté serveur avec le token
-    return videoArts.map(item => {
+    
+    // Debug temporaire
+    if (process.env.NODE_ENV === 'development' && videoArts.length > 0) {
+      console.log('🎨 getVideoArts - Debug:', {
+        count: videoArts.length,
+        firstItem: {
+          title: videoArts[0].title,
+          image: videoArts[0].image,
+          imageType: typeof videoArts[0].image,
+        },
+        itemsWithImage: videoArts.filter(v => v.image).map(v => ({
+          title: v.title,
+          image: v.image,
+        })),
+      })
+    }
+    
+    // Pré-construire les URLs d'images côté serveur
+    // Note: Directus retourne image comme UUID string, getImageUrl le gère correctement
+    const transformed = videoArts.map(item => {
       const imageUrl = item.image ? getImageUrl(item.image) : null
+      
+      if (process.env.NODE_ENV === 'development') {
+        console.log(`🎨 "${item.title}":`, {
+          originalImage: item.image,
+          imageUrl: imageUrl,
+        })
+      }
+      
       return {
         ...item,
-        // Construire l'URL de l'image avec le token si disponible
+        // Construire l'URL de l'image
         image: imageUrl || undefined,
       }
     })
+    
+    return transformed
   } catch (error) {
     console.error('Erreur lors de la récupération des vidéos-art:', error)
     return []

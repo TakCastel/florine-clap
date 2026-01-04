@@ -67,6 +67,38 @@ async function createCollection(collection) {
 }
 
 /**
+ * Liste tous les champs d'une collection
+ */
+async function listFields(collection) {
+  try {
+    const response = await axiosInstance.get(`/fields/${collection}`)
+    return response.data.data || []
+  } catch (error) {
+    console.error(`❌ Erreur lors de la récupération des champs de "${collection}":`, error.response?.data || error.message)
+    return []
+  }
+}
+
+/**
+ * Supprime un champ d'une collection
+ */
+async function deleteField(collection, fieldName) {
+  try {
+    await axiosInstance.delete(`/fields/${collection}/${fieldName}`)
+    console.log(`    🗑️  Champ "${fieldName}" supprimé`)
+    return true
+  } catch (error) {
+    if (error.response?.status === 403 || error.response?.status === 404) {
+      console.log(`    ⏭️  Champ "${fieldName}" n'existe pas, ignoré`)
+      return false
+    } else {
+      console.error(`    ❌ Erreur lors de la suppression du champ "${fieldName}":`, error.response?.data || error.message)
+      return false
+    }
+  }
+}
+
+/**
  * Crée un champ dans une collection
  */
 async function createField(collection, field) {
@@ -79,6 +111,65 @@ async function createField(collection, field) {
       console.log(`    ✓ Champ "${field.field}" créé`)
     } else {
       throw error
+    }
+  }
+}
+
+/**
+ * Crée une relation pour un champ fichier
+ */
+async function createFileRelation(collection, field) {
+  try {
+    // Vérifier si la relation existe déjà
+    const relationsResponse = await axiosInstance.get(`/relations/${collection}`)
+    const relations = relationsResponse.data.data || []
+    const exists = relations.some(rel => rel.field === field && rel.related_collection === 'directus_files')
+    
+    if (exists) {
+      return // Relation existe déjà
+    }
+
+    // Créer la relation
+    await axiosInstance.post('/relations', {
+      collection: collection,
+      field: field,
+      related_collection: 'directus_files',
+      schema: {
+        on_delete: 'SET NULL',
+      },
+      meta: {
+        one_field: null,
+        sort_field: null,
+        one_deselect_action: 'nullify',
+        one_allowed_collections: null,
+        junction_field: null,
+      },
+    })
+    console.log(`    ✓ Relation créée pour "${field}"`)
+  } catch (error) {
+    // Ignorer les erreurs si la relation existe déjà
+    if (error.response?.status !== 400) {
+      console.warn(`    ⚠️  Impossible de créer la relation pour "${field}":`, error.response?.data?.errors?.[0]?.message || error.message)
+    }
+  }
+}
+
+/**
+ * Nettoie les champs obsolètes d'une collection
+ */
+async function cleanupFields(collection, validFields) {
+  const validFieldNames = new Set(validFields.map(f => f.field))
+  const systemFields = new Set(['id', 'date_created', 'date_updated', 'user_created', 'user_updated'])
+  
+  const allFields = await listFields(collection)
+  const fieldsToDelete = allFields
+    .filter(f => !systemFields.has(f.field) && !validFieldNames.has(f.field))
+    .map(f => f.field)
+  
+  if (fieldsToDelete.length > 0) {
+    console.log(`    🧹 Nettoyage des champs obsolètes...`)
+    for (const fieldName of fieldsToDelete) {
+      await deleteField(collection, fieldName)
     }
   }
 }
@@ -174,6 +265,10 @@ async function setupSchema() {
 
   for (const field of filmFields) {
     await createField('films', field)
+    // Créer la relation pour les champs de fichiers
+    if (field.type === 'uuid' && (field.meta?.interface === 'file-image' || field.meta?.interface === 'file')) {
+      await createFileRelation('films', field.field)
+    }
   }
 
   // Collection Médiations
@@ -216,6 +311,10 @@ async function setupSchema() {
 
   for (const field of mediationFields) {
     await createField('mediations', field)
+    // Créer la relation pour les champs de fichiers
+    if (field.type === 'uuid' && (field.meta?.interface === 'file-image' || field.meta?.interface === 'file' || field.meta?.interface === 'files')) {
+      await createFileRelation('mediations', field.field)
+    }
   }
 
   // Collection Actus
@@ -255,6 +354,10 @@ async function setupSchema() {
 
   for (const field of actuFields) {
     await createField('actus', field)
+    // Créer la relation pour les champs de fichiers
+    if (field.type === 'uuid' && (field.meta?.interface === 'file-image' || field.meta?.interface === 'file')) {
+      await createFileRelation('actus', field.field)
+    }
   }
 
   // Collection Pages
@@ -293,6 +396,10 @@ async function setupSchema() {
 
   for (const field of pageFields) {
     await createField('pages', field)
+    // Créer la relation pour les champs de fichiers
+    if (field.type === 'uuid' && (field.meta?.interface === 'file-image' || field.meta?.interface === 'file')) {
+      await createFileRelation('pages', field.field)
+    }
   }
 
   // Collection Videos Art
@@ -337,6 +444,31 @@ async function setupSchema() {
 
   for (const field of videoArtFields) {
     await createField('videos_art', field)
+    // Créer la relation pour les champs de fichiers
+    if (field.type === 'uuid' && (field.meta?.interface === 'file-image' || field.meta?.interface === 'file')) {
+      await createFileRelation('videos_art', field.field)
+      
+      // Forcer la mise à jour du champ avec special: ['file'] pour videos_art
+      if (field.field === 'image') {
+        try {
+          const currentField = await axiosInstance.get(`/fields/videos_art/${field.field}`)
+          const currentMeta = currentField.data.data.meta || {}
+          if (!currentMeta.special || !currentMeta.special.includes('file')) {
+            await axiosInstance.patch(`/fields/videos_art/${field.field}`, {
+              meta: {
+                ...currentMeta,
+                special: ['file'],
+                interface: 'file-image',
+                display: 'file-image',
+              },
+            })
+            console.log(`    ✓ Propriété 'special' ajoutée au champ "${field.field}"`)
+          }
+        } catch (error) {
+          console.warn(`    ⚠️  Impossible de mettre à jour le champ "${field.field}":`, error.response?.data?.errors?.[0]?.message || error.message)
+        }
+      }
+    }
   }
 
   // Collection Home Settings (singleton pour les paramètres de la page d'accueil)
@@ -361,22 +493,24 @@ async function setupSchema() {
 
   const homeSettingsFields = [
     { field: 'id', type: 'uuid', meta: { hidden: true, interface: 'input', readonly: true } },
-    { field: 'hero_text', type: 'text', meta: { interface: 'input-multiline', note: 'Texte de la section hero (optionnel)' } },
-    { field: 'hero_image', type: 'uuid', meta: { interface: 'file-image', note: 'Image de la page d\'accueil (hero)' } },
-    { field: 'hero_video_url', type: 'string', meta: { interface: 'input', note: 'URL de la vidéo hero (optionnel, remplace l\'image)' } },
+    { field: 'hero_video', type: 'uuid', meta: { interface: 'file', note: 'Vidéo hero depuis Directus', options: { folder: null } } },
+    { field: 'hero_video_url', type: 'string', meta: { interface: 'input', note: 'URL de la vidéo hero externe (optionnel)' } },
     { field: 'bio_text', type: 'text', meta: { interface: 'input-code', note: 'Texte de la section bio (Markdown)' } },
     { field: 'bio_image', type: 'uuid', meta: { interface: 'file-image', note: 'Image de la section bio' } },
-    { field: 'category_films_image', type: 'uuid', meta: { interface: 'file-image', note: 'Image de la card Films' } },
-    { field: 'category_mediations_image', type: 'uuid', meta: { interface: 'file-image', note: 'Image de la card Médiations' } },
-    { field: 'category_video_art_image', type: 'uuid', meta: { interface: 'file-image', note: 'Image de la card Vidéos/art' } },
-    { field: 'category_actus_image', type: 'uuid', meta: { interface: 'file-image', note: 'Image de la card Actualités' } },
     { field: 'date_created', type: 'timestamp', meta: { interface: 'datetime', readonly: true } },
     { field: 'date_updated', type: 'timestamp', meta: { interface: 'datetime', readonly: true } },
   ]
 
   for (const field of homeSettingsFields) {
     await createField('home_settings', field)
+    // Créer la relation pour les champs de fichiers
+    if (field.type === 'uuid' && (field.meta?.interface === 'file-image' || field.meta?.interface === 'file')) {
+      await createFileRelation('home_settings', field.field)
+    }
   }
+
+  // Nettoyer les champs obsolètes
+  await cleanupFields('home_settings', homeSettingsFields)
 
   console.log('\n✅ Configuration du schéma terminée!')
 }

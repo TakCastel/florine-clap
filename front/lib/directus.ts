@@ -6,35 +6,60 @@
 // URL pour les appels API
 // Côté serveur : utiliser l'URL interne Docker si disponible
 // Côté client : utiliser l'URL publique
-function getDirectusUrl(): string {
-  if (typeof window === 'undefined') {
-    // Côté serveur : utiliser l'URL interne Docker
-    return process.env.DIRECTUS_INTERNAL_URL || process.env.NEXT_PUBLIC_DIRECTUS_URL || 'http://directus:8055'
+// Helper pour obtenir l'URL Directus en forçant localhost en développement
+function getDirectusUrlForClient(): string {
+  // Détecter si on est en développement : vérifier l'URL de la page ou NODE_ENV
+  const isDevelopment = 
+    process.env.NODE_ENV === 'development' ||
+    (typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'))
+  
+  if (isDevelopment) {
+    // En développement local, TOUJOURS utiliser localhost
+    const publicUrl = process.env.NEXT_PUBLIC_DIRECTUS_URL
+    if (publicUrl && !publicUrl.includes('localhost') && !publicUrl.includes('127.0.0.1') && !publicUrl.includes('directus:8055')) {
+      console.warn(`⚠️ NEXT_PUBLIC_DIRECTUS_URL pointe vers une adresse distante (${publicUrl}) en développement. Utilisation de localhost à la place.`)
+    }
+    return 'http://localhost:8055'
   }
-  // Côté client : utiliser l'URL publique
-  // En local (dev) : on peut utiliser localhost comme fallback
-  // Sur Netlify (préprod) ou serveur (prod) : NEXT_PUBLIC_DIRECTUS_URL est obligatoire
+  // En production : utiliser NEXT_PUBLIC_DIRECTUS_URL (obligatoire)
   const publicUrl = process.env.NEXT_PUBLIC_DIRECTUS_URL
   if (!publicUrl) {
-    // Seulement en développement local, on peut utiliser localhost
-    if (process.env.NODE_ENV === 'development') {
-      return 'http://localhost:8055'
-    }
-    // En production (Netlify ou serveur), c'est une erreur
     console.error('NEXT_PUBLIC_DIRECTUS_URL is not defined. Please set it in your environment variables.')
     throw new Error('NEXT_PUBLIC_DIRECTUS_URL is required for client-side requests in production')
   }
   return publicUrl
 }
 
+function getDirectusUrl(): string {
+  if (typeof window === 'undefined') {
+    // Côté serveur : utiliser l'URL interne Docker
+    return process.env.DIRECTUS_INTERNAL_URL || process.env.NEXT_PUBLIC_DIRECTUS_URL || 'http://directus:8055'
+  }
+  // Côté client : utiliser l'URL publique
+  return getDirectusUrlForClient()
+}
+
 // Fonction helper pour faire des appels API publics
 async function fetchDirectus<T>(endpoint: string): Promise<T> {
   const directusUrl = getDirectusUrl()
-  const url = `${directusUrl}${endpoint}`
+  // Normaliser l'URL : enlever TOUS les slashes finaux de directusUrl
+  const normalizedUrl = directusUrl.replace(/\/+$/, '')
+  // Normaliser l'endpoint : s'assurer qu'il commence par exactement un slash
+  const normalizedEndpoint = endpoint.startsWith('/') ? endpoint : `/${endpoint}`
+  // Éviter le double slash : si normalizedUrl se termine par / et normalizedEndpoint commence par /
+  // (normalement ça ne devrait pas arriver après la normalisation, mais on double-vérifie)
+  const cleanUrl = normalizedUrl.endsWith('/') && normalizedEndpoint.startsWith('/')
+    ? `${normalizedUrl}${normalizedEndpoint.slice(1)}`
+    : `${normalizedUrl}${normalizedEndpoint}`
+  // Ajouter un timestamp pour éviter le cache
+  // Utiliser & si l'endpoint contient déjà des paramètres, sinon ?
+  const separator = cleanUrl.includes('?') ? '&' : '?'
+  const cacheBuster = typeof window !== 'undefined' ? `${separator}_t=${Date.now()}` : ''
+  const url = `${cleanUrl}${cacheBuster}`
   
   try {
     const response = await fetch(url, {
-      cache: 'no-store', // Force dynamic pour Next.js
+      cache: 'no-store', // Force dynamic pour Next.js - ne déclenche pas de preflight CORS
       headers: {
         'Content-Type': 'application/json',
       },
@@ -176,15 +201,10 @@ export interface VideoArt {
 
 export interface HomeSettings {
   id: string
-  hero_text?: string
-  hero_image?: string | { id: string; filename_download: string }
+  hero_video?: string | { id: string; filename_download: string }
   hero_video_url?: string
   bio_text?: string
   bio_image?: string | { id: string; filename_download: string }
-  category_films_image?: string | { id: string; filename_download: string }
-  category_mediations_image?: string | { id: string; filename_download: string }
-  category_video_art_image?: string | { id: string; filename_download: string }
-  category_actus_image?: string | { id: string; filename_download: string }
   date_created?: string
   date_updated?: string
 }
@@ -286,9 +306,14 @@ export async function getPageBySlug(slug: string): Promise<Page | null> {
 
 export async function getAllVideoArts(): Promise<VideoArt[]> {
   try {
-    return await fetchDirectus<VideoArt[]>(
-      `/items/videos_art?fields=*,image.id,image.filename_download&sort[]=-annee&sort[]=-date_created`
+    // Note: Directus retourne parfois image comme UUID string au lieu d'un objet
+    // même avec fields=*,image.id,image.filename_download
+    // On récupère donc avec * pour avoir tous les champs, et on gérera l'image dans getImageUrl
+    const videoArts = await fetchDirectus<VideoArt[]>(
+      `/items/videos_art?fields=*&sort[]=-annee&sort[]=-date_created`
     )
+    
+    return videoArts
   } catch (error) {
     console.error('Erreur lors de la récupération des videos_art:', error)
     return []
@@ -298,19 +323,12 @@ export async function getAllVideoArts(): Promise<VideoArt[]> {
 export async function getVideoArtBySlug(slug: string): Promise<VideoArt | null> {
   try {
     const encodedSlug = encodeURIComponent(slug)
-    const endpoint = `/items/videos_art?fields=*,image.id,image.filename_download&filter[slug][_eq]=${encodedSlug}&limit=1`
-    const directusUrl = getDirectusUrl()
-    
-    if (process.env.NODE_ENV === 'development') {
-      console.log(`Fetching video art with slug: ${slug} from: ${directusUrl}${endpoint}`)
-    }
+    // Note: On utilise fields=* car Directus retourne parfois image comme UUID string
+    const endpoint = `/items/videos_art?fields=*&filter[slug][_eq]=${encodedSlug}&limit=1`
     
     const videoArts = await fetchDirectus<VideoArt[]>(endpoint)
     
     if (!videoArts || videoArts.length === 0) {
-      if (process.env.NODE_ENV === 'development') {
-        console.warn(`No video art found for slug: ${slug}`)
-      }
       return null
     }
     
@@ -323,10 +341,17 @@ export async function getVideoArtBySlug(slug: string): Promise<VideoArt | null> 
 
 export async function getHomeSettings(): Promise<HomeSettings | null> {
   try {
-    const settings = await fetchDirectus<HomeSettings[]>(
-      `/items/home_settings?fields=*,hero_image.id,hero_image.filename_download,bio_image.id,bio_image.filename_download,category_films_image.id,category_films_image.filename_download,category_mediations_image.id,category_mediations_image.filename_download,category_video_art_image.id,category_video_art_image.filename_download,category_actus_image.id,category_actus_image.filename_download&limit=1`
-    )
-    return settings[0] || null
+    const endpoint = `/items/home_settings?fields=*,hero_video.id,hero_video.filename_download,hero_video.type,hero_video.filesize,bio_image.id,bio_image.filename_download&limit=1`
+    
+    // home_settings est une collection singleton, donc Directus retourne directement l'objet, pas un tableau
+    const settings = await fetchDirectus<HomeSettings | HomeSettings[]>(endpoint)
+    
+    // Gérer le cas singleton : Directus retourne directement l'objet, pas un tableau
+    const result = Array.isArray(settings) 
+      ? (settings.length > 0 ? settings[0] : null)
+      : (settings || null)
+    
+    return result
   } catch (error) {
     console.error('Erreur lors de la récupération des paramètres:', error)
     return null
@@ -334,34 +359,63 @@ export async function getHomeSettings(): Promise<HomeSettings | null> {
 }
 
 /**
- * Helper pour obtenir l'URL d'une image Directus
+ * Helper pour obtenir l'URL d'un fichier Directus (image, vidéo, etc.)
  */
 export function getImageUrl(
-  image: string | { id: string; filename_download: string } | undefined
+  file: string | { id: string; filename_download: string } | null | undefined
 ): string | null {
-  if (!image) return null
-  if (typeof image === 'string') {
+  if (!file) return null
+  
+  // Si c'est null, retourner null
+  if (file === null) return null
+  
+  if (typeof file === 'string') {
     // Si c'est déjà une URL complète, on la retourne
-    if (image.startsWith('http')) return image
+    if (file.startsWith('http')) return file
     // Si c'est un UUID (36 caractères avec tirets), construire l'URL Directus
-    if (image.match(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i)) {
-      const publicUrl = process.env.NEXT_PUBLIC_DIRECTUS_URL || (process.env.NODE_ENV === 'development' ? 'http://localhost:8055' : null)
+    if (file.match(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i)) {
+      // Toujours utiliser l'URL publique pour les assets, même côté serveur
+      // car les URLs seront utilisées côté client dans le HTML
+      const publicUrl = typeof window !== 'undefined' 
+        ? getDirectusUrlForClient()
+        : (process.env.NEXT_PUBLIC_DIRECTUS_URL || (process.env.NODE_ENV === 'development' ? 'http://localhost:8055' : null))
       if (!publicUrl) {
-        console.error('NEXT_PUBLIC_DIRECTUS_URL is not defined for image URL')
+        console.error('NEXT_PUBLIC_DIRECTUS_URL is not defined for file URL')
         return null
       }
-      const imageUrl = publicUrl.replace('http://directus:8055', publicUrl)
-      return `${imageUrl}/assets/${image}`
+      const normalizedUrl = publicUrl.replace(/\/+$/, '')
+      return `${normalizedUrl}/assets/${file}`
     }
     // Sinon, on suppose que c'est un chemin relatif
-    return image
+    return file
   }
+  
   // Si c'est un objet Directus file
-  const publicUrl = process.env.NEXT_PUBLIC_DIRECTUS_URL || (process.env.NODE_ENV === 'development' ? 'http://localhost:8055' : null)
-  if (!publicUrl) {
-    console.error('NEXT_PUBLIC_DIRECTUS_URL is not defined for image URL')
-    return null
+  if (typeof file === 'object' && file !== null) {
+    // Vérifier si l'objet a un id
+    if (file.id) {
+      // Toujours utiliser l'URL publique pour les assets, même côté serveur
+      // car les URLs seront utilisées côté client dans le HTML
+      const publicUrl = typeof window !== 'undefined' 
+        ? getDirectusUrlForClient()
+        : (process.env.NEXT_PUBLIC_DIRECTUS_URL || (process.env.NODE_ENV === 'development' ? 'http://localhost:8055' : null))
+      if (!publicUrl) {
+        console.error('NEXT_PUBLIC_DIRECTUS_URL is not defined for file URL')
+        return null
+      }
+      const normalizedUrl = publicUrl.replace(/\/+$/, '')
+      return `${normalizedUrl}/assets/${file.id}`
+    }
   }
-  const imageUrl = publicUrl.replace('http://directus:8055', publicUrl)
-  return `${imageUrl}/assets/${image.id}`
+  
+  return null
+}
+
+/**
+ * Helper spécifique pour obtenir l'URL d'une vidéo Directus
+ */
+export function getVideoUrl(
+  video: string | { id: string; filename_download: string } | undefined
+): string | null {
+  return getImageUrl(video) // Utilise la même logique que getImageUrl
 }

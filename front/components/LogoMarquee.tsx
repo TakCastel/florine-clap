@@ -99,6 +99,7 @@ function LogoMarquee({ title, className = '', invertColors = false, pauseOnHover
                     alt={logo.alt}
                     fill
                     sizes="140px"
+                    unoptimized
                     className={`object-contain filter ${filterClass} opacity-90 transition-all duration-300 pointer-events-none`}
                     draggable={false}
                   />
@@ -147,6 +148,7 @@ function LogoMarquee({ title, className = '', invertColors = false, pauseOnHover
                     alt={logo.alt}
                     fill
                     sizes="140px"
+                    unoptimized
                     className={`object-contain filter ${filterClass} opacity-90 transition-all duration-300 pointer-events-none`}
                     draggable={false}
                   />

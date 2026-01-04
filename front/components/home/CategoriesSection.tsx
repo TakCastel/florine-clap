@@ -108,20 +108,12 @@ export default function CategoriesSection({ homeSettings }: CategoriesSectionPro
         })
       } catch (error) {
         console.error('Erreur lors de la récupération des images de catégories:', error)
-        // En cas d'erreur, utiliser les images de homeSettings en fallback
+        // En cas d'erreur, laisser les images vides
         setRandomImages({
-          films: homeSettings?.category_films_image 
-            ? (getImageUrl(homeSettings.category_films_image) || '')
-            : '',
-          mediations: homeSettings?.category_mediations_image 
-            ? (getImageUrl(homeSettings.category_mediations_image) || '')
-            : '',
-          'video-art': homeSettings?.category_video_art_image 
-            ? (getImageUrl(homeSettings.category_video_art_image) || '')
-            : '',
-          actus: homeSettings?.category_actus_image 
-            ? (getImageUrl(homeSettings.category_actus_image) || '')
-            : ''
+          films: '',
+          mediations: '',
+          'video-art': '',
+          actus: ''
         })
       }
       
@@ -202,11 +194,13 @@ export default function CategoriesSection({ homeSettings }: CategoriesSectionPro
       ref={sectionRef}
       id="categories-section" 
       className="w-full min-h-screen flex items-center justify-center py-12 md:py-16 overflow-hidden relative border-b border-black/5 section-gradient"
+      style={{ position: 'relative' }}
     >
       <div className="w-full max-w-[1600px] px-6 md:px-10 lg:px-16 relative z-10">
         <motion.div 
           ref={containerRef}
           className="w-full h-[400px] md:h-[450px] lg:h-[500px] flex flex-col md:flex-row gap-3 md:gap-4 items-stretch"
+          style={{ position: 'relative' }}
           variants={containerVariants}
           initial="hidden"
           animate={isInView && isReady ? "visible" : "hidden"}
@@ -245,6 +239,7 @@ export default function CategoriesSection({ homeSettings }: CategoriesSectionPro
                 linkColor={card.linkColor}
                 hoverLinkColor={card.hoverLinkColor}
                 underlineClass={card.underlineClass}
+                priority={index === 0}
               />
             </motion.div>
             )

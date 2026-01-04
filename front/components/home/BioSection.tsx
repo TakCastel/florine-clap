@@ -62,6 +62,7 @@ export default function BioSection({ homeSettings }: BioSectionProps) {
       ref={sectionRef}
       id="bio-section" 
       className="w-full min-h-screen flex items-center justify-center py-24 md:py-32 relative overflow-hidden border-b border-black/5 section-gradient"
+      style={{ position: 'relative' }}
       onMouseMove={handleMouseMove}
     >
       <div className="max-w-7xl mx-auto px-6 md:px-10 lg:px-16 w-full">

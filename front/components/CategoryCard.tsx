@@ -20,6 +20,7 @@ interface CategoryCardProps {
   underlineClass: string
   className?: string
   style?: React.CSSProperties
+  priority?: boolean
 }
 
 export default function CategoryCard({
@@ -31,7 +32,8 @@ export default function CategoryCard({
   imageAlt,
   theme,
   bgColor, // On utilisera les couleurs du thème pour l'overlay
-  style
+  style,
+  priority = false
 }: CategoryCardProps) {
   const [isHovered, setIsHovered] = useState(false)
   const [isMobile, setIsMobile] = useState(false)
@@ -62,7 +64,8 @@ export default function CategoryCard({
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             className="object-cover transition-opacity duration-500 ease-out"
             style={{ filter: 'grayscale(100%) brightness(0.95)' }}
-            priority={false}
+            priority={priority}
+            unoptimized={imageSrc.startsWith('http://') || imageSrc.startsWith('https://')}
           />
         )}
       </div>

@@ -145,6 +145,7 @@ export default function StackedFilmCards({ films }: StackedFilmCardsProps) {
       ref={containerRef} 
       className="relative w-full"
       style={{ 
+        position: 'relative',
         height: `${containerHeight}px`,
         minHeight: '100vh'
       }}

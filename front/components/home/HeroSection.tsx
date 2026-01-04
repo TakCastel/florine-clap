@@ -3,12 +3,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { motion } from 'framer-motion'
 import { Reveal } from '@/components/ui/Reveal'
-import Image from 'next/image'
-import { HomeSettings, getImageUrl } from '@/lib/directus'
-
-const HERO_VIDEO_URL_DEFAULT =
-  process.env.NEXT_PUBLIC_HERO_VIDEO_URL ||
-  'http://51.77.245.224/videos/INTRO_VIDEO_FLORINE_CLAP.mp4'
+import { HomeSettings, getImageUrl, getVideoUrl } from '@/lib/directus'
 
 interface HeroSectionProps {
   homeSettings?: HomeSettings | null
@@ -20,9 +15,29 @@ export default function HeroSection({ homeSettings }: HeroSectionProps) {
   const [isVideoReady, setIsVideoReady] = useState(false)
   const [hasVideoError, setHasVideoError] = useState(false)
 
-  // Utiliser la vidéo ou l'image depuis Directus, sinon la valeur par défaut
-  const heroVideoUrl = homeSettings?.hero_video_url || HERO_VIDEO_URL_DEFAULT
-  const heroImageUrl = homeSettings?.hero_image ? getImageUrl(homeSettings.hero_image) : null
+  // Utiliser la vidéo depuis Directus uniquement
+  // Priorité : hero_video (fichier Directus) > hero_video_url (URL externe)
+  const heroVideoFromDirectus = homeSettings?.hero_video ? getVideoUrl(homeSettings.hero_video) : null
+  
+  // Gérer les URLs HTTP/HTTPS : si on est sur HTTPS, éviter les URLs HTTP externes
+  let heroVideoUrlExternal = homeSettings?.hero_video_url || null
+  if (heroVideoUrlExternal && typeof window !== 'undefined') {
+    const isHttps = window.location.protocol === 'https:'
+    if (isHttps && heroVideoUrlExternal.startsWith('http://')) {
+      // Si on est sur HTTPS et que l'URL est HTTP, essayer de convertir en HTTPS
+      // Mais si c'est une IP, on ne peut pas, donc on ignore cette URL
+      if (heroVideoUrlExternal.match(/^http:\/\/\d+\.\d+\.\d+\.\d+/)) {
+        // URL avec IP - ne peut pas être convertie en HTTPS, on l'ignore
+        console.warn('⚠️ URL vidéo HTTP avec IP détectée sur site HTTPS, ignorée:', heroVideoUrlExternal)
+        heroVideoUrlExternal = null
+      } else {
+        // Essayer de convertir en HTTPS
+        heroVideoUrlExternal = heroVideoUrlExternal.replace(/^http:/, 'https:')
+      }
+    }
+  }
+  
+  const heroVideoUrl = heroVideoFromDirectus || heroVideoUrlExternal || null
 
   const videoHost = useMemo(() => {
     if (!heroVideoUrl) return null
@@ -34,10 +49,17 @@ export default function HeroSection({ homeSettings }: HeroSectionProps) {
   }, [heroVideoUrl])
 
   useEffect(() => {
-    // Si on a une image, ne pas charger la vidéo
-    if (heroImageUrl) return
-    
-    if (!heroVideoUrl) return
+    if (!heroVideoUrl) {
+      setVideoSrc(null)
+      setIsVideoReady(false)
+      setHasVideoError(false)
+      return
+    }
+
+    // Réinitialiser l'état de la vidéo quand l'URL change
+    setIsVideoReady(false)
+    setHasVideoError(false)
+    setVideoSrc(null)
 
     // Small delay to let the hero paint before the heavy video kicks in
     const timeout = window.setTimeout(() => {
@@ -45,7 +67,7 @@ export default function HeroSection({ homeSettings }: HeroSectionProps) {
     }, 150)
 
     return () => window.clearTimeout(timeout)
-  }, [heroVideoUrl, heroImageUrl])
+  }, [heroVideoUrl])
 
   useEffect(() => {
     if (!videoHost) return
@@ -62,16 +84,16 @@ export default function HeroSection({ homeSettings }: HeroSectionProps) {
       document.head.appendChild(preconnectLink)
     }
 
-    if (!document.querySelector<HTMLLinkElement>('link[data-hero-preload="true"]') && heroVideoUrl && !heroImageUrl) {
+    if (!document.querySelector<HTMLLinkElement>('link[data-hero-preload="true"]') && heroVideoUrl) {
       const preloadLink = document.createElement('link')
       preloadLink.rel = 'preload'
-      preloadLink.as = 'video'
+      preloadLink.as = 'fetch' // Utiliser 'fetch' pour les vidéos (plus universel que 'video')
       preloadLink.href = heroVideoUrl
       preloadLink.crossOrigin = 'anonymous'
       preloadLink.dataset.heroPreload = 'true'
       document.head.appendChild(preloadLink)
     }
-  }, [videoHost, heroVideoUrl, heroImageUrl])
+  }, [videoHost, heroVideoUrl])
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     const x = (e.clientX / window.innerWidth - 0.5) * 30
@@ -83,40 +105,22 @@ export default function HeroSection({ homeSettings }: HeroSectionProps) {
     <section 
       id="hero-section" 
       className="w-full h-screen relative overflow-hidden section-gradient"
+      style={{ position: 'relative' }}
       onMouseMove={handleMouseMove}
     >
       <div className="relative h-full overflow-hidden">
-        {/* Vidéo ou Image de fond */}
+        {/* Vidéo de fond */}
         <div className="absolute inset-0 overflow-hidden bg-black">
           {/* Uniform dark fallback before the video becomes available */}
           <motion.div
             initial={{ opacity: 1 }}
-            animate={{ opacity: (heroImageUrl || isVideoReady) ? 0 : 1 }}
+            animate={{ opacity: isVideoReady ? 0 : 1 }}
             transition={{ duration: 0.7 }}
             className="absolute inset-0 bg-black"
           ></motion.div>
 
-          {/* Image si disponible */}
-          {heroImageUrl && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 1 }}
-              className="absolute inset-0"
-            >
-              <Image
-                src={heroImageUrl}
-                alt="Hero"
-                fill
-                className="object-cover scale-110"
-                priority
-                sizes="100vw"
-              />
-            </motion.div>
-          )}
-
-          {/* Vidéo si pas d'image */}
-          {!heroImageUrl && videoSrc && !hasVideoError && (
+          {/* Vidéo si disponible */}
+          {videoSrc && !hasVideoError && (
             <motion.video
               key={videoSrc}
               src={videoSrc}
@@ -139,7 +143,7 @@ export default function HeroSection({ homeSettings }: HeroSectionProps) {
             </motion.video>
           )}
 
-          {!heroImageUrl && hasVideoError && (
+          {hasVideoError && (
             <div className="absolute inset-0 flex items-center justify-center bg-black/70 text-white text-sm tracking-widest uppercase">
               Vidéo indisponible pour le moment
             </div>

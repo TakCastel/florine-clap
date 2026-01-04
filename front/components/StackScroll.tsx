@@ -3,6 +3,7 @@
 import { useRef, useEffect, useState } from 'react'
 import { motion, useScroll, useTransform, useInView } from 'framer-motion'
 import SimpleFilmCard from './SimpleFilmCard'
+import { getImageUrl } from '@/lib/directus'
 
 type ContentItem = {
   id?: string
@@ -34,9 +35,9 @@ type StackScrollProps = {
  */
 export default function StackScroll({ items, basePath, className = '' }: StackScrollProps) {
   return (
-    <div className={`relative w-full ${className}`}>
+    <div className={`relative w-full ${className}`} style={{ position: 'relative' }}>
       <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-10 xl:px-16 py-8 md:py-12 lg:py-20">
-        <div className="relative">
+        <div className="relative" style={{ position: 'relative' }}>
           {items.map((item, index) => {
             const isEven = index % 2 === 0
             const direction = isEven ? 'right' : 'left'
@@ -130,35 +131,17 @@ function ContentCardWithAnimation({ item, basePath, direction, index }: ContentC
   const imagePosition = direction === 'left' ? 'left' : 'right'
   
   // Mapper les propriétés : les films ont 'content' (prioritaire), 'image' et 'shortSynopsis', les médiations ont 'cover' et 'excerpt'
-  // Gérer les objets Directus pour les images
-  const getImageUrl = (img: string | { id: string; filename_download: string } | undefined): string | undefined => {
-    if (!img) return undefined
-    if (typeof img === 'string') {
-      // Si c'est déjà une URL complète, on la retourne
-      if (img.startsWith('http')) return img
-      // Si c'est un UUID (36 caractères avec tirets), construire l'URL
-      if (img.match(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i)) {
-        const directusUrl = process.env.NEXT_PUBLIC_DIRECTUS_URL || (process.env.NODE_ENV === 'development' ? 'http://localhost:8055' : '')
-        // Note: Le token statique sera ajouté côté serveur via getImageUrl de directus.ts
-        return `${directusUrl}/assets/${img}`
-      }
-      // Sinon, on suppose que c'est un chemin relatif
-      return img
-    }
-    // Si c'est un objet Directus file
-    const directusUrl = process.env.NEXT_PUBLIC_DIRECTUS_URL || 'http://localhost:8055'
-    // Note: Le token statique sera ajouté côté serveur via getImageUrl de directus.ts
-    return `${directusUrl}/assets/${img.id}`
-  }
+  // Utiliser la fonction centralisée getImageUrl pour gérer les images
   // Pour les films : utiliser 'content' en priorité (plus petite), sinon 'image', sinon 'cover'
-  // Si l'image est déjà une URL (string), l'utiliser directement, sinon construire l'URL
+  // Pour videos_art : utiliser 'image'
+  // Pour les médiations : utiliser 'cover'
   const cover = typeof item.content === 'string' && item.content.startsWith('http') 
     ? item.content 
     : typeof item.image === 'string' && item.image.startsWith('http')
     ? item.image
     : typeof item.cover === 'string' && item.cover.startsWith('http')
     ? item.cover
-    : getImageUrl(item.content) || getImageUrl(item.image) || getImageUrl(item.cover)
+    : getImageUrl(item.content) || getImageUrl(item.image) || getImageUrl(item.cover) || undefined
   const synopsis = item.shortSynopsis || item.short_synopsis || item.excerpt
   
   return (
@@ -166,6 +149,7 @@ function ContentCardWithAnimation({ item, basePath, direction, index }: ContentC
       ref={ref}
       data-card-index={index}
       style={{
+        position: 'relative',
         opacity,
         x,
       }}

@@ -20,6 +20,7 @@ export default function QuoteSection() {
     <section 
       ref={sectionRef}
       className="relative py-24 md:py-32 border-b border-black/5 flex items-center justify-center min-h-[400px] section-gradient"
+      style={{ position: 'relative' }}
     >
       <div className="relative z-10 max-w-5xl mx-auto px-6 md:px-10 lg:px-16 w-full flex items-center justify-center">
         <motion.div 

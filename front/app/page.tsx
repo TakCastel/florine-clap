@@ -25,6 +25,15 @@ export default function HomePage() {
       }
     }
     fetchSettings()
+    
+    // Rafraîchir les données toutes les 30 secondes en développement
+    if (process.env.NODE_ENV === 'development') {
+      const interval = setInterval(() => {
+        fetchSettings()
+      }, 30000) // 30 secondes
+      
+      return () => clearInterval(interval)
+    }
   }, [])
 
   if (loading) {
@@ -37,7 +46,7 @@ export default function HomePage() {
 
   return (
     <HoverProvider>
-      <main id="main-content" className="relative bg-theme-white min-h-screen">
+      <main id="main-content" className="relative bg-theme-white min-h-screen" style={{ position: 'relative' }}>
         <HeroSection homeSettings={homeSettings} />
         <CategoriesSection homeSettings={homeSettings} />
         <BioSection homeSettings={homeSettings} />

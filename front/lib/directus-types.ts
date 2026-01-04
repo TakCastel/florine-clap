@@ -128,15 +128,10 @@ export interface VideoArt {
 
 export interface HomeSettings {
   id: string
-  hero_text?: string
-  hero_image?: string | { id: string; filename_download: string }
+  hero_video?: string | { id: string; filename_download: string }
   hero_video_url?: string
   bio_text?: string
   bio_image?: string | { id: string; filename_download: string }
-  category_films_image?: string | { id: string; filename_download: string }
-  category_mediations_image?: string | { id: string; filename_download: string }
-  category_video_art_image?: string | { id: string; filename_download: string }
-  category_actus_image?: string | { id: string; filename_download: string }
   date_created?: string
   date_updated?: string
 }
