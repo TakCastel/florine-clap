@@ -87,7 +87,8 @@ export default function HeroSection({ homeSettings }: HeroSectionProps) {
     if (!document.querySelector<HTMLLinkElement>('link[data-hero-preload="true"]') && heroVideoUrl) {
       const preloadLink = document.createElement('link')
       preloadLink.rel = 'preload'
-      preloadLink.as = 'fetch' // Utiliser 'fetch' pour les vidéos (plus universel que 'video')
+      // Ne pas utiliser 'as' pour les vidéos, car 'fetch' n'est pas supporté et 'video' n'est pas standard
+      // Le navigateur détectera automatiquement le type de ressource
       preloadLink.href = heroVideoUrl
       preloadLink.crossOrigin = 'anonymous'
       preloadLink.dataset.heroPreload = 'true'

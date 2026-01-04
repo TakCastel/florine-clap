@@ -27,15 +27,15 @@ export default function directusImageLoader({ src, width, quality }) {
   
   // Si c'est un UUID, construire l'URL Directus
   if (src.match(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i)) {
-    // En développement, forcer localhost même si NEXT_PUBLIC_DIRECTUS_URL est défini avec une adresse distante
-    const isDevelopment = process.env.NODE_ENV === 'development'
+    // Utiliser NEXT_PUBLIC_DIRECTUS_URL si défini, sinon utiliser localhost uniquement en développement local
     let directusUrl = process.env.NEXT_PUBLIC_DIRECTUS_URL
-    if (isDevelopment) {
-      // En dev, utiliser localhost si l'URL configurée n'est pas localhost
-      if (!directusUrl || (!directusUrl.includes('localhost') && !directusUrl.includes('127.0.0.1'))) {
-        directusUrl = 'http://localhost:8055'
-      }
+    
+    // En développement local uniquement, utiliser localhost si NEXT_PUBLIC_DIRECTUS_URL n'est pas défini ou pointe vers une adresse distante
+    const isDevelopment = process.env.NODE_ENV === 'development'
+    if (isDevelopment && (!directusUrl || (!directusUrl.includes('localhost') && !directusUrl.includes('127.0.0.1')))) {
+      directusUrl = 'http://localhost:8055'
     }
+    
     if (!directusUrl) {
       console.error('NEXT_PUBLIC_DIRECTUS_URL is not defined for Directus image')
       return src
