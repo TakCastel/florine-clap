@@ -48,6 +48,8 @@ COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 # Copier le dossier public après standalone pour qu'il soit à côté du server.js
 # Le dossier public doit être accessible depuis le répertoire de travail de Next.js
 # S'assurer que le dossier public existe et est copié avec les bonnes permissions
+# Utiliser --chown pour s'assurer que les permissions sont correctes pour tous les fichiers
+# IMPORTANT: Copier récursivement pour s'assurer que tous les fichiers (PNG, SVG, AVIF) sont inclus
 COPY --from=builder --chown=nextjs:nodejs /app/public ./public
 
 # Copy node_modules from builder to get sharp
