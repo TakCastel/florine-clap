@@ -1,58 +1,34 @@
-'use client'
+import HomePageClient from '@/components/home/HomePageClient'
+import { getHomeSettings, getImageUrl, HomeSettings } from '@/lib/directus'
 
-import { useEffect, useState } from 'react'
-import HeroSection from '@/components/home/HeroSection'
-import CategoriesSection from '@/components/home/CategoriesSection'
-import BioSection from '@/components/home/BioSection'
-import QuoteSection from '@/components/home/QuoteSection'
-import PartnersSection from '@/components/home/PartnersSection'
-import { HoverProvider } from '@/contexts/HoverContext'
-import { getHomeSettings, HomeSettings } from '@/lib/directus'
+export const dynamic = 'force-dynamic'
+export const revalidate = 60
 
-export default function HomePage() {
-  const [homeSettings, setHomeSettings] = useState<HomeSettings | null>(null)
-  const [loading, setLoading] = useState(true)
-
-  useEffect(() => {
-    async function fetchSettings() {
-      try {
-        const settings = await getHomeSettings()
-        setHomeSettings(settings)
-      } catch (error) {
-        console.error('Erreur lors de la récupération des paramètres:', error)
-      } finally {
-        setLoading(false)
-      }
-    }
-    fetchSettings()
+async function getHomeSettingsWithImageUrls(): Promise<HomeSettings | null> {
+  try {
+    const settings = await getHomeSettings()
+    if (!settings) return null
     
-    // Rafraîchir les données toutes les 30 secondes en développement
-    if (process.env.NODE_ENV === 'development') {
-      const interval = setInterval(() => {
-        fetchSettings()
-      }, 30000) // 30 secondes
-      
-      return () => clearInterval(interval)
+    // Pré-construire les URLs d'images côté serveur, comme pour les autres pages
+    // Cela garantit que les URLs sont construites avec process.env.NEXT_PUBLIC_DIRECTUS_URL
+    // (côté serveur) au lieu de getDirectusUrlForClient() (côté client)
+    const settingsWithUrls: HomeSettings = {
+      ...settings,
+      // Pré-construire l'URL de l'image bio si elle existe
+      bio_image: settings.bio_image ? (getImageUrl(settings.bio_image) || settings.bio_image) : settings.bio_image,
+      // Pré-construire l'URL de la vidéo hero si elle existe
+      hero_video: settings.hero_video ? (getImageUrl(settings.hero_video) || settings.hero_video) : settings.hero_video,
     }
-  }, [])
-
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-theme-white flex items-center justify-center">
-        <p className="text-black/60">Chargement...</p>
-      </div>
-    )
+    
+    return settingsWithUrls
+  } catch (error) {
+    console.error('Erreur lors de la récupération des paramètres:', error)
+    return null
   }
+}
 
-  return (
-    <HoverProvider>
-      <main id="main-content" className="relative bg-theme-white min-h-screen" style={{ position: 'relative' }}>
-        <HeroSection homeSettings={homeSettings} />
-        <CategoriesSection homeSettings={homeSettings} />
-        <BioSection homeSettings={homeSettings} />
-        <QuoteSection />
-        <PartnersSection />
-      </main>
-    </HoverProvider>
-  )
+export default async function HomePage() {
+  const homeSettings = await getHomeSettingsWithImageUrls()
+
+  return <HomePageClient homeSettings={homeSettings} />
 }

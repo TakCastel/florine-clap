@@ -19,8 +19,13 @@ export default function BioSection({ homeSettings }: BioSectionProps) {
   const sectionRef = useRef<HTMLElement>(null)
   const imageRef = useRef<HTMLDivElement>(null)
   
-  // Calculer l'URL de l'image une seule fois pour éviter les problèmes
-  const bioImageUrl = homeSettings?.bio_image ? getImageUrl(homeSettings.bio_image) : null
+  // Utiliser l'URL de l'image : si c'est déjà une URL complète (string), l'utiliser directement
+  // Sinon, construire l'URL avec getImageUrl (pour compatibilité)
+  const bioImageUrl = homeSettings?.bio_image 
+    ? (typeof homeSettings.bio_image === 'string' && homeSettings.bio_image.startsWith('http')
+        ? homeSettings.bio_image
+        : getImageUrl(homeSettings.bio_image))
+    : null
 
   useEffect(() => {
     const checkMobile = () => {
