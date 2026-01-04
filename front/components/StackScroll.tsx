@@ -138,7 +138,7 @@ function ContentCardWithAnimation({ item, basePath, direction, index }: ContentC
       if (img.startsWith('http')) return img
       // Si c'est un UUID (36 caractères avec tirets), construire l'URL
       if (img.match(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i)) {
-        const directusUrl = process.env.NEXT_PUBLIC_DIRECTUS_URL || 'http://localhost:8055'
+        const directusUrl = process.env.NEXT_PUBLIC_DIRECTUS_URL || (process.env.NODE_ENV === 'development' ? 'http://localhost:8055' : '')
         // Note: Le token statique sera ajouté côté serveur via getImageUrl de directus.ts
         return `${directusUrl}/assets/${img}`
       }

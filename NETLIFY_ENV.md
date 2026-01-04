@@ -1,12 +1,20 @@
-# Variables d'environnement pour Netlify
+# Variables d'environnement selon l'environnement
 
-## Variables nécessaires pour le build
+## Architecture
+
+- **Local** : Développement sur votre machine (peut utiliser `localhost`)
+- **Netlify** : Préproduction (doit utiliser des URLs publiques)
+- **Serveur OVH** : Production (doit utiliser des URLs publiques)
+
+## Variables nécessaires pour Netlify (préprod)
 
 Ces variables doivent être configurées dans Netlify (Site settings > Environment variables) :
 
-- `SITE_URL` - URL du site (ex: `https://florineclap.com`)
-- `NEXT_PUBLIC_DIRECTUS_URL` - URL publique de l'API Directus (ex: `https://api.florineclap.com`)
+- `SITE_URL` - URL du site de préprod (ex: `https://preprod.florineclap.com`)
+- `NEXT_PUBLIC_DIRECTUS_URL` - URL publique de l'API Directus (ex: `https://cms.florineclap.com`)
 - `DIRECTUS_STATIC_TOKEN` - Token statique Directus pour les appels API (optionnel mais recommandé)
+
+⚠️ **IMPORTANT** : `NEXT_PUBLIC_DIRECTUS_URL` est **obligatoire** sur Netlify. Sans cette variable, le site essaiera d'utiliser `localhost` et déclenchera une demande d'accès réseau.
 
 ## Variables à NE PAS configurer dans Netlify
 

@@ -12,7 +12,19 @@ function getDirectusUrl(): string {
     return process.env.DIRECTUS_INTERNAL_URL || process.env.NEXT_PUBLIC_DIRECTUS_URL || 'http://directus:8055'
   }
   // Côté client : utiliser l'URL publique
-  return process.env.NEXT_PUBLIC_DIRECTUS_URL || 'http://localhost:8055'
+  // En local (dev) : on peut utiliser localhost comme fallback
+  // Sur Netlify (préprod) ou serveur (prod) : NEXT_PUBLIC_DIRECTUS_URL est obligatoire
+  const publicUrl = process.env.NEXT_PUBLIC_DIRECTUS_URL
+  if (!publicUrl) {
+    // Seulement en développement local, on peut utiliser localhost
+    if (process.env.NODE_ENV === 'development') {
+      return 'http://localhost:8055'
+    }
+    // En production (Netlify ou serveur), c'est une erreur
+    console.error('NEXT_PUBLIC_DIRECTUS_URL is not defined. Please set it in your environment variables.')
+    throw new Error('NEXT_PUBLIC_DIRECTUS_URL is required for client-side requests in production')
+  }
+  return publicUrl
 }
 
 // Fonction helper pour faire des appels API publics
@@ -333,15 +345,23 @@ export function getImageUrl(
     if (image.startsWith('http')) return image
     // Si c'est un UUID (36 caractères avec tirets), construire l'URL Directus
     if (image.match(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i)) {
-      const publicUrl = process.env.NEXT_PUBLIC_DIRECTUS_URL || 'http://localhost:8055'
-      const imageUrl = publicUrl.replace('http://directus:8055', 'http://localhost:8055')
+      const publicUrl = process.env.NEXT_PUBLIC_DIRECTUS_URL || (process.env.NODE_ENV === 'development' ? 'http://localhost:8055' : null)
+      if (!publicUrl) {
+        console.error('NEXT_PUBLIC_DIRECTUS_URL is not defined for image URL')
+        return null
+      }
+      const imageUrl = publicUrl.replace('http://directus:8055', publicUrl)
       return `${imageUrl}/assets/${image}`
     }
     // Sinon, on suppose que c'est un chemin relatif
     return image
   }
   // Si c'est un objet Directus file
-  const publicUrl = process.env.NEXT_PUBLIC_DIRECTUS_URL || 'http://localhost:8055'
-  const imageUrl = publicUrl.replace('http://directus:8055', 'http://localhost:8055')
+  const publicUrl = process.env.NEXT_PUBLIC_DIRECTUS_URL || (process.env.NODE_ENV === 'development' ? 'http://localhost:8055' : null)
+  if (!publicUrl) {
+    console.error('NEXT_PUBLIC_DIRECTUS_URL is not defined for image URL')
+    return null
+  }
+  const imageUrl = publicUrl.replace('http://directus:8055', publicUrl)
   return `${imageUrl}/assets/${image.id}`
 }

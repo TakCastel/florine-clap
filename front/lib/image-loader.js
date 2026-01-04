@@ -12,7 +12,7 @@ export default function directusImageLoader({ src, width, quality }) {
   
   // Si c'est un UUID, construire l'URL Directus
   if (src.match(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i)) {
-    const directusUrl = process.env.NEXT_PUBLIC_DIRECTUS_URL || 'http://localhost:8055'
+    const directusUrl = process.env.NEXT_PUBLIC_DIRECTUS_URL || (process.env.NODE_ENV === 'development' ? 'http://localhost:8055' : '')
     return `${directusUrl}/assets/${src}`
   }
   
