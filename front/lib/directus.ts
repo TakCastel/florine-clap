@@ -8,36 +8,36 @@
 // Côté client : utiliser l'URL publique
 // Helper pour obtenir l'URL Directus en forçant localhost en développement
 function getDirectusUrlForClient(): string {
-  // Détecter si on est en développement local : vérifier l'URL de la page
+  // En production, TOUJOURS utiliser NEXT_PUBLIC_DIRECTUS_URL, même si hostname est localhost
+  // (peut arriver avec des proxies/tunnels en préprod)
+  if (process.env.NODE_ENV === 'production') {
+    const publicUrl = process.env.NEXT_PUBLIC_DIRECTUS_URL
+    if (!publicUrl || publicUrl.trim() === '') {
+      throw new Error('NEXT_PUBLIC_DIRECTUS_URL is required in production. Please set it in your environment variables.')
+    }
+    // En production, ne JAMAIS utiliser localhost
+    if (publicUrl.includes('localhost') || publicUrl.includes('127.0.0.1')) {
+      throw new Error('NEXT_PUBLIC_DIRECTUS_URL cannot point to localhost in production. Please use a public URL.')
+    }
+    return publicUrl
+  }
+  
+  // En développement : utiliser localhost
   const isLocalDevelopment = 
     typeof window !== 'undefined' && 
     (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
   
-  // Si on est en développement local ET que NODE_ENV est development, utiliser localhost
-  if (isLocalDevelopment && process.env.NODE_ENV === 'development') {
+  if (isLocalDevelopment) {
     return 'http://localhost:8055'
   }
   
-  // En production ou si on n'est pas en localhost : utiliser NEXT_PUBLIC_DIRECTUS_URL (obligatoire)
+  // Fallback pour les autres cas (dev mais pas localhost)
   const publicUrl = process.env.NEXT_PUBLIC_DIRECTUS_URL
-  // Vérifier que la variable est définie ET non vide
-  if (!publicUrl || publicUrl.trim() === '') {
-    const hostname = typeof window !== 'undefined' ? window.location.hostname : 'server-side'
-    
-    // En production, ne JAMAIS utiliser localhost
-    // Si on est côté client et qu'on n'a pas NEXT_PUBLIC_DIRECTUS_URL, essayer de construire une URL basée sur l'hostname
-    if (typeof window !== 'undefined' && hostname && hostname !== 'localhost' && hostname !== '127.0.0.1') {
-      // Essayer de construire une URL basée sur l'hostname actuel
-      // Si l'hostname est une IP (37.59.98.75), utiliser http://37.59.98.75:8055
-      const fallbackUrl = `http://${hostname}:8055`
-      return fallbackUrl
-    }
-    
-    // Si on ne peut pas construire une URL de fallback, throw une erreur
-    throw new Error('NEXT_PUBLIC_DIRECTUS_URL is required for client-side requests in production')
+  if (publicUrl && publicUrl.trim() !== '') {
+    return publicUrl
   }
   
-  return publicUrl
+  throw new Error('NEXT_PUBLIC_DIRECTUS_URL is required for client-side requests')
 }
 
 function getDirectusUrl(): string {

@@ -83,16 +83,10 @@ export default function HeroSection({ homeSettings }: HeroSectionProps) {
       document.head.appendChild(preconnectLink)
     }
 
-    if (!document.querySelector<HTMLLinkElement>('link[data-hero-preload="true"]') && heroVideoUrl) {
-      const preloadLink = document.createElement('link')
-      preloadLink.rel = 'preload'
-      // Ne pas utiliser 'as' pour les vidéos, car 'fetch' n'est pas supporté et 'video' n'est pas standard
-      // Le navigateur détectera automatiquement le type de ressource
-      preloadLink.href = heroVideoUrl
-      preloadLink.crossOrigin = 'anonymous'
-      preloadLink.dataset.heroPreload = 'true'
-      document.head.appendChild(preloadLink)
-    }
+    // Note: On ne précharge pas la vidéo car :
+    // 1. Les vidéos sont volumineuses et ne doivent être chargées qu'à la demande
+    // 2. Le preload pour les vidéos nécessite 'as="video"' qui n'est pas standard
+    // 3. Le navigateur gère déjà le chargement optimisé des vidéos
   }, [videoHost, heroVideoUrl])
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
