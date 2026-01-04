@@ -11,7 +11,6 @@
 export default function directusImageLoader({ src, width, quality }) {
   // Gérer les cas null/undefined
   if (!src || typeof src !== 'string') {
-    console.warn('Image loader received invalid src:', src)
     return src || ''
   }
   
@@ -44,7 +43,6 @@ export default function directusImageLoader({ src, width, quality }) {
         }
         return url.toString()
       } catch (error) {
-        console.error('Error parsing Directus URL:', src, error)
         // Si l'URL n'est pas valide, retourner quand même l'URL originale
         return src
       }
@@ -70,7 +68,6 @@ export default function directusImageLoader({ src, width, quality }) {
     }
     
     if (!directusUrl) {
-      console.error('NEXT_PUBLIC_DIRECTUS_URL is not defined for Directus image')
       return src
     }
     const normalizedUrl = directusUrl.replace(/\/+$/, '')

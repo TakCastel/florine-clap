@@ -13,10 +13,6 @@ function getDirectusUrlForClient(): string {
   
   // Si NEXT_PUBLIC_DIRECTUS_URL est défini et valide, l'utiliser
   if (publicUrl && publicUrl.trim() !== '') {
-    // En production, avertir si l'URL pointe vers localhost (mais ne pas bloquer)
-    if (process.env.NODE_ENV === 'production' && (publicUrl.includes('localhost') || publicUrl.includes('127.0.0.1'))) {
-      console.warn('NEXT_PUBLIC_DIRECTUS_URL points to localhost in production. This may cause issues.')
-    }
     return publicUrl
   }
   
@@ -31,9 +27,13 @@ function getDirectusUrlForClient(): string {
     }
   }
   
-  // Dernier recours : erreur seulement si vraiment nécessaire
-  console.error('NEXT_PUBLIC_DIRECTUS_URL is not defined. Please set it in your environment variables.')
-  // Retourner une URL par défaut plutôt que de lancer une erreur qui casserait l'app
+  // Dernier recours : en production, ne jamais retourner localhost
+  // Si NEXT_PUBLIC_DIRECTUS_URL n'est pas défini, on ne peut pas construire l'URL
+  // Retourner null pour que le composant puisse gérer l'erreur
+  if (process.env.NODE_ENV === 'production') {
+    return ''
+  }
+  // En développement, utiliser localhost comme fallback
   return 'http://localhost:8055'
 }
 
@@ -385,9 +385,10 @@ export function getImageUrl(
       // car les URLs seront utilisées côté client dans le HTML
       const publicUrl = typeof window !== 'undefined' 
         ? getDirectusUrlForClient()
-        : process.env.NEXT_PUBLIC_DIRECTUS_URL || null
-      if (!publicUrl) {
-        console.error('NEXT_PUBLIC_DIRECTUS_URL is not defined for file URL')
+        : (process.env.NEXT_PUBLIC_DIRECTUS_URL || process.env.DIRECTUS_PUBLIC_URL || null)
+      if (!publicUrl || publicUrl.trim() === '') {
+        // Si NEXT_PUBLIC_DIRECTUS_URL n'est pas défini côté serveur, retourner null
+        // Le composant client pourra appeler getImageUrl qui utilisera getDirectusUrlForClient()
         return null
       }
       const normalizedUrl = publicUrl.replace(/\/+$/, '')
@@ -405,9 +406,10 @@ export function getImageUrl(
       // car les URLs seront utilisées côté client dans le HTML
       const publicUrl = typeof window !== 'undefined' 
         ? getDirectusUrlForClient()
-        : process.env.NEXT_PUBLIC_DIRECTUS_URL || null
-      if (!publicUrl) {
-        console.error('NEXT_PUBLIC_DIRECTUS_URL is not defined for file URL')
+        : (process.env.NEXT_PUBLIC_DIRECTUS_URL || process.env.DIRECTUS_PUBLIC_URL || null)
+      if (!publicUrl || publicUrl.trim() === '') {
+        // Si NEXT_PUBLIC_DIRECTUS_URL n'est pas défini côté serveur, retourner null
+        // Le composant client pourra appeler getImageUrl qui utilisera getDirectusUrlForClient()
         return null
       }
       const normalizedUrl = publicUrl.replace(/\/+$/, '')

@@ -12,12 +12,17 @@ async function getHomeSettingsWithImageUrls(): Promise<HomeSettings | null> {
     // Pré-construire les URLs d'images côté serveur, comme pour les autres pages
     // Cela garantit que les URLs sont construites avec process.env.NEXT_PUBLIC_DIRECTUS_URL
     // (côté serveur) au lieu de getDirectusUrlForClient() (côté client)
+    const bioImageUrl = settings.bio_image ? getImageUrl(settings.bio_image) : null
+    const heroVideoUrl = settings.hero_video ? getImageUrl(settings.hero_video) : null
+    
     const settingsWithUrls: HomeSettings = {
       ...settings,
       // Pré-construire l'URL de l'image bio si elle existe
-      bio_image: settings.bio_image ? (getImageUrl(settings.bio_image) || settings.bio_image) : settings.bio_image,
+      // Si getImageUrl retourne null (NEXT_PUBLIC_DIRECTUS_URL non défini), garder l'objet original
+      // BioSection appellera getImageUrl côté client qui utilisera getDirectusUrlForClient()
+      bio_image: bioImageUrl ? bioImageUrl : settings.bio_image,
       // Pré-construire l'URL de la vidéo hero si elle existe
-      hero_video: settings.hero_video ? (getImageUrl(settings.hero_video) || settings.hero_video) : settings.hero_video,
+      hero_video: heroVideoUrl ? heroVideoUrl : settings.hero_video,
     }
     
     return settingsWithUrls
