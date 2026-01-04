@@ -1,6 +1,5 @@
 'use client'
 
-import Image from 'next/image'
 import { useState, useEffect, useRef } from 'react'
 
 interface LogoMarqueeProps {
@@ -94,14 +93,14 @@ function LogoMarquee({ title, className = '', invertColors = false, pauseOnHover
                   onDragStart={handleDragStart}
                   draggable={false}
                 >
-                  <Image
+                  {/* Utiliser un img standard pour les images statiques du dossier public */}
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
                     src={logo.src}
                     alt={logo.alt}
-                    fill
-                    sizes="140px"
-                    unoptimized
-                    className={`object-contain filter ${filterClass} opacity-90 transition-all duration-300 pointer-events-none`}
+                    className={`w-full h-full object-contain filter ${filterClass} opacity-90 transition-all duration-300 pointer-events-none`}
                     draggable={false}
+                    loading="lazy"
                   />
                 </div>
               )
@@ -143,14 +142,14 @@ function LogoMarquee({ title, className = '', invertColors = false, pauseOnHover
                   onDragStart={handleDragStart}
                   draggable={false}
                 >
-                  <Image
+                  {/* Utiliser un img standard pour les images statiques du dossier public */}
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
                     src={logo.src}
                     alt={logo.alt}
-                    fill
-                    sizes="140px"
-                    unoptimized
-                    className={`object-contain filter ${filterClass} opacity-90 transition-all duration-300 pointer-events-none`}
+                    className={`w-full h-full object-contain filter ${filterClass} opacity-90 transition-all duration-300 pointer-events-none`}
                     draggable={false}
+                    loading="lazy"
                   />
                 </div>
               )
