@@ -28,7 +28,6 @@ export default function HeroSection({ homeSettings }: HeroSectionProps) {
       // Mais si c'est une IP, on ne peut pas, donc on ignore cette URL
       if (heroVideoUrlExternal.match(/^http:\/\/\d+\.\d+\.\d+\.\d+/)) {
         // URL avec IP - ne peut pas être convertie en HTTPS, on l'ignore
-        console.warn('⚠️ URL vidéo HTTP avec IP détectée sur site HTTPS, ignorée:', heroVideoUrlExternal)
         heroVideoUrlExternal = null
       } else {
         // Essayer de convertir en HTTPS

@@ -102,7 +102,6 @@ export async function getDirectusClient() {
     }
     // Si l'authentification admin échoue, essayer quand même avec un client sans auth
     // (peut fonctionner si les permissions publiques sont configurées)
-    console.warn('⚠️ Authentification admin échouée, utilisation d\'un client sans authentification')
   }
 
   // Fallback : client sans authentification (peut échouer)

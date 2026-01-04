@@ -13,23 +13,8 @@ function getDirectusUrlForClient(): string {
     typeof window !== 'undefined' && 
     (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
   
-  // Debug: afficher les valeurs pour comprendre le problème
-  if (typeof window !== 'undefined' && process.env.NODE_ENV === 'production') {
-    console.log('🔍 getDirectusUrlForClient - Debug:', {
-      hostname: window.location.hostname,
-      isLocalDevelopment,
-      NODE_ENV: process.env.NODE_ENV,
-      NEXT_PUBLIC_DIRECTUS_URL: process.env.NEXT_PUBLIC_DIRECTUS_URL || 'NOT DEFINED',
-    })
-  }
-  
   // Si on est en développement local ET que NODE_ENV est development, utiliser localhost
   if (isLocalDevelopment && process.env.NODE_ENV === 'development') {
-    // En développement local, TOUJOURS utiliser localhost
-    const publicUrl = process.env.NEXT_PUBLIC_DIRECTUS_URL
-    if (publicUrl && !publicUrl.includes('localhost') && !publicUrl.includes('127.0.0.1') && !publicUrl.includes('directus:8055')) {
-      console.warn(`⚠️ NEXT_PUBLIC_DIRECTUS_URL pointe vers une adresse distante (${publicUrl}) en développement. Utilisation de localhost à la place.`)
-    }
     return 'http://localhost:8055'
   }
   
@@ -38,40 +23,18 @@ function getDirectusUrlForClient(): string {
   // Vérifier que la variable est définie ET non vide
   if (!publicUrl || publicUrl.trim() === '') {
     const hostname = typeof window !== 'undefined' ? window.location.hostname : 'server-side'
-    const protocol = typeof window !== 'undefined' ? window.location.protocol : 'https:'
-    
-    console.error('❌ NEXT_PUBLIC_DIRECTUS_URL is not defined!')
-    console.error('   Current hostname:', hostname)
-    console.error('   NODE_ENV:', process.env.NODE_ENV)
-    console.error('   This is a production environment. Please configure NEXT_PUBLIC_DIRECTUS_URL in your environment variables.')
-    console.error('   Example: https://cms.votre-domaine.com or http://37.59.98.75:8055')
     
     // En production, ne JAMAIS utiliser localhost
     // Si on est côté client et qu'on n'a pas NEXT_PUBLIC_DIRECTUS_URL, essayer de construire une URL basée sur l'hostname
     if (typeof window !== 'undefined' && hostname && hostname !== 'localhost' && hostname !== '127.0.0.1') {
       // Essayer de construire une URL basée sur l'hostname actuel
       // Si l'hostname est une IP (37.59.98.75), utiliser http://37.59.98.75:8055
-      // Sinon, essayer http://{hostname}:8055
-      const isIP = /^\d+\.\d+\.\d+\.\d+$/.test(hostname)
-      const fallbackUrl = isIP 
-        ? `http://${hostname}:8055`
-        : `http://${hostname}:8055`
-      
-      console.warn(`⚠️ NEXT_PUBLIC_DIRECTUS_URL not available at build time. Using fallback: ${fallbackUrl}`)
-      console.warn('   ⚠️ IMPORTANT: Rebuild your application with NEXT_PUBLIC_DIRECTUS_URL defined for proper configuration.')
-      console.warn('   The variable NEXT_PUBLIC_* must be set at BUILD time, not runtime.')
+      const fallbackUrl = `http://${hostname}:8055`
       return fallbackUrl
     }
     
     // Si on ne peut pas construire une URL de fallback, throw une erreur
     throw new Error('NEXT_PUBLIC_DIRECTUS_URL is required for client-side requests in production')
-  }
-  
-  // Vérifier qu'on n'utilise pas localhost en production
-  if ((publicUrl.includes('localhost') || publicUrl.includes('127.0.0.1')) && !isLocalDevelopment) {
-    console.error('❌ NEXT_PUBLIC_DIRECTUS_URL pointe vers localhost en production. Cela ne fonctionnera pas.')
-    console.error('   Veuillez configurer NEXT_PUBLIC_DIRECTUS_URL avec l\'URL publique de Directus.')
-    console.error('   Exemple: https://cms.votre-domaine.com')
   }
   
   return publicUrl
