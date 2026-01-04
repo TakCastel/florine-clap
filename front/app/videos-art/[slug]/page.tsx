@@ -2,6 +2,7 @@ import MarkdownRenderer from '@/components/MarkdownRenderer'
 import Breadcrumb from '@/components/Breadcrumb'
 import VimeoPlayer from '@/components/VimeoPlayer'
 import ArticleHeroImage from '@/components/ArticleHeroImage'
+import StickySidebar from '@/components/StickySidebar'
 import { getVideoArtBySlug, getImageUrl, VideoArt } from '@/lib/directus'
 import { notFound } from 'next/navigation'
 import { buildMetadata, generateJsonLd } from '@/components/Seo'
@@ -23,14 +24,16 @@ export async function generateMetadata({ params }: VideoArtPageProps) {
     return {}
   }
 
-  const imageUrl = getImageUrl(videoArt.image)
+  // Utiliser l'image (thumbnail) pour le heading hero, comme pour les films
+  const headingImageUrl = getImageUrl(videoArt.image)
+  const imageUrl = getImageUrl(videoArt.image) // Pour l'image dans l'article
   const canonicalUrl = canonical(`/videos-art/${slug}`)
   const description = `Découvrez ${videoArt.title}, une vidéo d'art de Florine Clap.`
 
   return buildMetadata({
     title: videoArt.title,
     description,
-    image: imageUrl || undefined,
+    image: headingImageUrl || undefined,
     canonical: canonicalUrl,
     type: 'video',
     publishedTime: videoArt.annee ? `${videoArt.annee}-01-01` : undefined,
@@ -54,14 +57,16 @@ export default async function VideoArtPage({ params }: VideoArtPageProps) {
     notFound()
   }
   
-  const imageUrl = getImageUrl(videoArt.image)
+  // Utiliser l'image (thumbnail) pour le heading hero, comme pour les films
+  const headingImageUrl = getImageUrl(videoArt.image)
+  const imageUrl = getImageUrl(videoArt.image) // Pour l'image dans l'article
   const canonicalUrl = canonical(`/videos-art/${slug}`)
 
   const jsonLd = generateJsonLd({
     type: 'VideoObject',
     title: videoArt.title,
     description: `Découvrez ${videoArt.title}, une vidéo d'art de Florine Clap.`,
-    image: imageUrl || undefined,
+    image: headingImageUrl || undefined,
     url: canonicalUrl,
     publishedTime: videoArt.annee ? `${videoArt.annee}-01-01` : undefined,
     duration: videoArt.duree,
@@ -74,8 +79,8 @@ export default async function VideoArtPage({ params }: VideoArtPageProps) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       <main id="main-content" className="min-h-screen bg-theme-white text-black">
-      {/* Image hero avec dégradés pour le header */}
-      <ArticleHeroImage imageUrl={imageUrl} alt={videoArt.title} />
+      {/* Image hero avec dégradés pour le header - utilise l'image (thumbnail) */}
+      <ArticleHeroImage imageUrl={headingImageUrl} alt={videoArt.title} />
       
       {/* Breadcrumb positionné sur l'image */}
       <div className="absolute top-20 left-0 right-0 z-50">
@@ -90,8 +95,8 @@ export default async function VideoArtPage({ params }: VideoArtPageProps) {
       </div>
 
       {/* Contenu principal */}
-      <div className="relative z-30 max-w-7xl mx-auto px-6 md:px-10 lg:px-16 py-16 md:py-24 -mt-10 md:-mt-16">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+      <div className="relative z-30 max-w-7xl mx-auto px-6 md:px-10 lg:px-16 py-16 md:py-24 -mt-6 md:-mt-12">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 items-start">
           
           {/* Contenu principal */}
           <div className="lg:col-span-2">
@@ -177,7 +182,7 @@ export default async function VideoArtPage({ params }: VideoArtPageProps) {
 
           {/* Sidebar avec informations techniques */}
           <div className="lg:col-span-1">
-            <div className="sticky top-8">
+            <StickySidebar top={32}>
               <div className="border-t border-black/10 pt-8">
                 <h3 className="heading-subtitle text-black mb-6">
                   Fiche technique
@@ -248,7 +253,7 @@ export default async function VideoArtPage({ params }: VideoArtPageProps) {
                   ← Retour aux vidéos/art
                 </a>
               </div>
-            </div>
+            </StickySidebar>
           </div>
         </div>
       </div>

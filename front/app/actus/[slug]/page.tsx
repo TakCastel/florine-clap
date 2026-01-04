@@ -1,6 +1,7 @@
 import MarkdownRenderer from '@/components/MarkdownRenderer'
 import Breadcrumb from '@/components/Breadcrumb'
 import ArticleHeroImage from '@/components/ArticleHeroImage'
+import StickySidebar from '@/components/StickySidebar'
 import { getActuBySlug, getImageUrl, Actu } from '@/lib/directus'
 import { notFound } from 'next/navigation'
 import { buildMetadata, generateJsonLd } from '@/components/Seo'
@@ -90,8 +91,8 @@ export default async function ActuPage({ params }: ActuPageProps) {
       </div>
 
       {/* Contenu principal */}
-      <div className="relative z-30 max-w-7xl mx-auto px-6 md:px-10 lg:px-16 py-16 md:py-24 -mt-10 md:-mt-16">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+      <div className="relative z-30 max-w-7xl mx-auto px-6 md:px-10 lg:px-16 py-16 md:py-24 -mt-6 md:-mt-12">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 items-start">
           
           {/* Contenu principal */}
           <div className="lg:col-span-2">
@@ -105,7 +106,7 @@ export default async function ActuPage({ params }: ActuPageProps) {
 
           {/* Sidebar avec informations */}
           <div className="lg:col-span-1">
-            <div className="sticky top-8">
+            <StickySidebar top={32}>
               <div className="border-t border-black/10 pt-8">
                 <h3 className="heading-subtitle text-black mb-6">
                   Informations
@@ -141,7 +142,7 @@ export default async function ActuPage({ params }: ActuPageProps) {
                   </div>
                 </div>
               </div>
-            </div>
+            </StickySidebar>
           </div>
         </div>
       </div>

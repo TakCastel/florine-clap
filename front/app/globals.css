@@ -746,6 +746,8 @@ body {
   position: relative;
   width: 100%;
   min-height: 100%;
+  /* S'assurer qu'il n'y a pas d'overflow qui casse le sticky */
+  overflow: visible;
 }
 
 .page-transition-content {
@@ -753,16 +755,20 @@ body {
   min-height: 100%;
   /* État par défaut : caché - pas de flash */
   opacity: 0;
-  transform: translateY(8px);
+  /* IMPORTANT: Ne pas utiliser transform car ça casse position: sticky */
+  /* Utiliser margin-top à la place pour l'animation */
+  margin-top: 8px;
   transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-              transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  will-change: opacity, transform;
+              margin-top 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: opacity, margin-top;
+  /* S'assurer qu'il n'y a pas d'overflow qui casse le sticky */
+  overflow: visible;
 }
 
 /* État d'entrée - page apparaît avec animation */
 .page-transition-content.page-enter {
   opacity: 1;
-  transform: translateY(0);
+  margin-top: 0;
 }
 
 /* Force the BackToTop button to stay transparent */

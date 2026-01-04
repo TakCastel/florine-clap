@@ -7,8 +7,16 @@ import Lenis from '@studio-freight/lenis'
 function SmoothScrollInner({ children }: { children: ReactNode }) {
   const pathname = usePathname()
   const searchParams = useSearchParams()
+  
+  // Détecter les pages articles (avec slug) où le sticky doit fonctionner
+  const isArticlePage = /^\/(films|mediations|videos-art|actus)\/[^/]+$/.test(pathname)
 
   useEffect(() => {
+    // Désactiver Lenis sur les pages d'articles pour que le sticky fonctionne
+    if (isArticlePage) {
+      return
+    }
+    
     const lenis = new Lenis({
       duration: 1.2,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // https://www.desmos.com/calculator/brs54l4xou
@@ -33,7 +41,7 @@ function SmoothScrollInner({ children }: { children: ReactNode }) {
       lenis.destroy()
       delete (window as any).lenis
     }
-  }, [])
+  }, [isArticlePage])
 
   // Forcer le scroll en haut à chaque changement de route (pathname ou searchParams)
   useEffect(() => {

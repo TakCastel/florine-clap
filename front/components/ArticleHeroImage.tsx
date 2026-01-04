@@ -9,7 +9,7 @@ interface ArticleHeroImageProps {
 
 /**
  * Composant réutilisable pour l'image hero des articles
- * Même hauteur que dans la bio (45vh, min 300px)
+ * Hauteur réduite pour un meilleur rendu
  * Positionné par-dessus le header avec dégradés
  */
 export default function ArticleHeroImage({ 
@@ -19,7 +19,7 @@ export default function ArticleHeroImage({
 }: ArticleHeroImageProps) {
   return (
     <section 
-      className={`article-hero-image relative w-full h-[45vh] min-h-[300px] overflow-visible ${className}`} 
+      className={`article-hero-image relative w-full h-[25vh] min-h-[180px] overflow-visible ${className}`} 
       style={{ 
         marginTop: 0, 
         zIndex: 1, 
@@ -38,12 +38,13 @@ export default function ArticleHeroImage({
               src={imageUrl}
               alt={alt}
               className="w-full h-full object-cover"
+              style={{ objectPosition: 'center 30%' }}
               loading="eager"
               fetchPriority="high"
             />
           </div>
-          {/* Dégradé noir en haut pour le header */}
-          <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/20 to-transparent pointer-events-none" aria-hidden="true"></div>
+          {/* Dégradé noir en haut pour le header - plus sombre */}
+          <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/30 to-transparent pointer-events-none" aria-hidden="true"></div>
           {/* Dégradé blanc en bas pour se fondre dans la page - commence à -1px pour éviter la bordure */}
           <div 
             className="absolute pointer-events-none"

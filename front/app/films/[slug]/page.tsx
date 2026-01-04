@@ -2,6 +2,7 @@ import MarkdownRenderer from '@/components/MarkdownRenderer'
 import Breadcrumb from '@/components/Breadcrumb'
 import VimeoPlayer from '@/components/VimeoPlayer'
 import ArticleHeroImage from '@/components/ArticleHeroImage'
+import StickySidebar from '@/components/StickySidebar'
 import { getFilmBySlug, getImageUrl, Film } from '@/lib/directus'
 import { notFound } from 'next/navigation'
 import { buildMetadata, generateJsonLd } from '@/components/Seo'
@@ -23,14 +24,17 @@ export async function generateMetadata({ params }: FilmPageProps) {
     return {}
   }
 
-  const imageUrl = getImageUrl(film.heading || film.image)
+  // Utiliser l'image de l'article (thumbnail) pour le heading hero, comme pour les médiations et vidéos/art
+  // Si heading existe, on l'utilise, sinon on utilise l'image (thumbnail)
+  const headingImageUrl = getImageUrl(film.heading || film.image)
+  const imageUrl = getImageUrl(film.image)
   const canonicalUrl = canonical(`/films/${slug}`)
   const description = film.short_synopsis || `Découvrez ${film.title}, un film de Florine Clap.`
 
   return buildMetadata({
     title: film.title,
     description,
-    image: imageUrl || undefined,
+    image: headingImageUrl || imageUrl || undefined,
     canonical: canonicalUrl,
     type: 'article',
     publishedTime: film.annee ? `${film.annee}-01-01` : undefined,
@@ -54,8 +58,10 @@ export default async function FilmPage({ params }: FilmPageProps) {
     notFound()
   }
   
+  // Utiliser l'image de l'article (thumbnail) pour le heading hero, comme pour les médiations et vidéos/art
+  // Si heading existe, on l'utilise, sinon on utilise l'image (thumbnail)
+  const headingImageUrl = getImageUrl(film.heading || film.image)
   const imageUrl = getImageUrl(film.image)
-  const headingImageUrl = getImageUrl(film.heading)
   const canonicalUrl = canonical(`/films/${slug}`)
 
   const jsonLd = generateJsonLd({
@@ -75,7 +81,7 @@ export default async function FilmPage({ params }: FilmPageProps) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       <main id="main-content" className="min-h-screen bg-theme-white text-black">
-      {/* Image hero avec dégradés pour le header */}
+      {/* Image hero avec dégradés pour le header - utilise l'image de l'article/thumbnail */}
       <ArticleHeroImage imageUrl={headingImageUrl} alt={film.title} />
       
       {/* Breadcrumb positionné sur l'image */}
@@ -91,8 +97,8 @@ export default async function FilmPage({ params }: FilmPageProps) {
       </div>
 
       {/* Contenu principal */}
-      <div className="relative z-30 max-w-7xl mx-auto px-6 md:px-10 lg:px-16 py-16 md:py-24 -mt-10 md:-mt-16">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+      <div className="relative z-30 max-w-7xl mx-auto px-6 md:px-10 lg:px-16 py-16 md:py-24 -mt-6 md:-mt-12" style={{ overflow: 'visible' }}>
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 items-start" style={{ overflow: 'visible' }}>
           
           {/* Contenu principal */}
           <div className="lg:col-span-2">
@@ -162,8 +168,8 @@ export default async function FilmPage({ params }: FilmPageProps) {
           </div>
 
           {/* Sidebar avec métadonnées organisées */}
-          <div className="lg:col-span-1">
-            <div className="sticky top-8">
+          <div className="lg:col-span-1" style={{ alignSelf: 'flex-start', overflow: 'visible' }}>
+            <StickySidebar top={32}>
               {/* Fiche technique */}
               <div className="border-t border-black/10 pt-8 mb-8">
                 <h3 className="heading-subtitle text-black mb-6">
@@ -327,7 +333,7 @@ export default async function FilmPage({ params }: FilmPageProps) {
                   ← Retour aux films
                 </a>
               </div>
-            </div>
+            </StickySidebar>
           </div>
         </div>
       </div>
