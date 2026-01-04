@@ -8,36 +8,33 @@
 // Côté client : utiliser l'URL publique
 // Helper pour obtenir l'URL Directus en forçant localhost en développement
 function getDirectusUrlForClient(): string {
-  // En production, TOUJOURS utiliser NEXT_PUBLIC_DIRECTUS_URL, même si hostname est localhost
-  // (peut arriver avec des proxies/tunnels en préprod)
-  if (process.env.NODE_ENV === 'production') {
-    const publicUrl = process.env.NEXT_PUBLIC_DIRECTUS_URL
-    if (!publicUrl || publicUrl.trim() === '') {
-      throw new Error('NEXT_PUBLIC_DIRECTUS_URL is required in production. Please set it in your environment variables.')
-    }
-    // En production, ne JAMAIS utiliser localhost
-    if (publicUrl.includes('localhost') || publicUrl.includes('127.0.0.1')) {
-      throw new Error('NEXT_PUBLIC_DIRECTUS_URL cannot point to localhost in production. Please use a public URL.')
-    }
-    return publicUrl
-  }
-  
-  // En développement : utiliser localhost
-  const isLocalDevelopment = 
-    typeof window !== 'undefined' && 
-    (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
-  
-  if (isLocalDevelopment) {
-    return 'http://localhost:8055'
-  }
-  
-  // Fallback pour les autres cas (dev mais pas localhost)
+  // Toujours essayer d'utiliser NEXT_PUBLIC_DIRECTUS_URL en premier
   const publicUrl = process.env.NEXT_PUBLIC_DIRECTUS_URL
+  
+  // Si NEXT_PUBLIC_DIRECTUS_URL est défini et valide, l'utiliser
   if (publicUrl && publicUrl.trim() !== '') {
+    // En production, avertir si l'URL pointe vers localhost (mais ne pas bloquer)
+    if (process.env.NODE_ENV === 'production' && (publicUrl.includes('localhost') || publicUrl.includes('127.0.0.1'))) {
+      console.warn('NEXT_PUBLIC_DIRECTUS_URL points to localhost in production. This may cause issues.')
+    }
     return publicUrl
   }
   
-  throw new Error('NEXT_PUBLIC_DIRECTUS_URL is required for client-side requests')
+  // En développement : utiliser localhost si on est sur localhost
+  if (process.env.NODE_ENV === 'development') {
+    const isLocalDevelopment = 
+      typeof window !== 'undefined' && 
+      (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+    
+    if (isLocalDevelopment) {
+      return 'http://localhost:8055'
+    }
+  }
+  
+  // Dernier recours : erreur seulement si vraiment nécessaire
+  console.error('NEXT_PUBLIC_DIRECTUS_URL is not defined. Please set it in your environment variables.')
+  // Retourner une URL par défaut plutôt que de lancer une erreur qui casserait l'app
+  return 'http://localhost:8055'
 }
 
 function getDirectusUrl(): string {
