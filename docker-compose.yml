@@ -68,6 +68,9 @@ services:
       # URL interne pour les appels serveur
       DIRECTUS_INTERNAL_URL: http://directus:8055
       DIRECTUS_STATIC_TOKEN: ${DIRECTUS_STATIC_TOKEN:-}
+    # Volume pour partager le dossier public avec nginx (si nécessaire)
+    # volumes:
+    #   - ./front/public:/app/public:ro
     networks:
       - florine-clap-network
     depends_on:
