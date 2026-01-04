@@ -1,8 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  // Utiliser 'standalone' uniquement pour Docker, pas pour Netlify
-  ...(process.env.NETLIFY ? {} : { output: 'standalone' }),
+  // Utiliser 'standalone' pour Docker/VPS
+  output: 'standalone',
   images: {
     remotePatterns: [
       { protocol: 'https', hostname: '**' },

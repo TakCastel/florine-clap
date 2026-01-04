@@ -68,22 +68,20 @@ const BurgerButton = ({
   )
 }
 
-// Variants d'animation pour le fond
+// Variants d'animation pour le fond - animation lente et progressive partout
 const backdropVariants = {
   closed: {
     opacity: 0,
-    y: '-100%',
     transition: {
-      duration: 0.4,
-      ease: [0.4, 0, 0.2, 1] as [number, number, number, number],
+      duration: 0.6,
+      ease: [0.25, 0.46, 0.45, 0.94] as [number, number, number, number],
     },
   },
   open: {
     opacity: 1,
-    y: 0,
     transition: {
-      duration: 0.5,
-      ease: [0.4, 0, 0.2, 1] as [number, number, number, number],
+      duration: 0.8,
+      ease: [0.25, 0.46, 0.45, 0.94] as [number, number, number, number],
     },
   },
 }
@@ -200,6 +198,7 @@ const MobileMenuOverlay = ({ isOpen, onClose, isHomePage = false }: MobileMenuPr
             </div>
             
             {/* Navigation centrée verticalement avec animation et fond */}
+            {/* Fond noir et texte blanc uniquement pour l'accueil, fond blanc et texte noir pour toutes les autres pages */}
             <motion.nav 
               className={`flex items-center justify-center h-[calc(100vh-4rem)] px-6 pointer-events-auto ${
                 isHomePage ? 'bg-black' : 'bg-white'

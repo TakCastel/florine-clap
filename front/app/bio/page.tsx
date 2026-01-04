@@ -1,7 +1,7 @@
 import MarkdownRenderer from '@/components/MarkdownRenderer'
 import Breadcrumb from '@/components/Breadcrumb'
-import ArticleHeroImage from '@/components/ArticleHeroImage'
 import PartnersSection from '@/components/home/PartnersSection'
+import Image from 'next/image'
 import { getPageBySlug, Page } from '@/lib/directus'
 import { buildMetadata, generateJsonLd } from '@/components/Seo'
 import { canonical } from '@/lib/seo'
@@ -81,22 +81,33 @@ export default async function BioPage() {
           {page.title === "A propos" ? "Bio" : page.title}
         </h1>
         
-        {/* Image hero avec dégradés pour le header */}
-        <ArticleHeroImage imageUrl={imageUrl} alt="Portrait de Florine Clap" />
-      
-      {/* Breadcrumb positionné sur l'image */}
-      <div className="absolute top-20 left-0 right-0 z-50">
-        <Breadcrumb 
-          items={[
-            { label: 'Accueil', href: '/' },
-            { label: 'Bio' }
-          ]}
-          variant="default"
-        />
-      </div>
+        {/* Breadcrumb */}
+        <div className="relative z-50 pt-20 pb-6">
+          <div className="max-w-7xl mx-auto px-6 md:px-10 lg:px-16">
+            <Breadcrumb 
+              items={[
+                { label: 'Accueil', href: '/' },
+                { label: 'Bio' }
+              ]}
+              variant="default"
+            />
+          </div>
+        </div>
+
+        {/* Image full width */}
+        <div className="relative w-full h-[45vh] min-h-[300px] overflow-hidden">
+          <Image
+            src={imageUrl}
+            alt="Portrait de Florine Clap"
+            fill
+            className="object-cover"
+            priority
+            sizes="100vw"
+          />
+        </div>
 
       {/* Contenu Markdown principal */}
-      <section className="relative z-30 py-16 md:py-24 bg-theme-white -mt-10 md:-mt-16">
+      <section className="relative z-30 py-16 md:py-24 bg-theme-white">
         <div className="max-w-7xl mx-auto px-6 md:px-10 lg:px-16">
           {page.body && (
             <div className="prose prose-lg max-w-none text-theme-dark [&_p]:text-justify [&_li]:text-justify">

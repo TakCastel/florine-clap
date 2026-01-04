@@ -35,9 +35,19 @@ RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
 
 # Copy necessary files
-COPY --from=builder /app/public ./public
+# IMPORTANT: En mode standalone, Next.js ne copie pas automatiquement le dossier public
+# Il faut le copier manuellement à côté du server.js
+# Structure attendue:
+# /app/
+#   server.js (depuis standalone)
+#   public/ (copié manuellement)
+#   .next/
+#     static/ (copié manuellement)
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+# Copier le dossier public après standalone pour qu'il soit à côté du server.js
+# Le dossier public doit être accessible depuis le répertoire de travail de Next.js
+COPY --from=builder --chown=nextjs:nodejs /app/public ./public
 
 # Copy node_modules from builder to get sharp
 COPY --from=builder --chown=nextjs:nodejs /app/node_modules ./node_modules
