@@ -4,6 +4,8 @@ const nextConfig = {
   // Utiliser 'standalone' pour Docker/VPS
   output: 'standalone',
   images: {
+    loader: 'custom',
+    loaderFile: './lib/image-loader.js',
     remotePatterns: [
       { protocol: 'https', hostname: '**' },
       { protocol: 'http', hostname: '**' },
@@ -11,10 +13,7 @@ const nextConfig = {
     formats: ['image/webp', 'image/avif'],
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
-    // Désactiver l'optimisation pour les images Directus (elles sont déjà optimisées)
-    // Utiliser un loader personnalisé qui retourne l'URL telle quelle
-    loader: 'custom',
-    loaderFile: './lib/image-loader.js',
+    // Utiliser le loader personnalisé pour gérer les URLs Directus dans Docker
   },
   // Configuration webpack pour le hot reload dans Docker (polling nécessaire)
   webpack: (config, { dev, isServer }) => {
