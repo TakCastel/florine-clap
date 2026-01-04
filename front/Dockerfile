@@ -17,6 +17,10 @@ COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
 # Build Next.js
+# Les variables NEXT_PUBLIC_* doivent être définies au moment du build
+# Elles sont passées via --build-arg depuis docker-compose
+ARG NEXT_PUBLIC_DIRECTUS_URL
+ENV NEXT_PUBLIC_DIRECTUS_URL=${NEXT_PUBLIC_DIRECTUS_URL}
 ENV NEXT_TELEMETRY_DISABLED 1
 RUN npm run build
 

@@ -50,14 +50,16 @@ function getDirectusUrlForClient(): string {
     // Si on est côté client et qu'on n'a pas NEXT_PUBLIC_DIRECTUS_URL, essayer de construire une URL basée sur l'hostname
     if (typeof window !== 'undefined' && hostname && hostname !== 'localhost' && hostname !== '127.0.0.1') {
       // Essayer de construire une URL basée sur l'hostname actuel
-      // Si l'hostname est 37.59.98.75, utiliser http://37.59.98.75:8055
-      // Sinon, essayer https://cms.{hostname} ou http://{hostname}:8055
-      const fallbackUrl = hostname.includes('.') 
-        ? `${protocol}//${hostname.replace(/^[^.]+\./, 'cms.')}`
+      // Si l'hostname est une IP (37.59.98.75), utiliser http://37.59.98.75:8055
+      // Sinon, essayer http://{hostname}:8055
+      const isIP = /^\d+\.\d+\.\d+\.\d+$/.test(hostname)
+      const fallbackUrl = isIP 
+        ? `http://${hostname}:8055`
         : `http://${hostname}:8055`
       
-      console.warn(`⚠️ Using fallback URL: ${fallbackUrl}`)
-      console.warn('   Please configure NEXT_PUBLIC_DIRECTUS_URL correctly in your environment variables.')
+      console.warn(`⚠️ NEXT_PUBLIC_DIRECTUS_URL not available at build time. Using fallback: ${fallbackUrl}`)
+      console.warn('   ⚠️ IMPORTANT: Rebuild your application with NEXT_PUBLIC_DIRECTUS_URL defined for proper configuration.')
+      console.warn('   The variable NEXT_PUBLIC_* must be set at BUILD time, not runtime.')
       return fallbackUrl
     }
     
