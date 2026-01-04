@@ -2,7 +2,7 @@ import MarkdownRenderer from '@/components/MarkdownRenderer'
 import Breadcrumb from '@/components/Breadcrumb'
 import ArticleHeroImage from '@/components/ArticleHeroImage'
 import PartnersSection from '@/components/home/PartnersSection'
-import { getPageBySlug, getImageUrl, Page } from '@/lib/directus'
+import { getPageBySlug, Page } from '@/lib/directus'
 import { buildMetadata, generateJsonLd } from '@/components/Seo'
 import { canonical } from '@/lib/seo'
 import { Metadata } from 'next'
@@ -23,12 +23,10 @@ export async function generateMetadata(): Promise<Metadata> {
       })
     }
 
-    const imageUrl = page.portrait ? getImageUrl(page.portrait) : undefined
-
     return buildMetadata({
       title: page.title === "A propos" ? "Bio" : page.title,
       description: 'Découvrez le parcours de Florine Clap, réalisatrice et formatrice en médiations vidéo',
-      image: imageUrl,
+      image: '/images/FLORINE_DEF.avif',
       canonical: canonicalUrl,
     })
   } catch (error) {
@@ -59,8 +57,8 @@ export default async function BioPage() {
     )
   }
 
-  // Déterminer l'URL de l'image : portrait ou fallback vers FLORINE_DEF.avif
-  const imageUrl = page.portrait ? getImageUrl(page.portrait) : '/images/FLORINE_DEF.avif'
+  // Utiliser toujours l'image FLORINE_DEF.avif depuis public
+  const imageUrl = '/images/FLORINE_DEF.avif'
   const canonicalUrl = canonical('/bio')
 
   const jsonLd = generateJsonLd({
