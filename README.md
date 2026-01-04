@@ -36,39 +36,24 @@ docker-compose up -d
 
 ### 3. Configurer Directus
 
-```bash
-cd scripts
-npm install
-npm run setup-schema      # Crée les collections
-npm run setup-permissions  # Configure les permissions publiques
-```
+Configurez Directus directement via l'interface d'administration :
+
+1. Ouvrez Directus: http://localhost:8055
+2. Connectez-vous avec les identifiants définis dans `.env`
+3. Créez les collections nécessaires (films, médiations, vidéos d'art, etc.)
+4. Configurez les permissions publiques
 
 **Token statique (optionnel)** : Le frontend fonctionne sans token (utilise le token admin en fallback). Pour la production, créez un token dans Directus :
 
-1. Ouvrez Directus: http://localhost:8055
-2. **Settings** > **Access Tokens** > **Create Token**
-3. Sélectionnez le rôle **Public**
-4. Copiez le token dans votre `.env` : `DIRECTUS_STATIC_TOKEN=votre-token`
-5. Redémarrez : `docker-compose restart frontend`
+1. **Settings** > **Access Tokens** > **Create Token**
+2. Sélectionnez le rôle **Public**
+3. Copiez le token dans votre `.env` : `DIRECTUS_STATIC_TOKEN=votre-token`
+4. Redémarrez : `docker-compose restart frontend`
 
 ### 4. Accéder aux services
 
 - Frontend: http://localhost:3000
 - Directus Admin: http://localhost:8055
-
-## 📝 Importer des contenus
-
-```bash
-cd scripts
-# Importer des vidéos d'art (remplacez par votre fichier JSON)
-npm run import-videos-art -- --file /chemin/vers/votre-fichier.json
-
-# Importer des films
-npm run import-films -- --file /chemin/vers/votre-fichier.json
-
-# Importer des médiations
-npm run import-mediations -- --file /chemin/vers/votre-fichier.json
-```
 
 ## 🛠️ Commandes utiles
 
