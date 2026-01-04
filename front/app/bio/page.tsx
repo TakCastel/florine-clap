@@ -67,7 +67,7 @@ export default async function BioPage() {
     type: 'Person',
     title: page.title === "A propos" ? "Bio" : page.title,
     description: 'Découvrez le parcours de Florine Clap, réalisatrice et formatrice en médiations vidéo',
-    image: imageUrl,
+    image: imageUrl || undefined,
     url: canonicalUrl,
   })
 

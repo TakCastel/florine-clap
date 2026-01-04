@@ -30,7 +30,7 @@ export async function generateMetadata({ params }: MediationPageProps) {
   return buildMetadata({
     title: mediation.title,
     description,
-    image: coverUrl,
+    image: coverUrl || undefined,
     canonical: canonicalUrl,
     type: 'article',
     publishedTime: mediation.date ? new Date(mediation.date).toISOString() : undefined,
@@ -61,7 +61,7 @@ export default async function MediationPage({ params }: MediationPageProps) {
     type: 'Article',
     title: mediation.title,
     description: mediation.excerpt || `Découvrez ${mediation.title}, une médiation artistique de Florine Clap.`,
-    image: coverUrl,
+    image: coverUrl || undefined,
     url: canonicalUrl,
     publishedTime: mediation.date ? new Date(mediation.date).toISOString() : undefined,
     author: 'Florine Clap',

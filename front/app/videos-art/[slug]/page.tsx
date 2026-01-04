@@ -30,7 +30,7 @@ export async function generateMetadata({ params }: VideoArtPageProps) {
   return buildMetadata({
     title: videoArt.title,
     description,
-    image: imageUrl,
+    image: imageUrl || undefined,
     canonical: canonicalUrl,
     type: 'video',
     publishedTime: videoArt.annee ? `${videoArt.annee}-01-01` : undefined,
@@ -61,7 +61,7 @@ export default async function VideoArtPage({ params }: VideoArtPageProps) {
     type: 'VideoObject',
     title: videoArt.title,
     description: `Découvrez ${videoArt.title}, une vidéo d'art de Florine Clap.`,
-    image: imageUrl,
+    image: imageUrl || undefined,
     url: canonicalUrl,
     publishedTime: videoArt.annee ? `${videoArt.annee}-01-01` : undefined,
     duration: videoArt.duree,

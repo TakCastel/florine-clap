@@ -30,7 +30,7 @@ export async function generateMetadata({ params }: FilmPageProps) {
   return buildMetadata({
     title: film.title,
     description,
-    image: imageUrl,
+    image: imageUrl || undefined,
     canonical: canonicalUrl,
     type: 'article',
     publishedTime: film.annee ? `${film.annee}-01-01` : undefined,
@@ -62,7 +62,7 @@ export default async function FilmPage({ params }: FilmPageProps) {
     type: 'Article',
     title: film.title,
     description: film.short_synopsis || film.shortSynopsis || `Découvrez ${film.title}, un film de Florine Clap.`,
-    image: headingImageUrl || imageUrl,
+    image: headingImageUrl || imageUrl || undefined,
     url: canonicalUrl,
     publishedTime: film.annee ? `${film.annee}-01-01` : undefined,
     author: 'Florine Clap',

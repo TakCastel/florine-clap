@@ -29,7 +29,7 @@ export async function generateMetadata({ params }: ActuPageProps) {
   return buildMetadata({
     title: actu.title,
     description,
-    image: coverUrl,
+    image: coverUrl || undefined,
     canonical: canonicalUrl,
     type: 'article',
     publishedTime: actu.date ? new Date(actu.date).toISOString() : undefined,
@@ -61,7 +61,7 @@ export default async function ActuPage({ params }: ActuPageProps) {
     type: 'Article',
     title: actu.title,
     description: actu.excerpt || `Découvrez ${actu.title}, une actualité de Florine Clap.`,
-    image: coverUrl,
+    image: coverUrl || undefined,
     url: canonicalUrl,
     publishedTime: actu.date ? new Date(actu.date).toISOString() : undefined,
     author: 'Florine Clap',
