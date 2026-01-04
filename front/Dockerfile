@@ -52,6 +52,10 @@ COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 # IMPORTANT: Copier récursivement pour s'assurer que tous les fichiers (PNG, SVG, AVIF) sont inclus
 COPY --from=builder --chown=nextjs:nodejs /app/public ./public
 
+# Vérifier que les fichiers sont bien copiés (debug)
+RUN ls -la /app/public/images/logos/ || echo "WARNING: public/images/logos not found"
+RUN find /app/public -type f -name "*.png" -o -name "*.svg" -o -name "*.avif" | head -5 || echo "WARNING: No image files found"
+
 # Copy node_modules from builder to get sharp
 COPY --from=builder --chown=nextjs:nodejs /app/node_modules ./node_modules
 
