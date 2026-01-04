@@ -1,38 +1,41 @@
 import MarkdownRenderer from '@/components/MarkdownRenderer'
 import Breadcrumb from '@/components/Breadcrumb'
 import ArticleHeroImage from '@/components/ArticleHeroImage'
-import dynamicImport from 'next/dynamic'
+import PartnersSection from '@/components/home/PartnersSection'
 import { getPageBySlug, getImageUrl, Page } from '@/lib/directus'
-import { buildMetadata } from '@/components/Seo'
+import { buildMetadata, generateJsonLd } from '@/components/Seo'
+import { canonical } from '@/lib/seo'
 import { Metadata } from 'next'
-
-const LogoMarquee = dynamicImport(() => import('@/components/LogoMarquee'), {
-  ssr: false,
-  loading: () => <div className="h-20 bg-gray-200 animate-pulse rounded"></div>
-})
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 60
 
 export async function generateMetadata(): Promise<Metadata> {
+  const canonicalUrl = canonical('/bio')
   try {
     const page = await getPageBySlug('bio')
     
     if (!page) {
       return buildMetadata({
         title: 'Bio',
-        description: 'Découvrez le parcours de Florine Clap, réalisatrice et formatrice en médiations vidéo'
+        description: 'Découvrez le parcours de Florine Clap, réalisatrice et formatrice en médiations vidéo',
+        canonical: canonicalUrl,
       })
     }
 
+    const imageUrl = page.portrait ? getImageUrl(page.portrait) : undefined
+
     return buildMetadata({
-      title: page.title,
-      description: 'Découvrez le parcours de Florine Clap, réalisatrice et formatrice en médiations vidéo'
+      title: page.title === "A propos" ? "Bio" : page.title,
+      description: 'Découvrez le parcours de Florine Clap, réalisatrice et formatrice en médiations vidéo',
+      image: imageUrl,
+      canonical: canonicalUrl,
     })
   } catch (error) {
     return buildMetadata({
       title: 'Bio',
-      description: 'Découvrez le parcours de Florine Clap, réalisatrice et formatrice en médiations vidéo'
+      description: 'Découvrez le parcours de Florine Clap, réalisatrice et formatrice en médiations vidéo',
+      canonical: canonicalUrl,
     })
   }
 }
@@ -58,11 +61,30 @@ export default async function BioPage() {
 
   // Déterminer l'URL de l'image : portrait ou fallback vers FLORINE_DEF.avif
   const imageUrl = page.portrait ? getImageUrl(page.portrait) : '/images/FLORINE_DEF.avif'
+  const canonicalUrl = canonical('/bio')
+
+  const jsonLd = generateJsonLd({
+    type: 'Person',
+    title: page.title === "A propos" ? "Bio" : page.title,
+    description: 'Découvrez le parcours de Florine Clap, réalisatrice et formatrice en médiations vidéo',
+    image: imageUrl,
+    url: canonicalUrl,
+  })
 
   return (
-    <div className="min-h-screen bg-theme-white text-theme-dark">
-      {/* Image hero avec dégradés pour le header */}
-      <ArticleHeroImage imageUrl={imageUrl} alt="Bio" />
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <main id="main-content" className="min-h-screen bg-theme-white text-theme-dark">
+        {/* H1 caché pour le SEO */}
+        <h1 className="sr-only">
+          {page.title === "A propos" ? "Bio" : page.title}
+        </h1>
+        
+        {/* Image hero avec dégradés pour le header */}
+        <ArticleHeroImage imageUrl={imageUrl} alt="Portrait de Florine Clap" />
       
       {/* Breadcrumb positionné sur l'image */}
       <div className="absolute top-20 left-0 right-0 z-50">
@@ -73,17 +95,6 @@ export default async function BioPage() {
           ]}
           variant="default"
         />
-      </div>
-      
-      {/* Titre positionné sur l'image */}
-      <div className="absolute bottom-16 left-0 right-0 z-40">
-        <div className="max-w-7xl mx-auto px-6 md:px-10 lg:px-16 w-full">
-          <div className="text-center max-w-4xl mx-auto">
-            <h1 className="heading-page text-theme-dark">
-              {page.title === "A propos" ? "Bio" : page.title}
-            </h1>
-          </div>
-        </div>
       </div>
 
       {/* Contenu Markdown principal */}
@@ -97,24 +108,9 @@ export default async function BioPage() {
         </div>
       </section>
 
-      {/* Section Partenaires */}
-      <section className="py-20 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-6 md:px-10 lg:px-16">
-          {/* Titre avec le même style que la page d'accueil */}
-          <div className="text-center mb-16">
-            <div className="text-theme-dark/40 text-sm uppercase tracking-[0.3em] mb-4 font-medium">
-              Partenaires
-            </div>
-            
-            {/* Ligne décorative */}
-            <div className="h-[2px] bg-theme-dark/20 w-32 mx-auto mt-6">
-              <div className="h-full bg-theme-dark"></div>
-            </div>
-          </div>
-          
-          <LogoMarquee pauseOnHover={false} />
-        </div>
-      </section>
-    </div>
+        {/* Section Partenaires */}
+        <PartnersSection />
+      </main>
+    </>
   )
 }

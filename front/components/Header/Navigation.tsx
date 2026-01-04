@@ -40,7 +40,7 @@ export default function Navigation({ isHomePage = false, isLightText = false }: 
   }, [showAnimations])
 
   return (
-    <nav className="hidden md:flex items-center">
+    <nav className="hidden md:flex items-center" aria-label="Navigation principale">
       {navItems.map((item, index) => {
         const isVisible = visibleItems.includes(index)
         

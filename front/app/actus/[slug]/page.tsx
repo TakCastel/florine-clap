@@ -3,12 +3,39 @@ import Breadcrumb from '@/components/Breadcrumb'
 import ArticleHeroImage from '@/components/ArticleHeroImage'
 import { getActuBySlug, getImageUrl, Actu } from '@/lib/directus'
 import { notFound } from 'next/navigation'
+import { buildMetadata, generateJsonLd } from '@/components/Seo'
+import { canonical } from '@/lib/seo'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 60
 
 type ActuPageProps = {
   params: Promise<{ slug: string }> | { slug: string }
+}
+
+export async function generateMetadata({ params }: ActuPageProps) {
+  const resolvedParams = await Promise.resolve(params)
+  const slug = resolvedParams.slug
+  const actu = await getActuBySlug(slug)
+  
+  if (!actu) {
+    return {}
+  }
+
+  const coverUrl = getImageUrl(actu.cover)
+  const canonicalUrl = canonical(`/actus/${slug}`)
+  const description = actu.excerpt || `Découvrez ${actu.title}, une actualité de Florine Clap.`
+
+  return buildMetadata({
+    title: actu.title,
+    description,
+    image: coverUrl,
+    canonical: canonicalUrl,
+    type: 'article',
+    publishedTime: actu.date ? new Date(actu.date).toISOString() : undefined,
+    author: 'Florine Clap',
+    tags: actu.tags,
+  })
 }
 
 export default async function ActuPage({ params }: ActuPageProps) {
@@ -28,9 +55,25 @@ export default async function ActuPage({ params }: ActuPageProps) {
   }
   
   const coverUrl = getImageUrl(actu.cover)
+  const canonicalUrl = canonical(`/actus/${slug}`)
+
+  const jsonLd = generateJsonLd({
+    type: 'Article',
+    title: actu.title,
+    description: actu.excerpt || `Découvrez ${actu.title}, une actualité de Florine Clap.`,
+    image: coverUrl,
+    url: canonicalUrl,
+    publishedTime: actu.date ? new Date(actu.date).toISOString() : undefined,
+    author: 'Florine Clap',
+  })
 
   return (
-    <div className="min-h-screen bg-theme-white text-black">
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <main id="main-content" className="min-h-screen bg-theme-white text-black">
       {/* Image hero avec dégradés pour le header */}
       <ArticleHeroImage imageUrl={coverUrl} alt={actu.title} />
       
@@ -90,6 +133,7 @@ export default async function ActuPage({ params }: ActuPageProps) {
                   <div className="pt-6 border-t border-black/10">
                     <a 
                       href="/actus"
+                      aria-label="Retour à la liste des actualités"
                       className="inline-flex items-center gap-2 text-black/70 hover:text-black transition-colors font-display font-light text-sm uppercase tracking-[0.1em]"
                     >
                       ← Retour aux actualités
@@ -101,6 +145,7 @@ export default async function ActuPage({ params }: ActuPageProps) {
           </div>
         </div>
       </div>
-    </div>
+      </main>
+    </>
   )
 }

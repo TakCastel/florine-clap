@@ -1,0 +1,25 @@
+{
+  "name": "Florine Clap - Réalisatrice et Artiste",
+  "short_name": "Florine Clap",
+  "description": "Réalisatrice et artiste, je crée des films documentaires et des médiations artistiques qui explorent la relation entre l'homme et son environnement.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#000000",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/favicon.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/favicon.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
+

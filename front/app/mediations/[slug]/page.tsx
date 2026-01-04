@@ -4,12 +4,38 @@ import VimeoPlayer from '@/components/VimeoPlayer'
 import ArticleHeroImage from '@/components/ArticleHeroImage'
 import { getMediationBySlug, getImageUrl, Mediation } from '@/lib/directus'
 import { notFound } from 'next/navigation'
+import { buildMetadata, generateJsonLd } from '@/components/Seo'
+import { canonical } from '@/lib/seo'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 60
 
 type MediationPageProps = {
   params: Promise<{ slug: string }> | { slug: string }
+}
+
+export async function generateMetadata({ params }: MediationPageProps) {
+  const resolvedParams = await Promise.resolve(params)
+  const slug = resolvedParams.slug
+  const mediation = await getMediationBySlug(slug)
+  
+  if (!mediation) {
+    return {}
+  }
+
+  const coverUrl = getImageUrl(mediation.cover)
+  const canonicalUrl = canonical(`/mediations/${slug}`)
+  const description = mediation.excerpt || `Découvrez ${mediation.title}, une médiation artistique de Florine Clap.`
+
+  return buildMetadata({
+    title: mediation.title,
+    description,
+    image: coverUrl,
+    canonical: canonicalUrl,
+    type: 'article',
+    publishedTime: mediation.date ? new Date(mediation.date).toISOString() : undefined,
+    author: 'Florine Clap',
+  })
 }
 
 export default async function MediationPage({ params }: MediationPageProps) {
@@ -29,9 +55,25 @@ export default async function MediationPage({ params }: MediationPageProps) {
   }
   
   const coverUrl = getImageUrl(mediation.cover)
+  const canonicalUrl = canonical(`/mediations/${slug}`)
+
+  const jsonLd = generateJsonLd({
+    type: 'Article',
+    title: mediation.title,
+    description: mediation.excerpt || `Découvrez ${mediation.title}, une médiation artistique de Florine Clap.`,
+    image: coverUrl,
+    url: canonicalUrl,
+    publishedTime: mediation.date ? new Date(mediation.date).toISOString() : undefined,
+    author: 'Florine Clap',
+  })
 
   return (
-    <div className="min-h-screen bg-theme-white text-black">
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <main id="main-content" className="min-h-screen bg-theme-white text-black">
       {/* Image hero avec dégradés pour le header */}
       <ArticleHeroImage imageUrl={coverUrl} alt={mediation.title} />
       
@@ -56,10 +98,12 @@ export default async function MediationPage({ params }: MediationPageProps) {
             {/* Image dans l'article */}
             {coverUrl ? (
               <div className="relative w-full aspect-video overflow-hidden mb-8">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={coverUrl}
-                  alt={mediation.title}
+                  alt={`Image de couverture de la médiation ${mediation.title}`}
                   className="w-full h-full object-cover"
+                  loading="lazy"
                 />
               </div>
             ) : (
@@ -90,6 +134,7 @@ export default async function MediationPage({ params }: MediationPageProps) {
                   muted={false}
                   loop={false}
                   controls={true}
+                  title={`Vidéo de la médiation ${mediation.title}`}
                 />
               </div>
             ) : (mediation.videoUrl || mediation.video_url) ? (
@@ -98,6 +143,7 @@ export default async function MediationPage({ params }: MediationPageProps) {
                   src={mediation.videoUrl || mediation.video_url || ''}
                   controls
                   className="w-full h-full object-contain"
+                  aria-label={`Vidéo de la médiation ${mediation.title}`}
                 >
                   Votre navigateur ne supporte pas la lecture de vidéos.
                 </video>
@@ -175,6 +221,7 @@ export default async function MediationPage({ params }: MediationPageProps) {
               <div className="border-t border-black/10 pt-8">
                 <a 
                   href="/mediations"
+                  aria-label="Retour à la liste des médiations"
                   className="inline-flex items-center gap-2 text-black/70 hover:text-black transition-colors font-display font-light text-sm uppercase tracking-[0.1em]"
                 >
                   ← Retour aux médiations
@@ -184,6 +231,7 @@ export default async function MediationPage({ params }: MediationPageProps) {
           </div>
         </div>
       </div>
-    </div>
+      </main>
+    </>
   )
 }

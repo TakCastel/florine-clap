@@ -37,13 +37,13 @@ export default function HomePage() {
 
   return (
     <HoverProvider>
-      <div className="relative bg-theme-white min-h-screen">
+      <main id="main-content" className="relative bg-theme-white min-h-screen">
         <HeroSection homeSettings={homeSettings} />
         <CategoriesSection homeSettings={homeSettings} />
         <BioSection homeSettings={homeSettings} />
         <QuoteSection />
         <PartnersSection />
-      </div>
+      </main>
     </HoverProvider>
   )
 }

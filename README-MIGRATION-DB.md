@@ -131,6 +131,50 @@ docker compose -f docker-compose.dev.yml up -d
 
 ### Erreur de permissions sur le serveur
 
+#### Problème : Permission denied lors du transfert SCP
+
+Si vous avez une erreur `Permission denied` lors du `scp`, c'est que le répertoire `/srv/florine-clap/` n'a pas les bonnes permissions.
+
+**Solution 1 : Corriger les permissions sur le serveur**
+
+Sur le serveur VPS :
+```bash
+ssh root@VOTRE_IP_VPS
+cd /srv
+chown -R root:root florine-clap
+chmod 755 florine-clap
+```
+
+**Solution 2 : Transférer dans un répertoire temporaire**
+
+Si vous ne pouvez pas modifier les permissions, transférez dans `/tmp` :
+```bash
+# Local
+scp directus.dump root@VOTRE_IP_VPS:/tmp/
+
+# Sur le serveur
+ssh root@VOTRE_IP_VPS
+mv /tmp/directus.dump /srv/florine-clap/
+cd /srv/florine-clap
+./import-db-server.sh
+```
+
+**Solution 3 : Utiliser un répertoire utilisateur**
+
+Si vous n'êtes pas root, utilisez le home directory :
+```bash
+# Local
+scp directus.dump user@VOTRE_IP_VPS:~/directus.dump
+
+# Sur le serveur
+ssh user@VOTRE_IP_VPS
+sudo mv ~/directus.dump /srv/florine-clap/
+cd /srv/florine-clap
+sudo ./import-db-server.sh
+```
+
+#### Scripts non exécutables
+
 Assurez-vous que les scripts sont exécutables :
 ```bash
 chmod +x import-db-server.sh import-uploads-server.sh

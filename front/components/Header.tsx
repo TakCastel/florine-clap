@@ -11,6 +11,7 @@ export default function Header() {
   const pathname = usePathname()
   const router = useRouter()
   const isHomePage = pathname === '/'
+  const isBioPage = pathname === '/bio'
   
   // Détecter les pages articles (avec slug)
   const isArticlePage = /^\/(films|mediations|videos-art|actus)\/[^/]+$/.test(pathname)
@@ -18,8 +19,8 @@ export default function Header() {
   // Détecter les pages de liste
   const isListPage = ['/films', '/mediations', '/videos-art', '/actus'].includes(pathname)
   
-  // Texte blanc pour accueil et articles, noir pour listes
-  const isLightText = isHomePage || isArticlePage
+  // Texte blanc pour accueil, bio et articles, noir pour listes
+  const isLightText = isHomePage || isArticlePage || isBioPage
   
   const { showAnimations } = useAnimation()
   const [isLogoVisible, setIsLogoVisible] = useState(false)
@@ -49,12 +50,12 @@ export default function Header() {
 
   return (
     <header className={`w-full z-[130] top-0 left-0 right-0 ${
-      isHomePage || isArticlePage
+      isHomePage || isArticlePage || isBioPage
         ? 'absolute' 
         : 'fixed md:relative'
     }`}>
       <div className={`flex justify-between items-center px-6 md:px-10 lg:px-16 py-4 relative ${
-        isHomePage || isArticlePage
+        isHomePage || isArticlePage || isBioPage
           ? 'bg-transparent backdrop-blur-none'
           : 'backdrop-blur-xl bg-theme-white/85 border-b border-gray-200'
       }`}>

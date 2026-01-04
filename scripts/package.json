@@ -9,7 +9,8 @@
     "import-videos-art": "node import-videos-art.js",
     "import-films": "node import-films.js",
     "upload-films-images": "node upload-films-images.js",
-    "import-mediations": "node import-mediations.js"
+    "import-mediations": "node import-mediations.js",
+    "reorganize-images": "node reorganize-images.js"
   },
   "dependencies": {
     "axios": "^1.7.7",

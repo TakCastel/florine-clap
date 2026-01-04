@@ -11,6 +11,7 @@ interface VimeoPlayerProps {
   controls?: boolean
   width?: string | number
   height?: string | number
+  title?: string
 }
 
 export default function VimeoPlayer({
@@ -21,7 +22,8 @@ export default function VimeoPlayer({
   loop = false,
   controls = true,
   width = '100%',
-  height = '100%'
+  height = '100%',
+  title
 }: VimeoPlayerProps) {
   const iframeRef = useRef<HTMLIFrameElement>(null)
 
@@ -63,7 +65,8 @@ export default function VimeoPlayer({
         frameBorder="0"
         allow="autoplay; fullscreen; picture-in-picture"
         allowFullScreen
-        title={`Vimeo video ${videoId}`}
+        title={title || `Vimeo video ${videoId}`}
+        aria-label={title || `Vidéo Vimeo ${videoId}`}
       />
     </div>
   )

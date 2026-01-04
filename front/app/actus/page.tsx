@@ -85,7 +85,7 @@ function ActusPageContent() {
   }
 
   return (
-    <div className="min-h-screen bg-theme-white relative overflow-hidden">
+    <main id="main-content" className="min-h-screen bg-theme-white relative overflow-hidden">
       <Breadcrumb 
         items={[
           { label: 'Accueil', href: '/' },
@@ -138,11 +138,16 @@ function ActusPageContent() {
         {/* Champ de recherche */}
         <div className="mb-8">
           <div className="max-w-md">
+            <label htmlFor="search-actus" className="sr-only">
+              Rechercher dans les actualités
+            </label>
             <input
+              id="search-actus"
               type="text"
               placeholder="Rechercher dans les actualités..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
+              aria-label="Rechercher dans les actualités"
               className="w-full px-4 py-3 border border-black/20 rounded-lg focus:outline-none focus:border-black/40 transition-colors text-black placeholder:text-black/40"
             />
           </div>
@@ -279,7 +284,7 @@ function ActusPageContent() {
           </div>
         </div>
       </div>
-    </div>
+    </main>
   )
 }
 

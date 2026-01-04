@@ -4,12 +4,38 @@ import VimeoPlayer from '@/components/VimeoPlayer'
 import ArticleHeroImage from '@/components/ArticleHeroImage'
 import { getVideoArtBySlug, getImageUrl, VideoArt } from '@/lib/directus'
 import { notFound } from 'next/navigation'
+import { buildMetadata, generateJsonLd } from '@/components/Seo'
+import { canonical } from '@/lib/seo'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 60
 
 type VideoArtPageProps = {
   params: Promise<{ slug: string }> | { slug: string }
+}
+
+export async function generateMetadata({ params }: VideoArtPageProps) {
+  const resolvedParams = await Promise.resolve(params)
+  const slug = resolvedParams.slug
+  const videoArt = await getVideoArtBySlug(slug)
+  
+  if (!videoArt) {
+    return {}
+  }
+
+  const imageUrl = getImageUrl(videoArt.image)
+  const canonicalUrl = canonical(`/videos-art/${slug}`)
+  const description = `Découvrez ${videoArt.title}, une vidéo d'art de Florine Clap.`
+
+  return buildMetadata({
+    title: videoArt.title,
+    description,
+    image: imageUrl,
+    canonical: canonicalUrl,
+    type: 'video',
+    publishedTime: videoArt.annee ? `${videoArt.annee}-01-01` : undefined,
+    author: 'Florine Clap',
+  })
 }
 
 export default async function VideoArtPage({ params }: VideoArtPageProps) {
@@ -29,9 +55,25 @@ export default async function VideoArtPage({ params }: VideoArtPageProps) {
   }
   
   const imageUrl = getImageUrl(videoArt.image)
+  const canonicalUrl = canonical(`/videos-art/${slug}`)
+
+  const jsonLd = generateJsonLd({
+    type: 'VideoObject',
+    title: videoArt.title,
+    description: `Découvrez ${videoArt.title}, une vidéo d'art de Florine Clap.`,
+    image: imageUrl,
+    url: canonicalUrl,
+    publishedTime: videoArt.annee ? `${videoArt.annee}-01-01` : undefined,
+    duration: videoArt.duree,
+  })
 
   return (
-    <div className="min-h-screen bg-theme-white text-black">
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <main id="main-content" className="min-h-screen bg-theme-white text-black">
       {/* Image hero avec dégradés pour le header */}
       <ArticleHeroImage imageUrl={imageUrl} alt={videoArt.title} />
       
@@ -71,10 +113,12 @@ export default async function VideoArtPage({ params }: VideoArtPageProps) {
             {/* Image dans l'article */}
             {imageUrl ? (
               <div className="relative w-full aspect-video overflow-hidden mb-8 rounded-lg">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={imageUrl}
-                  alt={videoArt.title}
+                  alt={`Image de couverture de la vidéo d'art ${videoArt.title}`}
                   className="w-full h-full object-cover"
+                  loading="lazy"
                 />
               </div>
             ) : (
@@ -105,6 +149,7 @@ export default async function VideoArtPage({ params }: VideoArtPageProps) {
                   muted={false}
                   loop={false}
                   controls={true}
+                  title={`Vidéo d'art ${videoArt.title}`}
                 />
               </div>
             ) : videoArt.video_url ? (
@@ -113,6 +158,7 @@ export default async function VideoArtPage({ params }: VideoArtPageProps) {
                   src={videoArt.video_url}
                   controls
                   className="w-full h-full object-contain"
+                  aria-label={`Vidéo d'art ${videoArt.title}`}
                 >
                   Votre navigateur ne supporte pas la lecture de vidéos.
                 </video>
@@ -196,6 +242,7 @@ export default async function VideoArtPage({ params }: VideoArtPageProps) {
               <div className="border-t border-black/10 pt-8 mt-8">
                 <a 
                   href="/videos-art"
+                  aria-label="Retour à la liste des vidéos d'art"
                   className="inline-flex items-center gap-2 text-black/70 hover:text-black transition-colors font-display font-light text-sm uppercase tracking-[0.1em]"
                 >
                   ← Retour aux vidéos/art
@@ -205,7 +252,8 @@ export default async function VideoArtPage({ params }: VideoArtPageProps) {
           </div>
         </div>
       </div>
-    </div>
+      </main>
+    </>
   )
 }
 

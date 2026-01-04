@@ -11,6 +11,7 @@ import ScrollToTop from '@/components/ScrollToTop'
 export default function LayoutWrapper({ children }: { children: React.ReactNode }) {
   const pathname = usePathname()
   const isHomePage = pathname === '/'
+  const isBioPage = pathname === '/bio'
   // Détecter les pages articles (avec slug)
   const isArticlePage = /^\/(films|mediations|videos-art|actus)\/[^/]+$/.test(pathname)
   
@@ -18,7 +19,7 @@ export default function LayoutWrapper({ children }: { children: React.ReactNode 
     <AnimationProvider>
       <ScrollToTop />
       <Header />
-      <main className={isHomePage || isArticlePage ? '' : 'pt-16 md:pt-0'}>
+      <main className={isHomePage || isArticlePage || isBioPage ? '' : 'pt-16 md:pt-0'}>
         <PageTransition>
           {children}
         </PageTransition>

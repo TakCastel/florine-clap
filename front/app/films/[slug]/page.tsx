@@ -4,12 +4,38 @@ import VimeoPlayer from '@/components/VimeoPlayer'
 import ArticleHeroImage from '@/components/ArticleHeroImage'
 import { getFilmBySlug, getImageUrl, Film } from '@/lib/directus'
 import { notFound } from 'next/navigation'
+import { buildMetadata, generateJsonLd } from '@/components/Seo'
+import { canonical } from '@/lib/seo'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 60
 
 type FilmPageProps = {
   params: Promise<{ slug: string }> | { slug: string }
+}
+
+export async function generateMetadata({ params }: FilmPageProps) {
+  const resolvedParams = await Promise.resolve(params)
+  const slug = resolvedParams.slug
+  const film = await getFilmBySlug(slug)
+  
+  if (!film) {
+    return {}
+  }
+
+  const imageUrl = getImageUrl(film.heading || film.image)
+  const canonicalUrl = canonical(`/films/${slug}`)
+  const description = film.short_synopsis || film.shortSynopsis || `Découvrez ${film.title}, un film de Florine Clap.`
+
+  return buildMetadata({
+    title: film.title,
+    description,
+    image: imageUrl,
+    canonical: canonicalUrl,
+    type: 'article',
+    publishedTime: film.annee ? `${film.annee}-01-01` : undefined,
+    author: 'Florine Clap',
+  })
 }
 
 export default async function FilmPage({ params }: FilmPageProps) {
@@ -30,9 +56,25 @@ export default async function FilmPage({ params }: FilmPageProps) {
   
   const imageUrl = getImageUrl(film.image)
   const headingImageUrl = getImageUrl(film.heading)
+  const canonicalUrl = canonical(`/films/${slug}`)
+
+  const jsonLd = generateJsonLd({
+    type: 'Article',
+    title: film.title,
+    description: film.short_synopsis || film.shortSynopsis || `Découvrez ${film.title}, un film de Florine Clap.`,
+    image: headingImageUrl || imageUrl,
+    url: canonicalUrl,
+    publishedTime: film.annee ? `${film.annee}-01-01` : undefined,
+    author: 'Florine Clap',
+  })
 
   return (
-    <div className="min-h-screen bg-theme-white text-black">
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <main id="main-content" className="min-h-screen bg-theme-white text-black">
       {/* Image hero avec dégradés pour le header */}
       <ArticleHeroImage imageUrl={headingImageUrl} alt={film.title} />
       
@@ -57,10 +99,12 @@ export default async function FilmPage({ params }: FilmPageProps) {
             {/* Image de couverture dans l'article */}
             {imageUrl ? (
               <div className="relative w-full aspect-video overflow-hidden mb-8">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={imageUrl}
-                  alt={film.title}
+                  alt={`Image de couverture du film ${film.title}`}
                   className="w-full h-full object-cover"
+                  loading="lazy"
                 />
               </div>
             ) : (
@@ -91,6 +135,7 @@ export default async function FilmPage({ params }: FilmPageProps) {
                   muted={false}
                   loop={false}
                   controls={true}
+                  title={`Vidéo du film ${film.title}`}
                 />
               </div>
             ) : film.video_url ? (
@@ -99,6 +144,7 @@ export default async function FilmPage({ params }: FilmPageProps) {
                   src={film.video_url}
                   controls
                   className="w-full h-full object-contain"
+                  aria-label={`Vidéo du film ${film.title}`}
                 >
                   Votre navigateur ne supporte pas la lecture de vidéos.
                 </video>
@@ -250,6 +296,7 @@ export default async function FilmPage({ params }: FilmPageProps) {
                     href={film.lien_film}
                     target="_blank"
                     rel="noopener noreferrer"
+                    aria-label={`Voir le film ${film.title} sur le site externe`}
                     className="inline-flex items-center gap-2 text-black/70 hover:text-black transition-colors font-display font-light text-sm uppercase tracking-[0.1em]"
                   >
                     Voir le film →
@@ -274,6 +321,7 @@ export default async function FilmPage({ params }: FilmPageProps) {
               <div className="border-t border-black/10 pt-8 mt-8">
                 <a 
                   href="/films"
+                  aria-label="Retour à la liste des films"
                   className="inline-flex items-center gap-2 text-black/70 hover:text-black transition-colors font-display font-light text-sm uppercase tracking-[0.1em]"
                 >
                   ← Retour aux films
@@ -283,6 +331,7 @@ export default async function FilmPage({ params }: FilmPageProps) {
           </div>
         </div>
       </div>
-    </div>
+      </main>
+    </>
   )
 }

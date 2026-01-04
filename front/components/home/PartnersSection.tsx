@@ -30,9 +30,6 @@ export default function PartnersSection() {
           />
         </Reveal>
       </div>
-
-      {/* Ligne décorative horizontale */}
-      <div className="absolute bottom-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-black/10 to-transparent"></div>
     </section>
   )
 }

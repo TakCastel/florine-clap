@@ -55,7 +55,7 @@ export default function ContentListPage({
   const sortedItems = items
 
   return (
-    <div className="min-h-screen bg-theme-white text-black relative">
+    <main id="main-content" className="min-h-screen bg-theme-white text-black relative">
       <Breadcrumb 
         items={[
           { label: 'Accueil', href: '/' },
@@ -122,7 +122,7 @@ export default function ContentListPage({
           </div>
         </div>
       </div>
-    </div>
+    </main>
   )
 }
 
