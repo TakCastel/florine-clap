@@ -19,23 +19,26 @@ export default function directusImageLoader({ src, width, quality }) {
     return `/_next/image?${params.toString()}`
   }
   
-  // Pour les URLs Directus (localhost:8055 ou directus:8055), retourner l'URL directement
+  // Pour les URLs Directus (détectées par le pattern /assets/), retourner l'URL directement
   // sans passer par l'optimisation Next.js car elle ne peut pas accéder à Directus dans Docker
-  if (src.startsWith('http://localhost:8055') || src.startsWith('http://directus:8055')) {
-    // Ajouter les paramètres de transformation Directus si nécessaire
-    // Directus supporte les transformations d'images via query params
-    const url = new URL(src)
-    if (width) {
-      url.searchParams.set('width', width.toString())
-    }
-    if (quality) {
-      url.searchParams.set('quality', quality.toString())
-    }
-    return url.toString()
-  }
-  
-  // Pour les autres URLs externes, utiliser l'optimisation Next.js
+  // et pour éviter les problèmes de CORS/réseau en production
   if (src.startsWith('http://') || src.startsWith('https://')) {
+    // Détecter si c'est une URL Directus (contient /assets/)
+    const isDirectusUrl = src.includes('/assets/')
+    
+    if (isDirectusUrl) {
+      // Pour les URLs Directus, retourner directement avec les paramètres de transformation
+      const url = new URL(src)
+      if (width) {
+        url.searchParams.set('width', width.toString())
+      }
+      if (quality) {
+        url.searchParams.set('quality', quality.toString())
+      }
+      return url.toString()
+    }
+    
+    // Pour les autres URLs externes (non-Directus), utiliser l'optimisation Next.js
     const params = new URLSearchParams()
     params.set('url', src)
     if (width) params.set('w', width.toString())
