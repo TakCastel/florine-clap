@@ -126,11 +126,9 @@ export default function CategoriesSection({ homeSettings }: CategoriesSectionPro
       }
       
       // Petit délai pour s'assurer que les images commencent à charger avant l'animation
-      const timer = setTimeout(() => {
+      setTimeout(() => {
         setIsReady(true)
       }, 50)
-      
-      return () => clearTimeout(timer)
     }
 
     fetchCategoryImages()
