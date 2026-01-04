@@ -57,8 +57,11 @@ export const metadata: Metadata = {
     },
   },
   icons: {
-    icon: '/favicon.ico',
-    apple: '/favicon.ico',
+    icon: [
+      { url: '/favicon.png', sizes: '32x32', type: 'image/png' },
+      { url: '/favicon.png', sizes: '180x180', type: 'image/png' },
+    ],
+    apple: '/favicon.png',
   },
   alternates: {
     canonical: siteUrl,
@@ -82,9 +85,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           `
         }} />
         
-        {/* Favicon - commenté car le fichier n'existe pas encore */}
-        {/* <link rel="icon" type="image/png" href="/favicon.png" sizes="32x32" /> */}
-        {/* <link rel="apple-touch-icon" href="/favicon.png" sizes="180x180" /> */}
+        {/* Favicon */}
+        <link rel="icon" type="image/png" href="/favicon.png" sizes="32x32" />
+        <link rel="apple-touch-icon" href="/favicon.png" sizes="180x180" />
         <link rel="manifest" href="/manifest.json" />
       </head>
       <body className="bg-theme-white font-sans">
