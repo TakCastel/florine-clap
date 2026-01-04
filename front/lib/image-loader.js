@@ -10,9 +10,19 @@ export default function directusImageLoader({ src, width, quality }) {
     return src
   }
   
+  // Si c'est un chemin statique (commence par /), le retourner tel quel
+  // Les images du dossier public sont servies directement par Next.js
+  if (src.startsWith('/')) {
+    return src
+  }
+  
   // Si c'est un UUID, construire l'URL Directus
   if (src.match(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i)) {
     const directusUrl = process.env.NEXT_PUBLIC_DIRECTUS_URL || (process.env.NODE_ENV === 'development' ? 'http://localhost:8055' : '')
+    if (!directusUrl) {
+      console.error('NEXT_PUBLIC_DIRECTUS_URL is not defined for Directus image')
+      return src
+    }
     return `${directusUrl}/assets/${src}`
   }
   
