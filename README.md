@@ -60,7 +60,14 @@ npm run setup-permissions  # Configure les permissions publiques
 
 ```bash
 cd scripts
-npm run import-videos-art -- --file ../videos-art-data.json
+# Importer des vidéos d'art (remplacez par votre fichier JSON)
+npm run import-videos-art -- --file /chemin/vers/votre-fichier.json
+
+# Importer des films
+npm run import-films -- --file /chemin/vers/votre-fichier.json
+
+# Importer des médiations
+npm run import-mediations -- --file /chemin/vers/votre-fichier.json
 ```
 
 ## 🛠️ Commandes utiles
