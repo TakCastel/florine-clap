@@ -80,42 +80,41 @@ export default async function BioPage() {
           {page.title === "A propos" ? "Bio" : page.title}
         </h1>
         
-        {/* Breadcrumb - après le header */}
-        <div className="relative z-50 pt-20 pb-6">
-          <div className="max-w-7xl mx-auto px-6 md:px-10 lg:px-16">
-            <Breadcrumb 
-              items={[
-                { label: 'Accueil', href: '/' },
-                { label: 'Bio' }
-              ]}
-              variant="default"
+        {/* Breadcrumb - juste après le header */}
+        <div className="max-w-7xl mx-auto px-6 md:px-10 lg:px-16 py-4">
+          <Breadcrumb 
+            items={[
+              { label: 'Accueil', href: '/' },
+              { label: 'Bio' }
+            ]}
+            variant="default"
+          />
+        </div>
+
+        {/* Image - dans le même conteneur que le contenu */}
+        <div className="max-w-7xl mx-auto px-6 md:px-10 lg:px-16">
+          <div className="w-full overflow-hidden">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={imageUrl}
+              alt="Portrait de Florine Clap"
+              className="w-full h-auto object-cover"
+              loading="eager"
+              fetchPriority="high"
             />
           </div>
         </div>
 
-        {/* Image full width - après le breadcrumb */}
-        {/* Utiliser un img standard pour les images statiques du dossier public */}
-        <div className="relative w-full h-[45vh] min-h-[300px] overflow-hidden">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={imageUrl}
-            alt="Portrait de Florine Clap"
-            className="w-full h-full object-cover"
-            loading="eager"
-            fetchPriority="high"
-          />
-        </div>
-
-      {/* Contenu Markdown principal - après l'image */}
-      <section className="relative py-16 md:py-24 bg-theme-white">
-        <div className="max-w-7xl mx-auto px-6 md:px-10 lg:px-16">
-          {page.body && (
-            <div className="prose prose-lg max-w-none text-theme-dark [&_p]:text-justify [&_li]:text-justify">
-              <MarkdownRenderer content={page.body} />
-            </div>
-          )}
-        </div>
-      </section>
+        {/* Contenu Markdown principal - après l'image */}
+        <section className="py-16 md:py-24 bg-theme-white">
+          <div className="max-w-7xl mx-auto px-6 md:px-10 lg:px-16">
+            {page.body && (
+              <div className="prose prose-lg max-w-none text-theme-dark [&_p]:text-justify [&_li]:text-justify">
+                <MarkdownRenderer content={page.body} />
+              </div>
+            )}
+          </div>
+        </section>
 
         {/* Section Partenaires */}
         <PartnersSection />
