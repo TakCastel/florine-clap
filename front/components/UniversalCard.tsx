@@ -67,7 +67,7 @@ export default function UniversalCard({
     return (
       <Link href={href} className="group block">
         <article 
-          className="relative overflow-hidden transition-all duration-700 ease-out bg-black rounded-3xl md:rounded-[2rem] group-hover:shadow-2xl group-hover:shadow-black/40"
+          className="relative overflow-hidden transition-all duration-700 ease-out bg-black group-hover:shadow-2xl group-hover:shadow-black/40"
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
         >
@@ -108,7 +108,7 @@ export default function UniversalCard({
               <div className="max-w-2xl">
                 {/* Métadonnées */}
                 {meta.length > 0 && (
-                  <div className="flex flex-wrap items-center gap-3 md:gap-4 text-white/80 text-sm mb-6 opacity-90 group-hover:opacity-100 transition-opacity duration-500">
+                  <div className="flex flex-wrap items-center gap-3 md:gap-4 text-white/80 text-xs mb-6 opacity-90 group-hover:opacity-100 transition-opacity duration-500">
                     {meta.map((item, index) => (
                       <span key={index} className="flex items-center gap-2 bg-white/10 backdrop-blur-xl px-4 md:px-5 py-2.5 rounded-full border border-white/20 whitespace-nowrap shadow-lg">
                         {item.icon && <item.icon className="w-4 h-4" />}
@@ -119,7 +119,7 @@ export default function UniversalCard({
                 )}
 
                 {/* Titre */}
-                <h3 className="heading-light mb-5">
+                <h3 className="text-[clamp(1.5rem,2.5vw,2.5rem)] font-bold leading-[1.15] tracking-[-0.03em] text-white mb-5">
                   {title}
                 </h3>
 
@@ -135,7 +135,7 @@ export default function UniversalCard({
 
                 {/* Description */}
                 {description && (
-                  <p className="body-text-light mb-8 line-clamp-2">
+                  <p className="text-base leading-relaxed font-normal text-white/92 mb-8 line-clamp-2">
                     {description}
                   </p>
                 )}
@@ -158,7 +158,7 @@ export default function UniversalCard({
   return (
     <Link href={href} className={`group block h-full ${className}`}>
       <article 
-        className={`relative w-full h-full overflow-hidden bg-gray-900 cursor-pointer ${getAspectRatioClass()} rounded-3xl md:rounded-[2rem] transition-all duration-500 ease-out group-hover:shadow-2xl group-hover:shadow-black/40`}
+        className={`relative w-full h-full overflow-hidden bg-gray-900 cursor-pointer ${getAspectRatioClass()} transition-all duration-500 ease-out group-hover:shadow-2xl group-hover:shadow-black/40`}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
@@ -218,7 +218,7 @@ export default function UniversalCard({
 
           {/* Titre */}
           <h3 
-            className="heading-subtitle text-white leading-tight line-clamp-2 mb-2 transition-colors duration-300 group-hover:scale-[1.02] origin-left"
+            className="text-lg md:text-xl font-bold tracking-tight leading-tight text-white line-clamp-2 mb-2 transition-colors duration-300 group-hover:scale-[1.02] origin-left"
           >
             {title}
           </h3>
@@ -229,7 +229,7 @@ export default function UniversalCard({
           {/* Description (si présente) */}
           {description && (
             <div className="overflow-hidden transition-all duration-500 max-h-0 opacity-0 group-hover:max-h-[80px] group-hover:opacity-100 mb-2">
-              <p className="text-white/90 text-sm line-clamp-2">
+              <p className="text-white/90 text-xs line-clamp-2">
                 {description}
               </p>
             </div>
@@ -247,7 +247,7 @@ export default function UniversalCard({
         </div>
         
         {/* Bordure fine au survol */}
-        <div className="absolute inset-0 border-[2px] border-white/0 transition-all duration-500 z-30 pointer-events-none group-hover:border-white/30 group-hover:inset-2 rounded-2xl md:rounded-[1.5rem]" />
+        <div className="absolute inset-0 border-[2px] border-white/0 transition-all duration-500 z-30 pointer-events-none group-hover:border-white/30 group-hover:inset-2" />
       </article>
     </Link>
   )

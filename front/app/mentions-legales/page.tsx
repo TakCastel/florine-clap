@@ -18,11 +18,11 @@ export default function MentionsLegalesPage() {
   return (
     <main id="main-content" className="min-h-screen bg-theme-white text-black">
       <div className="max-w-4xl mx-auto px-6 md:px-10 lg:px-16 py-16 md:py-24">
-        <h1 className="heading-page text-black mb-8">Mentions légales</h1>
+        <h1 className="text-xl md:text-2xl font-bold tracking-tight leading-tight text-black mb-8">Mentions légales</h1>
         
-        <div className="prose prose-lg max-w-none text-black [&_p]:text-justify [&_li]:text-justify">
+        <div className="prose max-w-none text-base text-black [&_p]:text-justify [&_li]:text-justify">
           <section className="mb-8">
-            <h2 className="heading-section text-black mb-4">Éditeur du site</h2>
+            <h2 className="text-2xl md:text-3xl font-bold tracking-tight leading-tight text-black mb-4">Éditeur du site</h2>
             <p>
               Le site <strong>florineclap.com</strong> est édité par :
             </p>
@@ -33,7 +33,7 @@ export default function MentionsLegalesPage() {
           </section>
 
           <section className="mb-8">
-            <h2 className="heading-section text-black mb-4">Conception et développement</h2>
+            <h2 className="text-2xl md:text-3xl font-bold tracking-tight leading-tight text-black mb-4">Conception et développement</h2>
             <p>
               Ce site a été conçu et développé par :
             </p>
@@ -51,7 +51,7 @@ export default function MentionsLegalesPage() {
           </section>
 
           <section className="mb-8">
-            <h2 className="heading-section text-black mb-4">Hébergement</h2>
+            <h2 className="text-2xl md:text-3xl font-bold tracking-tight leading-tight text-black mb-4">Hébergement</h2>
             <p>
               Ce site est hébergé par :
             </p>
@@ -76,7 +76,7 @@ export default function MentionsLegalesPage() {
           </section>
 
           <section className="mb-8">
-            <h2 className="heading-section text-black mb-4">Propriété intellectuelle</h2>
+            <h2 className="text-2xl md:text-3xl font-bold tracking-tight leading-tight text-black mb-4">Propriété intellectuelle</h2>
             <p>
               L'ensemble de ce site relève de la législation française et internationale sur le droit d'auteur et la propriété intellectuelle. 
               Tous les droits de reproduction sont réservés, y compris pour les documents téléchargeables et les représentations iconographiques et photographiques.
@@ -90,7 +90,7 @@ export default function MentionsLegalesPage() {
           </section>
 
           <section className="mb-8">
-            <h2 className="heading-section text-black mb-4">Protection des données personnelles</h2>
+            <h2 className="text-2xl md:text-3xl font-bold tracking-tight leading-tight text-black mb-4">Protection des données personnelles</h2>
             <p>
               Conformément à la loi « Informatique et Libertés » du 6 janvier 1978 modifiée et au Règlement Général sur la Protection des Données (RGPD), 
               vous disposez d'un droit d'accès, de rectification, de suppression et d'opposition aux données personnelles vous concernant.
@@ -108,7 +108,7 @@ export default function MentionsLegalesPage() {
           </section>
 
           <section className="mb-8">
-            <h2 className="heading-section text-black mb-4">Cookies</h2>
+            <h2 className="text-2xl md:text-3xl font-bold tracking-tight leading-tight text-black mb-4">Cookies</h2>
             <p>
               Ce site utilise des cookies pour améliorer l'expérience utilisateur et analyser le trafic du site. 
               Les cookies sont de petits fichiers texte stockés sur votre appareil lorsque vous visitez un site web.
@@ -120,7 +120,7 @@ export default function MentionsLegalesPage() {
           </section>
 
           <section className="mb-8">
-            <h2 className="heading-section text-black mb-4">Liens externes</h2>
+            <h2 className="text-2xl md:text-3xl font-bold tracking-tight leading-tight text-black mb-4">Liens externes</h2>
             <p>
               Ce site peut contenir des liens vers d'autres sites web. 
               Nous ne sommes pas responsables du contenu ou des pratiques de confidentialité de ces sites externes.
@@ -133,7 +133,7 @@ export default function MentionsLegalesPage() {
           </section>
 
           <section className="mb-8">
-            <h2 className="heading-section text-black mb-4">Responsabilité</h2>
+            <h2 className="text-2xl md:text-3xl font-bold tracking-tight leading-tight text-black mb-4">Responsabilité</h2>
             <p>
               L'éditeur du site s'efforce d'assurer l'exactitude et la mise à jour des informations diffusées sur ce site, 
               dont il se réserve le droit de corriger, à tout moment et sans préavis, le contenu.
@@ -147,7 +147,7 @@ export default function MentionsLegalesPage() {
           </section>
 
           <section className="mb-8">
-            <h2 className="heading-section text-black mb-4">Droit applicable</h2>
+            <h2 className="text-2xl md:text-3xl font-bold tracking-tight leading-tight text-black mb-4">Droit applicable</h2>
             <p>
               Les présentes mentions légales sont régies par le droit français. 
               En cas de litige et à défaut d'accord amiable, le litige sera porté devant les tribunaux français conformément aux règles de compétence en vigueur.

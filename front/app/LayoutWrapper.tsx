@@ -5,7 +5,6 @@ import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import BackToTop from '@/components/BackToTop'
 import { AnimationProvider } from '@/contexts/AnimationContext'
-import PageTransition from '@/components/PageTransition'
 import ScrollToTop from '@/components/ScrollToTop'
 
 export default function LayoutWrapper({ children }: { children: React.ReactNode }) {
@@ -20,9 +19,7 @@ export default function LayoutWrapper({ children }: { children: React.ReactNode 
       <ScrollToTop />
       <Header />
       <main className={isHomePage || isArticlePage || isBioPage ? '' : 'pt-16 md:pt-0'}>
-        <PageTransition>
-          {children}
-        </PageTransition>
+        {children}
       </main>
       <Footer />
       <BackToTop />

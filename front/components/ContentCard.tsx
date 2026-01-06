@@ -20,6 +20,31 @@ export type ContentCardProps = {
   className?: string
 }
 
+// Fonction pour extraire le texte du markdown/HTML et le limiter
+const truncateText = (text: string | undefined, maxLength: number = 150): string | undefined => {
+  if (!text) return undefined
+  
+  // Enlever le markdown et les balises HTML
+  const cleanText = text
+    .replace(/^#+\s+/gm, '') // Enlever les titres markdown
+    .replace(/\[([^\]]+)\]\([^\)]+\)/g, '$1') // Enlever les liens markdown
+    .replace(/[#*_`\[\]()]/g, '') // Enlever les caractères markdown
+    .replace(/<[^>]*>/g, '') // Enlever les balises HTML
+    .replace(/\n+/g, ' ') // Remplacer les sauts de ligne par des espaces
+    .trim()
+  
+  if (cleanText.length <= maxLength) {
+    return cleanText
+  }
+  
+  // Tronquer à la dernière espace avant maxLength pour éviter de couper un mot
+  const truncated = cleanText.substring(0, maxLength)
+  const lastSpace = truncated.lastIndexOf(' ')
+  const finalText = lastSpace > 0 ? truncated.substring(0, lastSpace) : truncated
+  
+  return finalText + '...'
+}
+
 export default function ContentCard({
   href,
   title,
@@ -34,6 +59,12 @@ export default function ContentCard({
   className = ''
 }: ContentCardProps) {
   const [isHovered, setIsHovered] = useState(false)
+  
+  // Limiter la description à 150 caractères
+  const truncatedDescription = truncateText(description, 150)
+  
+  // Blur placeholder générique (10x10px base64)
+  const blurDataURL = 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=='
 
   // Détermination des couleurs selon le thème - tout en noir et blanc
   const getThemeColorClass = () => {
@@ -62,6 +93,8 @@ export default function ContentCard({
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                 className={`object-cover transition-opacity duration-500 ease-out ${isHovered ? 'opacity-20' : 'opacity-100'}`}
                 priority={false}
+                placeholder="blur"
+                blurDataURL={blurDataURL}
               />
             </div>
           ) : (
@@ -122,7 +155,7 @@ export default function ContentCard({
 
           {/* Titre */}
           <h3 
-            className="heading-subtitle text-white leading-tight line-clamp-2 mb-2 transition-colors duration-300 group-hover:scale-[1.02] origin-left"
+            className="text-lg md:text-xl font-bold tracking-tight leading-tight text-white line-clamp-2 mb-2 transition-colors duration-300 group-hover:scale-[1.02] origin-left"
           >
             {title}
           </h3>
@@ -131,10 +164,10 @@ export default function ContentCard({
           <div className="h-[3px] bg-white/40 overflow-hidden rounded-full w-16 group-hover:w-full transition-all duration-500 ease-out mb-4"></div>
           
           {/* Description (optionnelle) */}
-          {description && (
+          {truncatedDescription && (
             <div className="overflow-hidden transition-all duration-500 max-h-0 opacity-0 group-hover:max-h-[80px] group-hover:opacity-100 mb-2">
-              <p className="text-white/90 text-sm leading-relaxed line-clamp-2">
-                {description}
+              <p className="text-white/90 text-base leading-relaxed line-clamp-2">
+                {truncatedDescription}
               </p>
             </div>
           )}

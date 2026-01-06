@@ -41,7 +41,7 @@ export default function VideosArtClient({ videoArts }: VideosArtClientProps) {
             }}
           >
             <h1 
-              className="heading-display text-black"
+              className="text-2xl md:text-3xl font-bold tracking-tight leading-tight text-black"
             >
               Vidéos/art
             </h1>
@@ -59,7 +59,7 @@ export default function VideosArtClient({ videoArts }: VideosArtClientProps) {
           </div>
 
           <p 
-            className="body-text text-black/80 mt-6 max-w-2xl"
+            className="text-base leading-relaxed font-normal text-black/80 mt-6 max-w-2xl"
             style={{
               opacity: isVisible ? 1 : 0,
               transform: isVisible ? 'translateY(0)' : 'translateY(8px)',
@@ -78,7 +78,7 @@ export default function VideosArtClient({ videoArts }: VideosArtClientProps) {
                 href={`/videos-art/${videoArt.slug}`}
                 title={videoArt.title}
                 cover={getImageUrl(videoArt.image) || undefined}
-                synopsis={videoArt.short_synopsis}
+                body={videoArt.body}
                 duree={videoArt.duree}
                 annee={videoArt.annee}
                 vimeoId={videoArt.vimeo_id}
@@ -91,10 +91,10 @@ export default function VideosArtClient({ videoArts }: VideosArtClientProps) {
         {/* Contenu SEO */}
         <div className="mt-24 pt-12 border-t border-black/10">
           <div className="max-w-4xl">
-            <h2 className="heading-section text-black mb-6">
+            <h2 className="text-2xl md:text-3xl font-bold tracking-tight leading-tight text-black mb-6">
               Mes créations vidéo artistiques
             </h2>
-            <p className="body-text text-black/80">
+            <p className="text-base leading-relaxed font-normal text-black/80">
               Découvrez mes vidéos artistiques qui explorent les frontières entre le cinéma et l'art contemporain. 
               Chaque création est une invitation à expérimenter de nouvelles formes narratives et visuelles.
             </p>
@@ -104,4 +104,6 @@ export default function VideosArtClient({ videoArts }: VideosArtClientProps) {
     </div>
   )
 }
+
+
 

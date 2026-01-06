@@ -36,16 +36,12 @@ export default function ImmersiveFilmCard({
     <Link href={href} className={`group block w-full ${className}`}>
       <article 
         // Ajout de transform-gpu et isolation-isolate pour forcer le compositing layer
-        className="relative w-full h-[55vh] md:h-[65vh] overflow-hidden bg-theme-white cursor-pointer rounded-3xl md:rounded-[2rem] transition-all duration-500 ease-out group-hover:shadow-2xl group-hover:shadow-black/40 transform-gpu isolation-isolate"
-        style={{
-          WebkitMaskImage: '-webkit-radial-gradient(white, black)', // Fix Safari border-radius clipping
-          maskImage: 'radial-gradient(white, black)'
-        }}
+        className="relative w-full h-[55vh] md:h-[65vh] overflow-hidden bg-theme-white cursor-pointer transition-all duration-500 ease-out group-hover:shadow-2xl group-hover:shadow-black/40 transform-gpu isolation-isolate"
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
         {/* Bordure fusionnée directement ici pour éviter le décalage */}
-        <div className="absolute inset-0 border-[2px] border-white/0 transition-colors duration-500 z-40 pointer-events-none group-hover:border-white/30 rounded-3xl md:rounded-[2rem]" />
+        <div className="absolute inset-0 border-[2px] border-white/0 transition-colors duration-500 z-40 pointer-events-none group-hover:border-white/30" />
 
         {/* 1. IMAGE DE FOND */}
         <div className="absolute inset-0 z-0">
@@ -109,7 +105,7 @@ export default function ImmersiveFilmCard({
 
           {/* Titre */}
           <h3 
-            className="heading-display text-3xl md:text-5xl text-white leading-tight mb-4 transition-transform duration-500 ease-in-out group-hover:translate-x-2 origin-left"
+            className="text-2xl md:text-3xl font-bold tracking-tight leading-tight text-white mb-4 transition-transform duration-500 ease-in-out group-hover:translate-x-2 origin-left"
           >
             {title}
           </h3>
@@ -120,7 +116,7 @@ export default function ImmersiveFilmCard({
           {/* Description (optionnelle) */}
           {synopsis && (
             <div className={`overflow-hidden transition-all duration-500 ease-in-out ${isHovered ? 'max-h-[200px] opacity-100 mb-6' : 'max-h-0 opacity-0'}`}>
-              <p className="text-white/90 text-base md:text-lg leading-relaxed line-clamp-3 font-light max-w-2xl">
+              <p className="text-white/90 text-base leading-relaxed line-clamp-3 font-light max-w-2xl">
                 {synopsis}
               </p>
             </div>

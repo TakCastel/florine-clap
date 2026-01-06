@@ -7,7 +7,7 @@ type VideoArtCardProps = {
   href: string
   title: string
   cover?: string
-  synopsis?: string
+  body?: string
   duree?: string
   annee?: string
   vimeoId?: string
@@ -18,7 +18,7 @@ export default function VideoArtCard({
   href, 
   title, 
   cover, 
-  synopsis, 
+  body, 
   duree,
   annee,
   vimeoId,
@@ -29,7 +29,7 @@ export default function VideoArtCard({
       href={href}
       title={title}
       imageSrc={cover}
-      description={synopsis}
+      description={body}
       duration={duree}
       date={annee}
       theme="videos-art"

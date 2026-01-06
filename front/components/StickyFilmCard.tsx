@@ -11,7 +11,7 @@ type StickyFilmCardProps = {
     slug: string
     title: string
     image?: string
-    shortSynopsis?: string
+    body?: string
     duree?: string
     annee?: string
     vimeoId?: string
@@ -50,7 +50,7 @@ export const StickyFilmCard = ({
           href={`/films/${film.slug}`}
           title={film.title}
           cover={film.image}
-          synopsis={film.shortSynopsis}
+          body={film.body}
           duree={film.duree}
           annee={film.annee}
           vimeoId={film.vimeoId}

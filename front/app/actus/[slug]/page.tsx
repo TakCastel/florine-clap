@@ -1,7 +1,7 @@
 import MarkdownRenderer from '@/components/MarkdownRenderer'
 import Breadcrumb from '@/components/Breadcrumb'
 import ArticleHeroImage from '@/components/ArticleHeroImage'
-import StickySidebar from '@/components/StickySidebar'
+import StickyAside from '@/components/StickyAside'
 import { getActuBySlug, getImageUrl, Actu } from '@/lib/directus'
 import { notFound } from 'next/navigation'
 import { buildMetadata, generateJsonLd } from '@/components/Seo'
@@ -40,7 +40,6 @@ export async function generateMetadata({ params }: ActuPageProps) {
 }
 
 export default async function ActuPage({ params }: ActuPageProps) {
-  // Gérer les params synchrones et asynchrones (Next.js 14+)
   const resolvedParams = await Promise.resolve(params)
   const slug = resolvedParams.slug
   
@@ -51,7 +50,6 @@ export default async function ActuPage({ params }: ActuPageProps) {
   const actu = await getActuBySlug(slug)
   
   if (!actu) {
-    console.error(`Actu not found for slug: ${slug}`)
     notFound()
   }
   
@@ -74,79 +72,66 @@ export default async function ActuPage({ params }: ActuPageProps) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <main id="main-content" className="min-h-screen bg-theme-white text-black">
-      {/* Image hero avec dégradés pour le header */}
       <ArticleHeroImage imageUrl={coverUrl} alt={actu.title} />
       
-      {/* Breadcrumb positionné sur l'image */}
-      <div className="absolute top-20 left-0 right-0 z-50">
-        <Breadcrumb 
-          items={[
-            { label: 'Accueil', href: '/' },
-            { label: 'Actualités', href: '/actus' },
-            { label: actu.title }
-          ]}
-          variant="default"
-        />
-      </div>
+      <Breadcrumb 
+        items={[
+          { label: 'Accueil', href: '/' },
+          { label: 'Actualités', href: '/actus' },
+          { label: actu.title }
+        ]}
+        variant="default"
+      />
 
-      {/* Contenu principal */}
-      <div className="relative z-30 max-w-7xl mx-auto px-6 md:px-10 lg:px-16 py-16 md:py-24 -mt-6 md:-mt-12">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 items-start">
+      <div className="max-w-7xl mx-auto px-6 md:px-10 lg:px-16 py-16 md:py-24 grid grid-cols-1 lg:grid-cols-3 gap-12 lg:items-start" style={{ overflow: 'visible' }}>
+        <article className="lg:col-span-2">
+          {coverUrl && (
+            <img
+              src={coverUrl}
+              alt={`Image de couverture de l'article ${actu.title}`}
+              className="w-full h-auto object-contain mb-8"
+              loading="lazy"
+            />
+          )}
           
-          {/* Contenu principal */}
-          <div className="lg:col-span-2">
-            {/* Contenu Markdown - on ignore le premier h1 pour éviter le doublon avec le titre du hero */}
-            {actu.body && (
-              <div className="prose prose-lg max-w-none text-black mb-12 [&_p]:text-justify [&_li]:text-justify">
-                <MarkdownRenderer content={actu.body} skipFirstHeading={true} />
-              </div>
-            )}
-          </div>
+          {actu.body && (
+            <div className="prose max-w-none text-base text-black mb-12 [&_p]:text-justify [&_li]:text-justify">
+              <MarkdownRenderer content={actu.body} shiftHeadings={true} />
+            </div>
+          )}
+        </article>
 
-          {/* Sidebar avec informations */}
-          <div className="lg:col-span-1">
-            <StickySidebar top={32}>
-              <div className="border-t border-black/10 pt-8">
-                <h3 className="heading-subtitle text-black mb-6">
-                  Informations
-                </h3>
-                
-                <div className="space-y-6">
-                  {/* Tags */}
-                  {actu.tags && actu.tags.length > 0 && (
-                    <div>
-                      <p className="text-sm text-black font-display font-medium uppercase tracking-[0.05em] mb-3">Tags</p>
-                      <div className="flex flex-wrap gap-2">
-                        {actu.tags.map((tag, index) => (
-                          <span 
-                            key={index}
-                            className="px-4 py-2 bg-black text-white text-sm font-display font-medium uppercase tracking-[0.05em]"
-                          >
-                            {tag}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Retour aux actualités */}
-                  <div className="pt-6 border-t border-black/10">
-                    <a 
-                      href="/actus"
-                      aria-label="Retour à la liste des actualités"
-                      className="inline-flex items-center gap-2 text-black/70 hover:text-black transition-colors font-display font-light text-sm uppercase tracking-[0.1em]"
-                    >
-                      ← Retour aux actualités
-                    </a>
-                  </div>
-                </div>
+        <StickyAside className="lg:col-span-1">
+          {actu.tags && actu.tags.length > 0 && (
+            <section className="border-t border-black/10 pt-8 pb-8">
+              <h2 className="text-lg md:text-xl font-bold tracking-tight leading-tight text-black mb-6">
+                Informations
+              </h2>
+              <h3 className="text-xs text-black font-display font-medium uppercase tracking-[0.05em] mb-3">Tags</h3>
+              <div className="flex flex-wrap gap-2">
+                {actu.tags.map((tag, index) => (
+                  <span 
+                    key={index}
+                    className="px-4 py-2 bg-black text-white text-xs font-display font-medium uppercase tracking-[0.05em]"
+                  >
+                    {tag}
+                  </span>
+                ))}
               </div>
-            </StickySidebar>
-          </div>
-        </div>
+            </section>
+          )}
+
+          <nav className="border-t border-black/10 pt-8 pb-0">
+            <a 
+              href="/actus"
+              aria-label="Retour à la liste des actualités"
+              className="inline-flex items-center gap-2 text-black/70 hover:text-black transition-colors font-display font-light text-xs uppercase tracking-[0.1em]"
+            >
+              ← Retour aux actualités
+            </a>
+          </nav>
+        </StickyAside>
       </div>
-      </main>
     </>
   )
 }

@@ -3,135 +3,139 @@
 @tailwind utilities;
 
 /* Configuration d'Andale Mono comme typographie d'affichage */
-
-/* Application d'Andale Mono par défaut avec optimisations de performance */
-* {
-  font-family: 'Andale Mono', 'Monaco', 'Menlo', monospace;
-  /* Optimisations de rendu pour de meilleures performances */
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-rendering: optimizeLegibility;
-}
-
-/* Andale Mono pour les titres et éléments spéciaux */
-h1, h2, h3, h4, h5, h6 {
-  font-family: 'Andale Mono', 'Monaco', 'Menlo', monospace;
-  color: #000000; /* Force noir pour tous les titres */
-}
-
-/* .font-display sans forcer la couleur - la couleur sera gérée par les classes Tailwind */
-.font-display {
-  font-family: 'Andale Mono', 'Monaco', 'Menlo', monospace;
-}
-
-/* Supprimer les bordures par défaut sur les sections hero */
-.article-hero-image {
-  border-bottom: none;
-  border-width: 0;
-}
-
-:root {
-  --heading-main: clamp(1.125rem, 2.2vw, 2rem); /* Titre principal commun : cards, header, bio */
-  --heading-display: clamp(1.5rem, 3vw, 2.25rem);
-  --heading-page: clamp(1.25rem, 2.5vw, 2rem);
-  --heading-section: clamp(1.5rem, 2.5vw, 2.5rem);
-  --heading-subtitle: clamp(1.25rem, 2.5vw, 2rem);
-  --body-large: clamp(0.9rem, 1.4vw, 1.05rem);
-  --body-base: clamp(0.8rem, 1vw, 0.95rem);
-}
-
-.heading-main {
-  font-size: var(--heading-main);
-  font-family: 'Andale Mono', 'Monaco', 'Menlo', monospace;
-  font-weight: 700;
-  letter-spacing: -0.03em;
-  line-height: 1.1;
-}
-
-.heading-display,
-.heading-page,
-.heading-section,
-.heading-subtitle {
-  font-family: 'Andale Mono', 'Monaco', 'Menlo', monospace;
-  font-weight: 700;
-  letter-spacing: -0.03em;
-}
-
-.heading-display {
-  font-size: var(--heading-display);
-  line-height: 1.05;
-}
-
-.heading-page {
-  font-size: var(--heading-page);
-  line-height: 1.1;
-  color: #000000; /* Force noir */
-}
-
-.heading-section {
-  font-size: var(--heading-section);
-  line-height: 1.15;
-}
-
-.heading-subtitle {
-  font-size: var(--heading-subtitle);
-  line-height: 1.2;
-}
- 
-.heading-light {
-  font-size: var(--heading-section);
-  line-height: 1.15;
-  font-weight: 700;
-  letter-spacing: -0.03em;
-  color: white;
-}
-
-.body-text {
-  font-size: var(--body-large);
-  line-height: 1.8;
-  font-weight: 400;
-  color: inherit;
-}
-
-.body-text-light {
-  font-size: var(--body-large);
-  line-height: 1.8;
-  font-weight: 400;
-  color: rgba(255, 255, 255, 0.92);
-}
-
-.body-text-sm {
-  font-size: var(--body-base);
-  line-height: 1.6;
-  font-weight: 400;
-  color: inherit;
-}
-
-
-/* Styles spécifiques pour les titres dans le contenu MDX */
-.prose h1,
-.prose h2,
-.prose h3,
-.prose h4,
-.prose h5,
-.prose h6 {
-  font-family: 'Andale Mono', 'Monaco', 'Menlo', monospace;
-  color: #000000; /* noir */
-  font-weight: bold;
-}
-
-/* Animations pour la page bio */
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
+@layer base {
+  * {
+    font-family: 'Andale Mono', 'Monaco', 'Menlo', monospace;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
   }
-  to {
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Andale Mono', 'Monaco', 'Menlo', monospace;
+    color: #000000;
+  }
+
+  html {
+    scroll-padding-top: 5rem;
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    scroll-padding-top: 0;
+    scroll-snap-type: none;
+    scroll-margin: 0;
+    scroll-padding: 0;
+    overflow-x: hidden;
+  }
+
+  html, body {
+    scroll-behavior: auto;
+    scroll-margin: 0;
+    scroll-padding: 0;
+  }
+
+  body {
+    scroll-behavior: smooth;
+    margin: 0;
+    padding: 0;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    will-change: scroll-position;
+    scroll-padding-top: 0;
+    overflow-x: hidden;
+  }
+
+  /* Styles pour les titres dans le contenu MDX */
+  .prose h1,
+  .prose h2,
+  .prose h3,
+  .prose h4,
+  .prose h5,
+  .prose h6 {
+    font-family: 'Andale Mono', 'Monaco', 'Menlo', monospace;
+    color: #000000;
+    font-weight: bold;
+  }
+
+  .prose h1 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .prose h2 {
+    font-size: 1.25rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .prose h3 {
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .prose h4 {
+    font-size: 0.875rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .prose h5 {
+    font-size: 0.75rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .prose h6 {
+    font-size: 0.75rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .prose a {
+    text-decoration: none;
+    color: #000000;
+    font-family: 'Andale Mono', 'Monaco', 'Menlo', monospace;
+    transition: color 0.3s ease;
+  }
+
+  .prose a:hover {
+    color: #000000;
+  }
+
+  .prose h1, .prose h2, .prose h3, .prose h4, .prose h5, .prose h6 {
+    scroll-margin-top: 5rem;
+    display: block;
+    visibility: visible;
     opacity: 1;
-    transform: translateY(0);
+  }
+
+  /* Styles spécifiques pour les pages de films (fond noir) */
+  .bg-black .prose h1, 
+  .bg-black .prose h2, 
+  .bg-black .prose h3, 
+  .bg-black .prose h4, 
+  .bg-black .prose h5, 
+  .bg-black .prose h6 {
+    color: white;
+  }
+
+  .bg-black .prose p,
+  .bg-black .prose li,
+  .bg-black .prose strong,
+  .bg-black .prose b,
+  .bg-black .prose em,
+  .bg-black .prose span,
+  .bg-black .prose div {
+    color: white;
+  }
+
+  .bg-black .prose a {
+    color: white;
+    text-decoration: underline;
+  }
+
+  .bg-black .prose a:hover {
+    color: #f0f0f0;
   }
 }
 
+/* Animations @keyframes - Nécessaires, ne peuvent pas être en Tailwind */
 @keyframes fadeInUp {
   0% {
     opacity: 0;
@@ -141,10 +145,6 @@ h1, h2, h3, h4, h5, h6 {
     opacity: 1;
     transform: translateY(0);
   }
-}
-
-.animate-fade-in-up {
-  animation: fadeInUp 0.6s ease-out;
 }
 
 @keyframes float {
@@ -156,15 +156,6 @@ h1, h2, h3, h4, h5, h6 {
   }
 }
 
-.bio-hero-animation {
-  animation: fadeInUp 0.8s ease-out;
-}
-
-.bio-float-animation {
-  animation: float 3s ease-in-out infinite;
-}
-
-/* Animation marquee pour les logos */
 @keyframes marquee {
   0% {
     transform: translateX(0);
@@ -174,15 +165,6 @@ h1, h2, h3, h4, h5, h6 {
   }
 }
 
-.animate-marquee {
-  animation: marquee 30s linear infinite;
-}
-
-.animate-marquee.hover\:pause:hover {
-  animation-play-state: paused;
-}
-
-/* Animation "clap" pour le logo - ligne du haut (entrée au hover) */
 @keyframes clap-top {
   0% {
     transform: rotate(-3deg) translateY(-1px);
@@ -201,7 +183,6 @@ h1, h2, h3, h4, h5, h6 {
   }
 }
 
-/* Animation "clap" pour le logo - ligne du bas (entrée au hover) */
 @keyframes clap-bottom {
   0% {
     transform: rotate(3deg) translateY(1px);
@@ -220,7 +201,6 @@ h1, h2, h3, h4, h5, h6 {
   }
 }
 
-/* Animation retour rapide - ligne du haut (sortie du hover) */
 @keyframes clap-top-reverse {
   0% {
     transform: rotate(-1.5deg) translateY(-0.5px);
@@ -230,7 +210,6 @@ h1, h2, h3, h4, h5, h6 {
   }
 }
 
-/* Animation retour rapide - ligne du bas (sortie du hover) */
 @keyframes clap-bottom-reverse {
   0% {
     transform: rotate(1.5deg) translateY(0.5px);
@@ -240,71 +219,6 @@ h1, h2, h3, h4, h5, h6 {
   }
 }
 
-.clap-animation-top {
-  animation: clap-top 0.7s;
-  animation-fill-mode: forwards;
-}
-
-.clap-animation-bottom {
-  animation: clap-bottom 0.7s;
-  animation-fill-mode: forwards;
-}
-
-.clap-animation-top-reverse {
-  animation: clap-top-reverse 0.3s cubic-bezier(0.4, 0.0, 0.6, 1);
-  animation-fill-mode: forwards;
-}
-
-.clap-animation-bottom-reverse {
-  animation: clap-bottom-reverse 0.3s cubic-bezier(0.4, 0.0, 0.6, 1);
-  animation-fill-mode: forwards;
-}
-
-.bio-card-hover {
-  transition: all 0.3s ease;
-}
-
-.bio-card-hover:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-}
-
-.prose h1 {
-  font-size: 1.75rem; /* text-2xl */
-  margin-bottom: 1rem;
-}
-
-.prose h2 {
-  font-size: 1.375rem; /* text-xl */
-  margin-bottom: 0.75rem;
-}
-
-.prose h3 {
-  font-size: 1.125rem; /* text-lg */
-  margin-bottom: 0.5rem;
-}
-
-.prose h4 {
-  font-size: 1rem; /* text-base */
-  margin-bottom: 0.5rem;
-}
-
-.prose h5 {
-  font-size: 0.875rem; /* text-sm */
-  margin-bottom: 0.5rem;
-}
-
-.prose h6 {
-  font-size: 0.75rem; /* text-xs */
-  margin-bottom: 0.5rem;
-}
-
-/* Andale Mono pour le texte normal */
-.font-sans {
-  font-family: 'Andale Mono', 'Monaco', 'Menlo', monospace;
-}
-
-/* Animations personnalisées pour les sections sticky */
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -338,341 +252,6 @@ h1, h2, h3, h4, h5, h6 {
   }
 }
 
-.animate-fade-in {
-  animation: fadeIn 0.8s ease-out forwards;
-}
-
-.animate-fade-in-delay {
-  animation: fadeInDelay 0.8s ease-out 0.3s forwards;
-  opacity: 0;
-}
-
-.animate-fade-in-delay-2 {
-  animation: fadeInDelay2 0.8s ease-out 0.6s forwards;
-  opacity: 0;
-}
-
-/* Amélioration des transitions sticky */
-.sticky-section {
-  position: sticky;
-  top: 0;
-  height: 100vh;
-  will-change: transform;
-}
-
-/* Smooth scrolling managed by Lenis */
-html {
-  /* scroll-behavior: smooth; - Disable native smooth scroll to let Lenis handle it */
-}
-
-body {
-  /* overflow-y: hidden; */
-}
-
-/* Footer sans scroll snap pour permettre l'accès */
-footer,
-.scroll-section-footer {
-  /* scroll-snap-align: none; */
-}
-
-/* Amélioration des performances pour les animations */
-* {
-  -webkit-backface-visibility: hidden;
-  backface-visibility: hidden;
-  -webkit-perspective: 1000;
-  perspective: 1000;
-}
-
-/* Styles pour les indicateurs de navigation */
-.nav-indicator {
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.nav-indicator.active {
-  transform: scale(1.25);
-  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.3);
-}
-
-/* Amélioration des effets hover */
-.hover-lift {
-  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.hover-lift:hover {
-  transform: translateY(-4px);
-}
-
-/* Effets sticky et parallax pour Swiper */
-.swiper-slide {
-  position: relative;
-}
-
-.swiper-slide .sticky {
-  position: sticky;
-  top: 0;
-  z-index: 10;
-}
-
-/* Amélioration des transitions parallax */
-[data-swiper-parallax] {
-  transition: transform 0.3s ease-out;
-}
-
-/* Masquer la scrollbar tout en gardant le scroll */
-.scrollbar-hide {
-  -ms-overflow-style: none;  /* Internet Explorer 10+ */
-  scrollbar-width: none;  /* Firefox */
-}
-.scrollbar-hide::-webkit-scrollbar {
-  display: none;  /* Safari and Chrome */
-}
-
-/* Masquer la scrollbar sur le body pour la page d'accueil */
-body.scrollbar-hide {
-  -ms-overflow-style: none;  /* Internet Explorer 10+ */
-  scrollbar-width: none;  /* Firefox */
-}
-body.scrollbar-hide::-webkit-scrollbar {
-  display: none;  /* Safari and Chrome */
-}
-
-/* Configuration optimisée pour Windows */
-.scroll-container {
-  scroll-snap-type: y mandatory;
-  overflow-y: scroll;
-  height: 100vh;
-  scroll-behavior: smooth;
-  /* Optimisations pour Windows */
-  -webkit-overflow-scrolling: touch;
-  scroll-padding: 0;
-  scroll-margin: 0;
-  /* Amélioration de la fluidité sur Windows */
-  will-change: scroll-position;
-  transform: translateZ(0);
-  backface-visibility: hidden;
-  perspective: 1000px;
-  /* S'assurer que le contenu n'est pas coupé */
-  box-sizing: border-box;
-}
-
-/* Transition personnalisée pour les filtres hover */
-.hover-filter {
-  opacity: 0;
-  transition: opacity 0.5s ease-in-out;
-}
-
-.group:hover .hover-filter {
-  opacity: 1;
-}
-
-/* Solution simple avec Tailwind uniquement */
-
-/* Correction du scroll offset pour les ancres */
-html {
-  scroll-padding-top: 5rem; /* 80px pour le header */
-}
-
-/* Styles pour les liens dans le contenu */
-.prose a {
-  text-decoration: none;
-  color: #000000;
-  font-family: 'Andale Mono', 'Monaco', 'Menlo', monospace;
-  transition: color 0.3s ease;
-}
-
-.prose a:hover {
-  color: #000000;
-}
-
-/* Styles pour les titres avec ancres */
-.prose h1, .prose h2, .prose h3, .prose h4, .prose h5, .prose h6 {
-  scroll-margin-top: 5rem; /* 80px pour le header */
-  display: block;
-  visibility: visible;
-  opacity: 1;
-}
-
-/* Force l'affichage des titres */
-.prose h1, .prose h2, .prose h3, .prose h4, .prose h5, .prose h6 {
-  color: #000000;
-  font-family: 'Andale Mono', 'Monaco', 'Menlo', monospace;
-  font-weight: bold;
-}
-
-/* Styles spécifiques pour les pages de films (fond noir) */
-.bg-black .prose h1, 
-.bg-black .prose h2, 
-.bg-black .prose h3, 
-.bg-black .prose h4, 
-.bg-black .prose h5, 
-.bg-black .prose h6 {
-  color: white;
-}
-
-.bg-black .prose p,
-.bg-black .prose li,
-.bg-black .prose strong,
-.bg-black .prose b,
-.bg-black .prose em,
-.bg-black .prose span,
-.bg-black .prose div {
-  color: white;
-}
-
-.bg-black .prose a {
-  color: white;
-  text-decoration: underline;
-}
-
-.bg-black .prose a:hover {
-  color: #f0f0f0;
-}
-
-.scroll-section {
-  scroll-snap-align: start;
-  scroll-snap-stop: always;
-  height: 100vh;
-  /* Optimisations pour Windows */
-  scroll-margin: 0;
-  scroll-padding: 0;
-  /* Amélioration des performances */
-  will-change: transform;
-  transform: translateZ(0);
-  backface-visibility: hidden;
-}
-
-/* Configuration globale optimisée pour Windows */
-html {
-  scroll-behavior: smooth;
-  /* Amélioration de la fluidité */
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  /* Forcer le scroll en haut au chargement */
-  scroll-padding-top: 0;
-  /* S'assurer que la page commence en haut */
-  scroll-snap-type: none;
-  /* Forcer le scroll en haut au chargement de la page */
-  scroll-top: 0;
-  /* Forcer le scroll en haut au chargement */
-  scroll-margin: 0;
-  scroll-padding: 0;
-  /* Éviter les barres de scroll horizontales */
-  overflow-x: hidden;
-}
-
-/* Forcer le scroll en haut au chargement de la page */
-html, body {
-  scroll-behavior: auto;
-  scroll-margin: 0;
-  scroll-padding: 0;
-}
-
-body {
-  scroll-behavior: smooth;
-  margin: 0;
-  padding: 0;
-  /* Optimisations pour Windows */
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  /* Amélioration des performances de scroll */
-  will-change: scroll-position;
-  /* Forcer le scroll en haut au chargement */
-  scroll-padding-top: 0;
-  /* Éviter les barres de scroll horizontales */
-  overflow-x: hidden;
-}
-
-/* Optimisations spécifiques pour Windows */
-@media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
-  .scroll-container {
-    scroll-behavior: auto;
-    -ms-scroll-snap-type: y mandatory;
-  }
-  
-  .scroll-section {
-    -ms-scroll-snap-align: start;
-    -ms-scroll-snap-stop: always;
-  }
-}
-
-/* Amélioration pour les navigateurs basés sur Chromium sur Windows */
-@supports (scroll-behavior: smooth) {
-  .scroll-container {
-    scroll-behavior: smooth;
-  }
-}
-
-/* Effet de collage entre les sections */
-.swiper-slide-active {
-  z-index: 5;
-}
-
-.swiper-slide-prev,
-.swiper-slide-next {
-  z-index: 1;
-}
-
-/* Styles pour le texte vertical */
-.vertical-text {
-  writing-mode: vertical-rl;
-  text-orientation: mixed;
-  transform: rotate(180deg);
-}
-
-/* S'assurer que la barre noire du hero est toujours visible */
-#hero-section {
-  position: relative;
-  overflow: visible;
-}
-
-#hero-section .flex-shrink-0 {
-  position: relative;
-  z-index: 30;
-  background-color: #1a1a1a; /* theme-dark fallback */
-}
-
-/* Positionnement personnalisé pour le contenu des cartes à 2/7 */
-.card-content-position {
-  position: absolute;
-  top: 28.57%;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 100%;
-}
-
-/* Empêcher le zoom sur les images des cartes */
-.categories-section img {
-  transform: scale(1);
-  transition: none;
-}
-
-.categories-section img:hover {
-  transform: scale(1);
-}
-
-/* Positionnement pour le contenu hover en dessous du titre */
-.card-hover-content {
-  position: absolute;
-  top: 28.57%;
-  left: 50%;
-  margin-top: 8rem;
-  width: 500px;
-  transform: translateX(-50%) translateY(2rem);
-  transition: all 0.7s ease-out;
-}
-
-/* Animation d'apparition depuis le bas au hover */
-.card-hover-content:hover,
-.group:hover .card-hover-content {
-  transform: translateX(-50%) translateY(0);
-}
-
-/* Animation pour le hover forcé */
-.card-hover-content.md\:opacity-100 {
-  transform: translateX(-50%) translateY(0);
-}
-
-/* Animations d'apparition pour le header et hero */
 @keyframes slideInFromLeft {
   from {
     opacity: 0;
@@ -706,72 +285,130 @@ body {
   }
 }
 
-@keyframes fadeInUp {
-  from {
+/* Classes utilitaires - Appliquées via Tailwind dans les composants */
+@layer utilities {
+  /* Masquer la scrollbar - Propriété spécifique, doit rester en CSS */
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+  body.scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  body.scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Animations - Appliquées via classes Tailwind */
+  .animate-fade-in-up {
+    animation: fadeInUp 0.6s ease-out;
+  }
+
+  .bio-hero-animation {
+    animation: fadeInUp 0.8s ease-out;
+  }
+
+  .bio-float-animation {
+    animation: float 3s ease-in-out infinite;
+  }
+
+  .animate-marquee {
+    animation: marquee 30s linear infinite;
+  }
+
+  .animate-marquee.hover\:pause:hover {
+    animation-play-state: paused;
+  }
+
+  .clap-animation-top {
+    animation: clap-top 0.7s;
+    animation-fill-mode: forwards;
+  }
+
+  .clap-animation-bottom {
+    animation: clap-bottom 0.7s;
+    animation-fill-mode: forwards;
+  }
+
+  .clap-animation-top-reverse {
+    animation: clap-top-reverse 0.3s cubic-bezier(0.4, 0.0, 0.6, 1);
+    animation-fill-mode: forwards;
+  }
+
+  .clap-animation-bottom-reverse {
+    animation: clap-bottom-reverse 0.3s cubic-bezier(0.4, 0.0, 0.6, 1);
+    animation-fill-mode: forwards;
+  }
+
+  .animate-fade-in {
+    animation: fadeIn 0.8s ease-out forwards;
+  }
+
+  .animate-fade-in-delay {
+    animation: fadeInDelay 0.8s ease-out 0.3s forwards;
     opacity: 0;
-    transform: translateY(10px);
   }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
 
-@keyframes slideInFromRight {
-  from {
+  .animate-fade-in-delay-2 {
+    animation: fadeInDelay2 0.8s ease-out 0.6s forwards;
     opacity: 0;
-    transform: translateX(30px);
   }
-  to {
-    opacity: 1;
-    transform: translateX(0);
+
+  .header-logo-animation {
+    animation: slideInFromLeft 0.8s ease-out forwards;
+  }
+
+  .header-nav-animation {
+    animation: slideInFromRight 0.8s ease-out forwards;
+  }
+
+  .hero-quote-animation {
+    animation: fadeInSlow 1.5s ease-out 0.5s forwards;
+    opacity: 0;
   }
 }
 
-.header-logo-animation {
-  animation: slideInFromLeft 0.8s ease-out forwards;
+/* Styles globaux nécessaires pour le sticky */
+/* Ces règles sont cruciales pour que position: sticky fonctionne */
+main,
+#main-content {
+  overflow: visible !important;
+  overflow-x: visible !important;
+  overflow-y: visible !important;
 }
 
-.header-nav-animation {
-  animation: slideInFromRight 0.8s ease-out forwards;
+.grid,
+[class*="grid"],
+.flex,
+[class*="flex"] {
+  overflow: visible !important;
+  overflow-x: visible !important;
+  overflow-y: visible !important;
 }
 
-.hero-quote-animation {
-  animation: fadeInSlow 1.5s ease-out 0.5s forwards;
-  opacity: 0;
+[class*="max-w"] {
+  overflow: visible !important;
+  overflow-x: visible !important;
+  overflow-y: visible !important;
 }
 
-/* Système de transitions de pages en CSS pur */
-.page-transition-container {
-  position: relative;
-  width: 100%;
-  min-height: 100%;
-  /* S'assurer qu'il n'y a pas d'overflow qui casse le sticky */
-  overflow: visible;
+
+/* Assurer que les conteneurs avec grille et leurs enfants utilisent la grille correctement */
+div[class*="grid"][class*="max-w"] {
+  overflow: visible !important;
+  display: grid !important;
 }
 
-.page-transition-content {
-  width: 100%;
-  min-height: 100%;
-  /* État par défaut : caché - pas de flash */
-  opacity: 0;
-  /* IMPORTANT: Ne pas utiliser transform car ça casse position: sticky */
-  /* Utiliser margin-top à la place pour l'animation */
-  margin-top: 8px;
-  transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-              margin-top 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  will-change: opacity, margin-top;
-  /* S'assurer qu'il n'y a pas d'overflow qui casse le sticky */
-  overflow: visible;
+div[class*="grid"][class*="max-w"] > * {
+  overflow: visible !important;
 }
 
-/* État d'entrée - page apparaît avec animation */
-.page-transition-content.page-enter {
-  opacity: 1;
-  margin-top: 0;
-}
 
-/* Force the BackToTop button to stay transparent */
+/* BackToTop button */
 .back-to-top-button,
 .back-to-top-circle {
   background: none !important;
@@ -779,7 +416,21 @@ body {
   box-shadow: none !important;
 }
 
-/* Dégradé linéaire pour les sections */
-.section-gradient {
-  background: linear-gradient(92deg, white, rgb(243 244 246));
+/* Optimisations spécifiques Windows */
+@media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+  .scroll-container {
+    scroll-behavior: auto;
+    -ms-scroll-snap-type: y mandatory;
+  }
+  
+  .scroll-section {
+    -ms-scroll-snap-align: start;
+    -ms-scroll-snap-stop: always;
+  }
+}
+
+@supports (scroll-behavior: smooth) {
+  .scroll-container {
+    scroll-behavior: smooth;
+  }
 }

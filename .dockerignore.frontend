@@ -1,12 +1,11 @@
 node_modules
 .next
-.git
 .env
 .env.local
 .env.production
 .DS_Store
 *.log
-.contentlayer
+# Ne pas exclure .git car nécessaire pour Git LFS
 
 
 

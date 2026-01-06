@@ -31,7 +31,7 @@ export default function CtaLink({
   return (
     <Tag
       {...(as === 'a' ? { href } : {})}
-      className={`group inline-flex items-center gap-3 text-sm md:text-base font-medium uppercase tracking-wide transition-all duration-300 ${palette.text} ${className}`}
+      className={`group inline-flex items-center gap-3 text-xs md:text-sm font-medium uppercase tracking-wide transition-all duration-300 ${palette.text} ${className}`}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >

@@ -7,7 +7,7 @@ type MediationCardProps = {
   href: string
   title: string
   cover?: string
-  excerpt?: string
+  body?: string
   date?: string | Date
   lieu?: string
 }
@@ -16,7 +16,7 @@ export default function MediationCard({
   href, 
   title, 
   cover, 
-  excerpt,
+  body,
   date,
   lieu
 }: MediationCardProps) {
@@ -25,7 +25,7 @@ export default function MediationCard({
       href={href}
       title={title}
       imageSrc={cover}
-      description={excerpt}
+      description={body}
       date={date ? new Date(date).toLocaleDateString('fr-FR', { year: 'numeric', month: 'long', day: 'numeric' }) : undefined}
       category={lieu}
       theme="mediations"

@@ -39,7 +39,7 @@ function LogoMarquee({ title, className = '', invertColors = false, pauseOnHover
   return (
     <div className={`w-full ${className}`}>
       {title && (
-        <h3 className="text-center text-lg font-semibold text-gray-700 mb-6">
+        <h3 className="text-center text-base font-semibold text-gray-700 mb-6">
           {title}
         </h3>
       )}
@@ -55,7 +55,7 @@ function LogoMarquee({ title, className = '', invertColors = false, pauseOnHover
       >
         {/* Marquee container */}
         <div 
-          className={`flex animate-marquee w-max ${pauseOnHover ? 'hover:pause' : ''}`}
+          className={`flex animate-marquee w-max ${pauseOnHover ? 'hover:[animation-play-state:paused]' : ''}`}
           style={{ 
             touchAction: isMobile ? 'pan-x' : 'none'
           }}

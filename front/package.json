@@ -5,7 +5,11 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "migrate:articles": "tsx scripts/migrate-articles.ts --force",
+    "migrate:articles:dry-run": "tsx scripts/migrate-articles.ts --dry-run",
+    "migrate:articles:update": "tsx scripts/migrate-articles.ts --update",
+    "migrate:test": "tsx scripts/migrate-articles-simple.ts"
   },
   "dependencies": {
     "@directus/sdk": "^17.0.0",
@@ -30,9 +34,16 @@
     "@tailwindcss/typography": "^0.5.15",
     "@types/node": "^20.0.0",
     "@types/react": "19.1.13",
+    "@types/turndown": "^5.0.6",
     "axios": "^1.7.7",
-    "dotenv": "^16.4.5",
+    "cheerio": "^1.1.2",
+    "dotenv": "^16.6.1",
+    "form-data": "^4.0.5",
+    "openai": "^6.15.0",
     "postcss": "^8.4.47",
+    "puppeteer": "^24.34.0",
+    "tsx": "^4.21.0",
+    "turndown": "^7.2.2",
     "typescript": "^5.6.2"
   }
 }

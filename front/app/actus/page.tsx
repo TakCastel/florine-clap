@@ -4,6 +4,7 @@ import { useState, useEffect, useLayoutEffect, Suspense } from 'react'
 import ActuCard from '@/components/ActuCard'
 import Breadcrumb from '@/components/Breadcrumb'
 import ScrollRevealCard from '@/components/ScrollRevealCard'
+import PageHeader from '@/components/PageHeader'
 import { getAllActus, Actu, getImageUrl } from '@/lib/directus'
 import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
@@ -13,7 +14,6 @@ export const dynamic = 'force-dynamic'
 function ActusPageContent() {
   const searchParams = useSearchParams()
   const pageParam = searchParams.get('page') || '1'
-  const [isVisible, setIsVisible] = useState(false)
   const [items, setItems] = useState<Actu[]>([])
   const [loading, setLoading] = useState(true)
   const [searchQuery, setSearchQuery] = useState('')
@@ -32,18 +32,8 @@ function ActusPageContent() {
     }
     fetchActus()
   }, [])
-  
-  useEffect(() => {
-    requestAnimationFrame(() => {
-      setIsVisible(true)
-    })
-  }, [])
 
   useLayoutEffect(() => {
-    const lenisInstance = (window as any).lenis
-    if (lenisInstance && typeof lenisInstance.scrollTo === 'function') {
-      lenisInstance.scrollTo(0, { immediate: true, duration: 0 })
-    }
     window.scrollTo(0, 0)
     document.documentElement.scrollTop = 0
     document.body.scrollTop = 0
@@ -51,9 +41,6 @@ function ActusPageContent() {
       window.scrollTo(0, 0)
       document.documentElement.scrollTop = 0
       document.body.scrollTop = 0
-      if (lenisInstance && typeof lenisInstance.scrollTo === 'function') {
-        lenisInstance.scrollTo(0, { immediate: true, duration: 0 })
-      }
     })
   }, [pageParam])
   
@@ -94,46 +81,12 @@ function ActusPageContent() {
         variant="default"
       />
       
-      <div className="max-w-7xl mx-auto px-6 md:px-10 lg:px-16 py-12 md:py-20">
-        {/* Titre de la page avec animation */}
-        <div className="mb-16 md:mb-24">
-          <div 
-            className="overflow-hidden mb-6"
-            style={{
-              opacity: isVisible ? 1 : 0,
-              transform: isVisible ? 'translateY(0)' : 'translateY(10px)',
-              transition: 'opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1) 0.05s, transform 0.4s cubic-bezier(0.16, 1, 0.3, 1) 0.05s',
-            }}
-          >
-            <h1 
-              className="heading-display text-black"
-            >
-              Actualités
-            </h1>
-          </div>
-          
-          {/* Ligne décorative animée */}
-          <div className="h-[2px] bg-black/10 w-full max-w-md overflow-hidden">
-            <div 
-              className="h-full bg-black transition-all duration-500 ease-out"
-              style={{
-                width: isVisible ? '100%' : '0%',
-                transitionDelay: '0.1s',
-              }}
-            ></div>
-          </div>
-
-          <p 
-            className="body-text text-black/80 mt-6 max-w-2xl"
-            style={{
-              opacity: isVisible ? 1 : 0,
-              transform: isVisible ? 'translateY(0)' : 'translateY(8px)',
-              transition: 'opacity 0.4s ease-out 0.15s, transform 0.4s ease-out 0.15s',
-            }}
-          >
-            Découvrez mes dernières actualités, sélections en festival et projets en cours
-          </p>
-        </div>
+      <div className="max-w-4xl mx-auto px-6 md:px-10 lg:px-16 py-12 md:py-20">
+        {/* En-tête de page avec animation */}
+        <PageHeader 
+          title="Actualités"
+          description="Découvrez mes dernières actualités, sélections en festival et projets en cours"
+        />
         
         {/* Champ de recherche */}
         <div className="mb-8">
@@ -148,14 +101,14 @@ function ActusPageContent() {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               aria-label="Rechercher dans les actualités"
-              className="w-full px-4 py-3 border border-black/20 rounded-lg focus:outline-none focus:border-black/40 transition-colors text-black placeholder:text-black/40"
+              className="w-full px-4 py-3 border border-black/20 focus:outline-none focus:border-black/40 transition-colors text-black placeholder:text-black/40"
             />
           </div>
         </div>
 
         {/* Informations de pagination */}
         <div className="mb-8">
-          <div className="text-sm text-black/60 font-medium">
+          <div className="text-xs text-black/60 font-medium">
             {filteredItems.length > 0 ? (
               <>Page {currentPage} / {totalPages} ({filteredItems.length} résultat{filteredItems.length > 1 ? 's' : ''})</>
             ) : (
@@ -174,6 +127,7 @@ function ActusPageContent() {
                   title={actu.title}
                   cover={getImageUrl(actu.cover) || undefined}
                   excerpt={actu.excerpt}
+                  body={actu.body}
                   date={actu.date}
                 />
               </ScrollRevealCard>
@@ -271,13 +225,13 @@ function ActusPageContent() {
         {/* Contenu SEO */}
         <div className="mt-24 pt-12 border-t border-black/10">
           <div className="max-w-4xl">
-            <h2 className="text-2xl md:text-3xl font-bold text-black mb-6" style={{
+            <h2 className="text-xl md:text-xl font-bold text-black mb-6" style={{
               fontFamily: 'var(--font-andalemo), sans-serif',
               letterSpacing: '-0.02em',
             }}>
               Mes dernières actualités
             </h2>
-            <p className="text-black/70 text-lg leading-relaxed">
+            <p className="text-black/70 text-base leading-relaxed">
               Suivez mes dernières actualités, sélections en festival, nouvelles créations et projets en cours. 
               Restez informé de mon actualité cinématographique et de mes prochaines médiations.
             </p>

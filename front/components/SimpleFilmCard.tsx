@@ -2,6 +2,35 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
+
+// Blur placeholder générique (10x10px base64)
+const blurDataURL = 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=='
+
+// Fonction pour extraire le texte du markdown/HTML et le limiter
+const truncateText = (text: string | undefined, maxLength: number = 200): string | undefined => {
+  if (!text) return undefined
+  
+  // Enlever le markdown et les balises HTML
+  const cleanText = text
+    .replace(/^#+\s+/gm, '') // Enlever les titres markdown
+    .replace(/\[([^\]]+)\]\([^\)]+\)/g, '$1') // Enlever les liens markdown
+    .replace(/[#*_`\[\]()]/g, '') // Enlever les caractères markdown
+    .replace(/<[^>]*>/g, '') // Enlever les balises HTML
+    .replace(/\n+/g, ' ') // Remplacer les sauts de ligne par des espaces
+    .trim()
+  
+  if (cleanText.length <= maxLength) {
+    return cleanText
+  }
+  
+  // Tronquer à la dernière espace avant maxLength pour éviter de couper un mot
+  const truncated = cleanText.substring(0, maxLength)
+  const lastSpace = truncated.lastIndexOf(' ')
+  const finalText = lastSpace > 0 ? truncated.substring(0, lastSpace) : truncated
+  
+  return finalText + '...'
+}
 
 type SimpleFilmCardProps = {
   href: string
@@ -33,9 +62,9 @@ export default function SimpleFilmCard({
   }, [])
   
   // Transformations adaptées au mobile
-  // Sur mobile, on réduit le skew et on supprime le translateX pour éviter que l'image soit collée
+  // Sur mobile, on enlève complètement le skew pour garder les images droites
   const imageTransform = isMobile
-    ? (isImageLeft ? 'skewX(-1deg)' : 'skewX(1deg)')
+    ? 'none'
     : (isImageLeft ? 'skewX(-3deg) translateX(-12px)' : 'skewX(3deg) translateX(12px)')
 
   return (
@@ -51,12 +80,18 @@ export default function SimpleFilmCard({
                   transform: imageTransform,
                 }}
               >
-                <img
-                  src={cover}
-                  alt={title}
-                  className="w-full h-auto object-cover"
-                  loading="lazy"
-                />
+                <div className="relative w-full aspect-[4/3]">
+                  <Image
+                    src={cover}
+                    alt={title}
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                    placeholder="blur"
+                    blurDataURL={blurDataURL}
+                    loading="lazy"
+                  />
+                </div>
               </div>
             ) : (
               <div 
@@ -66,7 +101,7 @@ export default function SimpleFilmCard({
                 }}
               >
                 <div className="relative w-full h-full flex items-center justify-center">
-                  <span className="text-gray-400 font-mono text-sm uppercase">
+                  <span className="text-gray-400 font-mono text-xs uppercase">
                     Image non disponible
                   </span>
                 </div>
@@ -77,19 +112,19 @@ export default function SimpleFilmCard({
           {/* Contenu */}
           <div className="w-full md:w-1/2 flex flex-col justify-start">
             {/* Titre */}
-            <h3 className="heading-main text-black mb-4 md:mb-6 group-hover:text-black/80 transition-colors">
+            <h3 className="text-xl md:text-2xl font-bold tracking-tight leading-tight text-black mb-4 md:mb-6 group-hover:text-black/80 transition-colors">
               {title}
             </h3>
 
             {/* Synopsis */}
             {synopsis && (
-              <p className="body-text text-black/70 mb-6 md:mb-8 line-clamp-3 md:line-clamp-4">
-                {synopsis}
+              <p className="text-base leading-relaxed font-normal text-black/70 mb-6 md:mb-8 line-clamp-3 md:line-clamp-4">
+                {truncateText(synopsis, 200)}
               </p>
             )}
 
             {/* En savoir plus */}
-            <div className="inline-flex items-center gap-2 md:gap-3 text-sm md:text-base font-medium uppercase tracking-wide text-black group-hover:text-black/80 transition-colors">
+            <div className="inline-flex items-center gap-2 md:gap-3 text-xs font-medium uppercase tracking-wide text-black group-hover:text-black/80 transition-colors">
               <span>En savoir plus</span>
               <div className="flex items-center gap-1">
                 <div className="h-[2px] bg-black w-6 group-hover:w-12 transition-all duration-500"></div>

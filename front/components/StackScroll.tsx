@@ -16,6 +16,7 @@ type ContentItem = {
   shortSynopsis?: string
   short_synopsis?: string
   excerpt?: string
+  body?: string // Contenu complet de l'article
   duree?: string
   annee?: string
   vimeoId?: string
@@ -142,7 +143,9 @@ function ContentCardWithAnimation({ item, basePath, direction, index }: ContentC
     : typeof item.cover === 'string' && item.cover.startsWith('http')
     ? item.cover
     : getImageUrl(item.content) || getImageUrl(item.image) || getImageUrl(item.cover) || undefined
-  const synopsis = item.shortSynopsis || item.short_synopsis || item.excerpt
+  
+  // Utiliser toujours le body pour créer un extrait
+  const synopsis = item.body
   
   return (
     <motion.div

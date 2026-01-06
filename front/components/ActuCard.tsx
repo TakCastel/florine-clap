@@ -11,6 +11,7 @@ type ActuCardProps = {
   title: string
   cover?: string
   excerpt?: string
+  body?: string
   date: string
 }
 
@@ -19,6 +20,7 @@ export default function ActuCard({
   title, 
   cover, 
   excerpt, 
+  body,
   date 
 }: ActuCardProps) {
   const [isHovered, setIsHovered] = useState(false)
@@ -27,6 +29,31 @@ export default function ActuCard({
     month: 'long',
     year: 'numeric'
   })
+  
+  // Créer un extrait depuis le body si excerpt n'existe pas
+  const getExcerpt = () => {
+    if (excerpt) return excerpt
+    
+    if (body) {
+      // Enlever le markdown et les balises HTML
+      const text = body
+        .replace(/^#\s+.*$/gm, '') // Enlever les titres h1
+        .replace(/##\s+/g, '') // Enlever les ##
+        .replace(/[#*_`\[\]()]/g, '') // Enlever les caractères markdown
+        .replace(/\n+/g, ' ') // Remplacer les sauts de ligne par des espaces
+        .trim()
+      
+      // Limiter à 150 caractères
+      if (text.length > 150) {
+        return text.substring(0, 150).trim() + '...'
+      }
+      return text
+    }
+    
+    return null
+  }
+  
+  const displayExcerpt = getExcerpt()
 
   return (
     <Link 
@@ -53,28 +80,28 @@ export default function ActuCard({
         <div className="flex-1 flex flex-col justify-between min-w-0 md:min-h-[192px]">
           <div>
             {/* Titre - police réduite */}
-            <h3 className="text-lg md:text-xl font-bold text-black mb-3 line-clamp-2">
+            <h3 className="text-base font-bold text-black mb-3 line-clamp-2">
               {title}
             </h3>
             
             {/* Date */}
-            <div className="flex items-center gap-2 text-sm text-black/60 mb-4">
+            <div className="flex items-center gap-2 text-xs text-black/60 mb-4">
               <Calendar className="w-4 h-4" />
               <span>{formattedDate}</span>
             </div>
             
             {/* Résumé - police réduite, espacement augmenté */}
-            {excerpt && (
-              <p className="text-sm md:text-base text-black/70 leading-loose line-clamp-3 mb-4">
-                {excerpt}
+            {displayExcerpt && (
+              <p className="text-base text-black/70 leading-loose line-clamp-3 mb-4">
+                {displayExcerpt}
               </p>
             )}
           </div>
           
-          {/* Composant Découvrir avec trait et flèche - s'étend au survol du bloc */}
+          {/* Composant Lire avec trait et flèche - s'étend au survol du bloc */}
           <div className="mt-auto pt-2">
             <CtaLink
-              label="Découvrir"
+              label="Lire"
               tone="dark"
               as="span"
               isActive={isHovered}

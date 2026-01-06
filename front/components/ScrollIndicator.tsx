@@ -19,7 +19,7 @@ export default function ScrollIndicator({
       className={`group inline-flex flex-col items-center transition-all duration-300 cursor-pointer ${className || 'text-white/60 hover:text-white'}`}
       aria-label={ariaLabel}
     >
-      <span className="text-sm mb-2 transition-colors duration-300">
+      <span className="text-xs mb-2 transition-colors duration-300">
         {label}
       </span>
       <svg 

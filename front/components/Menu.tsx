@@ -34,7 +34,7 @@ export const DesktopMenu = ({ className = '' }: DesktopMenuProps) => (
     {MENU_ITEMS.map((item, index) => (
       <div key={item.href} className="flex items-center">
         <MenuLink href={item.href} label={item.label} />
-        {index < MENU_ITEMS.length - 1 && <span className="text-black text-lg mx-2">/</span>}
+        {index < MENU_ITEMS.length - 1 && <span className="text-black text-base mx-2">/</span>}
       </div>
     ))}
   </nav>
@@ -59,7 +59,7 @@ export const MobileOverlay = ({ isOpen, onClose }: MobileOverlayProps) => (
               href={item.href} 
               label={item.label} 
               onClick={onClose}
-              className="inline-block text-2xl font-light text-white"
+              className="inline-block text-xl font-light text-white"
             />
           </div>
         ))}
@@ -86,7 +86,7 @@ export const DesktopDropdown = ({ isOpen, onClose }: DesktopDropdownProps) => (
               label={item.label} 
               onClick={onClose}
             />
-            {index < MENU_ITEMS.length - 1 && <span className="text-black text-lg mx-2">/</span>}
+            {index < MENU_ITEMS.length - 1 && <span className="text-black text-base mx-2">/</span>}
           </div>
         ))}
       </nav>

@@ -67,6 +67,37 @@ const config: Config = {
       height: {
         '0.75': '0.1875rem', // 3px
       },
+      fontSize: {
+        'xs': ['0.75rem', { lineHeight: '1rem' }],      // 12px
+        'sm': ['0.8125rem', { lineHeight: '1.25rem' }], // 13px
+        'base': ['0.875rem', { lineHeight: '1.5rem' }], // 14px (au lieu de 16px)
+        'lg': ['1rem', { lineHeight: '1.75rem' }],      // 16px (au lieu de 18px)
+        'xl': ['1.125rem', { lineHeight: '1.75rem' }],  // 18px (au lieu de 20px)
+        '2xl': ['1.25rem', { lineHeight: '1.75rem' }],  // 20px (au lieu de 24px)
+        '3xl': ['1.5rem', { lineHeight: '2rem' }],      // 24px (au lieu de 30px)
+        'heading-main': 'clamp(1.125rem, 2.2vw, 2rem)',
+        'heading-display': 'clamp(1.5rem, 3vw, 2.25rem)',
+        'heading-page': 'clamp(1.25rem, 2.5vw, 2rem)',
+        'heading-section': 'clamp(1.5rem, 2.5vw, 2.5rem)',
+        'heading-subtitle': 'clamp(1.25rem, 2.5vw, 2rem)',
+        'body-large': 'clamp(0.9rem, 1.4vw, 1.05rem)',
+        'body-base': 'clamp(0.8rem, 1vw, 0.95rem)',
+      },
+      animation: {
+        'fade-in-up': 'fadeInUp 0.6s ease-out',
+        'fade-in': 'fadeIn 0.8s ease-out forwards',
+        'fade-in-delay': 'fadeInDelay 0.8s ease-out 0.3s forwards',
+        'fade-in-delay-2': 'fadeInDelay2 0.8s ease-out 0.6s forwards',
+        'marquee': 'marquee 30s linear infinite',
+        'clap-top': 'clap-top 0.7s forwards',
+        'clap-bottom': 'clap-bottom 0.7s forwards',
+        'clap-top-reverse': 'clap-top-reverse 0.3s cubic-bezier(0.4, 0.0, 0.6, 1) forwards',
+        'clap-bottom-reverse': 'clap-bottom-reverse 0.3s cubic-bezier(0.4, 0.0, 0.6, 1) forwards',
+        'float': 'float 3s ease-in-out infinite',
+        'slide-in-left': 'slideInFromLeft 0.8s ease-out forwards',
+        'slide-in-right': 'slideInFromRight 0.8s ease-out forwards',
+        'fade-in-slow': 'fadeInSlow 1.5s ease-out 0.5s forwards',
+      },
     },
   },
   plugins: [require('@tailwindcss/typography')],

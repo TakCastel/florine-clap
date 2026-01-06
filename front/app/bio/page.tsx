@@ -49,7 +49,7 @@ export default async function BioPage() {
     return (
       <div className="min-h-screen bg-theme-white text-theme-dark flex items-center justify-center">
         <div className="text-center">
-          <h1 className="text-2xl font-bold mb-4">Page non trouvée</h1>
+          <h1 className="text-xl font-bold mb-4">Page non trouvée</h1>
           <p className="text-gray-600">La page bio n&apos;a pas pu être chargée depuis Directus.</p>
         </div>
       </div>
@@ -107,9 +107,9 @@ export default async function BioPage() {
 
         {/* Contenu Markdown principal - après l'image */}
         <section className="py-16 md:py-24 bg-theme-white">
-          <div className="max-w-7xl mx-auto px-6 md:px-10 lg:px-16">
+          <div className="max-w-4xl mx-auto px-6 md:px-10 lg:px-16">
             {page.body && (
-              <div className="prose prose-lg max-w-none text-theme-dark [&_p]:text-justify [&_li]:text-justify">
+              <div className="prose max-w-none text-base text-theme-dark [&_p]:text-justify [&_li]:text-justify">
                 <MarkdownRenderer content={page.body} />
               </div>
             )}

@@ -4,7 +4,6 @@ import Footer from '@/components/Footer'
 import BackToTop from '@/components/BackToTop'
 import { AnimationProvider } from '@/contexts/AnimationContext'
 import LayoutWrapper from './LayoutWrapper'
-import SmoothScroll from '@/components/SmoothScroll'
 import { JetBrains_Mono } from 'next/font/google'
 import type { Metadata } from 'next'
 
@@ -98,11 +97,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         >
           Aller au contenu principal
         </a>
-        <SmoothScroll>
-          <LayoutWrapper>
-            {children}
-          </LayoutWrapper>
-        </SmoothScroll>
+        <LayoutWrapper>
+          {children}
+        </LayoutWrapper>
       </body>
     </html>
   )

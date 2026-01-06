@@ -98,7 +98,7 @@ export default function HeroSection({ homeSettings }: HeroSectionProps) {
   return (
     <section 
       id="hero-section" 
-      className="w-full h-screen relative overflow-hidden section-gradient"
+      className="w-full h-screen relative overflow-hidden bg-gradient-to-br from-white to-gray-100/50"
       style={{ position: 'relative' }}
       onMouseMove={handleMouseMove}
     >
@@ -138,7 +138,7 @@ export default function HeroSection({ homeSettings }: HeroSectionProps) {
           )}
 
           {hasVideoError && (
-            <div className="absolute inset-0 flex items-center justify-center bg-black/70 text-white text-sm tracking-widest uppercase">
+            <div className="absolute inset-0 flex items-center justify-center bg-black/70 text-white text-xs tracking-widest uppercase">
               Vidéo indisponible pour le moment
             </div>
           )}
@@ -168,7 +168,7 @@ export default function HeroSection({ homeSettings }: HeroSectionProps) {
                 className="group relative inline-flex flex-col items-center gap-3"
               >
                 {/* Texte */}
-                <span className="text-white/70 text-sm uppercase tracking-widest font-medium group-hover:text-white transition-colors duration-300">
+                <span className="text-white/70 text-xs uppercase tracking-widest font-medium group-hover:text-white transition-colors duration-300">
                   Découvrir
                 </span>
                 

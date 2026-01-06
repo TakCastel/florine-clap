@@ -49,7 +49,7 @@ export default function Header() {
   }, [showAnimations])
 
   return (
-    <header className={`w-full z-[130] top-0 left-0 right-0 ${
+    <header className={`w-full z-[10000] top-0 left-0 right-0 ${
       isHomePage || isArticlePage
         ? 'absolute' 
         : isBioPage
@@ -68,8 +68,9 @@ export default function Header() {
             transform: isLogoVisible ? 'translateY(0)' : 'translateY(-30px)',
             transition: 'all 0.6s ease-out',
             position: 'relative',
-            zIndex: 10
+            zIndex: 10000
           }}
+          className="relative z-[10000]"
         >
           <UnderlineLink 
             href="/" 
@@ -92,7 +93,7 @@ export default function Header() {
         </div>
 
         {/* Navigation desktop à droite */}
-        <div className={showAnimations ? 'header-nav-animation' : ''}>
+        <div className={showAnimations ? 'animate-slide-in-right' : ''}>
           <Navigation isHomePage={isHomePage} isLightText={isLightText} />
         </div>
 

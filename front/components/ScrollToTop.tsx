@@ -11,13 +11,7 @@ function ScrollToTopInner() {
   useLayoutEffect(() => {
     // Fonction pour scroller en haut de manière définitive
     const scrollToTop = () => {
-      // Méthode 1: Lenis (prioritaire si disponible)
-      const lenisInstance = (window as any).lenis
-      if (lenisInstance && typeof lenisInstance.scrollTo === 'function') {
-        lenisInstance.scrollTo(0, { immediate: true, duration: 0 })
-      }
-      
-      // Méthode 2: Accès direct aux propriétés DOM (forcé)
+      // Accès direct aux propriétés DOM (forcé)
       if (document.documentElement) {
         document.documentElement.scrollTop = 0
         document.documentElement.scrollLeft = 0
@@ -27,10 +21,10 @@ function ScrollToTopInner() {
         document.body.scrollLeft = 0
       }
       
-      // Méthode 3: window.scrollTo (fallback)
+      // window.scrollTo (fallback)
       window.scrollTo(0, 0)
       
-      // Méthode 4: window.scroll (ancienne méthode, pour compatibilité)
+      // window.scroll (ancienne méthode, pour compatibilité)
       if (typeof window.scroll === 'function') {
         window.scroll(0, 0)
       }

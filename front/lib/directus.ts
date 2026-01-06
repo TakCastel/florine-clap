@@ -407,9 +407,8 @@ export function getImageUrl(
       const publicUrl = typeof window !== 'undefined' 
         ? getDirectusUrlForClient()
         : (process.env.NEXT_PUBLIC_DIRECTUS_URL || process.env.DIRECTUS_PUBLIC_URL || null)
+      
       if (!publicUrl || publicUrl.trim() === '') {
-        // Si NEXT_PUBLIC_DIRECTUS_URL n'est pas défini côté serveur, retourner null
-        // Le composant client pourra appeler getImageUrl qui utilisera getDirectusUrlForClient()
         return null
       }
       const normalizedUrl = publicUrl.replace(/\/+$/, '')

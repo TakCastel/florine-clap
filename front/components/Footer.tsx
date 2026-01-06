@@ -19,7 +19,7 @@ export default function Footer() {
           <div className="lg:col-span-5">
             <Reveal delay={0.2} duration={0.8}>
               <div className="mb-8">
-                <h3 className="heading-main text-white mb-6">
+                <h3 className="text-xl md:text-2xl font-bold tracking-tight leading-tight text-white mb-6">
                   Florine Clap
                 </h3>
                 
@@ -34,7 +34,7 @@ export default function Footer() {
                   <div className="h-full bg-white w-full"></div>
                 </motion.div>
 
-                <p className="body-text text-white/75 mb-8">
+                <p className="text-base leading-relaxed font-normal text-white/75 mb-8">
                   Réalisatrice et médiatrice culturelle passionnée, je crée des films qui questionnent notre rapport au monde.
                 </p>
               </div>
@@ -75,7 +75,7 @@ export default function Footer() {
             {/* Navigation */}
             <Reveal delay={0.4} duration={0.8}>
               <div>
-                <h4 className="text-white/50 text-sm uppercase tracking-[0.2em] mb-6 font-medium">
+                <h4 className="text-white/50 text-xs uppercase tracking-[0.2em] mb-6 font-medium">
                   Navigation
                 </h4>
                 <StaggerContainer staggerChildren={0.1} delay={0.6} className="flex flex-col space-y-4">
@@ -89,7 +89,7 @@ export default function Footer() {
                     <StaggerItem key={item.href}>
                       <Link 
                         href={item.href}
-                        className="group inline-flex items-center gap-3 text-white/75 hover:text-white transition-all duration-500 text-lg"
+                        className="group inline-flex items-center gap-3 text-base text-white/75 hover:text-white transition-all duration-500"
                       >
                         <div className="w-0 h-[2px] bg-white group-hover:w-8 transition-all duration-500"></div>
                         <span className="group-hover:translate-x-2 transition-transform duration-500">
@@ -105,20 +105,20 @@ export default function Footer() {
             {/* Contact */}
             <Reveal delay={0.6} duration={0.8}>
               <div>
-                <h4 className="text-white/50 text-sm uppercase tracking-[0.2em] mb-6 font-medium">
+                <h4 className="text-white/50 text-xs uppercase tracking-[0.2em] mb-6 font-medium">
                   Contact
                 </h4>
                 <div className="space-y-4 text-white/75">
                   <a 
                     href="mailto:contact@florineclap.fr" 
-                    className="group flex items-start gap-3 hover:text-white transition-colors duration-300"
+                    className="group flex items-start gap-3 text-base hover:text-white transition-colors duration-300"
                   >
                     <IoMailOutline size={20} className="mt-0.5 flex-shrink-0 group-hover:scale-110 transition-transform duration-300" />
                     <span className="group-hover:translate-x-1 transition-transform duration-300">
                       contact@florineclap.fr
                     </span>
                   </a>
-                  <div className="flex items-start gap-3">
+                  <div className="flex items-start gap-3 text-base">
                     <IoLocationOutline size={20} className="mt-0.5 flex-shrink-0" />
                     <span>Avignon, France</span>
                   </div>
@@ -134,11 +134,11 @@ export default function Footer() {
         {/* Bottom bar */}
         <Reveal delay={0.8} duration={0.8} width="100%">
           <div className="flex flex-col md:flex-row justify-between items-center gap-6">
-            <p className="text-white/50 text-sm">
+            <p className="text-white/50 text-xs">
               © {new Date().getFullYear()} Florine Clap. Tous droits réservés.
             </p>
             
-            <div className="flex gap-8 text-sm">
+            <div className="flex gap-8 text-xs">
               <Link 
                 href="/mentions-legales" 
                 className="text-white/50 hover:text-white transition-colors duration-300 relative after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-[1px] after:bg-white after:transition-all after:duration-300 hover:after:w-full"

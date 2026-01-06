@@ -69,7 +69,7 @@ export default function Breadcrumb({ items, variant = 'default' }: Props) {
   return (
     <div className={`${styles.container} py-4 sr-only`}>
       <div className="max-w-7xl mx-auto px-6 md:px-10 lg:px-16">
-        <nav className={`flex items-center text-sm font-display ${styles.text}`} aria-label="Breadcrumb">
+        <nav className={`flex items-center text-xs font-display ${styles.text}`} aria-label="Breadcrumb">
           {items.map((item, index) => (
             <div key={index} className="flex items-center">
               {index > 0 && (

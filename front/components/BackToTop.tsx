@@ -63,17 +63,7 @@ export default function BackToTop() {
   }, [isVisible])
 
   const scrollToTop = () => {
-    // Utiliser Lenis si disponible (prioritaire)
-    const lenisInstance = (window as any).lenis
-    if (lenisInstance && typeof lenisInstance.scrollTo === 'function') {
-      lenisInstance.scrollTo(0, { 
-        duration: 1.2,
-        easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t))
-      })
-      return
-    }
-    
-    // Fallback sur window.scrollTo si Lenis n'est pas disponible
+    // Utiliser le scroll natif du navigateur
     window.scrollTo({
       top: 0,
       behavior: 'smooth'
