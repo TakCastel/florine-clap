@@ -1,5 +1,6 @@
 FROM node:20-alpine AS base
 
+# Build timestamp: 2024-01-XX - Force rebuild to sync with latest code
 # Install dependencies only when needed
 FROM base AS deps
 RUN apk add --no-cache libc6-compat
