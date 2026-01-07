@@ -81,12 +81,14 @@ function ActusPageContent() {
         variant="default"
       />
       
-      <div className="max-w-4xl mx-auto px-6 md:px-10 lg:px-16 py-12 md:py-20">
+      <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-10 xl:px-16 py-12 md:py-20">
         {/* En-tête de page avec animation */}
-        <PageHeader 
-          title="Actualités"
-          description="Découvrez mes dernières actualités, sélections en festival et projets en cours"
-        />
+        <div className="mb-8 md:mb-12">
+          <PageHeader 
+            title="Actualités"
+            description="Découvrez mes dernières actualités, sélections en festival et projets en cours"
+          />
+        </div>
         
         {/* Champ de recherche */}
         <div className="mb-8">
@@ -224,8 +226,8 @@ function ActusPageContent() {
 
         {/* Contenu SEO */}
         <div className="mt-24 pt-12 border-t border-black/10">
-          <div className="max-w-4xl">
-            <h2 className="text-xl md:text-xl font-bold text-black mb-6" style={{
+          <div className="w-full">
+            <h2 className="text-xl md:text-2xl font-bold text-black mb-6" style={{
               fontFamily: 'var(--font-andalemo), sans-serif',
               letterSpacing: '-0.02em',
             }}>

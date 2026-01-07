@@ -65,24 +65,27 @@ export default function ContentListPage({
         variant="default"
       />
       
-      <div className="max-w-4xl mx-auto px-6 md:px-10 lg:px-16 pt-12 md:pt-20 pb-0">
+      {/* Conteneur unifié pour en-tête, cards et texte SEO */}
+      <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-10 xl:px-16">
         {/* En-tête de page avec animation */}
-        <PageHeader title={title} description={description} />
-      </div>
-      
-      {/* Section avec effet de pile progressive */}
-      <StackScroll items={sortedItems} basePath={basePath} />
-      
-      {/* Contenu SEO */}
-      <div className="max-w-4xl mx-auto px-6 md:px-10 lg:px-16 py-12 md:py-20">
-        <div className="pt-12 border-t border-black/10">
-          <div className="w-full">
-            <h2 className="text-2xl md:text-3xl font-bold tracking-tight leading-tight text-black mb-6">
-              {seoTitle}
-            </h2>
-            <p className="text-base leading-relaxed font-normal text-black/80">
-              {seoDescription}
-            </p>
+        <div className="pt-12 md:pt-20 pb-8 md:pb-12 lg:pb-20">
+          <PageHeader title={title} description={description} />
+        </div>
+        
+        {/* Section avec effet de pile progressive */}
+        <StackScroll items={sortedItems} basePath={basePath} />
+        
+        {/* Contenu SEO */}
+        <div className="pt-12 md:pt-20 pb-12 md:pb-20">
+          <div className="pt-12 border-t border-black/10">
+            <div className="w-full">
+              <h2 className="text-2xl md:text-3xl font-bold tracking-tight leading-tight text-black mb-6">
+                {seoTitle}
+              </h2>
+              <p className="text-base leading-relaxed font-normal text-black/80">
+                {seoDescription}
+              </p>
+            </div>
           </div>
         </div>
       </div>

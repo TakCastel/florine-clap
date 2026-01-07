@@ -37,7 +37,7 @@ type StackScrollProps = {
 export default function StackScroll({ items, basePath, className = '' }: StackScrollProps) {
   return (
     <div className={`relative w-full ${className}`} style={{ position: 'relative' }}>
-      <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-10 xl:px-16 py-8 md:py-12 lg:py-20">
+      <div className="py-8 md:py-12 lg:py-20">
         <div className="relative" style={{ position: 'relative' }}>
           {items.map((item, index) => {
             const isEven = index % 2 === 0
