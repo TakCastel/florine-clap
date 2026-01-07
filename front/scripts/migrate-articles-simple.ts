@@ -179,9 +179,9 @@ async function extractContentWithAI(page: any, title: string): Promise<string> {
     const visibleText = await page.evaluate(() => {
       const section = document.querySelector('#content-wrapper section')
       if (section) {
-        return section.innerText || section.textContent || ''
+        return (section as HTMLElement).innerText || section.textContent || ''
       }
-      return document.body.innerText || document.body.textContent || ''
+      return (document.body as HTMLElement).innerText || document.body.textContent || ''
     })
 
     const openai = new OpenAI({ apiKey: OPENAI_API_KEY })
