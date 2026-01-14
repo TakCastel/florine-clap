@@ -272,29 +272,6 @@ async function applySchema() {
         } else {
           throw applyError
         }
-      } catch (applyError: any) {
-        // Fallback: Essayer directement avec /schema/apply
-        if (applyError.response?.status === 400 && applyError.response?.data?.errors?.[0]?.message?.includes('hash')) {
-          console.log('   Tentative alternative: application directe...')
-          try {
-            const response = await axios.post(`${DIRECTUS_URL}/schema/apply`, snapshot, {
-              headers: {
-                'Authorization': `Bearer ${token}`,
-                'Content-Type': 'application/json'
-              }
-            })
-            console.log('✅ Schéma appliqué avec succès (méthode alternative)!')
-          } catch (fallbackError: any) {
-            console.error('\n❌ Erreur lors de l\'application du schéma:')
-            console.error(`   Message: ${fallbackError.response?.data?.errors?.[0]?.message || fallbackError.message}`)
-            if (fallbackError.response?.data) {
-              console.error(`   Détails:`, JSON.stringify(fallbackError.response.data, null, 2))
-            }
-            throw fallbackError
-          }
-        } else {
-          throw applyError
-        }
       }
     }
   } catch (error: any) {
