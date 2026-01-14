@@ -79,3 +79,40 @@ docker-compose down
 docker-compose --profile dev up -d frontend-dev
 docker-compose --profile dev logs -f frontend-dev
 ```
+
+## 📦 Déploiement sur le serveur
+
+### Déploiement complet (code + schéma Directus)
+
+1. **En local** : Après avoir modifié la structure Directus, exporter le schéma :
+   ```bash
+   cd front
+   npm run directus:export
+   git add directus/snapshots/schema.yaml
+   git commit -m "Mise à jour du schéma Directus"
+   git push
+   ```
+
+2. **Sur le serveur** : Récupérer et déployer les modifications :
+   ```bash
+   # Récupérer les modifications
+   git pull
+   
+   # Appliquer le schéma Directus (si modifié)
+   cd front
+   npm run directus:apply
+   
+   # Reconstruire et redémarrer le frontend
+   cd ..
+   docker compose up -d --build frontend
+   ```
+
+### Déploiement rapide (code uniquement)
+
+Si vous n'avez modifié que le code frontend :
+
+```bash
+git pull && docker compose up -d --build frontend
+```
+
+Voir [directus/snapshots/README.md](directus/snapshots/README.md) pour plus de détails sur la gestion des snapshots Directus.
