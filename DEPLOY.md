@@ -52,7 +52,19 @@ cd ..
 docker compose up -d --build frontend
 ```
 
-**Option C : Déploiement rapide (code uniquement, sans schéma)**
+**Option C : Appliquer uniquement le schéma Directus (sans rebuild du frontend)**
+
+Si vous avez seulement modifié le schéma Directus et que vous voulez l'appliquer sans reconstruire le frontend :
+
+```bash
+# 1. Récupérer les modifications
+git pull
+
+# 2. Appliquer uniquement le schéma Directus
+./scripts/apply-schema.sh
+```
+
+**Option D : Déploiement rapide (code uniquement, sans schéma)**
 
 ```bash
 git pull && docker compose up -d --build frontend
@@ -82,10 +94,13 @@ cd front && npm run directus:apply:dry-run
 ### Déploiement
 
 ```bash
-# Déploiement complet
+# Déploiement complet (code + schéma + rebuild frontend)
 ./scripts/deploy.sh
 
-# Déploiement sans schéma
+# Appliquer uniquement le schéma Directus (sans rebuild frontend)
+./scripts/apply-schema.sh
+
+# Déploiement sans schéma (code uniquement)
 ./scripts/deploy.sh --skip-schema
 ```
 
