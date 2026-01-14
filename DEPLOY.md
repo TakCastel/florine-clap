@@ -111,6 +111,18 @@ cd front && npm run directus:apply:dry-run
 - Toujours tester en local avant de déployer
 - En cas d'erreur lors de l'application du schéma, vérifiez les logs
 
+### Variables d'environnement requises
+
+Pour appliquer le schéma Directus, assurez-vous que votre fichier `.env` à la racine du projet contient :
+
+```env
+DIRECTUS_ADMIN_EMAIL=votre-email@example.com
+DIRECTUS_ADMIN_PASSWORD=votre-mot-de-passe
+DIRECTUS_PUBLIC_URL=http://votre-serveur:8055
+```
+
+Le script cherche automatiquement le fichier `.env` à la racine du projet. Si ces variables ne sont pas définies, vous obtiendrez un message d'erreur détaillé.
+
 ## 🔍 Vérification après déploiement
 
 ```bash

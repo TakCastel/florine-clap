@@ -17,29 +17,61 @@ const rootEnvPath = path.join(process.cwd(), '..', '.env')
 const localEnvPath = path.join(process.cwd(), '.env')
 
 // Essayer d'abord la racine, puis le dossier front
+let envLoaded = false
+let envPath = ''
 if (fs.existsSync(rootEnvPath)) {
-  dotenv.config({ path: rootEnvPath })
+  dotenv.config({ path: rootEnvPath, override: true })
+  envLoaded = true
+  envPath = rootEnvPath
+  console.log(`📄 Fichier .env chargé depuis: ${rootEnvPath}`)
 } else if (fs.existsSync(localEnvPath)) {
-  dotenv.config({ path: localEnvPath })
+  dotenv.config({ path: localEnvPath, override: true })
+  envLoaded = true
+  envPath = localEnvPath
+  console.log(`📄 Fichier .env chargé depuis: ${localEnvPath}`)
 } else {
   // Essayer sans chemin spécifique (cherche automatiquement)
-  dotenv.config()
+  dotenv.config({ override: true })
+  console.log('📄 Tentative de chargement automatique du .env')
+}
+
+// Debug: afficher le répertoire de travail actuel
+console.log(`📂 Répertoire de travail: ${process.cwd()}`)
+if (envPath) {
+  console.log(`📂 Chemin .env utilisé: ${envPath}`)
 }
 
 const DIRECTUS_URL = process.env.DIRECTUS_PUBLIC_URL || process.env.NEXT_PUBLIC_DIRECTUS_URL || 'http://localhost:8055'
 const SNAPSHOT_PATH = path.join(process.cwd(), '..', 'directus', 'snapshots', 'schema.yaml')
 const DRY_RUN = process.argv.includes('--dry-run')
 
+// Fonction pour valider le format d'email
+function isValidEmail(email: string): boolean {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+  return emailRegex.test(email)
+}
+
 // Fonction pour obtenir un token via l'authentification email/password
 async function getAuthToken(): Promise<string> {
-  const email = process.env.DIRECTUS_ADMIN_EMAIL
-  const password = process.env.DIRECTUS_ADMIN_PASSWORD
+  const email = process.env.DIRECTUS_ADMIN_EMAIL?.trim()
+  const password = process.env.DIRECTUS_ADMIN_PASSWORD?.trim()
 
   if (!email || !password) {
+    console.error('\n❌ Variables d\'environnement manquantes:')
+    console.error(`   DIRECTUS_ADMIN_EMAIL: ${email ? '✅ défini' : '❌ manquant ou vide'}`)
+    console.error(`   DIRECTUS_ADMIN_PASSWORD: ${password ? '✅ défini' : '❌ manquant ou vide'}`)
+    console.error('\n💡 Assurez-vous que ces variables sont définies dans votre fichier .env à la racine du projet')
     throw new Error('DIRECTUS_ADMIN_EMAIL et DIRECTUS_ADMIN_PASSWORD doivent être définis dans .env')
   }
 
+  if (!isValidEmail(email)) {
+    console.error(`\n❌ Format d'email invalide: "${email}"`)
+    throw new Error(`DIRECTUS_ADMIN_EMAIL doit être une adresse email valide (actuellement: "${email}")`)
+  }
+
   try {
+    console.log(`   Email utilisé: "${email}"`)
+    console.log(`   URL Directus: ${DIRECTUS_URL}`)
     const response = await axios.post(`${DIRECTUS_URL}/auth/login`, {
       email,
       password,
@@ -49,7 +81,12 @@ async function getAuthToken(): Promise<string> {
     return response.data.data.access_token
   } catch (error: any) {
     if (error.response) {
-      throw new Error(`Erreur d'authentification: ${error.response.data?.errors?.[0]?.message || JSON.stringify(error.response.data)}`)
+      const errorMsg = error.response.data?.errors?.[0]?.message || JSON.stringify(error.response.data)
+      console.error(`\n   Détails de l'erreur:`)
+      console.error(`   - Email envoyé: "${email}"`)
+      console.error(`   - Longueur email: ${email?.length || 0} caractères`)
+      console.error(`   - Réponse Directus: ${errorMsg}`)
+      throw new Error(`Erreur d'authentification: ${errorMsg}`)
     }
     throw error
   }
@@ -60,6 +97,15 @@ async function applySchema() {
   console.log(`URL: ${DIRECTUS_URL}`)
   console.log(`Snapshot: ${SNAPSHOT_PATH}`)
   console.log(`Mode: ${DRY_RUN ? 'DRY-RUN (aucune modification)' : 'APPLICATION'}\n`)
+  
+  // Afficher les chemins de .env testés pour le debug
+  if (!process.env.DIRECTUS_ADMIN_EMAIL) {
+    console.log('⚠️  Avertissement: DIRECTUS_ADMIN_EMAIL non trouvé')
+    console.log(`   Chemins testés:`)
+    console.log(`   - ${rootEnvPath} ${fs.existsSync(rootEnvPath) ? '✅ existe' : '❌ n\'existe pas'}`)
+    console.log(`   - ${localEnvPath} ${fs.existsSync(localEnvPath) ? '✅ existe' : '❌ n\'existe pas'}`)
+    console.log('')
+  }
 
   // Vérifier que le fichier existe
   if (!fs.existsSync(SNAPSHOT_PATH)) {
@@ -71,6 +117,7 @@ async function applySchema() {
   try {
     // Obtenir un token via l'authentification
     console.log('🔐 Authentification...')
+    console.log(`   DIRECTUS_ADMIN_EMAIL depuis env: "${process.env.DIRECTUS_ADMIN_EMAIL || 'NON DÉFINI'}"`)
     const token = await getAuthToken()
     console.log('✅ Authentifié\n')
 
