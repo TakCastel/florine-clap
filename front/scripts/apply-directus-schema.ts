@@ -123,22 +123,75 @@ async function applySchema() {
 
     // Lire le snapshot
     const snapshotContent = fs.readFileSync(SNAPSHOT_PATH, 'utf-8')
-    const snapshot = JSON.parse(snapshotContent)
+    const snapshotData = JSON.parse(snapshotContent)
+
+    // Extraire le contenu de 'data' si présent, sinon utiliser le snapshot tel quel
+    const snapshot = snapshotData.data || snapshotData
 
     if (DRY_RUN) {
-      console.log('📋 Contenu du snapshot:')
-      console.log(JSON.stringify(snapshot, null, 2))
+      console.log('📋 Contenu du snapshot (extrait):')
+      console.log(`   Version: ${snapshot.version || 'N/A'}`)
+      console.log(`   Directus: ${snapshot.directus || 'N/A'}`)
+      console.log(`   Collections: ${snapshot.collections?.length || 0}`)
       console.log('\n💡 Pour appliquer réellement, exécutez sans --dry-run')
     } else {
       // Appliquer le snapshot via l'API REST
       console.log('🔄 Application du snapshot...')
-      await axios.post(`${DIRECTUS_URL}/schema/apply`, snapshot, {
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
+      console.log(`   Collections à appliquer: ${snapshot.collections?.length || 0}`)
+      
+      try {
+        // Méthode 1: Essayer d'abord avec /schema/diff pour obtenir le hash
+        console.log('   Étape 1: Calcul des différences...')
+        const diffResponse = await axios.post(`${DIRECTUS_URL}/schema/diff`, snapshot, {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          }
+        })
+        
+        const diff = diffResponse.data?.data || diffResponse.data
+        console.log(`   Différences trouvées: ${diff?.diff?.length || 0} changements`)
+        
+        if (diff && diff.diff && diff.diff.length > 0) {
+          // Méthode 2: Appliquer avec le hash obtenu
+          console.log('   Étape 2: Application des différences...')
+          const applyResponse = await axios.post(`${DIRECTUS_URL}/schema/apply`, {
+            hash: diff.hash,
+            diff: diff.diff
+          }, {
+            headers: {
+              'Authorization': `Bearer ${token}`,
+              'Content-Type': 'application/json'
+            }
+          })
+          console.log('✅ Schéma appliqué avec succès!')
+        } else {
+          console.log('ℹ️  Aucune différence détectée, le schéma est déjà à jour.')
         }
-      })
-      console.log('✅ Schéma appliqué avec succès!')
+      } catch (applyError: any) {
+        // Fallback: Essayer directement avec /schema/apply
+        if (applyError.response?.status === 400 && applyError.response?.data?.errors?.[0]?.message?.includes('hash')) {
+          console.log('   Tentative alternative: application directe...')
+          try {
+            const response = await axios.post(`${DIRECTUS_URL}/schema/apply`, snapshot, {
+              headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+              }
+            })
+            console.log('✅ Schéma appliqué avec succès (méthode alternative)!')
+          } catch (fallbackError: any) {
+            console.error('\n❌ Erreur lors de l\'application du schéma:')
+            console.error(`   Message: ${fallbackError.response?.data?.errors?.[0]?.message || fallbackError.message}`)
+            if (fallbackError.response?.data) {
+              console.error(`   Détails:`, JSON.stringify(fallbackError.response.data, null, 2))
+            }
+            throw fallbackError
+          }
+        } else {
+          throw applyError
+        }
+      }
     }
   } catch (error: any) {
     console.error('❌ Erreur:', error.message)
