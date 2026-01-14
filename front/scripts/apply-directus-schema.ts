@@ -44,6 +44,7 @@ if (envPath) {
 const DIRECTUS_URL = process.env.DIRECTUS_PUBLIC_URL || process.env.NEXT_PUBLIC_DIRECTUS_URL || 'http://localhost:8055'
 const SNAPSHOT_PATH = path.join(process.cwd(), '..', 'directus', 'snapshots', 'schema.yaml')
 const DRY_RUN = process.argv.includes('--dry-run')
+const FORCE = process.argv.includes('--force')
 
 // Fonction pour valider le format d'email
 function isValidEmail(email: string): boolean {
@@ -150,7 +151,8 @@ async function applySchema() {
         })
         
         const diff = diffResponse.data?.data || diffResponse.data
-        console.log(`   Différences trouvées: ${diff?.diff?.length || 0} changements`)
+        const diffCount = diff?.diff?.length || 0
+        console.log(`   Différences trouvées: ${diffCount} changements`)
         
         if (diff && diff.diff && diff.diff.length > 0) {
           // Méthode 2: Appliquer avec le hash obtenu
@@ -166,7 +168,40 @@ async function applySchema() {
           })
           console.log('✅ Schéma appliqué avec succès!')
         } else {
-          console.log('ℹ️  Aucune différence détectée, le schéma est déjà à jour.')
+          // Même si diff ne trouve rien, essayer d'appliquer directement
+          // (parfois diff ne détecte pas tous les changements)
+          if (FORCE) {
+            console.log('⚠️  Aucune différence détectée, mais --force activé')
+          } else {
+            console.log('⚠️  Aucune différence détectée par /schema/diff')
+            console.log('   Tentative d\'application directe du snapshot...')
+          }
+          
+          try {
+            const applyResponse = await axios.post(`${DIRECTUS_URL}/schema/apply`, snapshot, {
+              headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+              }
+            })
+            console.log('✅ Schéma appliqué avec succès!')
+            if (applyResponse.data) {
+              console.log('   Réponse:', JSON.stringify(applyResponse.data).substring(0, 200))
+            }
+          } catch (applyDirectError: any) {
+            if (applyDirectError.response?.status === 400) {
+              const errorMsg = applyDirectError.response?.data?.errors?.[0]?.message || ''
+              if (errorMsg.includes('hash')) {
+                console.log('   ⚠️  L\'API nécessite un hash, mais diff n\'a rien trouvé')
+                console.log('   💡 Le schéma semble déjà à jour selon Directus')
+                console.log('   💡 Si vous voyez des différences dans l\'admin, essayez de redémarrer Directus')
+              } else {
+                throw applyDirectError
+              }
+            } else {
+              throw applyDirectError
+            }
+          }
         }
       } catch (applyError: any) {
         // Fallback: Essayer directement avec /schema/apply

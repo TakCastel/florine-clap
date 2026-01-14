@@ -1,8 +1,15 @@
 #!/bin/bash
 # Script pour appliquer uniquement le schéma Directus (sans rebuild du frontend)
-# Usage: ./scripts/apply-schema.sh
+# Usage: ./scripts/apply-schema.sh [--force]
 
 set -e  # Arrêter en cas d'erreur
+
+FORCE=false
+if [ "$1" == "--force" ]; then
+  FORCE=true
+  echo "⚠️  Mode FORCE activé - le schéma sera appliqué même si aucune différence n'est détectée"
+  echo ""
+fi
 
 echo "🔄 Application du schéma Directus..."
 echo ""
@@ -20,13 +27,24 @@ echo ""
 
 # Appliquer le schéma Directus
 cd front
-if npm run directus:apply; then
-  echo ""
-  echo "✅ Schéma Directus appliqué avec succès!"
+if [ "$FORCE" = true ]; then
+  if npm run directus:apply:force; then
+    echo ""
+    echo "✅ Schéma Directus appliqué avec succès (mode forcé)!"
+  else
+    echo ""
+    echo "❌ Erreur lors de l'application du schéma"
+    exit 1
+  fi
 else
-  echo ""
-  echo "❌ Erreur lors de l'application du schéma"
-  exit 1
+  if npm run directus:apply; then
+    echo ""
+    echo "✅ Schéma Directus appliqué avec succès!"
+  else
+    echo ""
+    echo "❌ Erreur lors de l'application du schéma"
+    exit 1
+  fi
 fi
 cd ..
 

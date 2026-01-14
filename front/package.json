@@ -12,6 +12,7 @@
     "migrate:test": "tsx scripts/migrate-articles-simple.ts",
     "directus:export": "tsx scripts/export-directus-schema.ts",
     "directus:apply": "tsx scripts/apply-directus-schema.ts",
+    "directus:apply:force": "tsx scripts/apply-directus-schema.ts --force",
     "directus:apply:dry-run": "tsx scripts/apply-directus-schema.ts --dry-run"
   },
   "dependencies": {
