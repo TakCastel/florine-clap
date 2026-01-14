@@ -37,10 +37,12 @@ async function getVideoArts() {
 export default async function VideosArtPage() {
   const videoArts = await getVideoArts()
   
-  // Trier par année
-  const sortedVideoArts = [...videoArts].sort((a, b) => 
-    new Date(b.annee || '2020').getTime() - new Date(a.annee || '2020').getTime()
-  )
+  // Trier les vidéos : du plus récent au plus ancien (par date_created)
+  const sortedVideoArts = [...videoArts].sort((a, b) => {
+    const dateA = a.date_created ? new Date(a.date_created).getTime() : 0
+    const dateB = b.date_created ? new Date(b.date_created).getTime() : 0
+    return dateB - dateA // Décroissant : plus récent en premier
+  })
 
   const jsonLd = generateJsonLd({
     type: 'WebSite',

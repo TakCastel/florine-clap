@@ -27,14 +27,11 @@ async function getFilms() {
 export default async function FilmsPage() {
   const films = await getFilms()
   
-  // Trier les films : par ordre personnalisé, puis par date si pas d'ordre
+  // Trier les films : du plus récent au plus ancien (par date_created)
   const sortedFilms = [...films].sort((a: Film, b: Film) => {
-    if (a.order !== undefined && b.order !== undefined) {
-      return a.order - b.order
-    }
-    if (a.order !== undefined) return -1
-    if (b.order !== undefined) return 1
-    return new Date(b.annee || '2020').getTime() - new Date(a.annee || '2020').getTime()
+    const dateA = a.date_created ? new Date(a.date_created).getTime() : 0
+    const dateB = b.date_created ? new Date(b.date_created).getTime() : 0
+    return dateB - dateA // Décroissant : plus récent en premier
   })
 
   const jsonLd = generateJsonLd({

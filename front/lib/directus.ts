@@ -228,7 +228,7 @@ export interface HomeSettings {
 export async function getAllFilms(): Promise<Film[]> {
   try {
     return await fetchDirectus<Film[]>(
-      `/items/films?fields=*,image.id,image.filename_download,content.id,content.filename_download,heading.id,heading.filename_download&sort[]=order&sort[]=-date_created`
+      `/items/films?fields=*,image.id,image.filename_download,content.id,content.filename_download,heading.id,heading.filename_download&sort[]=-date_created`
     )
   } catch (error) {
     console.error('Erreur lors de la récupération des films:', error)
@@ -323,7 +323,7 @@ export async function getAllVideoArts(): Promise<VideoArt[]> {
     // même avec fields=*,image.id,image.filename_download
     // On récupère donc avec * pour avoir tous les champs, et on gérera l'image dans getImageUrl
     const videoArts = await fetchDirectus<VideoArt[]>(
-      `/items/videos_art?fields=*&sort[]=-annee&sort[]=-date_created`
+      `/items/videos_art?fields=*&sort[]=-date_created`
     )
     
     return videoArts
