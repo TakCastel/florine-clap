@@ -80,12 +80,20 @@ async function fetchDirectus<T>(endpoint: string): Promise<T> {
         statusText: response.statusText,
         error: errorText,
       })
-      throw new Error(`Directus API error: ${response.status} ${response.statusText}`)
+      throw new Error(`Directus API error: ${response.status} ${response.statusText} - ${errorText}`)
     }
     
     const data = await response.json()
-    return data.data as T
-  } catch (error) {
+    
+    // Pour les singletons, Directus peut retourner directement l'objet dans data
+    // Pour les collections, c'est dans data.data
+    // On vérifie les deux cas
+    if (data.data !== undefined) {
+      return data.data as T
+    }
+    // Si pas de data.data, retourner directement data (cas singleton)
+    return data as T
+  } catch (error: any) {
     console.error(`Erreur lors de l'appel à Directus (${url}):`, error)
     throw error
   }
@@ -176,11 +184,8 @@ export interface Page {
   id: string
   slug: string
   title: string
-  portrait?: string | { id: string; filename_download: string }
-  hero_video?: string
   hero_image?: string | { id: string; filename_download: string }
-  cta_text?: string
-  cta_link?: string
+  bottom_image?: string | { id: string; filename_download: string }
   body?: string
   date_created?: string
   date_updated?: string
@@ -211,6 +216,7 @@ export interface HomeSettings {
   hero_video?: string | { id: string; filename_download: string }
   hero_video_url?: string
   bio_text?: string
+  bio?: string
   bio_image?: string | { id: string; filename_download: string }
   date_created?: string
   date_updated?: string
@@ -291,7 +297,7 @@ export async function getActuBySlug(slug: string): Promise<Actu | null> {
 export async function getAllPages(): Promise<Page[]> {
   try {
     return await fetchDirectus<Page[]>(
-      `/items/pages?fields=*,portrait.id,portrait.filename_download,hero_image.id,hero_image.filename_download`
+      `/items/pages?fields=*,hero_image.id,hero_image.filename_download,bottom_image.id,bottom_image.filename_download`
     )
   } catch (error) {
     console.error('Erreur lors de la récupération des pages:', error)
@@ -302,7 +308,7 @@ export async function getAllPages(): Promise<Page[]> {
 export async function getPageBySlug(slug: string): Promise<Page | null> {
   try {
     const pages = await fetchDirectus<Page[]>(
-      `/items/pages?fields=*,portrait.id,portrait.filename_download,hero_image.id,hero_image.filename_download&filter[slug][_eq]=${encodeURIComponent(slug)}&limit=1`
+      `/items/pages?fields=*,hero_image.id,hero_image.filename_download,bottom_image.id,bottom_image.filename_download&filter[slug][_eq]=${encodeURIComponent(slug)}&limit=1`
     )
     return pages[0] || null
   } catch (error) {
@@ -348,17 +354,39 @@ export async function getVideoArtBySlug(slug: string): Promise<VideoArt | null> 
 
 export async function getHomeSettings(): Promise<HomeSettings | null> {
   try {
-    const endpoint = `/items/home_settings?fields=*,hero_video.id,hero_video.filename_download,hero_video.type,hero_video.filesize,bio_image.id,bio_image.filename_download&limit=1`
+    // Essayer d'abord sans le champ bio (qui peut ne pas exister)
+    // Si bio n'existe pas, on utilisera bio_text à la place
+    const endpoint = `/items/home_settings?fields=*,hero_video.id,hero_video.filename_download,hero_video.type,hero_video.filesize,bio_image.id,bio_image.filename_download,bio_text&limit=1`
     
-    // home_settings est une collection singleton, donc Directus retourne directement l'objet, pas un tableau
-    const settings = await fetchDirectus<HomeSettings | HomeSettings[]>(endpoint)
-    
-    // Gérer le cas singleton : Directus retourne directement l'objet, pas un tableau
-    const result = Array.isArray(settings) 
-      ? (settings.length > 0 ? settings[0] : null)
-      : (settings || null)
-    
-    return result
+    try {
+      const settings = await fetchDirectus<HomeSettings | HomeSettings[]>(endpoint)
+      
+      const result = Array.isArray(settings) 
+        ? (settings.length > 0 ? settings[0] : null)
+        : (settings || null)
+      
+      // Si on a un résultat mais pas de bio, essayer de récupérer bio séparément
+      if (result && !result.bio) {
+        try {
+          const endpointWithBio = `/items/home_settings?fields=*,hero_video.id,hero_video.filename_download,hero_video.type,hero_video.filesize,bio_image.id,bio_image.filename_download,bio,bio_text&limit=1`
+          const settingsWithBio = await fetchDirectus<HomeSettings | HomeSettings[]>(endpointWithBio)
+          const resultWithBio = Array.isArray(settingsWithBio) 
+            ? (settingsWithBio.length > 0 ? settingsWithBio[0] : null)
+            : (settingsWithBio || null)
+          if (resultWithBio?.bio) {
+            result.bio = resultWithBio.bio
+          }
+        } catch (bioError) {
+          // Si bio n'existe pas ou n'a pas les permissions, on continue sans
+          console.log('Champ bio non disponible, utilisation de bio_text si disponible')
+        }
+      }
+      
+      return result
+    } catch (fetchError: any) {
+      console.error('Erreur lors de la récupération des paramètres:', fetchError)
+      return null
+    }
   } catch (error) {
     console.error('Erreur lors de la récupération des paramètres:', error)
     return null
@@ -391,7 +419,12 @@ export function getImageUrl(
         // Le composant client pourra appeler getImageUrl qui utilisera getDirectusUrlForClient()
         return null
       }
-      const normalizedUrl = publicUrl.replace(/\/+$/, '')
+      // S'assurer que l'URL a un protocole
+      let normalizedUrl = publicUrl.trim().replace(/\/+$/, '')
+      if (!normalizedUrl.startsWith('http://') && !normalizedUrl.startsWith('https://')) {
+        // Si l'URL n'a pas de protocole, ajouter http:// par défaut
+        normalizedUrl = `http://${normalizedUrl}`
+      }
       return `${normalizedUrl}/assets/${file}`
     }
     // Sinon, on suppose que c'est un chemin relatif
@@ -411,7 +444,12 @@ export function getImageUrl(
       if (!publicUrl || publicUrl.trim() === '') {
         return null
       }
-      const normalizedUrl = publicUrl.replace(/\/+$/, '')
+      // S'assurer que l'URL a un protocole
+      let normalizedUrl = publicUrl.trim().replace(/\/+$/, '')
+      if (!normalizedUrl.startsWith('http://') && !normalizedUrl.startsWith('https://')) {
+        // Si l'URL n'a pas de protocole, ajouter http:// par défaut
+        normalizedUrl = `http://${normalizedUrl}`
+      }
       return `${normalizedUrl}/assets/${file.id}`
     }
   }

@@ -37,23 +37,17 @@ export default function ArticleHeroImage({
             <img
               src={imageUrl}
               alt={alt}
-              className="w-full h-full object-cover"
+              className="w-full h-full object-cover blur-[10px]"
               style={{ objectPosition: 'center 30%' }}
               loading="eager"
               fetchPriority="high"
             />
           </div>
-          {/* Dégradé noir en haut pour le header - plus sombre */}
-          <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/30 to-transparent pointer-events-none" aria-hidden="true"></div>
-          {/* Dégradé blanc en bas pour se fondre dans la page - commence à -1px pour éviter la bordure */}
+          {/* Dégradé vertical : noir en haut, blanc en bas */}
           <div 
-            className="absolute pointer-events-none"
+            className="absolute inset-0 pointer-events-none" 
             style={{
-              top: 0,
-              left: 0,
-              right: 0,
-              bottom: '-1px',
-              background: 'linear-gradient(to top, rgb(255 255 255) 0%, rgba(255, 255, 255, 0.8) 30%, rgba(255, 255, 255, 0.4) 60%, transparent 100%)'
+              background: 'linear-gradient(to bottom, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.3) 30%, rgba(255, 255, 255, 0.5) 70%, rgba(255, 255, 255, 1) 100%)'
             }}
             aria-hidden="true"
           ></div>

@@ -7,7 +7,9 @@ export const revalidate = 60
 async function getHomeSettingsWithImageUrls(): Promise<HomeSettings | null> {
   try {
     const settings = await getHomeSettings()
-    if (!settings) return null
+    if (!settings) {
+      return null
+    }
     
     // Pré-construire les URLs d'images côté serveur, comme pour les autres pages
     // Cela garantit que les URLs sont construites avec process.env.NEXT_PUBLIC_DIRECTUS_URL

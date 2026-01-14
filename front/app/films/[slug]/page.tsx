@@ -86,49 +86,50 @@ export default async function FilmPage({ params }: FilmPageProps) {
         variant="default"
       />
 
-      <div className="max-w-7xl mx-auto px-6 md:px-10 lg:px-16 py-16 md:py-24 grid grid-cols-1 lg:grid-cols-3 gap-12 lg:items-start" style={{ overflow: 'visible' }}>
-        <article className="lg:col-span-2">
-          <h1 className="text-xl md:text-2xl font-bold tracking-tight leading-tight text-black mb-8">
-            {film.title}
-          </h1>
+      <div className="max-w-7xl mx-auto px-6 md:px-10 lg:px-16 -mt-16 md:-mt-20 pt-8 md:pt-12 pb-16 md:pb-24">
+        <h1 className="text-xl md:text-2xl font-bold tracking-tight leading-tight text-black mb-8">
+          {film.title}
+        </h1>
 
-          {imageUrl && (
-            <img
-              src={imageUrl}
-              alt={`Image de couverture du film ${film.title}`}
-              className="w-full aspect-video object-cover mb-8"
-              loading="lazy"
-            />
-          )}
-          
-          {film.body && (
-            <div className="prose max-w-none text-base text-black mb-12 [&_p]:text-justify [&_li]:text-justify">
-              <MarkdownRenderer content={film.body} />
-            </div>
-          )}
-
-          {film.vimeo_id ? (
-            <div className="w-full aspect-video mb-8">
-              <VimeoPlayer
-                videoId={film.vimeo_id}
-                className="w-full h-full"
-                autoplay={false}
-                muted={false}
-                loop={false}
-                controls={true}
-                title={`Vidéo du film ${film.title}`}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 lg:items-start" style={{ overflow: 'visible' }}>
+          <article className="lg:col-span-2">
+            {imageUrl && (
+              <img
+                src={imageUrl}
+                alt={`Image de couverture du film ${film.title}`}
+                className="w-full aspect-video object-cover mb-8"
+                loading="lazy"
               />
-            </div>
-          ) : film.video_url ? (
-            <VideoPlayer
-              src={film.video_url}
-              title={film.title}
-              ariaLabel={`Vidéo du film ${film.title}`}
-            />
-          ) : null}
-        </article>
+            )}
+            
+            {film.body && (
+              <div className="prose max-w-none text-base text-black mb-12 [&_p]:text-justify [&_li]:text-justify">
+                <MarkdownRenderer content={film.body} />
+              </div>
+            )}
 
-        <StickyAside className="lg:col-span-1">
+            {film.vimeo_id ? (
+              <div className="w-full aspect-video mb-8">
+                <VimeoPlayer
+                  videoId={film.vimeo_id}
+                  className="w-full h-full"
+                  autoplay={false}
+                  muted={false}
+                  loop={false}
+                  controls={true}
+                  title={`Vidéo du film ${film.title}`}
+                />
+              </div>
+            ) : film.video_url ? (
+              <VideoPlayer
+                src={film.video_url}
+                title={film.title}
+                ariaLabel={`Vidéo du film ${film.title}`}
+              />
+            ) : null}
+          </article>
+
+          <StickyAside className="lg:col-span-1">
           <section className="border-t border-black/10 pt-8 pb-8">
             <h2 className="text-lg md:text-xl font-bold tracking-tight leading-tight text-black mb-6">
               Fiche technique
@@ -284,6 +285,7 @@ export default async function FilmPage({ params }: FilmPageProps) {
             </a>
           </nav>
         </StickyAside>
+        </div>
       </div>
     </>
   )

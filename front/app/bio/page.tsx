@@ -1,7 +1,7 @@
 import MarkdownRenderer from '@/components/MarkdownRenderer'
 import Breadcrumb from '@/components/Breadcrumb'
 import PartnersSection from '@/components/home/PartnersSection'
-import { getPageBySlug, Page } from '@/lib/directus'
+import { getPageBySlug, Page, getImageUrl } from '@/lib/directus'
 import { buildMetadata, generateJsonLd } from '@/components/Seo'
 import { canonical } from '@/lib/seo'
 import { Metadata } from 'next'
@@ -56,15 +56,16 @@ export default async function BioPage() {
     )
   }
 
-  // Utiliser toujours l'image FLORINE_DEF.avif depuis public
-  const imageUrl = '/images/FLORINE_DEF.avif'
+  // Récupérer les URLs des images depuis Directus (même logique pour les deux)
+  const heroImageUrl = page.hero_image ? getImageUrl(page.hero_image) : null
+  const bottomImageUrl = page.bottom_image ? getImageUrl(page.bottom_image) : null
   const canonicalUrl = canonical('/bio')
 
   const jsonLd = generateJsonLd({
     type: 'Person',
     title: page.title === "A propos" ? "Bio" : page.title,
     description: 'Découvrez le parcours de Florine Clap, réalisatrice et formatrice en médiations vidéo',
-    image: imageUrl || undefined,
+    image: heroImageUrl || '/images/FLORINE_DEF.avif' || undefined,
     url: canonicalUrl,
   })
 
@@ -91,19 +92,21 @@ export default async function BioPage() {
           />
         </div>
 
-        {/* Image - dans le même conteneur que le contenu */}
-        <div className="max-w-7xl mx-auto px-6 md:px-10 lg:px-16">
-          <div className="w-full overflow-hidden">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={imageUrl}
-              alt="Portrait de Florine Clap"
-              className="w-full h-auto object-cover"
-              loading="eager"
-              fetchPriority="high"
-            />
+        {/* Hero Image - dans le container */}
+        {heroImageUrl && (
+          <div className="max-w-7xl mx-auto px-6 md:px-10 lg:px-16">
+            <div className="w-full overflow-hidden">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={heroImageUrl}
+                alt={page.title === "A propos" ? "Bio" : page.title}
+                className="w-full h-auto object-cover"
+                loading="eager"
+                fetchPriority="high"
+              />
+            </div>
           </div>
-        </div>
+        )}
 
         {/* Contenu Markdown principal - après l'image */}
         <section className="py-16 md:py-24 bg-theme-white">
@@ -115,6 +118,28 @@ export default async function BioPage() {
             )}
           </div>
         </section>
+
+        {/* Bottom Image - juste après le contenu (dans le container) */}
+        {page.bottom_image && (() => {
+          const bottomImageUrl = getImageUrl(page.bottom_image)
+          if (!bottomImageUrl) {
+            console.log('⚠️ bottom_image URL est null pour la page bio:', page.bottom_image)
+            return null
+          }
+          return (
+            <div className="max-w-4xl mx-auto px-6 md:px-10 lg:px-16 mt-16 md:mt-24">
+              <div className="w-full overflow-hidden">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={bottomImageUrl}
+                  alt={page.title === "A propos" ? "Bio" : page.title}
+                  className="w-full h-auto object-cover"
+                  loading="lazy"
+                />
+              </div>
+            </div>
+          )
+        })()}
 
         {/* Section Partenaires */}
         <PartnersSection />

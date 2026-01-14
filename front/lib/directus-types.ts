@@ -96,11 +96,8 @@ export interface Page {
   id: string
   slug: string
   title: string
-  portrait?: string | { id: string; filename_download: string }
-  hero_video?: string
   hero_image?: string | { id: string; filename_download: string }
-  cta_text?: string
-  cta_link?: string
+  bottom_image?: string | { id: string; filename_download: string }
   body?: string
   date_created?: string
   date_updated?: string
@@ -130,6 +127,7 @@ export interface HomeSettings {
   id: string
   hero_video?: string | { id: string; filename_download: string }
   hero_video_url?: string
+  bio?: string
   bio_text?: string
   bio_image?: string | { id: string; filename_download: string }
   date_created?: string

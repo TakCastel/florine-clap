@@ -1,6 +1,7 @@
 import { buildMetadata } from '@/components/Seo'
 import { canonical } from '@/lib/seo'
 import { Metadata } from 'next'
+import { getPageBySlug, getImageUrl } from '@/lib/directus'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 3600 // Revalider toutes les heures
@@ -14,9 +15,37 @@ export async function generateMetadata(): Promise<Metadata> {
   })
 }
 
-export default function MentionsLegalesPage() {
+export default async function MentionsLegalesPage() {
+  // Récupérer la page depuis Directus pour obtenir l'image de bas de page
+  let page = null
+  try {
+    page = await getPageBySlug('mentions-legales')
+  } catch (error) {
+    console.error('Erreur lors de la récupération de la page mentions-legales:', error)
+  }
+
+  // Récupérer les URLs des images depuis Directus (même logique pour les deux)
+  const heroImageUrl = page?.hero_image ? getImageUrl(page.hero_image) : null
+  const bottomImageUrl = page?.bottom_image ? getImageUrl(page.bottom_image) : null
+
   return (
     <main id="main-content" className="min-h-screen bg-theme-white text-black">
+      {/* Hero Image - dans le container */}
+      {heroImageUrl && (
+        <div className="max-w-4xl mx-auto px-6 md:px-10 lg:px-16 pt-16">
+          <div className="w-full overflow-hidden">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={heroImageUrl}
+              alt="Mentions légales"
+              className="w-full h-auto object-cover"
+              loading="eager"
+              fetchPriority="high"
+            />
+          </div>
+        </div>
+      )}
+
       <div className="max-w-4xl mx-auto px-6 md:px-10 lg:px-16 py-16 md:py-24">
         <h1 className="text-xl md:text-2xl font-bold tracking-tight leading-tight text-black mb-8">Mentions légales</h1>
         
@@ -155,6 +184,28 @@ export default function MentionsLegalesPage() {
           </section>
         </div>
       </div>
+
+      {/* Bottom Image - en bas de la page (dans le container) */}
+      {page?.bottom_image && (() => {
+        const bottomImageUrl = getImageUrl(page.bottom_image)
+        if (!bottomImageUrl) {
+          console.log('⚠️ bottom_image URL est null pour mentions-legales:', page.bottom_image)
+          return null
+        }
+        return (
+          <div className="max-w-4xl mx-auto px-6 md:px-10 lg:px-16 mt-16 md:mt-24">
+            <div className="w-full overflow-hidden">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={bottomImageUrl}
+                alt="Mentions légales"
+                className="w-full h-auto object-cover"
+                loading="lazy"
+              />
+            </div>
+          </div>
+        )
+      })()}
     </main>
   )
 }

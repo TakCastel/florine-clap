@@ -66,9 +66,9 @@ export default function ContentListPage({
       />
       
       {/* Conteneur unifié pour en-tête, cards et texte SEO */}
-      <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-10 xl:px-16">
+      <div className="max-w-4xl mx-auto px-4 md:px-6 lg:px-10 xl:px-16">
         {/* En-tête de page avec animation */}
-        <div className="pt-12 md:pt-20 pb-8 md:pb-12 lg:pb-20">
+        <div className="pt-12 md:pt-20 pb-4 md:pb-6 lg:pb-8">
           <PageHeader title={title} description={description} />
         </div>
         

@@ -18,7 +18,7 @@ export default function PageHeader({ title, description, className = '' }: PageH
   }, [])
 
   return (
-    <div className={`mb-8 md:mb-12 ${className}`}>
+    <div className={`mb-4 md:mb-6 ${className}`}>
       <div 
         className="overflow-hidden mb-6"
         style={{

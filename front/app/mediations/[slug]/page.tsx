@@ -84,12 +84,12 @@ export default async function MediationPage({ params }: MediationPageProps) {
         variant="default"
       />
 
-      <div className="max-w-7xl mx-auto px-6 md:px-10 lg:px-16 py-16 md:py-24 grid grid-cols-1 lg:grid-cols-3 gap-12 lg:items-start" style={{ overflow: 'visible' }}>
-        <article className="lg:col-span-2">
-          <h1 className="text-xl md:text-2xl font-bold tracking-tight leading-tight text-black mb-8">
-            {mediation.title}
-          </h1>
+      <div className="max-w-4xl mx-auto px-6 md:px-10 lg:px-16 -mt-16 md:-mt-20 pt-8 md:pt-12 pb-16 md:pb-24">
+        <h1 className="text-xl md:text-2xl font-bold tracking-tight leading-tight text-black mb-8">
+          {mediation.title}
+        </h1>
 
+        <article>
           {coverUrl && (
             <img
               src={coverUrl}
@@ -126,68 +126,52 @@ export default async function MediationPage({ params }: MediationPageProps) {
           ) : null}
         </article>
 
-        <StickyAside className="lg:col-span-1">
-          <section className="border-t border-black/10 pt-8 pb-8">
-            <h2 className="text-lg md:text-xl font-bold tracking-tight leading-tight text-black mb-6">
-              Informations
-            </h2>
-            
-            <dl className="space-y-6">
-              <div>
-                <dt className="text-xs text-black/50 uppercase tracking-[0.2em] mb-2 font-light">Date</dt>
-                <dd className="text-black font-display font-medium">
-                  {new Date(mediation.date).toLocaleDateString('fr-FR', {
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric'
-                  })}
-                </dd>
-              </div>
-
-              {mediation.lieu && (
+        <div className="mt-12">
+          <StickyAside>
+            <section className="border-t border-black/10 pt-8 pb-8">
+              <h2 className="text-lg md:text-xl font-bold tracking-tight leading-tight text-black mb-6">
+                Informations
+              </h2>
+              
+              <dl className="space-y-6">
                 <div>
-                  <dt className="text-xs text-black/50 uppercase tracking-[0.2em] mb-2 font-light">Lieu</dt>
-                  <dd className="text-black font-display font-medium">{mediation.lieu}</dd>
-                </div>
-              )}
-
-              {mediation.duree && (
-                <div>
-                  <dt className="text-xs text-black/50 uppercase tracking-[0.2em] mb-2 font-light">Durée</dt>
-                  <dd className="text-black font-display font-medium">{mediation.duree}</dd>
-                </div>
-              )}
-
-              {mediation.tags && mediation.tags.length > 0 && (
-                <div>
-                  <dt className="text-xs text-black/50 uppercase tracking-[0.2em] mb-3 font-light">Tags</dt>
-                  <dd>
-                    <div className="flex flex-wrap gap-2">
-                      {mediation.tags.map((tag, index) => (
-                        <span 
-                          key={index}
-                          className="px-3 py-1.5 bg-black/5 border border-black/10 text-black text-xs rounded-full font-display font-light"
-                        >
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
+                  <dt className="text-xs text-black/50 uppercase tracking-[0.2em] mb-2 font-light">Date</dt>
+                  <dd className="text-black font-display font-medium">
+                    {new Date(mediation.date).toLocaleDateString('fr-FR', {
+                      year: 'numeric',
+                      month: 'long',
+                      day: 'numeric'
+                    })}
                   </dd>
                 </div>
-              )}
-            </dl>
-          </section>
 
-          <nav className="border-t border-black/10 pt-8 pb-0">
-            <a 
-              href="/mediations"
-              aria-label="Retour à la liste des médiations"
-              className="inline-flex items-center gap-2 text-black/70 hover:text-black transition-colors font-display font-light text-xs uppercase tracking-[0.1em]"
-            >
-              ← Retour aux médiations
-            </a>
-          </nav>
-        </StickyAside>
+                {mediation.lieu && (
+                  <div>
+                    <dt className="text-xs text-black/50 uppercase tracking-[0.2em] mb-2 font-light">Lieu</dt>
+                    <dd className="text-black font-display font-medium">{mediation.lieu}</dd>
+                  </div>
+                )}
+
+                {mediation.duree && (
+                  <div>
+                    <dt className="text-xs text-black/50 uppercase tracking-[0.2em] mb-2 font-light">Durée</dt>
+                    <dd className="text-black font-display font-medium">{mediation.duree}</dd>
+                  </div>
+                )}
+              </dl>
+            </section>
+
+            <nav className="border-t border-black/10 pt-8 pb-0">
+              <a 
+                href="/mediations"
+                aria-label="Retour à la liste des médiations"
+                className="inline-flex items-center gap-2 text-black/70 hover:text-black transition-colors font-display font-light text-xs uppercase tracking-[0.1em]"
+              >
+                ← Retour aux médiations
+              </a>
+            </nav>
+          </StickyAside>
+        </div>
       </div>
     </>
   )

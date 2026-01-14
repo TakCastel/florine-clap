@@ -24,6 +24,14 @@ export default function CategoriesSection({ homeSettings }: CategoriesSectionPro
   const isInView = useInView(sectionRef, { once: true, margin: "-100px" })
   const intervalsRef = useRef<NodeJS.Timeout[]>([])
   const timeoutsRef = useRef<NodeJS.Timeout[]>([])
+  const hasInitializedRef = useRef(false) // Protection contre les appels multiples
+  // Cache pour stocker les données récupérées une seule fois
+  const cachedDataRef = useRef<{
+    films: any[]
+    mediations: any[]
+    videosArt: any[]
+    actus: any[]
+  } | null>(null)
   
   // Variantes d'animation pour l'effet de fade in séquentiel
   const containerVariants = {
@@ -71,6 +79,12 @@ export default function CategoriesSection({ homeSettings }: CategoriesSectionPro
   }, [])
 
   useEffect(() => {
+    // Protection contre les appels multiples (React Strict Mode en développement)
+    if (hasInitializedRef.current) {
+      return
+    }
+    hasInitializedRef.current = true
+    
     // Nettoyer les intervalles et timeouts précédents
     intervalsRef.current.forEach(interval => clearInterval(interval))
     timeoutsRef.current.forEach(timeout => clearTimeout(timeout))
@@ -78,14 +92,14 @@ export default function CategoriesSection({ homeSettings }: CategoriesSectionPro
     timeoutsRef.current = []
 
     // Récupérer les images depuis les contenus de chaque catégorie
+    // Utilise les données en cache pour éviter les requêtes répétées
     const fetchCategoryImage = async (category: 'films' | 'mediations' | 'video-art' | 'actus') => {
       try {
         let newImage = ''
         
-        if (category === 'films') {
-          const films = await getAllFilms()
-          // Filtrer les films qui ont au moins une image (string UUID ou objet)
-          const filmsWithImages = films.filter(film => 
+        // Utiliser les données en cache si disponibles
+        if (category === 'films' && cachedDataRef.current?.films) {
+          const filmsWithImages = cachedDataRef.current.films.filter(film => 
             (film.heading && (typeof film.heading === 'object' || typeof film.heading === 'string')) || 
             (film.image && (typeof film.image === 'object' || typeof film.image === 'string'))
           )
@@ -93,30 +107,24 @@ export default function CategoriesSection({ homeSettings }: CategoriesSectionPro
             const randomFilm = filmsWithImages[Math.floor(Math.random() * filmsWithImages.length)]
             newImage = getImageUrl(randomFilm.heading) || getImageUrl(randomFilm.image) || ''
           }
-        } else if (category === 'mediations') {
-          const mediations = await getAllMediations()
-          // Filtrer les médiations qui ont une image de couverture
-          const mediationsWithImages = mediations.filter(mediation => 
+        } else if (category === 'mediations' && cachedDataRef.current?.mediations) {
+          const mediationsWithImages = cachedDataRef.current.mediations.filter(mediation => 
             mediation.cover && (typeof mediation.cover === 'object' || typeof mediation.cover === 'string')
           )
           if (mediationsWithImages.length > 0) {
             const randomMediation = mediationsWithImages[Math.floor(Math.random() * mediationsWithImages.length)]
             newImage = getImageUrl(randomMediation.cover) || ''
           }
-        } else if (category === 'video-art') {
-          const videosArt = await getAllVideoArts()
-          // Filtrer les vidéos qui ont une image
-          const videosWithImages = videosArt.filter(video => 
+        } else if (category === 'video-art' && cachedDataRef.current?.videosArt) {
+          const videosWithImages = cachedDataRef.current.videosArt.filter(video => 
             video.image && (typeof video.image === 'object' || typeof video.image === 'string')
           )
           if (videosWithImages.length > 0) {
             const randomVideoArt = videosWithImages[Math.floor(Math.random() * videosWithImages.length)]
             newImage = getImageUrl(randomVideoArt.image) || ''
           }
-        } else if (category === 'actus') {
-          const actus = await getAllActus()
-          // Filtrer les actualités qui ont une image de couverture
-          const actusWithImages = actus.filter(actu => 
+        } else if (category === 'actus' && cachedDataRef.current?.actus) {
+          const actusWithImages = cachedDataRef.current.actus.filter(actu => 
             actu.cover && (typeof actu.cover === 'object' || typeof actu.cover === 'string')
           )
           if (actusWithImages.length > 0) {
@@ -139,10 +147,26 @@ export default function CategoriesSection({ homeSettings }: CategoriesSectionPro
     }
 
     // Fonction pour récupérer toutes les images initiales
+    // Récupère les données une seule fois et les met en cache
     const fetchAllCategoryImages = async () => {
       try {
+        // Récupérer toutes les données en parallèle une seule fois
+        const [films, mediations, videosArt, actus] = await Promise.all([
+          getAllFilms(),
+          getAllMediations(),
+          getAllVideoArts(),
+          getAllActus()
+        ])
+        
+        // Mettre en cache les données pour éviter les requêtes répétées
+        cachedDataRef.current = {
+          films,
+          mediations,
+          videosArt,
+          actus
+        }
+        
         // Films : utiliser heading en priorité, sinon image
-        const films = await getAllFilms()
         const filmsWithImages = films.filter(film => 
           (film.heading && (typeof film.heading === 'object' || typeof film.heading === 'string')) || 
           (film.image && (typeof film.image === 'object' || typeof film.image === 'string'))
@@ -155,7 +179,6 @@ export default function CategoriesSection({ homeSettings }: CategoriesSectionPro
           : null
 
         // Médiations : utiliser cover
-        const mediations = await getAllMediations()
         const mediationsWithImages = mediations.filter(mediation => 
           mediation.cover && (typeof mediation.cover === 'object' || typeof mediation.cover === 'string')
         )
@@ -165,7 +188,6 @@ export default function CategoriesSection({ homeSettings }: CategoriesSectionPro
         const mediationImage = randomMediation?.cover ? getImageUrl(randomMediation.cover) : null
 
         // Videos-art : utiliser image
-        const videosArt = await getAllVideoArts()
         const videosWithImages = videosArt.filter(video => 
           video.image && (typeof video.image === 'object' || typeof video.image === 'string')
         )
@@ -175,7 +197,6 @@ export default function CategoriesSection({ homeSettings }: CategoriesSectionPro
         const videoArtImage = randomVideoArt?.image ? getImageUrl(randomVideoArt.image) : null
 
         // Actus : utiliser cover
-        const actus = await getAllActus()
         const actusWithImages = actus.filter(actu => 
           actu.cover && (typeof actu.cover === 'object' || typeof actu.cover === 'string')
         )
@@ -242,8 +263,9 @@ export default function CategoriesSection({ homeSettings }: CategoriesSectionPro
       timeoutsRef.current.forEach(timeout => clearTimeout(timeout))
       intervalsRef.current = []
       timeoutsRef.current = []
+      hasInitializedRef.current = false // Réinitialiser pour permettre un nouveau montage si nécessaire
     }
-  }, [homeSettings])
+  }, []) // Ne pas dépendre de homeSettings car il n'est pas utilisé dans ce useEffect
 
   const cards = useMemo(() => [
     {
@@ -312,13 +334,13 @@ export default function CategoriesSection({ homeSettings }: CategoriesSectionPro
     <section 
       ref={sectionRef}
       id="categories-section" 
-      className="w-full min-h-screen flex items-center justify-center py-12 md:py-16 overflow-hidden relative border-b border-black/5 bg-gradient-to-br from-white to-gray-100/50"
+      className="w-full min-h-screen flex items-center md:items-center justify-center py-6 md:py-12 md:py-16 overflow-hidden relative border-b border-black/5 bg-gradient-to-br from-white to-gray-100/50"
       style={{ position: 'relative' }}
     >
-      <div className="w-full max-w-[1600px] px-6 md:px-10 lg:px-16 relative z-10">
+      <div className="w-full max-w-[1600px] px-4 md:px-10 lg:px-16 relative z-10">
         <motion.div 
           ref={containerRef}
-          className="w-full h-[400px] md:h-[450px] lg:h-[500px] flex flex-col md:flex-row gap-3 md:gap-4 items-stretch"
+          className="w-full min-h-screen md:min-h-0 md:h-[380px] lg:h-[420px] flex flex-col md:flex-row gap-3 md:gap-4 items-stretch"
           style={{ position: 'relative' }}
           variants={containerVariants}
           initial="hidden"
@@ -329,7 +351,7 @@ export default function CategoriesSection({ homeSettings }: CategoriesSectionPro
             return (
             <motion.div 
               key={index} 
-              className="relative flex-1 md:hover:flex-[1.5] transition-all duration-500 ease-out h-full group/card"
+              className="relative flex-1 md:hover:flex-[1.5] transition-all duration-500 ease-out min-h-[180px] h-[calc((100vh-4.25rem)/4)] md:h-full group/card"
               variants={getCardVariants(index)}
               onMouseEnter={() => setHoveredIndex(index)}
               onMouseLeave={() => setHoveredIndex(null)}
@@ -342,6 +364,8 @@ export default function CategoriesSection({ homeSettings }: CategoriesSectionPro
               }}
               style={{
                 transform: `skewX(${skewAngle}deg)`,
+                minHeight: '180px',
+                height: isMobile ? 'calc((100vh - 4.25rem) / 4)' : '100%'
               }}
             >
               <CategoryCard

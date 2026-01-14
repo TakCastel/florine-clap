@@ -45,6 +45,7 @@ export default function CategoryCard({
   // Gérer les changements d'image avec transition crossfade
   useEffect(() => {
     if (!imageSrc || imageSrc === '') {
+      // Si imageSrc devient vide, garder l'image actuelle
       return
     }
     
@@ -76,7 +77,7 @@ export default function CategoryCard({
         setImage2Loaded(false)
       }
     }
-  }, [imageSrc, image1, activeImage])
+  }, [imageSrc])
 
   // Gérer le crossfade une fois que la nouvelle image est chargée
   useEffect(() => {
@@ -118,7 +119,7 @@ export default function CategoryCard({
 
   return (
     <div 
-      className="group relative w-full h-full overflow-hidden bg-gray-200"
+      className="group relative w-full h-full min-h-[180px] overflow-hidden bg-gray-200"
       style={style}
     >
       {/* Image 1 */}
@@ -127,9 +128,12 @@ export default function CategoryCard({
           className="absolute inset-0 transition-opacity duration-[2000ms] ease-in-out"
           style={{ 
             opacity: activeImage === 'image1' ? 1 : 0,
-            zIndex: activeImage === 'image1' ? 2 : 1,
+            zIndex: 1,
             willChange: 'opacity',
-            pointerEvents: 'none'
+            pointerEvents: 'none',
+            position: 'absolute',
+            width: '100%',
+            height: '100%'
           }}
         >
           <Image 
@@ -139,9 +143,13 @@ export default function CategoryCard({
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             className="object-cover"
             style={{ filter: 'grayscale(100%) brightness(0.95)' }}
-            priority={priority && activeImage === 'image1'}
+            priority={priority || activeImage === 'image1'}
             unoptimized={image1.startsWith('http://') || image1.startsWith('https://')}
             onLoad={() => setImage1Loaded(true)}
+            onError={() => {
+              console.error('Erreur de chargement image1:', image1)
+              setImage1Loaded(true) // Marquer comme chargé même en cas d'erreur pour éviter les blocages
+            }}
           />
         </div>
       )}
@@ -152,9 +160,12 @@ export default function CategoryCard({
           className="absolute inset-0 transition-opacity duration-[2000ms] ease-in-out"
           style={{ 
             opacity: activeImage === 'image2' ? 1 : 0,
-            zIndex: activeImage === 'image2' ? 2 : 1,
+            zIndex: 1,
             willChange: 'opacity',
-            pointerEvents: 'none'
+            pointerEvents: 'none',
+            position: 'absolute',
+            width: '100%',
+            height: '100%'
           }}
         >
           <Image 
@@ -164,9 +175,13 @@ export default function CategoryCard({
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             className="object-cover"
             style={{ filter: 'grayscale(100%) brightness(0.95)' }}
-            priority={priority && activeImage === 'image2'}
+            priority={priority || activeImage === 'image2'}
             unoptimized={image2.startsWith('http://') || image2.startsWith('https://')}
             onLoad={() => setImage2Loaded(true)}
+            onError={() => {
+              console.error('Erreur de chargement image2:', image2)
+              setImage2Loaded(true) // Marquer comme chargé même en cas d'erreur pour éviter les blocages
+            }}
           />
         </div>
       )}
@@ -175,11 +190,14 @@ export default function CategoryCard({
       <div className="absolute inset-0 bg-black/10 z-10 hidden md:block" />
       <div className="absolute inset-0 bg-black z-10 hidden md:block opacity-0 group-hover:opacity-60 transition-opacity duration-500" />
       
-      {/* Overlay mobile */}
-      <div className="absolute inset-0 bg-black/15 z-20 pointer-events-none md:hidden" />
+      {/* Overlay mobile - réduit pour voir les images */}
+      <div className="absolute inset-0 bg-black/5 z-20 pointer-events-none md:hidden" />
       
       {/* Gradient pour lisibilité */}
       <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent z-20 pointer-events-none hidden md:block" />
+      
+      {/* Gradient mobile pour lisibilité du texte */}
+      <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-black/10 to-transparent z-20 pointer-events-none md:hidden" />
 
       {/* Contenu mobile */}
       <div className="absolute inset-0 z-30 p-5 md:hidden flex flex-col">

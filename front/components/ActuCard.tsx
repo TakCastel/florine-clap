@@ -3,7 +3,6 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { Calendar } from 'lucide-react'
 import CtaLink from '@/components/CtaLink'
 
 type ActuCardProps = {
@@ -85,8 +84,7 @@ export default function ActuCard({
             </h3>
             
             {/* Date */}
-            <div className="flex items-center gap-2 text-xs text-black/60 mb-4">
-              <Calendar className="w-4 h-4" />
+            <div className="text-xs text-black/60 mb-4">
               <span>{formattedDate}</span>
             </div>
             
