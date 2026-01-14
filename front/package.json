@@ -9,7 +9,10 @@
     "migrate:articles": "tsx scripts/migrate-articles.ts --force",
     "migrate:articles:dry-run": "tsx scripts/migrate-articles.ts --dry-run",
     "migrate:articles:update": "tsx scripts/migrate-articles.ts --update",
-    "migrate:test": "tsx scripts/migrate-articles-simple.ts"
+    "migrate:test": "tsx scripts/migrate-articles-simple.ts",
+    "directus:export": "tsx scripts/export-directus-schema.ts",
+    "directus:apply": "tsx scripts/apply-directus-schema.ts",
+    "directus:apply:dry-run": "tsx scripts/apply-directus-schema.ts --dry-run"
   },
   "dependencies": {
     "@directus/sdk": "^17.0.0",
