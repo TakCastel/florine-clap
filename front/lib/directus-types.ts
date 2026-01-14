@@ -130,6 +130,10 @@ export interface HomeSettings {
   bio?: string
   bio_text?: string
   bio_image?: string | { id: string; filename_download: string }
+  category_films_image?: string | { id: string; filename_download: string }
+  category_mediations_image?: string | { id: string; filename_download: string }
+  category_videos_art_image?: string | { id: string; filename_download: string }
+  category_actus_image?: string | { id: string; filename_download: string }
   date_created?: string
   date_updated?: string
 }

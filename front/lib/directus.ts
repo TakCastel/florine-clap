@@ -218,6 +218,10 @@ export interface HomeSettings {
   bio_text?: string
   bio?: string
   bio_image?: string | { id: string; filename_download: string }
+  category_films_image?: string | { id: string; filename_download: string }
+  category_mediations_image?: string | { id: string; filename_download: string }
+  category_videos_art_image?: string | { id: string; filename_download: string }
+  category_actus_image?: string | { id: string; filename_download: string }
   date_created?: string
   date_updated?: string
 }
@@ -356,7 +360,7 @@ export async function getHomeSettings(): Promise<HomeSettings | null> {
   try {
     // Essayer d'abord sans le champ bio (qui peut ne pas exister)
     // Si bio n'existe pas, on utilisera bio_text à la place
-    const endpoint = `/items/home_settings?fields=*,hero_video.id,hero_video.filename_download,hero_video.type,hero_video.filesize,bio_image.id,bio_image.filename_download,bio_text&limit=1`
+    const endpoint = `/items/home_settings?fields=*,hero_video.id,hero_video.filename_download,hero_video.type,hero_video.filesize,bio_image.id,bio_image.filename_download,category_films_image.id,category_films_image.filename_download,category_mediations_image.id,category_mediations_image.filename_download,category_videos_art_image.id,category_videos_art_image.filename_download,category_actus_image.id,category_actus_image.filename_download,bio_text&limit=1`
     
     try {
       const settings = await fetchDirectus<HomeSettings | HomeSettings[]>(endpoint)
@@ -368,7 +372,7 @@ export async function getHomeSettings(): Promise<HomeSettings | null> {
       // Si on a un résultat mais pas de bio, essayer de récupérer bio séparément
       if (result && !result.bio) {
         try {
-          const endpointWithBio = `/items/home_settings?fields=*,hero_video.id,hero_video.filename_download,hero_video.type,hero_video.filesize,bio_image.id,bio_image.filename_download,bio,bio_text&limit=1`
+          const endpointWithBio = `/items/home_settings?fields=*,hero_video.id,hero_video.filename_download,hero_video.type,hero_video.filesize,bio_image.id,bio_image.filename_download,category_films_image.id,category_films_image.filename_download,category_mediations_image.id,category_mediations_image.filename_download,category_videos_art_image.id,category_videos_art_image.filename_download,category_actus_image.id,category_actus_image.filename_download,bio,bio_text&limit=1`
           const settingsWithBio = await fetchDirectus<HomeSettings | HomeSettings[]>(endpointWithBio)
           const resultWithBio = Array.isArray(settingsWithBio) 
             ? (settingsWithBio.length > 0 ? settingsWithBio[0] : null)

@@ -3,7 +3,7 @@
 import { useEffect, useState, useMemo, useRef } from 'react'
 import CategoryCard from '@/components/CategoryCard'
 import { motion, useScroll, useTransform, useInView } from 'framer-motion'
-import { HomeSettings, getImageUrl, getAllFilms, getAllMediations, getAllVideoArts, getAllActus } from '@/lib/directus'
+import { HomeSettings, getImageUrl } from '@/lib/directus'
 
 interface CategoriesSectionProps {
   homeSettings?: HomeSettings | null
@@ -12,26 +12,10 @@ interface CategoriesSectionProps {
 export default function CategoriesSection({ homeSettings }: CategoriesSectionProps) {
   const [isMobile, setIsMobile] = useState(false)
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
-  const [randomImages, setRandomImages] = useState({
-    films: '',
-    mediations: '',
-    'video-art': '',
-    actus: ''
-  })
   const [isReady, setIsReady] = useState(false)
   const sectionRef = useRef<HTMLElement>(null)
   const containerRef = useRef<HTMLDivElement>(null)
   const isInView = useInView(sectionRef, { once: true, margin: "-100px" })
-  const intervalsRef = useRef<NodeJS.Timeout[]>([])
-  const timeoutsRef = useRef<NodeJS.Timeout[]>([])
-  const hasInitializedRef = useRef(false) // Protection contre les appels multiples
-  // Cache pour stocker les données récupérées une seule fois
-  const cachedDataRef = useRef<{
-    films: any[]
-    mediations: any[]
-    videosArt: any[]
-    actus: any[]
-  } | null>(null)
   
   // Variantes d'animation pour l'effet de fade in séquentiel
   const containerVariants = {
@@ -79,193 +63,46 @@ export default function CategoriesSection({ homeSettings }: CategoriesSectionPro
   }, [])
 
   useEffect(() => {
-    // Protection contre les appels multiples (React Strict Mode en développement)
-    if (hasInitializedRef.current) {
-      return
+    // Marquer comme prêt une fois que les images sont disponibles
+    if (homeSettings) {
+      setIsReady(true)
     }
-    hasInitializedRef.current = true
-    
-    // Nettoyer les intervalles et timeouts précédents
-    intervalsRef.current.forEach(interval => clearInterval(interval))
-    timeoutsRef.current.forEach(timeout => clearTimeout(timeout))
-    intervalsRef.current = []
-    timeoutsRef.current = []
+  }, [homeSettings])
 
-    // Récupérer les images depuis les contenus de chaque catégorie
-    // Utilise les données en cache pour éviter les requêtes répétées
-    const fetchCategoryImage = async (category: 'films' | 'mediations' | 'video-art' | 'actus') => {
-      try {
-        let newImage = ''
-        
-        // Utiliser les données en cache si disponibles
-        if (category === 'films' && cachedDataRef.current?.films) {
-          const filmsWithImages = cachedDataRef.current.films.filter(film => 
-            (film.heading && (typeof film.heading === 'object' || typeof film.heading === 'string')) || 
-            (film.image && (typeof film.image === 'object' || typeof film.image === 'string'))
-          )
-          if (filmsWithImages.length > 0) {
-            const randomFilm = filmsWithImages[Math.floor(Math.random() * filmsWithImages.length)]
-            newImage = getImageUrl(randomFilm.heading) || getImageUrl(randomFilm.image) || ''
-          }
-        } else if (category === 'mediations' && cachedDataRef.current?.mediations) {
-          const mediationsWithImages = cachedDataRef.current.mediations.filter(mediation => 
-            mediation.cover && (typeof mediation.cover === 'object' || typeof mediation.cover === 'string')
-          )
-          if (mediationsWithImages.length > 0) {
-            const randomMediation = mediationsWithImages[Math.floor(Math.random() * mediationsWithImages.length)]
-            newImage = getImageUrl(randomMediation.cover) || ''
-          }
-        } else if (category === 'video-art' && cachedDataRef.current?.videosArt) {
-          const videosWithImages = cachedDataRef.current.videosArt.filter(video => 
-            video.image && (typeof video.image === 'object' || typeof video.image === 'string')
-          )
-          if (videosWithImages.length > 0) {
-            const randomVideoArt = videosWithImages[Math.floor(Math.random() * videosWithImages.length)]
-            newImage = getImageUrl(randomVideoArt.image) || ''
-          }
-        } else if (category === 'actus' && cachedDataRef.current?.actus) {
-          const actusWithImages = cachedDataRef.current.actus.filter(actu => 
-            actu.cover && (typeof actu.cover === 'object' || typeof actu.cover === 'string')
-          )
-          if (actusWithImages.length > 0) {
-            const randomActu = actusWithImages[Math.floor(Math.random() * actusWithImages.length)]
-            newImage = getImageUrl(randomActu.cover) || ''
-          }
-        }
-
-        // Ne mettre à jour que si on a une nouvelle image valide
-        // Si l'image est vide, on garde l'image précédente pour éviter les transitions inutiles
-        if (newImage) {
-          setRandomImages(prev => ({
-            ...prev,
-            [category]: newImage
-          }))
-        }
-      } catch (error) {
-        console.error(`Erreur lors de la récupération de l'image pour ${category}:`, error)
+  // Récupérer les URLs des images depuis homeSettings
+  const categoryImages = useMemo(() => {
+    if (!homeSettings) {
+      return {
+        films: '',
+        mediations: '',
+        'video-art': '',
+        actus: ''
       }
     }
-
-    // Fonction pour récupérer toutes les images initiales
-    // Récupère les données une seule fois et les met en cache
-    const fetchAllCategoryImages = async () => {
-      try {
-        // Récupérer toutes les données en parallèle une seule fois
-        const [films, mediations, videosArt, actus] = await Promise.all([
-          getAllFilms(),
-          getAllMediations(),
-          getAllVideoArts(),
-          getAllActus()
-        ])
-        
-        // Mettre en cache les données pour éviter les requêtes répétées
-        cachedDataRef.current = {
-          films,
-          mediations,
-          videosArt,
-          actus
-        }
-        
-        // Films : utiliser heading en priorité, sinon image
-        const filmsWithImages = films.filter(film => 
-          (film.heading && (typeof film.heading === 'object' || typeof film.heading === 'string')) || 
-          (film.image && (typeof film.image === 'object' || typeof film.image === 'string'))
-        )
-        const randomFilm = filmsWithImages.length > 0 
-          ? filmsWithImages[Math.floor(Math.random() * filmsWithImages.length)] 
-          : null
-        const filmImage = randomFilm 
-          ? (getImageUrl(randomFilm.heading) || getImageUrl(randomFilm.image) || null)
-          : null
-
-        // Médiations : utiliser cover
-        const mediationsWithImages = mediations.filter(mediation => 
-          mediation.cover && (typeof mediation.cover === 'object' || typeof mediation.cover === 'string')
-        )
-        const randomMediation = mediationsWithImages.length > 0 
-          ? mediationsWithImages[Math.floor(Math.random() * mediationsWithImages.length)] 
-          : null
-        const mediationImage = randomMediation?.cover ? getImageUrl(randomMediation.cover) : null
-
-        // Videos-art : utiliser image
-        const videosWithImages = videosArt.filter(video => 
-          video.image && (typeof video.image === 'object' || typeof video.image === 'string')
-        )
-        const randomVideoArt = videosWithImages.length > 0 
-          ? videosWithImages[Math.floor(Math.random() * videosWithImages.length)] 
-          : null
-        const videoArtImage = randomVideoArt?.image ? getImageUrl(randomVideoArt.image) : null
-
-        // Actus : utiliser cover
-        const actusWithImages = actus.filter(actu => 
-          actu.cover && (typeof actu.cover === 'object' || typeof actu.cover === 'string')
-        )
-        const randomActu = actusWithImages.length > 0 
-          ? actusWithImages[Math.floor(Math.random() * actusWithImages.length)] 
-          : null
-        const actuImage = randomActu?.cover ? getImageUrl(randomActu.cover) : null
-
-        setRandomImages({
-          films: filmImage || '',
-          mediations: mediationImage || '',
-          'video-art': videoArtImage || '',
-          actus: actuImage || ''
-        })
-        
-        // Petit délai pour s'assurer que les images commencent à charger avant l'animation
-        setTimeout(() => {
-          setIsReady(true)
-        }, 100)
-      } catch (error) {
-        console.error('Erreur lors de la récupération des images de catégories:', error)
-        setRandomImages({
-          films: '',
-          mediations: '',
-          'video-art': '',
-          actus: ''
-        })
-        setIsReady(true) // Toujours marquer comme prêt même en cas d'erreur
-      }
-    }
-
-    // Charger les images initiales
-    fetchAllCategoryImages()
-
-    // Créer un intervalle pour chaque carte avec un délai décalé
-    // Carte 0 (Films) : commence après 0ms, puis toutes les 10 secondes
-    // Carte 1 (Médiations) : commence après 2500ms, puis toutes les 10 secondes
-    // Carte 2 (Videos-art) : commence après 5000ms, puis toutes les 10 secondes
-    // Carte 3 (Actus) : commence après 7500ms, puis toutes les 10 secondes
-    const categories: Array<'films' | 'mediations' | 'video-art' | 'actus'> = ['films', 'mediations', 'video-art', 'actus']
     
-    categories.forEach((category, index) => {
-      const delay = index * 2500 // 2.5 secondes entre chaque carte pour un effet plus fluide
-      const intervalTime = 10000 // 10 secondes entre chaque changement (plus long pour laisser le temps aux transitions)
-      
-      // Premier changement après le délai initial
-      const firstTimeout = setTimeout(() => {
-        fetchCategoryImage(category)
-        
-        // Ensuite, changer toutes les 10 secondes
-        const interval = setInterval(() => {
-          fetchCategoryImage(category)
-        }, intervalTime)
-        
-        intervalsRef.current.push(interval)
-      }, delay)
-      
-      // Stocker le timeout pour le nettoyer
-      timeoutsRef.current.push(firstTimeout)
-    })
-
-    return () => {
-      intervalsRef.current.forEach(interval => clearInterval(interval))
-      timeoutsRef.current.forEach(timeout => clearTimeout(timeout))
-      intervalsRef.current = []
-      timeoutsRef.current = []
-      hasInitializedRef.current = false // Réinitialiser pour permettre un nouveau montage si nécessaire
+    return {
+      films: homeSettings.category_films_image 
+        ? (typeof homeSettings.category_films_image === 'string' 
+          ? homeSettings.category_films_image 
+          : getImageUrl(homeSettings.category_films_image) || '')
+        : '',
+      mediations: homeSettings.category_mediations_image 
+        ? (typeof homeSettings.category_mediations_image === 'string' 
+          ? homeSettings.category_mediations_image 
+          : getImageUrl(homeSettings.category_mediations_image) || '')
+        : '',
+      'video-art': homeSettings.category_videos_art_image 
+        ? (typeof homeSettings.category_videos_art_image === 'string' 
+          ? homeSettings.category_videos_art_image 
+          : getImageUrl(homeSettings.category_videos_art_image) || '')
+        : '',
+      actus: homeSettings.category_actus_image 
+        ? (typeof homeSettings.category_actus_image === 'string' 
+          ? homeSettings.category_actus_image 
+          : getImageUrl(homeSettings.category_actus_image) || '')
+        : ''
     }
-  }, []) // Ne pas dépendre de homeSettings car il n'est pas utilisé dans ce useEffect
+  }, [homeSettings])
 
   const cards = useMemo(() => [
     {
@@ -273,7 +110,7 @@ export default function CategoriesSection({ homeSettings }: CategoriesSectionPro
       title: 'Films',
       description: 'Mes créations cinématographiques, mes courts-métrages et mes projets artistiques',
       linkText: 'Découvrir',
-      imageSrc: randomImages.films,
+      imageSrc: categoryImages.films,
       imageAlt: 'Découvrir mes films',
       theme: 'films' as const,
       bgColor: 'bg-theme-films/85',
@@ -288,7 +125,7 @@ export default function CategoriesSection({ homeSettings }: CategoriesSectionPro
       title: 'Médiations',
       description: 'Explorez mes médiations de médiation culturelle et mes formations pour tous publics',
       linkText: 'Découvrir',
-      imageSrc: randomImages.mediations,
+      imageSrc: categoryImages.mediations,
       imageAlt: 'Découvrir mes médiations',
       theme: 'mediations' as const,
       bgColor: 'bg-theme-mediations/85',
@@ -303,7 +140,7 @@ export default function CategoriesSection({ homeSettings }: CategoriesSectionPro
       title: 'Vidéos/art',
       description: 'Mes créations vidéo artistiques et mes projets expérimentaux',
       linkText: 'Découvrir',
-      imageSrc: randomImages['video-art'],
+      imageSrc: categoryImages['video-art'],
       imageAlt: 'Découvrir mes vidéos artistiques',
       theme: 'videos-art' as const,
       bgColor: 'bg-theme-videos-art/85',
@@ -318,7 +155,7 @@ export default function CategoriesSection({ homeSettings }: CategoriesSectionPro
       title: 'Actualités',
       description: 'Suivez mes dernières actualités, événements et projets en cours',
       linkText: 'Lire',
-      imageSrc: randomImages.actus,
+      imageSrc: categoryImages.actus,
       imageAlt: 'Découvrir mes actualités',
       theme: 'actus' as const,
       bgColor: 'bg-theme-actus/85',
@@ -328,7 +165,7 @@ export default function CategoriesSection({ homeSettings }: CategoriesSectionPro
       hoverLinkColor: 'hover:text-theme-actus-text',
       underlineClass: 'after:bg-theme-actus-text'
     }
-  ], [randomImages])
+  ], [categoryImages])
 
   return (
     <section 
