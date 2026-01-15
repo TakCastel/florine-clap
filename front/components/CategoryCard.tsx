@@ -142,7 +142,6 @@ export default function CategoryCard({
             fill
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             className="object-cover"
-            style={{ filter: 'grayscale(100%) brightness(0.95)' }}
             priority={priority || activeImage === 'image1'}
             unoptimized={image1.startsWith('http://') || image1.startsWith('https://')}
             onLoad={() => setImage1Loaded(true)}
@@ -174,7 +173,6 @@ export default function CategoryCard({
             fill
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             className="object-cover"
-            style={{ filter: 'grayscale(100%) brightness(0.95)' }}
             priority={priority || activeImage === 'image2'}
             unoptimized={image2.startsWith('http://') || image2.startsWith('https://')}
             onLoad={() => setImage2Loaded(true)}
