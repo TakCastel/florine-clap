@@ -73,22 +73,28 @@ export default async function MediationPage({ params }: MediationPageProps) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <ArticleHeroImage imageUrl={coverUrl} alt={mediation.title} />
-      
-      <Breadcrumb 
-        items={[
-          { label: 'Accueil', href: '/' },
-          { label: 'Médiations', href: '/mediations' },
-          { label: mediation.title }
-        ]}
-        variant="default"
-      />
+      <div className="relative">
+        <ArticleHeroImage imageUrl={coverUrl} alt={mediation.title} />
+        
+        <div className="relative z-10">
+          <div className="max-w-4xl mx-auto px-6 md:px-10 lg:px-16 pt-20 md:pt-28">
+            <Breadcrumb 
+              items={[
+                { label: 'Accueil', href: '/' },
+                { label: 'Médiations', href: '/mediations' },
+                { label: mediation.title }
+              ]}
+              variant="default"
+            />
+          </div>
+        </div>
+      </div>
 
-      <div className="max-w-4xl mx-auto px-6 md:px-10 lg:px-16 -mt-16 md:-mt-20 pt-8 md:pt-12 pb-16 md:pb-24">
-        <h1 className="text-xl md:text-2xl font-bold tracking-tight leading-tight text-black mb-8">
+      {/* Contenu de l'article avec titre */}
+      <div className="max-w-4xl mx-auto px-6 md:px-10 lg:px-16 pb-32 md:pb-48 relative z-10" style={{ marginTop: '-66vh' }}>
+        <h1 className="text-xl md:text-2xl font-bold tracking-tight leading-tight text-black mb-8 pt-6">
           {mediation.title}
         </h1>
-
         <article>
           {coverUrl && (
             <img

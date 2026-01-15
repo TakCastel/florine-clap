@@ -19,8 +19,8 @@ export default function Header() {
   // Détecter les pages de liste
   const isListPage = ['/films', '/mediations', '/videos-art', '/actus'].includes(pathname)
   
-  // Texte blanc pour accueil et articles, noir pour bio et listes
-  const isLightText = isHomePage || isArticlePage
+  // Texte blanc uniquement pour l'accueil, noir pour toutes les autres pages (articles, bio, listes)
+  const isLightText = isHomePage
   
   const { showAnimations } = useAnimation()
   const [isLogoVisible, setIsLogoVisible] = useState(false)

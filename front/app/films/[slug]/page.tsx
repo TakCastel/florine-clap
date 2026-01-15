@@ -75,22 +75,28 @@ export default async function FilmPage({ params }: FilmPageProps) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <ArticleHeroImage imageUrl={headingImageUrl} alt={film.title} />
-      
-      <Breadcrumb 
-        items={[
-          { label: 'Accueil', href: '/' },
-          { label: 'Films', href: '/films' },
-          { label: film.title }
-        ]}
-        variant="default"
-      />
+      <div className="relative">
+        <ArticleHeroImage imageUrl={headingImageUrl} alt={film.title} />
+        
+        <div className="relative z-10">
+          <div className="max-w-7xl mx-auto px-6 md:px-10 lg:px-16 pt-20 md:pt-28">
+            <Breadcrumb 
+              items={[
+                { label: 'Accueil', href: '/' },
+                { label: 'Films', href: '/films' },
+                { label: film.title }
+              ]}
+              variant="default"
+            />
+          </div>
+        </div>
+      </div>
 
-      <div className="max-w-7xl mx-auto px-6 md:px-10 lg:px-16 -mt-16 md:-mt-20 pt-8 md:pt-12 pb-16 md:pb-24">
-        <h1 className="text-xl md:text-2xl font-bold tracking-tight leading-tight text-black mb-8">
+      {/* Contenu de l'article avec titre */}
+      <div className="max-w-7xl mx-auto px-6 md:px-10 lg:px-16 pb-32 md:pb-48 relative z-10" style={{ marginTop: '-66vh' }}>
+        <h1 className="text-xl md:text-2xl font-bold tracking-tight leading-tight text-black mb-8 pt-6">
           {film.title}
         </h1>
-
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 lg:items-start" style={{ overflow: 'visible' }}>
           <article className="lg:col-span-2">
             {imageUrl && (

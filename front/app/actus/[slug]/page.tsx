@@ -70,19 +70,26 @@ export default async function ActuPage({ params }: ActuPageProps) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <ArticleHeroImage imageUrl={coverUrl} alt={actu.title} />
-      
-      <Breadcrumb 
-        items={[
-          { label: 'Accueil', href: '/' },
-          { label: 'Actualités', href: '/actus' },
-          { label: actu.title }
-        ]}
-        variant="default"
-      />
+      <div className="relative">
+        <ArticleHeroImage imageUrl={coverUrl} alt={actu.title} />
+        
+        <div className="relative z-10">
+          <div className="max-w-4xl mx-auto px-6 md:px-10 lg:px-16 pt-20 md:pt-28">
+            <Breadcrumb 
+              items={[
+                { label: 'Accueil', href: '/' },
+                { label: 'Actualités', href: '/actus' },
+                { label: actu.title }
+              ]}
+              variant="default"
+            />
+          </div>
+        </div>
+      </div>
 
-      <div className="max-w-4xl mx-auto px-6 md:px-10 lg:px-16 -mt-16 md:-mt-20 pt-8 md:pt-12 pb-16 md:pb-24">
-        <header className="mb-8">
+      {/* Contenu de l'article avec titre */}
+      <div className="max-w-4xl mx-auto px-6 md:px-10 lg:px-16 pb-32 md:pb-48 relative z-10" style={{ marginTop: '-66vh' }}>
+        <header className="mb-8 pt-6">
           {actu.date && (
             <div className="text-black/60 text-xs uppercase tracking-[0.2em] mb-4 font-light">
               <span>{new Date(actu.date).toLocaleDateString('fr-FR', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
@@ -92,7 +99,6 @@ export default async function ActuPage({ params }: ActuPageProps) {
             {actu.title}
           </h1>
         </header>
-
         <article>
           {actu.body && (
             <div className="prose max-w-none text-base text-black mb-12 [&_p]:text-justify [&_li]:text-justify">
