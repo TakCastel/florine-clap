@@ -22,9 +22,9 @@ export default function QuoteSection() {
       className="relative py-24 md:py-32 border-b border-black/5 flex items-center justify-center min-h-[400px] bg-gradient-to-br from-white to-gray-100/50"
       style={{ position: 'relative' }}
     >
-      <div className="relative z-10 max-w-5xl mx-auto px-6 md:px-10 lg:px-16 w-full flex items-center justify-center">
+      <div className="relative z-10 max-w-container-small mx-auto px-6 md:px-10 lg:px-16 w-full flex items-center justify-center">
         <motion.div 
-          className="relative mx-auto max-w-3xl text-center space-y-8 w-full"
+          className="relative mx-auto max-w-container-small text-center space-y-8 w-full"
           style={{
             opacity,
             y,

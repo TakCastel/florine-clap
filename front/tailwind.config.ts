@@ -67,6 +67,11 @@ const config: Config = {
       height: {
         '0.75': '0.1875rem', // 3px
       },
+      maxWidth: {
+        'container-small': '68rem',   // 1088px - légèrement plus grand que max-w-4xl (896px)
+        'container-medium': '72rem',  // 1152px - équivalent à max-w-6xl
+        'container-large': '80rem',   // 1280px - équivalent à max-w-7xl
+      },
       fontSize: {
         'xs': ['0.75rem', { lineHeight: '1rem' }],      // 12px
         'sm': ['0.8125rem', { lineHeight: '1.25rem' }], // 13px

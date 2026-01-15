@@ -32,7 +32,7 @@ export default async function MentionsLegalesPage() {
     <main id="main-content" className="min-h-screen bg-theme-white text-black">
       {/* Hero Image - dans le container */}
       {heroImageUrl && (
-        <div className="max-w-4xl mx-auto px-6 md:px-10 lg:px-16 pt-16">
+        <div className="max-w-container-small mx-auto px-6 md:px-10 lg:px-16 pt-16">
           <div className="w-full overflow-hidden">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
@@ -46,7 +46,7 @@ export default async function MentionsLegalesPage() {
         </div>
       )}
 
-      <div className="max-w-4xl mx-auto px-6 md:px-10 lg:px-16 py-16 md:py-24">
+      <div className="max-w-container-small mx-auto px-6 md:px-10 lg:px-16 py-16 md:py-24">
         <h1 className="text-xl md:text-2xl font-bold tracking-tight leading-tight text-black mb-8">Mentions légales</h1>
         
         <div className="prose max-w-none text-base text-black [&_p]:text-justify [&_li]:text-justify">
@@ -193,7 +193,7 @@ export default async function MentionsLegalesPage() {
           return null
         }
         return (
-          <div className="max-w-4xl mx-auto px-6 md:px-10 lg:px-16 mt-16 md:mt-24">
+          <div className="max-w-container-small mx-auto px-6 md:px-10 lg:px-16 mt-16 md:mt-24">
             <div className="w-full overflow-hidden">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img

@@ -10,7 +10,7 @@ export default function Footer() {
   return (
     <footer className="bg-black text-white relative overflow-hidden">
       <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
-      <div className="max-w-7xl mx-auto px-6 md:px-10 lg:px-16 py-20 md:py-24">
+      <div className="max-w-container-large mx-auto px-6 md:px-10 lg:px-16 py-20 md:py-24">
         
         {/* Section principale */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 mb-16">

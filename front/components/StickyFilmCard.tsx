@@ -44,7 +44,7 @@ export const StickyFilmCard = ({
           scale,
           top: `calc(-5vh + ${i * 20 + 250}px)`,
         }}
-        className="rounded-2xl relative -top-1/4 flex h-[600px] w-full max-w-6xl origin-top flex-col overflow-hidden px-6 md:px-10 lg:px-16"
+        className="rounded-2xl relative -top-1/4 flex h-[600px] w-full max-w-container-medium origin-top flex-col overflow-hidden px-6 md:px-10 lg:px-16"
       >
         <FilmCard
           href={`/films/${film.slug}`}

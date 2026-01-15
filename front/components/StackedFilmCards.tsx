@@ -74,7 +74,7 @@ function StackedFilmCard({
       }}
     >
       <motion.div
-        className="w-full max-w-6xl mx-auto px-6 md:px-10 lg:px-16"
+        className="w-full max-w-container-medium mx-auto px-6 md:px-10 lg:px-16"
         style={{
           y: translateY,
           scale: scale,

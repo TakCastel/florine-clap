@@ -74,7 +74,7 @@ export default async function ActuPage({ params }: ActuPageProps) {
         <ArticleHeroImage imageUrl={coverUrl} alt={actu.title} />
         
         <div className="relative z-10">
-          <div className="max-w-4xl mx-auto px-6 md:px-10 lg:px-16 pt-20 md:pt-28">
+          <div className="max-w-container-small mx-auto px-6 md:px-10 lg:px-16 pt-20 md:pt-28">
             <Breadcrumb 
               items={[
                 { label: 'Accueil', href: '/' },
@@ -88,7 +88,7 @@ export default async function ActuPage({ params }: ActuPageProps) {
       </div>
 
       {/* Contenu de l'article avec titre */}
-      <div className="max-w-4xl mx-auto px-6 md:px-10 lg:px-16 pb-32 md:pb-48 relative z-10" style={{ marginTop: '-66vh' }}>
+      <div className="max-w-container-small mx-auto px-6 md:px-10 lg:px-16 pb-32 md:pb-48 relative z-10" style={{ marginTop: '-66vh' }}>
         <header className="mb-8 pt-6">
           {actu.date && (
             <div className="text-black/60 text-xs uppercase tracking-[0.2em] mb-4 font-light">

@@ -77,7 +77,7 @@ export default async function MediationPage({ params }: MediationPageProps) {
         <ArticleHeroImage imageUrl={coverUrl} alt={mediation.title} />
         
         <div className="relative z-10">
-          <div className="max-w-4xl mx-auto px-6 md:px-10 lg:px-16 pt-20 md:pt-28">
+          <div className="max-w-container-small mx-auto px-6 md:px-10 lg:px-16 pt-20 md:pt-28">
             <Breadcrumb 
               items={[
                 { label: 'Accueil', href: '/' },
@@ -91,7 +91,7 @@ export default async function MediationPage({ params }: MediationPageProps) {
       </div>
 
       {/* Contenu de l'article avec titre */}
-      <div className="max-w-4xl mx-auto px-6 md:px-10 lg:px-16 pb-32 md:pb-48 relative z-10" style={{ marginTop: '-66vh' }}>
+      <div className="max-w-container-small mx-auto px-6 md:px-10 lg:px-16 pb-32 md:pb-48 relative z-10" style={{ marginTop: '-66vh' }}>
         <h1 className="text-xl md:text-2xl font-bold tracking-tight leading-tight text-black mb-8 pt-6">
           {mediation.title}
         </h1>

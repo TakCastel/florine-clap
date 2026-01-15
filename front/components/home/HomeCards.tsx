@@ -33,7 +33,7 @@ export default function HomeCards({ innerRef }: HomeCardsProps) {
       
       {/* Section des cartes */}
       <div className="w-full bg-orange-100 h-full flex items-center">
-        <div className="max-w-6xl mx-auto px-4 py-12">
+        <div className="max-w-container-medium mx-auto px-4 py-12">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
             {/* Carte Films */}
             <Link href="/films" className="group transition-all duration-1000 ease-out opacity-100 translate-y-0">

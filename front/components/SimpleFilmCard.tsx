@@ -69,7 +69,7 @@ export default function SimpleFilmCard({
 
   return (
     <Link href={href} className={`group block w-full ${className}`}>
-      <article className="relative w-full max-w-6xl mx-auto">
+      <article className="relative w-full max-w-container-medium mx-auto">
         <div className={`flex flex-col ${isImageLeft ? 'md:flex-row' : 'md:flex-row-reverse'} gap-6 md:gap-8 lg:gap-12 items-start`}>
           {/* Image */}
           <div className="w-full md:w-1/2 flex-shrink-0">

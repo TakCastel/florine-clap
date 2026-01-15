@@ -79,7 +79,7 @@ export default async function FilmPage({ params }: FilmPageProps) {
         <ArticleHeroImage imageUrl={headingImageUrl} alt={film.title} />
         
         <div className="relative z-10">
-          <div className="max-w-7xl mx-auto px-6 md:px-10 lg:px-16 pt-20 md:pt-28">
+          <div className="max-w-container-large mx-auto px-6 md:px-10 lg:px-16 pt-20 md:pt-28">
             <Breadcrumb 
               items={[
                 { label: 'Accueil', href: '/' },
@@ -93,7 +93,7 @@ export default async function FilmPage({ params }: FilmPageProps) {
       </div>
 
       {/* Contenu de l'article avec titre */}
-      <div className="max-w-7xl mx-auto px-6 md:px-10 lg:px-16 pb-32 md:pb-48 relative z-10" style={{ marginTop: '-66vh' }}>
+      <div className="max-w-container-large mx-auto px-6 md:px-10 lg:px-16 pb-32 md:pb-48 relative z-10" style={{ marginTop: '-66vh' }}>
         <h1 className="text-xl md:text-2xl font-bold tracking-tight leading-tight text-black mb-8 pt-6">
           {film.title}
         </h1>

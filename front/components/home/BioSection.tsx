@@ -61,7 +61,7 @@ export default function BioSection({ homeSettings }: BioSectionProps) {
       style={{ position: 'relative' }}
       onMouseMove={handleMouseMove}
     >
-      <div className="max-w-4xl mx-auto px-6 md:px-10 lg:px-16 w-full overflow-hidden">
+      <div className="max-w-container-small mx-auto px-6 md:px-10 lg:px-16 w-full overflow-hidden">
         <div className="relative overflow-hidden">
           {/* Container flex pour image à gauche et contenu à droite */}
           <div className="flex flex-col md:flex-row gap-8 md:gap-10 lg:gap-12 items-start">

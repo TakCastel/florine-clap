@@ -82,7 +82,7 @@ export default async function BioPage() {
         </h1>
         
         {/* Breadcrumb - juste après le header */}
-        <div className="max-w-7xl mx-auto px-6 md:px-10 lg:px-16 py-4">
+        <div className="max-w-container-large mx-auto px-6 md:px-10 lg:px-16 py-4">
           <Breadcrumb 
             items={[
               { label: 'Accueil', href: '/' },
@@ -94,7 +94,7 @@ export default async function BioPage() {
 
         {/* Hero Image - dans le container */}
         {heroImageUrl && (
-          <div className="max-w-7xl mx-auto px-6 md:px-10 lg:px-16">
+          <div className="max-w-container-large mx-auto px-6 md:px-10 lg:px-16">
             <div className="w-full overflow-hidden">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
@@ -110,7 +110,7 @@ export default async function BioPage() {
 
         {/* Contenu Markdown principal - après l'image */}
         <section className="py-16 md:py-24 bg-theme-white">
-          <div className="max-w-4xl mx-auto px-6 md:px-10 lg:px-16">
+          <div className="max-w-container-small mx-auto px-6 md:px-10 lg:px-16">
             {page.body && (
               <div className="prose max-w-none text-base text-theme-dark [&_p]:text-justify [&_li]:text-justify">
                 <MarkdownRenderer content={page.body} />
@@ -127,7 +127,7 @@ export default async function BioPage() {
             return null
           }
           return (
-            <div className="max-w-4xl mx-auto px-6 md:px-10 lg:px-16 mt-16 md:mt-24">
+            <div className="max-w-container-small mx-auto px-6 md:px-10 lg:px-16 mt-16 md:mt-24">
               <div className="w-full overflow-hidden">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img

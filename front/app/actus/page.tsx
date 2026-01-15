@@ -81,7 +81,7 @@ function ActusPageContent() {
         variant="default"
       />
       
-      <div className="max-w-4xl mx-auto px-4 md:px-6 lg:px-10 xl:px-16 py-12 md:py-20">
+      <div className="max-w-container-small mx-auto px-4 md:px-6 lg:px-10 xl:px-16 py-12 md:py-20">
         {/* En-tête de page avec animation */}
         <div className="mb-8 md:mb-12">
           <PageHeader 

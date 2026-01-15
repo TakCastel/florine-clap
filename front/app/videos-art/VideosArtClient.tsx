@@ -29,7 +29,7 @@ export default function VideosArtClient({ videoArts }: VideosArtClientProps) {
         variant="default"
       />
       
-      <div className="max-w-7xl mx-auto px-6 md:px-10 lg:px-16 py-12 md:py-20">
+      <div className="max-w-container-large mx-auto px-6 md:px-10 lg:px-16 py-12 md:py-20">
         {/* Titre de la page avec animation */}
         <div className="mb-16 md:mb-24">
           <div 
@@ -90,7 +90,7 @@ export default function VideosArtClient({ videoArts }: VideosArtClientProps) {
 
         {/* Contenu SEO */}
         <div className="mt-24 pt-12 border-t border-black/10">
-          <div className="max-w-4xl">
+          <div className="max-w-container-small">
             <h2 className="text-2xl md:text-3xl font-bold tracking-tight leading-tight text-black mb-6">
               Mes créations vidéo artistiques
             </h2>
