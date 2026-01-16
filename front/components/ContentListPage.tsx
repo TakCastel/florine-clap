@@ -1,9 +1,11 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import Breadcrumb from '@/components/Breadcrumb'
 import StackScroll from '@/components/StackScroll'
 import PageHeader from '@/components/PageHeader'
+import ArticleHeroImage from '@/components/ArticleHeroImage'
+import { getImageUrl } from '@/lib/directus'
 
 type ContentItem = {
   id?: string
@@ -32,6 +34,7 @@ type ContentListPageProps = {
   breadcrumbLabel: string
   seoTitle: string
   seoDescription: string
+  heroImageUrl?: string | null | { id: string; filename_download: string }
 }
 
 export default function ContentListPage({
@@ -41,7 +44,8 @@ export default function ContentListPage({
   description,
   breadcrumbLabel,
   seoTitle,
-  seoDescription
+  seoDescription,
+  heroImageUrl
 }: ContentListPageProps) {
   const [isVisible, setIsVisible] = useState(false)
 
@@ -55,20 +59,48 @@ export default function ContentListPage({
   // Les items sont déjà triés côté serveur, on les utilise directement
   const sortedItems = items
 
+  // Convertir l'image hero en URL si c'est un objet Directus
+  const heroImageUrlString = useMemo(() => {
+    if (!heroImageUrl) return null
+    if (typeof heroImageUrl === 'string') {
+      // Si c'est déjà une URL complète, on la retourne
+      if (heroImageUrl.startsWith('http')) return heroImageUrl
+      // Sinon, on utilise getImageUrl pour convertir l'UUID en URL
+      return getImageUrl(heroImageUrl)
+    }
+    // Si c'est un objet Directus, utiliser getImageUrl
+    return getImageUrl(heroImageUrl)
+  }, [heroImageUrl])
+
   return (
     <main id="main-content" className="min-h-screen bg-theme-white text-black relative">
-      <Breadcrumb 
-        items={[
-          { label: 'Accueil', href: '/' },
-          { label: breadcrumbLabel }
-        ]}
-        variant="default"
-      />
+      <div className="relative">
+        {/* Image hero en haut */}
+        {heroImageUrlString && (
+          <ArticleHeroImage 
+            imageUrl={heroImageUrlString} 
+            alt={`Image de fond pour ${title}`}
+          />
+        )}
+        
+        {/* Breadcrumb positionné au-dessus de l'image hero */}
+        <div className="relative z-10">
+          <div className="max-w-container-small mx-auto px-4 md:px-6 lg:px-10 xl:px-16 pt-20 md:pt-28">
+            <Breadcrumb 
+              items={[
+                { label: 'Accueil', href: '/' },
+                { label: breadcrumbLabel }
+              ]}
+              variant="default"
+            />
+          </div>
+        </div>
+      </div>
       
       {/* Conteneur unifié pour en-tête, cards et texte SEO */}
-      <div className="max-w-container-small mx-auto px-4 md:px-6 lg:px-10 xl:px-16">
+      <div className={`max-w-container-small mx-auto px-4 md:px-6 lg:px-10 xl:px-16 ${heroImageUrlString ? 'relative z-10' : ''}`} style={heroImageUrlString ? { marginTop: '-66vh' } : {}}>
         {/* En-tête de page avec animation */}
-        <div className="pt-12 md:pt-20 pb-4 md:pb-6 lg:pb-8">
+        <div className={`${heroImageUrlString ? 'pt-6' : 'pt-12 md:pt-20'} pb-4 md:pb-6 lg:pb-8`}>
           <PageHeader title={title} description={description} />
         </div>
         

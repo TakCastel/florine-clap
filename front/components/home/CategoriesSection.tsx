@@ -108,7 +108,6 @@ export default function CategoriesSection({ homeSettings }: CategoriesSectionPro
     {
       href: '/films',
       title: 'Films',
-      description: 'Mes créations cinématographiques, mes courts-métrages et mes projets artistiques',
       linkText: 'Découvrir',
       imageSrc: categoryImages.films,
       imageAlt: 'Découvrir mes films',
@@ -123,7 +122,6 @@ export default function CategoriesSection({ homeSettings }: CategoriesSectionPro
     {
       href: '/mediations',
       title: 'Médiations',
-      description: 'Explorez mes médiations de médiation culturelle et mes formations pour tous publics',
       linkText: 'Découvrir',
       imageSrc: categoryImages.mediations,
       imageAlt: 'Découvrir mes médiations',
@@ -138,7 +136,6 @@ export default function CategoriesSection({ homeSettings }: CategoriesSectionPro
     {
       href: '/videos-art',
       title: 'Vidéos/art',
-      description: 'Mes créations vidéo artistiques et mes projets expérimentaux',
       linkText: 'Découvrir',
       imageSrc: categoryImages['video-art'],
       imageAlt: 'Découvrir mes vidéos artistiques',
@@ -153,7 +150,6 @@ export default function CategoriesSection({ homeSettings }: CategoriesSectionPro
     {
       href: '/actus',
       title: 'Actualités',
-      description: 'Suivez mes dernières actualités, événements et projets en cours',
       linkText: 'Lire',
       imageSrc: categoryImages.actus,
       imageAlt: 'Découvrir mes actualités',
@@ -208,7 +204,7 @@ export default function CategoriesSection({ homeSettings }: CategoriesSectionPro
               <CategoryCard
                 href={card.href}
                 title={card.title}
-                description={card.description}
+                description=""
                 linkText={card.linkText}
                 imageSrc={card.imageSrc}
                 imageAlt={card.imageAlt}

@@ -13,12 +13,14 @@ export default function LayoutWrapper({ children }: { children: React.ReactNode 
   const isBioPage = pathname === '/bio'
   // Détecter les pages articles (avec slug)
   const isArticlePage = /^\/(films|mediations|videos-art|actus)\/[^/]+$/.test(pathname)
+  // Détecter les pages de liste
+  const isListPage = ['/films', '/mediations', '/videos-art', '/actus'].includes(pathname)
   
   return (
     <AnimationProvider>
       <ScrollToTop />
       <Header />
-      <main className={isHomePage || isArticlePage || isBioPage ? '' : 'pt-16 md:pt-0'}>
+      <main className={isHomePage || isArticlePage || isListPage || isBioPage ? '' : 'pt-16 md:pt-0'}>
         {children}
       </main>
       <Footer />

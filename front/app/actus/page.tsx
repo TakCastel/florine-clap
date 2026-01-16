@@ -5,7 +5,8 @@ import ActuCard from '@/components/ActuCard'
 import Breadcrumb from '@/components/Breadcrumb'
 import ScrollRevealCard from '@/components/ScrollRevealCard'
 import PageHeader from '@/components/PageHeader'
-import { getAllActus, Actu, getImageUrl } from '@/lib/directus'
+import ArticleHeroImage from '@/components/ArticleHeroImage'
+import { getAllActus, Actu, getImageUrl, getHomeSettings } from '@/lib/directus'
 import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
 
@@ -17,6 +18,7 @@ function ActusPageContent() {
   const [items, setItems] = useState<Actu[]>([])
   const [loading, setLoading] = useState(true)
   const [searchQuery, setSearchQuery] = useState('')
+  const [heroImageUrl, setHeroImageUrl] = useState<string | null>(null)
   
   useEffect(() => {
     async function fetchActus() {
@@ -31,6 +33,22 @@ function ActusPageContent() {
       }
     }
     fetchActus()
+  }, [])
+
+  useEffect(() => {
+    async function fetchHeroImage() {
+      try {
+        const homeSettings = await getHomeSettings()
+        if (homeSettings?.category_actus_image) {
+          // Convertir l'objet Directus en URL côté client
+          const imageUrl = getImageUrl(homeSettings.category_actus_image)
+          setHeroImageUrl(imageUrl)
+        }
+      } catch (error) {
+        console.error('Erreur lors de la récupération de l\'image hero:', error)
+      }
+    }
+    fetchHeroImage()
   }, [])
 
   useLayoutEffect(() => {
@@ -73,17 +91,32 @@ function ActusPageContent() {
 
   return (
     <main id="main-content" className="min-h-screen bg-theme-white relative overflow-hidden">
-      <Breadcrumb 
-        items={[
-          { label: 'Accueil', href: '/' },
-          { label: 'Actualites' }
-        ]}
-        variant="default"
-      />
+      <div className="relative">
+        {/* Image hero en haut */}
+        {heroImageUrl && (
+          <ArticleHeroImage 
+            imageUrl={heroImageUrl} 
+            alt="Image de fond pour Actualités"
+          />
+        )}
+        
+        {/* Breadcrumb positionné au-dessus de l'image hero */}
+        <div className="relative z-10">
+          <div className="max-w-container-small mx-auto px-4 md:px-6 lg:px-10 xl:px-16 pt-20 md:pt-28">
+            <Breadcrumb 
+              items={[
+                { label: 'Accueil', href: '/' },
+                { label: 'Actualites' }
+              ]}
+              variant="default"
+            />
+          </div>
+        </div>
+      </div>
       
-      <div className="max-w-container-small mx-auto px-4 md:px-6 lg:px-10 xl:px-16 py-12 md:py-20">
+      <div className={`max-w-container-small mx-auto px-4 md:px-6 lg:px-10 xl:px-16 ${heroImageUrl ? 'relative z-10' : ''}`} style={heroImageUrl ? { marginTop: '-66vh' } : {}}>
         {/* En-tête de page avec animation */}
-        <div className="mb-8 md:mb-12">
+        <div className={`${heroImageUrl ? 'pt-6' : 'mb-8 md:mb-12'} mb-8 md:mb-12`}>
           <PageHeader 
             title="Actualités"
             description="Découvrez mes dernières actualités, sélections en festival et projets en cours"

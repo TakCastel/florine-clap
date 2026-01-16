@@ -1,5 +1,5 @@
 import ContentListPage from '@/components/ContentListPage'
-import { getAllFilms, Film } from '@/lib/directus'
+import { getAllFilms, Film, getHomeSettings } from '@/lib/directus'
 import { buildMetadata, generateJsonLd } from '@/components/Seo'
 import { canonical } from '@/lib/seo'
 
@@ -26,6 +26,10 @@ async function getFilms() {
 
 export default async function FilmsPage() {
   const films = await getFilms()
+  const homeSettings = await getHomeSettings()
+  
+  // Récupérer l'image hero depuis homeSettings (passer l'objet directement, conversion côté client)
+  const heroImageUrl = homeSettings?.category_films_image || null
   
   // Trier les films : du plus récent au plus ancien (par date_created)
   const sortedFilms = [...films].sort((a: Film, b: Film) => {
@@ -56,6 +60,7 @@ export default async function FilmsPage() {
           breadcrumbLabel="Films"
           seoTitle="Mes créations cinématographiques"
           seoDescription="Découvrez mes courts métrages documentaires qui explorent la relation entre l'homme et son environnement. Chaque film est une invitation à regarder le monde différemment, à travers un prisme poétique et humaniste."
+          heroImageUrl={heroImageUrl}
         />
       </main>
     </>

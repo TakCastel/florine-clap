@@ -1,5 +1,5 @@
 import ContentListPage from '@/components/ContentListPage'
-import { getAllVideoArts, VideoArt, getImageUrl } from '@/lib/directus'
+import { getAllVideoArts, VideoArt, getImageUrl, getHomeSettings } from '@/lib/directus'
 import { buildMetadata, generateJsonLd } from '@/components/Seo'
 import { canonical } from '@/lib/seo'
 
@@ -36,6 +36,10 @@ async function getVideoArts() {
 
 export default async function VideosArtPage() {
   const videoArts = await getVideoArts()
+  const homeSettings = await getHomeSettings()
+  
+  // Récupérer l'image hero depuis homeSettings (passer l'objet directement, conversion côté client)
+  const heroImageUrl = homeSettings?.category_videos_art_image || null
   
   // Trier les vidéos : du plus récent au plus ancien (par date_created)
   const sortedVideoArts = [...videoArts].sort((a, b) => {
@@ -66,6 +70,7 @@ export default async function VideosArtPage() {
           breadcrumbLabel="Vidéos/art"
           seoTitle="Mes créations vidéo artistiques"
           seoDescription="Enfant d'Avignon, j'ai grandi au contact des arts de la scène. La danse, le théâtre et les arts de la rue ont nourri très tôt une passion qui traverse aujourd'hui mon cinéma, autant dans ses formes que dans ses thématiques, et irrigue l'ensemble de mon travail vidéo."
+          heroImageUrl={heroImageUrl}
         />
       </main>
     </>

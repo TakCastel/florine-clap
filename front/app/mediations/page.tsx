@@ -1,5 +1,5 @@
 import ContentListPage from '@/components/ContentListPage'
-import { getAllMediations, Mediation } from '@/lib/directus'
+import { getAllMediations, Mediation, getHomeSettings } from '@/lib/directus'
 import { buildMetadata, generateJsonLd } from '@/components/Seo'
 import { canonical } from '@/lib/seo'
 
@@ -26,6 +26,10 @@ async function getMediations() {
 
 export default async function MediationsPage() {
   const mediations = await getMediations()
+  const homeSettings = await getHomeSettings()
+  
+  // Récupérer l'image hero depuis homeSettings (passer l'objet directement, conversion côté client)
+  const heroImageUrl = homeSettings?.category_mediations_image || null
   
   // Trier les médiations : par date (plus récent en premier)
   const sortedMediations = [...mediations].sort((a: Mediation, b: Mediation) => {
@@ -54,6 +58,7 @@ export default async function MediationsPage() {
           breadcrumbLabel="Médiations"
           seoTitle="Formation et médiation"
           seoDescription="Depuis une dizaine d'années, en parallèle de mes projets artistiques, je propose des actions de médiation et des ateliers vidéo de réalisation, destinés principalement aux adolescent·es, étudiant·es et jeunes adultes, dans le cadre de dispositifs tels que Collège au cinéma, ou pour des écoles et des conservatoires."
+          heroImageUrl={heroImageUrl}
         />
       </main>
     </>

@@ -50,14 +50,14 @@ export default function Header() {
 
   return (
     <header className={`w-full z-[10000] top-0 left-0 right-0 ${
-      isHomePage || isArticlePage
+      isHomePage || isArticlePage || isListPage
         ? 'absolute' 
         : isBioPage
         ? 'relative'
         : 'fixed md:relative'
     }`}>
       <div className={`flex justify-between items-center px-6 md:px-10 lg:px-16 py-4 relative ${
-        isHomePage || isArticlePage || isBioPage
+        isHomePage || isArticlePage || isListPage || isBioPage
           ? 'bg-transparent backdrop-blur-none'
           : 'backdrop-blur-xl bg-theme-white/85 border-b border-gray-200'
       }`}>

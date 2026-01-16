@@ -213,12 +213,6 @@ export default function CategoryCard({
           <div className="h-[3px] bg-white w-16 group-hover:w-full opacity-90 transition-all duration-500 ease-out rounded-full" />
         </div>
 
-        <div className="overflow-hidden transition-all duration-500 max-h-0 opacity-0 group-hover:max-h-[80px] group-hover:opacity-100">
-          <p className="text-white/90 text-xs font-sans leading-relaxed mb-4 pt-4 line-clamp-2 min-h-[4rem]">
-            {description}
-          </p>
-        </div>
-
         <div className="mt-2">
           <CtaLink
             href={href}
