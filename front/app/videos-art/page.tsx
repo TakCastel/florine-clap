@@ -41,11 +41,29 @@ export default async function VideosArtPage() {
   // Récupérer l'image hero depuis homeSettings (passer l'objet directement, conversion côté client)
   const heroImageUrl = homeSettings?.category_videos_art_image || null
   
-  // Trier les vidéos : du plus récent au plus ancien (par date_created)
+  // Trier les vidéos : du plus récent au plus ancien (par annee)
   const sortedVideoArts = [...videoArts].sort((a, b) => {
-    const dateA = a.date_created ? new Date(a.date_created).getTime() : 0
-    const dateB = b.date_created ? new Date(b.date_created).getTime() : 0
-    return dateB - dateA // Décroissant : plus récent en premier
+    // Utiliser annee en priorité (année renseignée dans l'article)
+    const getYear = (item: typeof a) => {
+      if (item.annee) {
+        const year = parseInt(item.annee, 10)
+        return isNaN(year) ? 0 : year
+      }
+      return 0 // Items sans année à la fin
+    }
+    
+    const yearA = getYear(a)
+    const yearB = getYear(b)
+    
+    // Si les deux ont une année valide, trier décroissant
+    if (yearA > 0 && yearB > 0) {
+      return yearB - yearA // Décroissant : plus récent en premier
+    }
+    // Si un seul a une année, celui avec année passe en premier
+    if (yearA > 0 && yearB === 0) return -1
+    if (yearB > 0 && yearA === 0) return 1
+    // Si aucun n'a d'année, garder l'ordre original
+    return 0
   })
 
   const jsonLd = generateJsonLd({

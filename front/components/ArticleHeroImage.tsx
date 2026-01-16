@@ -78,6 +78,15 @@ export default function ArticleHeroImage({
             }}
             aria-hidden="true"
           />
+          
+          {/* Halo blanc très léger pour améliorer la lisibilité des textes noirs */}
+          <div 
+            className="absolute inset-0 pointer-events-none" 
+            style={{
+              background: 'rgba(255, 255, 255, 0.28)'
+            }}
+            aria-hidden="true"
+          />
         </>
       ) : (
         <div className="absolute inset-0 bg-white/10" aria-label="Image non disponible">
