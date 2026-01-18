@@ -31,11 +31,20 @@ export default async function FilmsPage() {
   // Récupérer l'image hero depuis homeSettings (passer l'objet directement, conversion côté client)
   const heroImageUrl = homeSettings?.category_films_image || null
   
-  // Trier les films : du plus récent au plus ancien (par date_created)
+  // Trier les films : du plus récent au plus ancien (par année, puis par order)
   const sortedFilms = [...films].sort((a: Film, b: Film) => {
-    const dateA = a.date_created ? new Date(a.date_created).getTime() : 0
-    const dateB = b.date_created ? new Date(b.date_created).getTime() : 0
-    return dateB - dateA // Décroissant : plus récent en premier
+    const anneeA = a.annee ? parseInt(a.annee, 10) : 0
+    const anneeB = b.annee ? parseInt(b.annee, 10) : 0
+    
+    // D'abord trier par année (décroissant : plus récent en premier)
+    if (anneeB !== anneeA) {
+      return anneeB - anneeA
+    }
+    
+    // Si même année, trier par order (croissant : order plus petit en premier)
+    const orderA = a.order ?? Number.MAX_SAFE_INTEGER
+    const orderB = b.order ?? Number.MAX_SAFE_INTEGER
+    return orderA - orderB
   })
 
   const jsonLd = generateJsonLd({
