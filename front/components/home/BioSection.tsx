@@ -87,7 +87,7 @@ export default function BioSection({ homeSettings }: BioSectionProps) {
                             alt="Florine Clap - Portrait"
                             fill
                             sizes="(max-width: 768px) 100vw, (max-width: 1024px) 60vw, 40vw"
-                            className="object-cover transition-transform duration-700 group-hover:scale-110"
+                            className="object-cover"
                             style={{ filter: 'none' }}
                           />
                         )}
@@ -120,7 +120,7 @@ export default function BioSection({ homeSettings }: BioSectionProps) {
                           alt="Florine Clap - Portrait"
                           fill
                           sizes="(max-width: 768px) 100vw, (max-width: 1024px) 40vw, 35vw"
-                          className="object-cover transition-transform duration-700 group-hover:scale-110"
+                          className="object-cover"
                           style={{ filter: 'none', position: 'absolute' }}
                           priority
                         />
@@ -171,8 +171,8 @@ export default function BioSection({ homeSettings }: BioSectionProps) {
                   </motion.div>
                 )}
                 
-                {/* Bouton CTA sophistiqué - aligné à droite en bas */}
-                <div className="mt-auto pt-8 md:pt-12 flex justify-end">
+                {/* Bouton CTA sophistiqué - aligné à gauche en bas */}
+                <div className="mt-auto pt-8 md:pt-12 flex justify-start">
                   <Reveal delay={1.1} duration={0.8}>
                     <CtaLink
                       href="/bio"
