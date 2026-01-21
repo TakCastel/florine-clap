@@ -1,0 +1,52 @@
+{
+  "name": "Auto Slug - Films",
+  "status": "active",
+  "trigger": {
+    "type": "event",
+    "scope": ["items.create", "items.update"],
+    "collections": ["films"]
+  },
+  "operations": [
+    {
+      "key": "condition",
+      "type": "condition",
+      "name": "Check if slug is empty and title exists",
+      "position_x": 20,
+      "position_y": 20,
+      "options": {
+        "rules": {
+          "logicalOperator": "and",
+          "conditions": [
+            {
+              "logicalOperator": "or",
+              "conditions": [
+                {
+                  "field": "$trigger.payload.slug",
+                  "operator": "empty"
+                },
+                {
+                  "field": "$trigger.payload.slug",
+                  "operator": "null"
+                }
+              ]
+            },
+            {
+              "field": "$trigger.payload.title",
+              "operator": "nempty"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "run-script",
+      "type": "exec",
+      "name": "Generate Slug",
+      "position_x": 20,
+      "position_y": 120,
+      "options": {
+        "code": "module.exports = async function(data) {\n  const title = data.$trigger.payload.title;\n  \n  if (!title) return data.$trigger.payload;\n  \n  // Fonction de slugification\n  function slugify(text) {\n    return text\n      .toLowerCase()\n      .normalize('NFD')\n      .replace(/[\\u0300-\\u036f]/g, '') // Supprimer les accents\n      .replace(/[^a-z0-9]+/g, '-') // Remplacer les caractères non alphanumériques par des tirets\n      .replace(/^-+|-+$/g, '') // Supprimer les tirets en début et fin\n      .replace(/-+/g, '-') // Remplacer les tirets multiples par un seul\n      .substring(0, 100); // Limiter à 100 caractères\n  }\n  \n  const baseSlug = slugify(title);\n  \n  return {\n    ...data.$trigger.payload,\n    slug: baseSlug\n  };\n};"
+      }
+    }
+  ]
+}

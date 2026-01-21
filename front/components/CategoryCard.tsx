@@ -143,6 +143,7 @@ export default function CategoryCard({
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             className="object-cover"
             priority={priority || activeImage === 'image1'}
+            quality={85}
             unoptimized={image1.startsWith('http://') || image1.startsWith('https://')}
             onLoad={() => setImage1Loaded(true)}
             onError={() => {
@@ -174,6 +175,7 @@ export default function CategoryCard({
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             className="object-cover"
             priority={priority || activeImage === 'image2'}
+            quality={85}
             unoptimized={image2.startsWith('http://') || image2.startsWith('https://')}
             onLoad={() => setImage2Loaded(true)}
             onError={() => {

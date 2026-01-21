@@ -60,12 +60,12 @@ export default function HeroSection({ homeSettings }: HeroSectionProps) {
     setHasVideoError(false)
     setVideoSrc(null)
 
-    // Small delay to let the hero paint before the heavy video kicks in
-    const timeout = window.setTimeout(() => {
-      setVideoSrc(heroVideoUrl)
-    }, 150)
+    // Charger la vidéo immédiatement pour une meilleure performance
+    setVideoSrc(heroVideoUrl)
 
-    return () => window.clearTimeout(timeout)
+    return () => {
+      setVideoSrc(null)
+    }
   }, [heroVideoUrl])
 
   useEffect(() => {
@@ -83,10 +83,21 @@ export default function HeroSection({ homeSettings }: HeroSectionProps) {
       document.head.appendChild(preconnectLink)
     }
 
-    // Note: On ne précharge pas la vidéo car :
-    // 1. Les vidéos sont volumineuses et ne doivent être chargées qu'à la demande
-    // 2. Le preload pour les vidéos nécessite 'as="video"' qui n'est pas standard
-    // 3. Le navigateur gère déjà le chargement optimisé des vidéos
+    // Précharger la vidéo pour améliorer le temps de chargement
+    if (heroVideoUrl) {
+      const existingPreload = document.querySelector<HTMLLinkElement>(
+        'link[data-hero-video-preload="true"]'
+      )
+      if (!existingPreload) {
+        const preloadLink = document.createElement('link')
+        preloadLink.rel = 'preload'
+        preloadLink.as = 'video'
+        preloadLink.href = heroVideoUrl
+        preloadLink.crossOrigin = 'anonymous'
+        preloadLink.dataset.heroVideoPreload = 'true'
+        document.head.appendChild(preloadLink)
+      }
+    }
   }, [videoHost, heroVideoUrl])
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -122,12 +133,13 @@ export default function HeroSection({ homeSettings }: HeroSectionProps) {
               loop
               muted
               playsInline
-              preload="metadata"
+              preload="auto"
               initial={{ opacity: 0 }}
               animate={{ opacity: isVideoReady ? 1 : 0 }}
               transition={{ duration: 1 }}
               className="w-full h-full object-cover scale-110 bg-black"
               onLoadedData={() => setIsVideoReady(true)}
+              onCanPlay={() => setIsVideoReady(true)}
               onError={() => {
                 setHasVideoError(true)
                 setIsVideoReady(false)

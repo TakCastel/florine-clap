@@ -43,7 +43,7 @@ services:
       ASSETS_ALLOW_LIST: "*"
     volumes:
       - directus_uploads:/directus/uploads
-      - directus_extensions:/directus/extensions
+      - ./directus/extensions:/directus/extensions
     networks:
       - florine-clap-network
     depends_on:
@@ -105,7 +105,6 @@ services:
 volumes:
   postgres_data:
   directus_uploads:
-  directus_extensions:
 
 networks:
   florine-clap-network:

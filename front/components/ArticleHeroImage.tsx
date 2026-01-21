@@ -34,20 +34,19 @@ export default function ArticleHeroImage({
         <>
           {/* Image de fond sur 100% de largeur */}
           <div className="absolute inset-0 overflow-hidden">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
+            <Image
               src={imageUrl}
               alt={alt}
-              className="w-full h-full object-cover"
+              fill
+              sizes="100vw"
+              className="object-cover"
               style={{ 
                 objectPosition: 'center 30%',
                 filter: 'blur(15px) brightness(1.15) grayscale(0.3)',
                 transform: 'scale(1.1)',
-                width: '100%',
-                height: '100%',
               }}
-              loading="eager"
-              fetchPriority="high"
+              priority
+              quality={85}
             />
           </div>
           

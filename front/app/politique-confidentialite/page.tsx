@@ -53,24 +53,16 @@ export default async function PolitiqueConfidentialitePage() {
           <section className="mb-8">
             <h2 className="text-2xl md:text-3xl font-bold tracking-tight leading-tight text-black mb-4">Collecte des données</h2>
             <p>
-              Le site <strong>florineclap.com</strong> collecte des données personnelles uniquement lorsque vous nous contactez via le formulaire de contact.
-              Les données collectées sont : nom, prénom, email et message.
+              Le site <strong>florineclap.com</strong> ne collecte pas de données personnelles via des formulaires. 
+              Aucune donnée personnelle n'est collectée automatiquement lors de votre navigation sur ce site.
             </p>
           </section>
 
           <section className="mb-8">
-            <h2 className="text-2xl md:text-3xl font-bold tracking-tight leading-tight text-black mb-4">Utilisation des données</h2>
+            <h2 className="text-2xl md:text-3xl font-bold tracking-tight leading-tight text-black mb-4">Cookies</h2>
             <p>
-              Les données personnelles collectées sont utilisées uniquement pour répondre à vos demandes de contact. 
-              Elles ne sont en aucun cas transmises à des tiers.
-            </p>
-          </section>
-
-          <section className="mb-8">
-            <h2 className="text-2xl md:text-3xl font-bold tracking-tight leading-tight text-black mb-4">Conservation des données</h2>
-            <p>
-              Les données personnelles sont conservées pendant la durée nécessaire aux finalités pour lesquelles elles ont été collectées, 
-              conformément aux obligations légales.
+              Ce site utilise uniquement des cookies techniques nécessaires au fonctionnement du site. 
+              Ces cookies ne nécessitent pas votre consentement préalable et ne collectent aucune donnée personnelle.
             </p>
           </section>
 
@@ -88,22 +80,26 @@ export default async function PolitiqueConfidentialitePage() {
               <li>Droit d'opposition au traitement de vos données</li>
             </ul>
             <p>
-              Pour exercer ces droits, vous pouvez nous contacter via le formulaire de contact disponible sur le site.
-            </p>
-          </section>
-
-          <section className="mb-8">
-            <h2 className="text-2xl md:text-3xl font-bold tracking-tight leading-tight text-black mb-4">Cookies</h2>
-            <p>
-              Ce site utilise des cookies techniques nécessaires au fonctionnement du site. 
-              Ces cookies ne nécessitent pas votre consentement préalable.
+              Pour exercer ces droits, vous pouvez nous contacter par email à l'adresse suivante :{' '}
+              <a 
+                href="mailto:florine.clap@gmail.com"
+                className="text-theme-dark underline hover:text-theme-dark/80 transition-colors"
+              >
+                florine.clap@gmail.com
+              </a>
             </p>
           </section>
 
           <section className="mb-8">
             <h2 className="text-2xl md:text-3xl font-bold tracking-tight leading-tight text-black mb-4">Contact</h2>
             <p>
-              Pour toute question concernant cette politique de confidentialité, vous pouvez nous contacter via le formulaire de contact disponible sur le site.
+              Pour toute question concernant cette politique de confidentialité, vous pouvez nous contacter par email à l'adresse suivante :{' '}
+              <a 
+                href="mailto:florine.clap@gmail.com"
+                className="text-theme-dark underline hover:text-theme-dark/80 transition-colors"
+              >
+                florine.clap@gmail.com
+              </a>
             </p>
           </section>
         </div>

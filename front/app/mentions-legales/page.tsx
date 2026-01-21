@@ -129,10 +129,18 @@ export default async function MentionsLegalesPage() {
               Vous disposez également d'un droit à la portabilité de vos données.
             </p>
             <p>
-              Pour exercer ces droits, vous pouvez nous contacter via le formulaire de contact disponible sur le site ou par email.
+              Pour exercer ces droits, vous pouvez nous contacter par email à l'adresse suivante :{' '}
+              <a 
+                href="mailto:florine.clap@gmail.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-theme-dark underline hover:text-theme-dark/80 transition-colors"
+              >
+                florine.clap@gmail.com
+              </a>
             </p>
             <p>
-              Les données collectées sur ce site sont utilisées uniquement dans le cadre de la gestion de votre demande de contact et ne sont en aucun cas transmises à des tiers.
+              Ce site ne collecte pas de données personnelles. Aucune donnée n'est transmise à des tiers.
             </p>
           </section>
 

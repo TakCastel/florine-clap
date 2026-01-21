@@ -89,6 +89,7 @@ export default function BioSection({ homeSettings }: BioSectionProps) {
                             sizes="(max-width: 768px) 100vw, (max-width: 1024px) 60vw, 40vw"
                             className="object-cover"
                             style={{ filter: 'none' }}
+                            quality={90}
                           />
                         )}
                         <div className="absolute inset-0 bg-black/10 group-hover:bg-black/5 transition-all duration-700"></div>
@@ -123,6 +124,7 @@ export default function BioSection({ homeSettings }: BioSectionProps) {
                           className="object-cover"
                           style={{ filter: 'none', position: 'absolute' }}
                           priority
+                          quality={90}
                         />
                       ) : (
                         <div className="absolute inset-0 bg-gray-200 flex items-center justify-center">

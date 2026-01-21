@@ -38,9 +38,11 @@ export default function directusImageLoader({ src, width, quality }) {
         if (width) {
           url.searchParams.set('width', width.toString())
         }
-        if (quality) {
-          url.searchParams.set('quality', quality.toString())
-        }
+        // Qualité par défaut à 85 si non spécifiée pour un bon compromis taille/qualité
+        const finalQuality = quality || 85
+        url.searchParams.set('quality', finalQuality.toString())
+        // Ajouter le format webp pour une meilleure compression
+        url.searchParams.set('format', 'webp')
         return url.toString()
       } catch (error) {
         // Si l'URL n'est pas valide, retourner quand même l'URL originale
@@ -78,9 +80,11 @@ export default function directusImageLoader({ src, width, quality }) {
     if (width) {
       url.searchParams.set('width', width.toString())
     }
-    if (quality) {
-      url.searchParams.set('quality', quality.toString())
-    }
+    // Qualité par défaut à 85 si non spécifiée
+    const finalQuality = quality || 85
+    url.searchParams.set('quality', finalQuality.toString())
+    // Ajouter le format webp pour une meilleure compression
+    url.searchParams.set('format', 'webp')
     return url.toString()
   }
   

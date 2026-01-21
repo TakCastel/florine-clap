@@ -93,7 +93,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         {/* Skip to main content link for accessibility */}
         <a 
           href="#main-content" 
-          className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[200] focus:px-4 focus:py-2 focus:bg-black focus:text-white focus:rounded focus:no-underline"
+          tabIndex={0}
+          className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[200] focus:px-4 focus:py-2 focus:bg-black focus:text-white focus:rounded focus:no-underline focus:outline-2 focus:outline-white"
         >
           Aller au contenu principal
         </a>

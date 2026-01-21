@@ -44,23 +44,26 @@ export default function Footer() {
             <Reveal delay={0.4} duration={0.8}>
               <div className="flex gap-4">
                 <a 
-                  href="https://instagram.com/florineclap" 
+                  href="https://www.instagram.com/florine_clap/?hl=fr" 
                   target="_blank" 
                   rel="noopener noreferrer" 
+                  aria-label="Visiter le profil Instagram de Florine Clap"
                   className="group w-12 h-12 rounded-full border-2 border-white/20 flex items-center justify-center hover:border-white hover:bg-white/10 transition-all duration-500"
                 >
                   <IoLogoInstagram className="text-white/70 group-hover:text-white transition-colors duration-300" size={20} />
                 </a>
                 <a 
-                  href="https://vimeo.com/florineclap" 
+                  href="https://vimeo.com/florine" 
                   target="_blank" 
                   rel="noopener noreferrer" 
+                  aria-label="Visiter le profil Vimeo de Florine Clap"
                   className="group w-12 h-12 rounded-full border-2 border-white/20 flex items-center justify-center hover:border-white hover:bg-white/10 transition-all duration-500"
                 >
                   <IoLogoVimeo className="text-white/70 group-hover:text-white transition-colors duration-300" size={20} />
                 </a>
                 <a 
-                  href="mailto:contact@florineclap.fr" 
+                  href="mailto:florine.clap@gmail.com" 
+                  aria-label="Envoyer un email à Florine Clap"
                   className="group w-12 h-12 rounded-full border-2 border-white/20 flex items-center justify-center hover:border-white hover:bg-white/10 transition-all duration-500"
                 >
                   <IoMailOutline className="text-white/70 group-hover:text-white transition-colors duration-300" size={20} />
@@ -110,12 +113,12 @@ export default function Footer() {
                 </h4>
                 <div className="space-y-4 text-white/75">
                   <a 
-                    href="mailto:contact@florineclap.fr" 
+                    href="mailto:florine.clap@gmail.com" 
                     className="group flex items-start gap-3 text-base hover:text-white transition-colors duration-300"
                   >
                     <IoMailOutline size={20} className="mt-0.5 flex-shrink-0 group-hover:scale-110 transition-transform duration-300" />
                     <span className="group-hover:translate-x-1 transition-transform duration-300">
-                      contact@florineclap.fr
+                      florine.clap@gmail.com
                     </span>
                   </a>
                   <div className="flex items-start gap-3 text-base">
@@ -134,9 +137,22 @@ export default function Footer() {
         {/* Bottom bar */}
         <Reveal delay={0.8} duration={0.8} width="100%">
           <div className="flex flex-col md:flex-row justify-between items-center gap-6">
-            <p className="text-white/50 text-xs">
-              © {new Date().getFullYear()} Florine Clap. Tous droits réservés.
-            </p>
+            <div className="flex flex-col gap-2">
+              <p className="text-white/50 text-xs">
+                © {new Date().getFullYear()} Florine Clap. Tous droits réservés.
+              </p>
+              <p className="text-white/30 text-[10px]">
+                Site créé par{' '}
+                <a 
+                  href="https://tariktalhaoui.fr" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="text-white/40 hover:text-white/60 transition-colors duration-300 underline underline-offset-2"
+                >
+                  Tarik Talhaoui
+                </a>
+              </p>
+            </div>
             
             <div className="flex gap-8 text-xs">
               <Link 
