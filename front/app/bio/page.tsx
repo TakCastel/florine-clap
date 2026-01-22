@@ -68,20 +68,20 @@ export default async function BioPage() {
   const bottomImageUrl = page.bottom_image ? getImageUrl(page.bottom_image) : null
   const canonicalUrl = canonical('/bio')
 
-  const jsonLd = generateJsonLd({
-    type: 'Person',
-    title: page.title === "A propos" ? "Bio" : page.title,
-    description: 'Découvrez le parcours de Florine Clap, réalisatrice et formatrice en médiations vidéo',
-    image: heroImageUrl || '/images/FLORINE_DEF.avif' || undefined,
-    url: canonicalUrl,
-  })
-
   // Convertir l'image hero en URL si c'est un objet Directus
   const heroImageUrlString = heroImageUrl 
     ? (typeof heroImageUrl === 'string' 
       ? heroImageUrl 
       : getImageUrl(heroImageUrl))
     : null
+
+  const jsonLd = generateJsonLd({
+    type: 'Person',
+    title: page.title === "A propos" ? "Bio" : page.title,
+    description: 'Découvrez le parcours de Florine Clap, réalisatrice et formatrice en médiations vidéo',
+    image: heroImageUrlString || '/images/FLORINE_DEF.avif' || undefined,
+    url: canonicalUrl,
+  })
 
   return (
     <>
