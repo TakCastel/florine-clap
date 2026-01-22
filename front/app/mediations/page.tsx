@@ -9,7 +9,7 @@ export const revalidate = 60
 export async function generateMetadata() {
   const canonicalUrl = canonical('/mediations')
   return buildMetadata({
-    title: 'Médiations - Formation et médiation artistique',
+    title: 'Médiations - Médiation et Formation artistique',
     description: 'Depuis une dizaine d\'années, en parallèle de mes projets artistiques, je propose des actions de médiation et des ateliers vidéo de réalisation, destinés principalement aux adolescent·es, étudiant·es et jeunes adultes, dans le cadre de dispositifs tels que Collège au cinéma, ou pour des écoles et des conservatoires.',
     canonical: canonicalUrl,
   })
@@ -56,7 +56,7 @@ export default async function MediationsPage() {
           title="Médiations"
           description="Depuis une dizaine d'années, en parallèle de mes projets artistiques, je propose des actions de médiation et des ateliers vidéo de réalisation, destinés principalement aux adolescent·es, étudiant·es et jeunes adultes, dans le cadre de dispositifs tels que Collège au cinéma, ou pour des écoles et des conservatoires. Je m'investis également au sein de l'association 1,2,3 Soleil, on fait de l'image, ça se partage !, qui vise à réaliser des films avec des publics empêchés ou fragilisés, tels que des mineur·es isolé·es sans papiers, ou des résident·es en EHPAD, en IME ou en EEAP."
           breadcrumbLabel="Médiations"
-          seoTitle="Formation et médiation"
+          seoTitle="Médiation et Formation"
           seoDescription="Depuis une dizaine d'années, en parallèle de mes projets artistiques, je propose des actions de médiation et des ateliers vidéo de réalisation, destinés principalement aux adolescent·es, étudiant·es et jeunes adultes, dans le cadre de dispositifs tels que Collège au cinéma, ou pour des écoles et des conservatoires."
           heroImageUrl={heroImageUrl}
         />

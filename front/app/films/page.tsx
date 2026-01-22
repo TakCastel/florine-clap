@@ -9,8 +9,8 @@ export const revalidate = 60 // Revalider toutes les 60 secondes
 export async function generateMetadata() {
   const canonicalUrl = canonical('/films')
   return buildMetadata({
-    title: 'Films - Mes créations cinématographiques',
-    description: 'Découvrez mes courts métrages documentaires qui explorent la relation entre l\'homme et son environnement. Chaque film est une invitation à regarder le monde différemment, à travers un prisme poétique et humaniste.',
+    title: 'Films - Les films',
+    description: 'Depuis 2013, je réalise essentiellement des films documentaires explorant des enjeux artistiques et sociaux. Ma démarche s\'est construite dans une approche transversale des arts, au fil de collaborations avec des artistes plasticiens, chorégraphes, auteur·ices, architectes et institutions culturelles, qui nourrissent et façonnent ma pratique du cinéma.',
     canonical: canonicalUrl,
   })
 }
@@ -50,7 +50,7 @@ export default async function FilmsPage() {
   const jsonLd = generateJsonLd({
     type: 'WebSite',
     title: 'Films - Florine Clap',
-    description: 'Découvrez mes courts métrages documentaires qui explorent la relation entre l\'homme et son environnement.',
+    description: 'Depuis 2013, je réalise essentiellement des films documentaires explorant des enjeux artistiques et sociaux.',
     url: '/films',
   })
 
@@ -65,10 +65,9 @@ export default async function FilmsPage() {
           items={sortedFilms}
           basePath="/films"
           title="Films"
-          description="Découvrez mes créations cinématographiques, documentaires et ateliers créatifs"
           breadcrumbLabel="Films"
-          seoTitle="Mes créations cinématographiques"
-          seoDescription="Découvrez mes courts métrages documentaires qui explorent la relation entre l'homme et son environnement. Chaque film est une invitation à regarder le monde différemment, à travers un prisme poétique et humaniste."
+          seoTitle="Les films"
+          seoDescription="Depuis 2013, je réalise essentiellement des films documentaires explorant des enjeux artistiques et sociaux. Ma démarche s'est construite dans une approche transversale des arts, au fil de collaborations avec des artistes plasticiens, chorégraphes, auteur·ices, architectes et institutions culturelles, qui nourrissent et façonnent ma pratique du cinéma."
           heroImageUrl={heroImageUrl}
         />
       </main>

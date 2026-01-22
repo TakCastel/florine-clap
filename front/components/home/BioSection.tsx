@@ -57,14 +57,14 @@ export default function BioSection({ homeSettings }: BioSectionProps) {
     <section 
       ref={sectionRef}
       id="bio-section" 
-      className="w-full min-h-screen flex items-center justify-center py-24 md:py-32 relative overflow-hidden border-b border-black/5 bg-gradient-to-br from-white to-gray-100/50"
+      className="w-full min-h-screen flex items-center justify-center py-12 md:py-20 relative overflow-hidden border-b border-black/5 bg-gradient-to-br from-white to-gray-100/50"
       style={{ position: 'relative' }}
       onMouseMove={handleMouseMove}
     >
       <div className="max-w-container-small mx-auto px-6 md:px-10 lg:px-16 w-full overflow-hidden">
         <div className="relative overflow-hidden">
           {/* Container flex pour image à gauche et contenu à droite */}
-          <div className="flex flex-col md:flex-row gap-8 md:gap-10 lg:gap-12 items-start">
+          <div className="flex flex-col md:flex-row gap-6 md:gap-8 lg:gap-10 items-start">
             
             {/* Image avec effet sophistiqué - positionnée à gauche */}
             <div className="w-full md:w-[38%] lg:w-[35%] relative group flex-shrink-0 overflow-hidden">
@@ -143,7 +143,7 @@ export default function BioSection({ homeSettings }: BioSectionProps) {
             {/* Contenu texte avec titre intégré - à droite, prend toute la hauteur */}
             <div className="flex-1 flex flex-col h-full md:h-auto">
               {/* Titre avec animation */}
-              <div className="overflow-hidden mb-6 md:mb-8">
+              <div className="overflow-hidden mb-4 md:mb-6">
                 <Reveal delay={0.3} duration={1}>
                   <h3 className="text-xl md:text-2xl font-bold tracking-tight leading-tight text-black mb-4">
                     Florine Clap
@@ -174,7 +174,7 @@ export default function BioSection({ homeSettings }: BioSectionProps) {
                 )}
                 
                 {/* Bouton CTA sophistiqué - aligné à gauche en bas */}
-                <div className="mt-auto pt-8 md:pt-12 flex justify-start">
+                <div className="mt-auto pt-6 md:pt-8 flex justify-start">
                   <Reveal delay={1.1} duration={0.8}>
                     <CtaLink
                       href="/bio"

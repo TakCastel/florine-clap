@@ -9,7 +9,7 @@ export const revalidate = 60 // Revalider toutes les 60 secondes
 export async function generateMetadata() {
   const canonicalUrl = canonical('/videos-art')
   return buildMetadata({
-    title: 'Vidéos/art - Mes créations vidéo artistiques',
+    title: 'Vidéos/art - VIDEO/ART',
     description: 'Enfant d\'Avignon, j\'ai grandi au contact des arts de la scène. La danse, le théâtre et les arts de la rue ont nourri très tôt une passion qui traverse aujourd\'hui mon cinéma, autant dans ses formes que dans ses thématiques, et irrigue l\'ensemble de mon travail vidéo.',
     canonical: canonicalUrl,
   })
@@ -86,7 +86,7 @@ export default async function VideosArtPage() {
           title="Vidéos/art"
           description="Enfant d'Avignon, j'ai grandi au contact des arts de la scène. La danse, le théâtre et les arts de la rue ont nourri très tôt une passion qui traverse aujourd'hui mon cinéma, autant dans ses formes que dans ses thématiques, et irrigue l'ensemble de mon travail vidéo. Cette influence m'amène naturellement à me mettre au service d'artistes, afin de traduire leur démarche en images, au sein de collaborations artistiques partagées, ou dans le cadre de dispositifs de communication sensibles et créatifs."
           breadcrumbLabel="Vidéos/art"
-          seoTitle="Mes créations vidéo artistiques"
+          seoTitle="VIDEO/ART"
           seoDescription="Enfant d'Avignon, j'ai grandi au contact des arts de la scène. La danse, le théâtre et les arts de la rue ont nourri très tôt une passion qui traverse aujourd'hui mon cinéma, autant dans ses formes que dans ses thématiques, et irrigue l'ensemble de mon travail vidéo."
           heroImageUrl={heroImageUrl}
         />

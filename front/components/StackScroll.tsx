@@ -37,7 +37,7 @@ type StackScrollProps = {
 export default function StackScroll({ items, basePath, className = '' }: StackScrollProps) {
   return (
     <div className={`relative w-full ${className}`} style={{ position: 'relative' }}>
-      <div className="py-8 md:py-12 lg:py-20">
+      <div className="py-4 md:py-6 lg:py-10">
         <div className="relative" style={{ position: 'relative' }}>
           {items.map((item, index) => {
             const isEven = index % 2 === 0
@@ -240,9 +240,9 @@ function ProgressBar({ index, nextCardIndex }: ProgressBarProps) {
   return (
     <div 
       ref={barRef}
-      className="flex justify-center my-16 md:my-24 lg:my-32"
+      className="flex justify-center my-8 md:my-12 lg:my-16"
     >
-      <div className="relative w-[2px] h-16 md:h-24 lg:h-32 bg-black/10 overflow-hidden">
+      <div className="relative w-[2px] h-8 md:h-12 lg:h-16 bg-black/10 overflow-hidden">
         <motion.div
           className="w-full bg-black origin-top"
           style={{

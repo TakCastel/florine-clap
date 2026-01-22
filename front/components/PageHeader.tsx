@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 
 interface PageHeaderProps {
   title: string
-  description: string
+  description?: string
   className?: string
 }
 
@@ -43,16 +43,18 @@ export default function PageHeader({ title, description, className = '' }: PageH
         ></div>
       </div>
 
-      <p 
-        className="text-base leading-relaxed font-normal text-black/80 mt-6"
-        style={{
-          opacity: isVisible ? 1 : 0,
-          transform: isVisible ? 'translateY(0)' : 'translateY(8px)',
-          transition: 'opacity 0.4s ease-out 0.15s, transform 0.4s ease-out 0.15s',
-        }}
-      >
-        {description}
-      </p>
+      {description && (
+        <p 
+          className="text-base leading-relaxed font-normal text-black/80 mt-6"
+          style={{
+            opacity: isVisible ? 1 : 0,
+            transform: isVisible ? 'translateY(0)' : 'translateY(8px)',
+            transition: 'opacity 0.4s ease-out 0.15s, transform 0.4s ease-out 0.15s',
+          }}
+        >
+          {description}
+        </p>
+      )}
     </div>
   )
 }

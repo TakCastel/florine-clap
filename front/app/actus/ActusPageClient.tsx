@@ -91,6 +91,28 @@ export default function ActusPageClient({ initialActus, heroImageUrl: heroImageU
           />
         </div>
         
+        {/* Grille des actualités - 1 colonne mobile, 2 colonnes desktop */}
+        <div className="space-y-8 md:space-y-12 mb-16">
+          {paginatedItems.map((actu, index) => (
+            <div key={actu.id}>
+              <ScrollRevealCard delay={index * 0.05}>
+                <ActuCard
+                  href={`/actus/${actu.slug}`}
+                  title={actu.title}
+                  cover={getImageUrl(actu.cover) || undefined}
+                  excerpt={actu.excerpt}
+                  body={actu.body}
+                  date={actu.date}
+                />
+              </ScrollRevealCard>
+              {/* Trait fin entre les articles (sauf le dernier) */}
+              {index < paginatedItems.length - 1 && (
+                <div className="mt-8 md:mt-12 border-t border-black/5"></div>
+              )}
+            </div>
+          ))}
+        </div>
+
         {/* Champ de recherche */}
         <div className="mb-8">
           <div className="max-w-md">
@@ -119,32 +141,10 @@ export default function ActusPageClient({ initialActus, heroImageUrl: heroImageU
             )}
           </div>
         </div>
-        
-        {/* Grille des actualités - 1 colonne mobile, 2 colonnes desktop */}
-        <div className="space-y-8 md:space-y-12 mb-16">
-          {paginatedItems.map((actu, index) => (
-            <div key={actu.id}>
-              <ScrollRevealCard delay={index * 0.05}>
-                <ActuCard
-                  href={`/actus/${actu.slug}`}
-                  title={actu.title}
-                  cover={getImageUrl(actu.cover) || undefined}
-                  excerpt={actu.excerpt}
-                  body={actu.body}
-                  date={actu.date}
-                />
-              </ScrollRevealCard>
-              {/* Trait fin entre les articles (sauf le dernier) */}
-              {index < paginatedItems.length - 1 && (
-                <div className="mt-8 md:mt-12 border-t border-black/5"></div>
-              )}
-            </div>
-          ))}
-        </div>
 
         {/* Pagination */}
         {totalPages > 1 && (
-          <div className="mt-20 flex justify-center">
+          <div className="mt-8 mb-20 flex justify-center">
             <nav className="flex items-center gap-6" aria-label="Pagination">
               {/* Page précédente */}
               {currentPage > 1 ? (
@@ -226,7 +226,7 @@ export default function ActusPageClient({ initialActus, heroImageUrl: heroImageU
         )}
 
         {/* Contenu SEO */}
-        <div className="mt-24 pt-12 border-t border-black/10">
+        <div className="mt-24 pt-12 pb-24 md:pb-32 border-t border-black/10">
           <div className="w-full">
             <h2 className="text-xl md:text-2xl font-bold text-black mb-6" style={{
               fontFamily: 'var(--font-andalemo), sans-serif',

@@ -167,13 +167,13 @@ export default function CategoriesSection({ homeSettings }: CategoriesSectionPro
     <section 
       ref={sectionRef}
       id="categories-section" 
-      className="w-full min-h-screen flex items-center md:items-center justify-center py-6 md:py-12 md:py-16 overflow-hidden relative border-b border-black/5 bg-gradient-to-br from-white to-gray-100/50"
+      className="w-full min-h-screen flex items-center md:items-center justify-center py-4 md:py-8 overflow-hidden relative border-b border-black/5 bg-gradient-to-br from-white to-gray-100/50"
       style={{ position: 'relative' }}
     >
       <div className="w-full max-w-container-large px-4 md:px-10 lg:px-16 relative z-10">
         <motion.div 
           ref={containerRef}
-          className="w-full min-h-screen md:min-h-0 md:h-[380px] lg:h-[420px] flex flex-col md:flex-row gap-3 md:gap-4 items-stretch"
+          className="w-full min-h-screen md:min-h-0 md:h-[380px] lg:h-[420px] flex flex-col md:flex-row gap-2 md:gap-3 items-stretch"
           style={{ position: 'relative' }}
           variants={containerVariants}
           initial="hidden"

@@ -200,14 +200,14 @@ export default function CategoryCard({
       <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-black/10 to-transparent z-20 pointer-events-none md:hidden" />
 
       {/* Contenu mobile */}
-      <div className="absolute inset-0 z-30 p-5 md:hidden flex flex-col">
+      <div className="absolute inset-0 z-30 p-4 md:hidden flex flex-col">
         <h3 className="font-display text-white font-bold tracking-tight leading-[1.1] text-lg">
           {title}
         </h3>
       </div>
 
       {/* Contenu desktop */}
-      <div className="absolute inset-0 z-30 p-10 hidden md:flex flex-col justify-between">
+      <div className="absolute inset-0 z-30 p-6 md:p-8 hidden md:flex flex-col justify-between">
         <div className="mt-auto transform translate-y-4 group-hover:translate-y-0 mb-4 transition-all duration-500">
           <h3 className="text-xl md:text-2xl font-bold tracking-tight leading-tight text-white mb-3">
             {title}

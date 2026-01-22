@@ -70,7 +70,7 @@ export default function SimpleFilmCard({
   return (
     <Link href={href} className={`group block w-full ${className}`}>
       <article className="relative w-full max-w-container-medium mx-auto">
-        <div className={`flex flex-col ${isImageLeft ? 'md:flex-row' : 'md:flex-row-reverse'} gap-6 md:gap-8 lg:gap-12 items-start`}>
+        <div className={`flex flex-col ${isImageLeft ? 'md:flex-row' : 'md:flex-row-reverse'} gap-4 md:gap-6 lg:gap-8 items-start`}>
           {/* Image */}
           <div className="w-full md:w-1/2 flex-shrink-0">
             {cover ? (
@@ -112,13 +112,13 @@ export default function SimpleFilmCard({
           {/* Contenu */}
           <div className="w-full md:w-1/2 flex flex-col justify-start">
             {/* Titre */}
-            <h3 className="text-xl md:text-2xl font-bold tracking-tight leading-tight text-black mb-4 md:mb-6 group-hover:text-black/80 transition-colors">
+            <h3 className="text-xl md:text-2xl font-bold tracking-tight leading-tight text-black mb-3 md:mb-4 group-hover:text-black/80 transition-colors">
               {title}
             </h3>
 
             {/* Synopsis */}
             {synopsis && (
-              <p className="text-base leading-relaxed font-normal text-black/70 mb-6 md:mb-8 line-clamp-3 md:line-clamp-4">
+              <p className="text-base leading-relaxed font-normal text-black/70 mb-4 md:mb-6 line-clamp-3 md:line-clamp-4">
                 {truncateText(synopsis, 200)}
               </p>
             )}

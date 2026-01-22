@@ -12,11 +12,11 @@ export default function PartnersSection() {
   return (
     <section 
       id="partners-section" 
-      className="w-full py-24 md:py-32 relative overflow-hidden bg-gradient-to-br from-white to-gray-100/50"
+      className="w-full py-12 md:py-20 relative overflow-hidden bg-gradient-to-br from-white to-gray-100/50"
     >
       <div className="max-w-container-large mx-auto px-6 md:px-10 lg:px-16 w-full">
         {/* Titre léger */}
-        <Reveal width="100%" className="text-center mb-8">
+        <Reveal width="100%" className="text-center mb-6">
           <div className="text-black/30 text-xs uppercase tracking-[0.2em] font-light">
             Partenaires
           </div>

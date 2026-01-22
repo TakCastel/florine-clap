@@ -30,7 +30,7 @@ type ContentListPageProps = {
   items: ContentItem[]
   basePath: string // '/films' ou '/mediations'
   title: string
-  description: string
+  description?: string
   breadcrumbLabel: string
   seoTitle: string
   seoDescription: string
@@ -100,7 +100,7 @@ export default function ContentListPage({
       {/* Conteneur unifié pour en-tête, cards et texte SEO */}
       <div className={`max-w-container-small mx-auto px-4 md:px-6 lg:px-10 xl:px-16 ${heroImageUrlString ? 'relative z-10' : ''}`} style={heroImageUrlString ? { marginTop: '-66vh' } : {}}>
         {/* En-tête de page avec animation */}
-        <div className={`${heroImageUrlString ? 'pt-6' : 'pt-12 md:pt-20'} pb-4 md:pb-6 lg:pb-8`}>
+        <div className={`${heroImageUrlString ? 'pt-6' : 'pt-12 md:pt-20'} pb-3 md:pb-4 lg:pb-6`}>
           <PageHeader title={title} description={description} />
         </div>
         
@@ -108,10 +108,10 @@ export default function ContentListPage({
         <StackScroll items={sortedItems} basePath={basePath} />
         
         {/* Contenu SEO */}
-        <div className="pt-12 md:pt-20 pb-12 md:pb-20">
-          <div className="pt-12 border-t border-black/10">
+        <div className="pt-8 md:pt-12 pb-8 md:pb-12">
+          <div className="pt-8 border-t border-black/10">
             <div className="w-full">
-              <h2 className="text-2xl md:text-3xl font-bold tracking-tight leading-tight text-black mb-6">
+              <h2 className="text-2xl md:text-3xl font-bold tracking-tight leading-tight text-black mb-4">
                 {seoTitle}
               </h2>
               <p className="text-base leading-relaxed font-normal text-black/80">
