@@ -120,50 +120,18 @@ export default async function BioPage() {
 
         {/* Conteneur unifié pour image principale, contenu et autres éléments */}
         <div className={`max-w-container-small mx-auto px-4 md:px-6 lg:px-10 xl:px-16 ${heroImageUrlString ? 'relative z-10' : ''}`} style={heroImageUrlString ? { marginTop: '-66vh' } : {}}>
-          {/* Image principale de la page bio - en haut avec image floue en fond */}
+          {/* Image principale de la page bio - en haut */}
           {mainImageUrl && (
             <div className={`${heroImageUrlString ? 'pt-6' : 'pt-12 md:pt-20'} pb-8 md:pb-12`}>
-              <div className="relative w-full">
-                {/* Image principale */}
-                <div className="relative w-full" style={{ zIndex: 1 }}>
-                  {/* Image floue en arrière-plan - exactement derrière l'image principale */}
-                  {heroImageUrlString && (
-                    <div className="absolute inset-0 overflow-hidden pointer-events-none" style={{ zIndex: -1 }}>
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img
-                        src={heroImageUrlString}
-                        alt=""
-                        className="w-full h-full object-cover"
-                        style={{ 
-                          objectPosition: 'center 30%',
-                          filter: 'blur(15px) brightness(1.15) grayscale(0.3)',
-                          transform: 'scale(1.1)',
-                        }}
-                      />
-                      {/* Overlay blanc pour la lisibilité */}
-                      <div 
-                        className="absolute inset-0 pointer-events-none" 
-                        style={{
-                          background: 'linear-gradient(to bottom, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0.5) 50%, rgba(255, 255, 255, 0.8) 100%)'
-                        }}
-                      />
-                      <div 
-                        className="absolute inset-0 pointer-events-none" 
-                        style={{
-                          background: 'rgba(255, 255, 255, 0.28)'
-                        }}
-                      />
-                    </div>
-                  )}
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={mainImageUrl}
-                    alt={page.title === "A propos" ? "Bio" : page.title}
-                    className="w-full h-auto object-cover relative"
-                    loading="eager"
-                    fetchPriority="high"
-                  />
-                </div>
+              <div className="w-full overflow-hidden">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={mainImageUrl}
+                  alt={page.title === "A propos" ? "Bio" : page.title}
+                  className="w-full h-auto object-cover"
+                  loading="eager"
+                  fetchPriority="high"
+                />
               </div>
             </div>
           )}
