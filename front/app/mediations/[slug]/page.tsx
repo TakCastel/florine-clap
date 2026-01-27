@@ -4,7 +4,7 @@ import VimeoPlayer from '@/components/VimeoPlayer'
 import VideoPlayer from '@/components/VideoPlayer'
 import ArticleHeroImage from '@/components/ArticleHeroImage'
 import StickyAside from '@/components/StickyAside'
-import { getMediationBySlug, getImageUrl, Mediation } from '@/lib/directus'
+import { getMediationBySlug, getImageUrl, getVideoUrl, Mediation } from '@/lib/directus'
 import { notFound } from 'next/navigation'
 import { buildMetadata, generateJsonLd } from '@/components/Seo'
 import { canonical } from '@/lib/seo'
@@ -13,7 +13,7 @@ export const dynamic = 'force-dynamic'
 export const revalidate = 60
 
 type MediationPageProps = {
-  params: Promise<{ slug: string }> | { slug: string }
+  params: Promise<{ slug: string }>
 }
 
 export async function generateMetadata({ params }: MediationPageProps) {
@@ -26,6 +26,7 @@ export async function generateMetadata({ params }: MediationPageProps) {
   }
 
   const coverUrl = getImageUrl(mediation.cover)
+  const directusVideoUrl = getVideoUrl(mediation.video)
   const canonicalUrl = canonical(`/mediations/${slug}`)
   const description = mediation.excerpt || `Découvrez ${mediation.title}, une médiation artistique de Florine Clap.`
 
@@ -55,6 +56,7 @@ export default async function MediationPage({ params }: MediationPageProps) {
   }
   
   const coverUrl = getImageUrl(mediation.cover)
+  const directusVideoUrl = getVideoUrl(mediation.video)
   const canonicalUrl = canonical(`/mediations/${slug}`)
 
   const jsonLd = generateJsonLd({
@@ -111,7 +113,13 @@ export default async function MediationPage({ params }: MediationPageProps) {
             </div>
           )}
 
-          {(mediation.vimeoId || mediation.vimeo_id) ? (
+          {directusVideoUrl ? (
+            <VideoPlayer
+              src={directusVideoUrl}
+              title={mediation.title}
+              ariaLabel={`Vidéo de la médiation ${mediation.title}`}
+            />
+          ) : (mediation.vimeoId || mediation.vimeo_id) ? (
             <div className="w-full aspect-video mb-8">
               <VimeoPlayer
                 videoId={mediation.vimeoId || mediation.vimeo_id || ''}

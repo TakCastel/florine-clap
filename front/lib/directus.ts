@@ -107,6 +107,7 @@ export interface Film {
   image?: string | { id: string; filename_download: string }
   content?: string | { id: string; filename_download: string }
   heading?: string | { id: string; filename_download: string }
+  video?: string | { id: string; filename_download: string }
   type?: string
   duree?: string
   annee?: string
@@ -156,6 +157,7 @@ export interface Mediation {
   excerpt?: string
   tags?: string[]
   cover?: string | { id: string; filename_download: string }
+  video?: string | { id: string; filename_download: string }
   vimeoId?: string
   vimeo_id?: string
   videoUrl?: string
@@ -196,6 +198,7 @@ export interface VideoArt {
   slug: string
   title: string
   image?: string | { id: string; filename_download: string }
+  video?: string | { id: string; filename_download: string }
   type?: string
   duree?: string
   annee?: string
@@ -232,7 +235,7 @@ export interface HomeSettings {
 export async function getAllFilms(): Promise<Film[]> {
   try {
     return await fetchDirectus<Film[]>(
-      `/items/films?fields=*,image.id,image.filename_download,content.id,content.filename_download,heading.id,heading.filename_download&sort[]=-date_created`
+      `/items/films?fields=*,image.id,image.filename_download,content.id,content.filename_download,heading.id,heading.filename_download,video.id,video.filename_download,video.type,video.filesize&sort[]=-date_created`
     )
   } catch (error) {
     console.error('Erreur lors de la récupération des films:', error)
@@ -243,7 +246,7 @@ export async function getAllFilms(): Promise<Film[]> {
 export async function getFilmBySlug(slug: string): Promise<Film | null> {
   try {
     const films = await fetchDirectus<Film[]>(
-      `/items/films?fields=*,image.id,image.filename_download,content.id,content.filename_download,heading.id,heading.filename_download&filter[slug][_eq]=${encodeURIComponent(slug)}&limit=1`
+      `/items/films?fields=*,image.id,image.filename_download,content.id,content.filename_download,heading.id,heading.filename_download,video.id,video.filename_download,video.type,video.filesize&filter[slug][_eq]=${encodeURIComponent(slug)}&limit=1`
     )
     return films[0] || null
   } catch (error) {
@@ -255,7 +258,7 @@ export async function getFilmBySlug(slug: string): Promise<Film | null> {
 export async function getAllMediations(): Promise<Mediation[]> {
   try {
     return await fetchDirectus<Mediation[]>(
-      `/items/mediations?fields=*,cover.id,cover.filename_download,gallery.id,gallery.filename_download&sort[]=-date`
+      `/items/mediations?fields=*,cover.id,cover.filename_download,gallery.id,gallery.filename_download,video.id,video.filename_download,video.type,video.filesize&sort[]=-date`
     )
   } catch (error) {
     console.error('Erreur lors de la récupération des médiations:', error)
@@ -266,7 +269,7 @@ export async function getAllMediations(): Promise<Mediation[]> {
 export async function getMediationBySlug(slug: string): Promise<Mediation | null> {
   try {
     const mediations = await fetchDirectus<Mediation[]>(
-      `/items/mediations?fields=*,cover.id,cover.filename_download,gallery.id,gallery.filename_download&filter[slug][_eq]=${encodeURIComponent(slug)}&limit=1`
+      `/items/mediations?fields=*,cover.id,cover.filename_download,gallery.id,gallery.filename_download,video.id,video.filename_download,video.type,video.filesize&filter[slug][_eq]=${encodeURIComponent(slug)}&limit=1`
     )
     return mediations[0] || null
   } catch (error) {
@@ -327,7 +330,7 @@ export async function getAllVideoArts(): Promise<VideoArt[]> {
     // même avec fields=*,image.id,image.filename_download
     // On récupère donc avec * pour avoir tous les champs, et on gérera l'image dans getImageUrl
     const videoArts = await fetchDirectus<VideoArt[]>(
-      `/items/videos_art?fields=*&sort[]=-date_created`
+      `/items/videos_art?fields=*,video.id,video.filename_download,video.type,video.filesize&sort[]=-date_created`
     )
     
     return videoArts
@@ -341,7 +344,7 @@ export async function getVideoArtBySlug(slug: string): Promise<VideoArt | null> 
   try {
     const encodedSlug = encodeURIComponent(slug)
     // Note: On utilise fields=* car Directus retourne parfois image comme UUID string
-    const endpoint = `/items/videos_art?fields=*&filter[slug][_eq]=${encodedSlug}&limit=1`
+    const endpoint = `/items/videos_art?fields=*,video.id,video.filename_download,video.type,video.filesize&filter[slug][_eq]=${encodedSlug}&limit=1`
     
     const videoArts = await fetchDirectus<VideoArt[]>(endpoint)
     

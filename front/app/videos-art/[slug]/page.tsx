@@ -4,7 +4,7 @@ import VimeoPlayer from '@/components/VimeoPlayer'
 import VideoPlayer from '@/components/VideoPlayer'
 import ArticleHeroImage from '@/components/ArticleHeroImage'
 import StickyAside from '@/components/StickyAside'
-import { getVideoArtBySlug, getImageUrl, VideoArt } from '@/lib/directus'
+import { getVideoArtBySlug, getImageUrl, getVideoUrl, VideoArt } from '@/lib/directus'
 import { notFound } from 'next/navigation'
 import { buildMetadata, generateJsonLd } from '@/components/Seo'
 import { canonical } from '@/lib/seo'
@@ -13,7 +13,7 @@ export const dynamic = 'force-dynamic'
 export const revalidate = 60
 
 type VideoArtPageProps = {
-  params: Promise<{ slug: string }> | { slug: string }
+  params: Promise<{ slug: string }>
 }
 
 export async function generateMetadata({ params }: VideoArtPageProps) {
@@ -56,6 +56,7 @@ export default async function VideoArtPage({ params }: VideoArtPageProps) {
   
   const headingImageUrl = getImageUrl(videoArt.image)
   const imageUrl = getImageUrl(videoArt.image)
+  const directusVideoUrl = getVideoUrl(videoArt.video)
   const canonicalUrl = canonical(`/videos-art/${slug}`)
 
   const jsonLd = generateJsonLd({
@@ -118,7 +119,13 @@ export default async function VideoArtPage({ params }: VideoArtPageProps) {
             </div>
           )}
 
-          {videoArt.vimeo_id ? (
+          {directusVideoUrl ? (
+            <VideoPlayer
+              src={directusVideoUrl}
+              title={videoArt.title}
+              ariaLabel={`Vidéo d'art ${videoArt.title}`}
+            />
+          ) : videoArt.vimeo_id ? (
             <div className="w-full aspect-video mb-8">
               <VimeoPlayer
                 videoId={videoArt.vimeo_id}

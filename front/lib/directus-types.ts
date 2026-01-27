@@ -19,6 +19,7 @@ export interface Film {
   image?: string | { id: string; filename_download: string }
   content?: string | { id: string; filename_download: string }
   heading?: string | { id: string; filename_download: string }
+  video?: string | { id: string; filename_download: string }
   type?: string
   duree?: string
   annee?: string
@@ -68,6 +69,7 @@ export interface Mediation {
   excerpt?: string
   tags?: string[]
   cover?: string | { id: string; filename_download: string }
+  video?: string | { id: string; filename_download: string }
   vimeoId?: string
   vimeo_id?: string
   videoUrl?: string
@@ -108,6 +110,7 @@ export interface VideoArt {
   slug: string
   title: string
   image?: string | { id: string; filename_download: string }
+  video?: string | { id: string; filename_download: string }
   type?: string
   duree?: string
   annee?: string
