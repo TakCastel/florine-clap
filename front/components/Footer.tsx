@@ -35,7 +35,7 @@ export default function Footer() {
                 </motion.div>
 
                 <p className="text-base leading-relaxed font-normal text-white/75 mb-8">
-                  Réalisatrice et médiatrice culturelle passionnée, je crée des films qui questionnent notre rapport au monde.
+                  Autrice et réalisatrice de films, je mène également des ateliers et des médiations de réalisation vidéo.
                 </p>
               </div>
             </Reveal>

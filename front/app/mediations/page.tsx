@@ -31,9 +31,25 @@ export default async function MediationsPage() {
   // Récupérer l'image hero depuis homeSettings (passer l'objet directement, conversion côté client)
   const heroImageUrl = homeSettings?.category_mediations_image || null
   
-  // Trier les médiations : par date (plus récent en premier)
+  // Trier les médiations : du plus récent au plus ancien
+  // (fallback sur date_created / date_updated si nécessaire, + tie-breaker stable)
+  const toTimestamp = (m: Mediation): number => {
+    const candidates = [m.date, m.date_created, m.date_updated].filter(Boolean) as string[]
+    for (const value of candidates) {
+      const t = new Date(value).getTime()
+      if (!Number.isNaN(t)) return t
+    }
+    return 0
+  }
+
   const sortedMediations = [...mediations].sort((a: Mediation, b: Mediation) => {
-    return new Date(b.date || '2020').getTime() - new Date(a.date || '2020').getTime()
+    const diff = toTimestamp(b) - toTimestamp(a)
+    if (diff !== 0) return diff
+    // Tie-breaker : id (si numérique) puis slug
+    const aId = Number(a.id)
+    const bId = Number(b.id)
+    if (!Number.isNaN(aId) && !Number.isNaN(bId) && aId !== bId) return bId - aId
+    return (b.slug || '').localeCompare(a.slug || '')
   })
 
   const jsonLd = generateJsonLd({
