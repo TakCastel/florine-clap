@@ -6,6 +6,7 @@ import { getPageBySlug, Page, getImageUrl, getHomeSettings } from '@/lib/directu
 import { buildMetadata, generateJsonLd } from '@/components/Seo'
 import { canonical } from '@/lib/seo'
 import { Metadata } from 'next'
+import Image from 'next/image'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 60
@@ -124,13 +125,15 @@ export default async function BioPage() {
           {mainImageUrl && (
             <div className={`${heroImageUrlString ? 'pt-6' : 'pt-12 md:pt-20'} pb-8 md:pb-12`}>
               <div className="w-full overflow-hidden">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
+                <Image
                   src={mainImageUrl}
                   alt={page.title === "A propos" ? "Bio" : page.title}
+                  width={1600}
+                  height={1200}
+                  sizes="(max-width: 768px) 100vw, 1024px"
                   className="w-full h-auto object-cover"
-                  loading="eager"
-                  fetchPriority="high"
+                  priority
+                  quality={85}
                 />
               </div>
             </div>
@@ -155,12 +158,15 @@ export default async function BioPage() {
             return (
               <div className="mt-16 md:mt-24">
                 <div className="w-full overflow-hidden">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
+                  <Image
                     src={bottomImageUrl}
                     alt={page.title === "A propos" ? "Bio" : page.title}
+                    width={1600}
+                    height={1200}
+                    sizes="(max-width: 768px) 100vw, 1024px"
                     className="w-full h-auto object-cover"
                     loading="lazy"
+                    quality={85}
                   />
                 </div>
               </div>

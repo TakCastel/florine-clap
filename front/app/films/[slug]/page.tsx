@@ -8,6 +8,7 @@ import { getFilmBySlug, getImageUrl, getVideoUrl, Film } from '@/lib/directus'
 import { notFound } from 'next/navigation'
 import { buildMetadata, generateJsonLd } from '@/components/Seo'
 import { canonical } from '@/lib/seo'
+import Image from 'next/image'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 60
@@ -101,12 +102,16 @@ export default async function FilmPage({ params }: FilmPageProps) {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 lg:items-start" style={{ overflow: 'visible' }}>
           <article className="lg:col-span-2">
             {imageUrl && (
-              <img
-                src={imageUrl}
-                alt={`Image de couverture du film ${film.title}`}
-                className="w-full aspect-video object-cover mb-8"
-                loading="lazy"
-              />
+              <div className="relative w-full aspect-video mb-8 overflow-hidden">
+                <Image
+                  src={imageUrl}
+                  alt={`Image de couverture du film ${film.title}`}
+                  fill
+                  sizes="(max-width: 768px) 100vw, 1024px"
+                  className="object-cover"
+                  quality={85}
+                />
+              </div>
             )}
             
             {film.body && (

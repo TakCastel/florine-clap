@@ -8,6 +8,7 @@ import { getVideoArtBySlug, getImageUrl, getVideoUrl, VideoArt } from '@/lib/dir
 import { notFound } from 'next/navigation'
 import { buildMetadata, generateJsonLd } from '@/components/Seo'
 import { canonical } from '@/lib/seo'
+import Image from 'next/image'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 60
@@ -105,12 +106,16 @@ export default async function VideoArtPage({ params }: VideoArtPageProps) {
         </header>
         <article>
           {imageUrl && (
-            <img
-              src={imageUrl}
-              alt={`Image de couverture de la vidéo d'art ${videoArt.title}`}
-              className="w-full aspect-video object-cover mb-8"
-              loading="lazy"
-            />
+            <div className="relative w-full aspect-video mb-8 overflow-hidden">
+              <Image
+                src={imageUrl}
+                alt={`Image de couverture de la vidéo d'art ${videoArt.title}`}
+                fill
+                sizes="(max-width: 768px) 100vw, 1024px"
+                className="object-cover"
+                quality={85}
+              />
+            </div>
           )}
           
           {videoArt.body && (

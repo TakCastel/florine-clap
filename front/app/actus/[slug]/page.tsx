@@ -5,6 +5,7 @@ import { getActuBySlug, getImageUrl, Actu } from '@/lib/directus'
 import { notFound } from 'next/navigation'
 import { buildMetadata, generateJsonLd } from '@/components/Seo'
 import { canonical } from '@/lib/seo'
+import Image from 'next/image'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 60
@@ -107,12 +108,16 @@ export default async function ActuPage({ params }: ActuPageProps) {
           )}
 
           {coverUrl && (
-            <img
-              src={coverUrl}
-              alt={`Image de couverture de l'article ${actu.title}`}
-              className="w-full h-auto object-contain"
-              loading="lazy"
-            />
+            <div className="relative w-full aspect-video overflow-hidden bg-black/5">
+              <Image
+                src={coverUrl}
+                alt={`Image de couverture de l'article ${actu.title}`}
+                fill
+                sizes="(max-width: 768px) 100vw, 1024px"
+                className="object-contain"
+                quality={85}
+              />
+            </div>
           )}
         </article>
       </div>

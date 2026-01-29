@@ -8,6 +8,7 @@ import { getMediationBySlug, getImageUrl, getVideoUrl, Mediation } from '@/lib/d
 import { notFound } from 'next/navigation'
 import { buildMetadata, generateJsonLd } from '@/components/Seo'
 import { canonical } from '@/lib/seo'
+import Image from 'next/image'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 60
@@ -99,12 +100,16 @@ export default async function MediationPage({ params }: MediationPageProps) {
         </h1>
         <article>
           {coverUrl && (
-            <img
-              src={coverUrl}
-              alt={`Image de couverture de la médiation ${mediation.title}`}
-              className="w-full aspect-video object-cover mb-8"
-              loading="lazy"
-            />
+            <div className="relative w-full aspect-video mb-8 overflow-hidden">
+              <Image
+                src={coverUrl}
+                alt={`Image de couverture de la médiation ${mediation.title}`}
+                fill
+                sizes="(max-width: 768px) 100vw, 1024px"
+                className="object-cover"
+                quality={85}
+              />
+            </div>
           )}
           
           {mediation.body && (
