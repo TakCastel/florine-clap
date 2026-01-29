@@ -9,13 +9,12 @@ export const revalidate = 60 // Revalider toutes les 60 secondes
 
 type ActusPageMetadataProps = {
   // Next fournit `searchParams` pour les query params (ex: /actus?page=2)
-  // Ici on garde le même style que le reste du codebase (Promise + resolve)
-  searchParams?: Promise<Record<string, string | string[] | undefined>>
+  // En Next 14 (ton build Docker), c'est un objet (pas une Promise).
+  searchParams?: Record<string, string | string[] | undefined>
 }
 
-export async function generateMetadata({ searchParams }: ActusPageMetadataProps = {}) {
-  const resolvedSearchParams = await Promise.resolve(searchParams)
-  const pageParam = resolvedSearchParams?.page
+export async function generateMetadata({ searchParams }: ActusPageMetadataProps) {
+  const pageParam = searchParams?.page
   const pageValue = Array.isArray(pageParam) ? pageParam[0] : pageParam
   const pageNumber = pageValue ? Number.parseInt(pageValue, 10) : 1
   const isPaginated = Number.isFinite(pageNumber) && pageNumber > 1
