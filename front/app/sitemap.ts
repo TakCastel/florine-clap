@@ -4,7 +4,7 @@ import { getAllMediations, getAllActus, getAllFilms, getAllVideoArts } from '@/l
 export const dynamic = 'force-dynamic'
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const base = process.env.SITE_URL || 'https://example.com'
+  const base = process.env.SITE_URL || 'https://florineclap.com'
   const now = new Date().toISOString()
   
   const staticRoutes: MetadataRoute.Sitemap = [

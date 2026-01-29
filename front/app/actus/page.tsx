@@ -7,12 +7,27 @@ import ActusPageClient from './ActusPageClient'
 export const dynamic = 'force-dynamic'
 export const revalidate = 60 // Revalider toutes les 60 secondes
 
-export async function generateMetadata() {
+type ActusPageMetadataProps = {
+  // Next fournit `searchParams` pour les query params (ex: /actus?page=2)
+  // Ici on garde le même style que le reste du codebase (Promise + resolve)
+  searchParams?: Promise<Record<string, string | string[] | undefined>>
+}
+
+export async function generateMetadata({ searchParams }: ActusPageMetadataProps = {}) {
+  const resolvedSearchParams = await Promise.resolve(searchParams)
+  const pageParam = resolvedSearchParams?.page
+  const pageValue = Array.isArray(pageParam) ? pageParam[0] : pageParam
+  const pageNumber = pageValue ? Number.parseInt(pageValue, 10) : 1
+  const isPaginated = Number.isFinite(pageNumber) && pageNumber > 1
+
   const canonicalUrl = canonical('/actus')
   return buildMetadata({
-    title: 'Actualités - Florine Clap',
+    // Important pour les sitelinks Google: éviter que /actus?page=2+ soit considéré comme page "principale".
+    // On canonicalise vers /actus et on noindex les pages paginées.
+    title: isPaginated ? `Actualités - Page ${pageNumber} | Florine Clap` : 'Actualités - Florine Clap',
     description: 'Découvrez mes dernières actualités, sélections en festival et projets en cours',
     canonical: canonicalUrl,
+    noindex: isPaginated,
   })
 }
 
