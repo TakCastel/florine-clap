@@ -6,6 +6,7 @@ const nextConfig = {
   images: {
     loader: 'custom',
     loaderFile: './lib/image-loader.js',
+    qualities: [75, 85, 90],
     remotePatterns: [
       { protocol: 'https', hostname: '**' },
       { protocol: 'http', hostname: '**' },

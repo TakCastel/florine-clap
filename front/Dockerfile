@@ -75,3 +75,10 @@ ENV HOSTNAME "0.0.0.0"
 # Next.js standalone output structure: server.js is at the root of standalone
 CMD ["node", "server.js"]
 
+# Stage dev : deps + npm run dev (source montée en volume)
+FROM deps AS dev
+EXPOSE 3000
+ENV PORT=3000
+ENV HOSTNAME="0.0.0.0"
+CMD ["npm", "run", "dev"]
+

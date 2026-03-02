@@ -43,8 +43,8 @@ export interface Film {
   producteurs?: string
   realisateur_captation?: string
   image_captation?: string
-  diffusion?: string[]
-  selection?: string[]
+  diffusion?: string
+  selection?: string
   lien_film?: string
   vimeo_id?: string
   video_url?: string

@@ -57,21 +57,13 @@ export function useStackProgress(
     ['92%', '92%', '0%'] // 92% laisse voir le haut de la carte (teaser)
   )
   
-  // Rotation légère
-  const randomAngle = (cardIndex % 2 === 0 ? 1 : -1) * 1
-  const rotate = useTransform(
-    scrollProgress,
-    [start, end, end + 0.1],
-    [randomAngle, 0, 0]
-  )
-  
   const zIndex = cardIndex + 1
   
   return {
     opacity,
     scale,
     y,
-    rotate,
+    rotate: useTransform(scrollProgress, [0, 1], [0, 0]),
     zIndex
   }
 }

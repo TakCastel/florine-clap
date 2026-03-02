@@ -54,7 +54,7 @@ export default function Header() {
         ? 'absolute' 
         : 'fixed md:relative'
     }`}>
-      <div className={`flex justify-between items-center px-6 md:px-10 lg:px-16 py-4 relative ${
+      <div className={`flex justify-between items-center px-4 md:px-6 lg:px-10 xl:px-16 py-4 relative ${
         isHomePage || isArticlePage || isListPage || isBioPage
           ? 'bg-transparent backdrop-blur-none'
           : 'backdrop-blur-xl bg-theme-white/85 border-b border-gray-200'

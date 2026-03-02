@@ -8,13 +8,13 @@ export const dynamic = 'force-dynamic'
 export const revalidate = 60 // Revalider toutes les 60 secondes
 
 type ActusPageMetadataProps = {
-  // Next fournit `searchParams` pour les query params (ex: /actus?page=2)
-  // En Next 14 (ton build Docker), c'est un objet (pas une Promise).
-  searchParams?: Record<string, string | string[] | undefined>
+  // Next 15 : searchParams est une Promise
+  searchParams?: Promise<Record<string, string | string[] | undefined>>
 }
 
 export async function generateMetadata({ searchParams }: ActusPageMetadataProps) {
-  const pageParam = searchParams?.page
+  const params = await searchParams
+  const pageParam = params?.page
   const pageValue = Array.isArray(pageParam) ? pageParam[0] : pageParam
   const pageNumber = pageValue ? Number.parseInt(pageValue, 10) : 1
   const isPaginated = Number.isFinite(pageNumber) && pageNumber > 1

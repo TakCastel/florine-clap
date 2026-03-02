@@ -229,33 +229,33 @@ export default async function FilmPage({ params }: FilmPageProps) {
             </dl>
           </section>
 
-          {((film.diffusion && film.diffusion.length > 0) || (film.selection && film.selection.length > 0)) && (
+          {((typeof film.diffusion === 'string' && film.diffusion.trim()) || (typeof film.selection === 'string' && film.selection.trim())) && (
             <section className="border-t border-black/10 pt-8 pb-8">
               <h2 className="text-lg md:text-xl font-bold tracking-tight leading-tight text-black mb-6">
                 Diffusion / Sélection
               </h2>
               
               <div className="space-y-6">
-                {film.diffusion && film.diffusion.length > 0 && (
+                {typeof film.diffusion === 'string' && film.diffusion.trim() && (
                   <div>
                     <h3 className="text-xs text-black/50 uppercase tracking-[0.2em] mb-3 font-light">Diffusion</h3>
                     <ul className="space-y-2">
-                      {film.diffusion.map((item, index) => (
+                      {film.diffusion.split('\n').filter(Boolean).map((item, index) => (
                         <li key={index} className="text-black font-display font-medium text-xs">
-                          {item}
+                          {item.trim()}
                         </li>
                       ))}
                     </ul>
                   </div>
                 )}
 
-                {film.selection && film.selection.length > 0 && (
+                {typeof film.selection === 'string' && film.selection.trim() && (
                   <div>
                     <h3 className="text-xs text-black/50 uppercase tracking-[0.2em] mb-3 font-light">Sélection</h3>
                     <ul className="space-y-2">
-                      {film.selection.map((item, index) => (
+                      {film.selection.split('\n').filter(Boolean).map((item, index) => (
                         <li key={index} className="text-black font-display font-medium text-xs">
-                          {item}
+                          {item.trim()}
                         </li>
                       ))}
                     </ul>

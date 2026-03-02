@@ -61,12 +61,6 @@ export default function SimpleFilmCard({
     return () => window.removeEventListener('resize', checkMobile)
   }, [])
   
-  // Transformations adaptées au mobile
-  // Sur mobile, on enlève complètement le skew pour garder les images droites
-  const imageTransform = isMobile
-    ? 'none'
-    : (isImageLeft ? 'skewX(-3deg) translateX(-12px)' : 'skewX(3deg) translateX(12px)')
-
   return (
     <Link href={href} className={`group block w-full ${className}`}>
       <article className="relative w-full max-w-container-medium mx-auto">
@@ -76,9 +70,6 @@ export default function SimpleFilmCard({
             {cover ? (
               <div 
                 className={`relative ${isMobile ? 'overflow-visible px-3' : 'overflow-hidden'}`}
-                style={{ 
-                  transform: imageTransform,
-                }}
               >
                 <div className="relative w-full aspect-[4/3]">
                   <Image
@@ -96,9 +87,6 @@ export default function SimpleFilmCard({
             ) : (
               <div 
                 className={`relative aspect-[4/3] bg-gray-200 ${isMobile ? 'overflow-visible px-3' : 'overflow-hidden'}`}
-                style={{ 
-                  transform: imageTransform,
-                }}
               >
                 <div className="relative w-full h-full flex items-center justify-center">
                   <span className="text-gray-400 font-mono text-xs uppercase">

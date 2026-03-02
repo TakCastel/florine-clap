@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useMemo } from 'react'
 import Breadcrumb from '@/components/Breadcrumb'
-import StackScroll from '@/components/StackScroll'
+import VerticalCarousel from '@/components/VerticalCarousel'
 import PageHeader from '@/components/PageHeader'
 import ArticleHeroImage from '@/components/ArticleHeroImage'
 import { getImageUrl } from '@/lib/directus'
@@ -43,9 +43,7 @@ export default function ContentListPage({
   title,
   description,
   breadcrumbLabel,
-  seoTitle,
-  seoDescription,
-  heroImageUrl
+  heroImageUrl,
 }: ContentListPageProps) {
   const [isVisible, setIsVisible] = useState(false)
 
@@ -97,29 +95,21 @@ export default function ContentListPage({
         </div>
       </div>
       
-      {/* Conteneur unifié pour en-tête, cards et texte SEO */}
+      {/* Conteneur titre, texte SEO et carousel */}
       <div className={`max-w-container-small mx-auto px-4 md:px-6 lg:px-10 xl:px-16 ${heroImageUrlString ? 'relative z-10' : ''}`} style={heroImageUrlString ? { marginTop: '-66vh' } : {}}>
-        {/* En-tête de page avec animation */}
-        <div className={`${heroImageUrlString ? 'pt-6' : 'pt-12 md:pt-20'} pb-3 md:pb-4 lg:pb-6`}>
+        {/* En-tête : titre + description (texte SEO inclus, pas de doublon) */}
+        <section className={`${heroImageUrlString ? 'pt-6' : 'pt-12 md:pt-20'} pb-8 md:pb-12`}>
           <PageHeader title={title} description={description} />
-        </div>
-        
-        {/* Section avec effet de pile progressive */}
-        <StackScroll items={sortedItems} basePath={basePath} />
-        
-        {/* Contenu SEO */}
-        <div className="pt-8 md:pt-12 pb-8 md:pb-12">
-          <div className="pt-8 border-t border-black/10">
-            <div className="w-full">
-              <h2 className="text-2xl md:text-3xl font-bold tracking-tight leading-tight text-black mb-4">
-                {seoTitle}
-              </h2>
-              <p className="text-base leading-relaxed font-normal text-black/80">
-                {seoDescription}
-              </p>
+        </section>
+
+        {/* Carousel vertical */}
+        <section className="pt-4 md:pt-8 min-h-[100vh]">
+          <div className="w-screen relative left-1/2 -translate-x-1/2 max-w-[100vw] overflow-x-hidden">
+            <div className="px-4 md:px-6 lg:px-10 xl:px-16">
+              <VerticalCarousel items={sortedItems} basePath={basePath} />
             </div>
           </div>
-        </div>
+        </section>
       </div>
     </main>
   )

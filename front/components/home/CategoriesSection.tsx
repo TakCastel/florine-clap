@@ -30,19 +30,18 @@ export default function CategoriesSection({ homeSettings }: CategoriesSectionPro
   }
 
   const getCardVariants = (index: number) => {
-    const skewAngle = isMobile ? 0 : -3 // Pas de skew en mobile, -3deg en desktop
     const zIndexValue = 4 - index // z-index décroissant : 4, 3, 2, 1
     return {
       hidden: {
         opacity: 0,
         y: 20,
-        skewX: `${skewAngle}deg`,
+        skewX: '0deg',
         zIndex: zIndexValue,
       },
       visible: {
         opacity: 1,
         y: 0,
-        skewX: `${skewAngle}deg`,
+        skewX: '0deg',
         zIndex: zIndexValue,
         transition: {
           duration: 0.8,
@@ -179,9 +178,7 @@ export default function CategoriesSection({ homeSettings }: CategoriesSectionPro
           initial="hidden"
           animate={isInView && isReady ? "visible" : "hidden"}
         >
-          {cards.map((card, index) => {
-            const skewAngle = isMobile ? 0 : -3 // Pas de skew en mobile, -3deg en desktop
-            return (
+          {cards.map((card, index) => (
             <motion.div 
               key={index} 
               className="relative flex-1 md:hover:flex-[1.5] transition-all duration-500 ease-out min-h-[180px] h-[calc((100vh-4.25rem)/4)] md:h-full group/card"
@@ -196,7 +193,6 @@ export default function CategoriesSection({ homeSettings }: CategoriesSectionPro
                 },
               }}
               style={{
-                transform: `skewX(${skewAngle}deg)`,
                 minHeight: '180px',
                 height: isMobile ? 'calc((100vh - 4.25rem) / 4)' : '100%'
               }}
@@ -218,8 +214,7 @@ export default function CategoriesSection({ homeSettings }: CategoriesSectionPro
                 priority={index === 0}
               />
             </motion.div>
-            )
-          })}
+          ))}
         </motion.div>
       </div>
     </section>

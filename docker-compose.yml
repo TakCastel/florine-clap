@@ -50,37 +50,14 @@ services:
       postgres:
         condition: service_healthy
 
-  # Frontend en production (par défaut)
   frontend:
     build:
       context: .
       dockerfile: ./front/Dockerfile
+      target: dev
       args:
         NEXT_PUBLIC_DIRECTUS_URL: ${NEXT_PUBLIC_DIRECTUS_URL:-${DIRECTUS_PUBLIC_URL:-http://localhost:8055}}
     container_name: florine-clap-frontend
-    restart: unless-stopped
-    ports:
-      - "${FRONTEND_PORT:-3000}:3000"
-    environment:
-      NODE_ENV: production
-      NEXT_PUBLIC_DIRECTUS_URL: ${DIRECTUS_PUBLIC_URL:-http://localhost:8055}
-      DIRECTUS_INTERNAL_URL: http://directus:8055
-      DIRECTUS_STATIC_TOKEN: ${DIRECTUS_STATIC_TOKEN:-}
-    networks:
-      - florine-clap-network
-    depends_on:
-      directus:
-        condition: service_started
-    profiles:
-      - production
-      - default
-
-  # Frontend en développement
-  frontend-dev:
-    build:
-      context: .
-      dockerfile: ./front/Dockerfile.dev
-    container_name: florine-clap-frontend-dev
     restart: unless-stopped
     ports:
       - "${FRONTEND_PORT:-3000}:3000"
@@ -97,10 +74,9 @@ services:
     networks:
       - florine-clap-network
     depends_on:
-      - directus
+      directus:
+        condition: service_started
     command: npm run dev
-    profiles:
-      - dev
 
 volumes:
   postgres_data:

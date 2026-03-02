@@ -111,9 +111,6 @@ export default function BioSection({ homeSettings }: BioSectionProps) {
                   >
                     <div 
                       className="relative w-full h-auto aspect-[3/4] max-h-[650px] transition-transform duration-700 ease-out bg-gray-100 overflow-hidden"
-                      style={{
-                        transform: `translate(${mousePosition.x * 0.1}px, ${mousePosition.y * 0.1}px)`,
-                      }}
                     >
                       {bioImageUrl ? (
                         <Image 

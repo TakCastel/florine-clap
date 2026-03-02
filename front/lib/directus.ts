@@ -131,8 +131,8 @@ export interface Film {
   producteurs?: string
   realisateur_captation?: string
   image_captation?: string
-  diffusion?: string[]
-  selection?: string[]
+  diffusion?: string
+  selection?: string
   lien_film?: string
   vimeo_id?: string
   video_url?: string
@@ -361,41 +361,18 @@ export async function getVideoArtBySlug(slug: string): Promise<VideoArt | null> 
 
 export async function getHomeSettings(): Promise<HomeSettings | null> {
   try {
-    // Essayer d'abord sans le champ bio (qui peut ne pas exister)
-    // Si bio n'existe pas, on utilisera bio_text à la place
-    const endpoint = `/items/home_settings?fields=*,hero_video.id,hero_video.filename_download,hero_video.type,hero_video.filesize,bio_image.id,bio_image.filename_download,category_films_image.id,category_films_image.filename_download,category_mediations_image.id,category_mediations_image.filename_download,category_videos_art_image.id,category_videos_art_image.filename_download,category_actus_image.id,category_actus_image.filename_download,bio_text&limit=1`
-    
-    try {
-      const settings = await fetchDirectus<HomeSettings | HomeSettings[]>(endpoint)
-      
-      const result = Array.isArray(settings) 
-        ? (settings.length > 0 ? settings[0] : null)
-        : (settings || null)
-      
-      // Si on a un résultat mais pas de bio, essayer de récupérer bio séparément
-      if (result && !result.bio) {
-        try {
-          const endpointWithBio = `/items/home_settings?fields=*,hero_video.id,hero_video.filename_download,hero_video.type,hero_video.filesize,bio_image.id,bio_image.filename_download,category_films_image.id,category_films_image.filename_download,category_mediations_image.id,category_mediations_image.filename_download,category_videos_art_image.id,category_videos_art_image.filename_download,category_actus_image.id,category_actus_image.filename_download,bio,bio_text&limit=1`
-          const settingsWithBio = await fetchDirectus<HomeSettings | HomeSettings[]>(endpointWithBio)
-          const resultWithBio = Array.isArray(settingsWithBio) 
-            ? (settingsWithBio.length > 0 ? settingsWithBio[0] : null)
-            : (settingsWithBio || null)
-          if (resultWithBio?.bio) {
-            result.bio = resultWithBio.bio
-          }
-        } catch (bioError) {
-          // Si bio n'existe pas ou n'a pas les permissions, on continue sans
-          console.log('Champ bio non disponible, utilisation de bio_text si disponible')
-        }
-      }
-      
-      return result
-    } catch (fetchError: any) {
-      console.error('Erreur lors de la récupération des paramètres:', fetchError)
-      return null
-    }
-  } catch (error) {
-    console.error('Erreur lors de la récupération des paramètres:', error)
+    // Liste explicite des champs (sans bio) pour éviter l'erreur 403 si le rôle n'a pas la permission
+    const endpoint = `/items/home_settings?fields=id,hero_video.id,hero_video.filename_download,hero_video.type,hero_video.filesize,bio_text,bio_image.id,bio_image.filename_download,category_films_image.id,category_films_image.filename_download,category_mediations_image.id,category_mediations_image.filename_download,category_videos_art_image.id,category_videos_art_image.filename_download,category_actus_image.id,category_actus_image.filename_download,date_created,date_updated&limit=1`
+
+    const settings = await fetchDirectus<HomeSettings | HomeSettings[]>(endpoint)
+
+    const result = Array.isArray(settings)
+      ? (settings.length > 0 ? settings[0] : null)
+      : (settings || null)
+
+    return result
+  } catch (fetchError: any) {
+    console.error('Erreur lors de la récupération des paramètres:', fetchError)
     return null
   }
 }

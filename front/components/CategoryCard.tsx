@@ -146,10 +146,7 @@ export default function CategoryCard({
             quality={85}
             unoptimized={image1.startsWith('http://') || image1.startsWith('https://')}
             onLoad={() => setImage1Loaded(true)}
-            onError={() => {
-              console.error('Erreur de chargement image1:', image1)
-              setImage1Loaded(true) // Marquer comme chargé même en cas d'erreur pour éviter les blocages
-            }}
+            onError={() => setImage1Loaded(true)}
           />
         </div>
       )}
@@ -178,10 +175,7 @@ export default function CategoryCard({
             quality={85}
             unoptimized={image2.startsWith('http://') || image2.startsWith('https://')}
             onLoad={() => setImage2Loaded(true)}
-            onError={() => {
-              console.error('Erreur de chargement image2:', image2)
-              setImage2Loaded(true) // Marquer comme chargé même en cas d'erreur pour éviter les blocages
-            }}
+            onError={() => setImage2Loaded(true)}
           />
         </div>
       )}
