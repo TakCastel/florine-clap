@@ -138,6 +138,12 @@ NEXT_PUBLIC_DIRECTUS_URL=https://api.florineclap.com
 - `NEXT_PUBLIC_DIRECTUS_URL` est figée au **build** du frontend : après modification, il faut **reconstruire** le front (`docker compose up -d --build frontend` ou `./scripts/deploy.sh`).
 - En production, le code refuse d’utiliser `localhost` pour les assets ; si cette variable pointe encore vers localhost, les images Directus ne s’afficheront pas tant que la bonne URL HTTPS n’est pas configurée et le front reconstruit.
 
+### Erreur WebSocket HMR en production
+
+Si vous voyez dans la console : `WebSocket connection to 'wss://.../_next/webpack-hmr' failed`, c’est que le frontend tourne en mode **développement** (`npm run dev`). Le HMR (Hot Module Replacement) ne sert qu’en dev.
+
+Pour une vraie **production** (sans cette erreur, sans outil de dev) : construire l’app puis lancer le serveur standalone, par exemple en utilisant un Dockerfile avec une cible `production` qui fait `next build` puis `node server.js` (avec `output: 'standalone'`), au lieu de `npm run dev`. Le `docker-compose.yml` actuel est orienté dev (volumes montés, `npm run dev`).
+
 ## 🔍 Vérification après déploiement
 
 ```bash

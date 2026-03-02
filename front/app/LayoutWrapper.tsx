@@ -20,7 +20,7 @@ export default function LayoutWrapper({ children }: { children: React.ReactNode 
     <AnimationProvider>
       <ScrollToTop />
       <Header />
-      <main className={isHomePage || isArticlePage || isListPage || isBioPage ? '' : 'pt-16 md:pt-0'}>
+      <main className={isHomePage || isArticlePage || isListPage || isBioPage ? '' : 'pt-16 md:pt-0'} style={{ position: 'relative' }}>
         {children}
       </main>
       <Footer />

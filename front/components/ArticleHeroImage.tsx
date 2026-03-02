@@ -45,7 +45,7 @@ export default function ArticleHeroImage({
                 filter: 'blur(15px) brightness(1.15) grayscale(0.3)',
                 transform: 'scale(1.1)',
               }}
-              priority
+              priority={false}
               quality={85}
             />
           </div>
