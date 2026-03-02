@@ -144,7 +144,6 @@ export default function CategoryCard({
             className="object-cover"
             priority={priority || activeImage === 'image1'}
             quality={85}
-            unoptimized={image1.startsWith('http://') || image1.startsWith('https://')}
             onLoad={() => setImage1Loaded(true)}
             onError={() => setImage1Loaded(true)}
           />
@@ -173,7 +172,6 @@ export default function CategoryCard({
             className="object-cover"
             priority={priority || activeImage === 'image2'}
             quality={85}
-            unoptimized={image2.startsWith('http://') || image2.startsWith('https://')}
             onLoad={() => setImage2Loaded(true)}
             onError={() => setImage2Loaded(true)}
           />

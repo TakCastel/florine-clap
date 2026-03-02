@@ -3,6 +3,7 @@
 import { useRef, useState, useEffect } from 'react'
 import { createPortal } from 'react-dom'
 import Link from 'next/link'
+import Image from 'next/image'
 import { motion, AnimatePresence } from 'framer-motion'
 import { getImageUrl } from '@/lib/directus'
 
@@ -326,15 +327,19 @@ export default function VerticalCarousel({ items, basePath, className = '' }: Ve
                       }}
                     >
                       {isActive ? (
-                        <Link href={href} className="block overflow-hidden aspect-[4/3]">
+                        <Link href={href} className="block overflow-hidden aspect-[4/3] relative">
                           {cover ? (
-                            /* eslint-disable-next-line @next/next/no-img-element */
-                            <img
-                              src={cover}
-                              alt={item.title}
-                              className="w-full h-full object-cover"
-                              loading={index === 0 ? 'eager' : 'lazy'}
-                            />
+                            <div className="relative w-full h-full">
+                              <Image
+                                src={cover}
+                                alt={item.title}
+                                fill
+                                sizes="(max-width: 768px) 100vw, 33vw"
+                                className="object-cover"
+                                quality={85}
+                                priority={index === 0}
+                              />
+                            </div>
                           ) : (
                             <div className="w-full h-full bg-black/5 flex items-center justify-center">
                               <span className="text-black/30 text-sm uppercase">Image non disponible</span>
@@ -345,17 +350,21 @@ export default function VerticalCarousel({ items, basePath, className = '' }: Ve
                         <button
                           type="button"
                           onClick={() => scrollToSlide(index)}
-                          className="block w-full overflow-hidden aspect-[4/3] cursor-pointer text-left"
+                          className="block w-full overflow-hidden aspect-[4/3] cursor-pointer text-left relative"
                           aria-label={`Voir ${item.title}`}
                         >
                           {cover ? (
-                            /* eslint-disable-next-line @next/next/no-img-element */
-                            <img
-                              src={cover}
-                              alt={item.title}
-                              className="w-full h-full object-cover"
-                              loading={index === 0 ? 'eager' : 'lazy'}
-                            />
+                            <div className="relative w-full h-full">
+                              <Image
+                                src={cover}
+                                alt={item.title}
+                                fill
+                                sizes="(max-width: 768px) 100vw, 33vw"
+                                className="object-cover"
+                                quality={85}
+                                priority={index === 0}
+                              />
+                            </div>
                           ) : (
                             <div className="w-full h-full bg-black/5 flex items-center justify-center">
                               <span className="text-black/30 text-sm uppercase">Image non disponible</span>
