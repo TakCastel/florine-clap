@@ -32,20 +32,24 @@ export default function directusImageLoader({ src, width, quality }) {
     const isDirectusUrl = src.includes('/assets/')
     
     if (isDirectusUrl) {
-      // Pour les URLs Directus, retourner directement avec les paramètres de transformation
       try {
-        const url = new URL(src)
+        let url = new URL(src)
+        // En prod / HTTPS : réécrire les URLs localhost pour éviter Mixed Content (ex. image hero Actus)
+        const isLocalhost = url.hostname === 'localhost' || url.hostname === '127.0.0.1'
+        if (isLocalhost && typeof window !== 'undefined' && window.location.protocol === 'https:') {
+          const base = (process.env.NEXT_PUBLIC_DIRECTUS_URL || '').trim().replace(/\/+$/, '')
+          if (base && !base.includes('localhost')) {
+            url = new URL(url.pathname + url.search, base.startsWith('http') ? base : 'https://' + base)
+          }
+        }
         if (width) {
           url.searchParams.set('width', width.toString())
         }
-        // Qualité par défaut à 85 si non spécifiée pour un bon compromis taille/qualité
         const finalQuality = quality || 85
         url.searchParams.set('quality', finalQuality.toString())
-        // Ajouter le format webp pour une meilleure compression
         url.searchParams.set('format', 'webp')
         return url.toString()
       } catch (error) {
-        // Si l'URL n'est pas valide, retourner quand même l'URL originale
         return src
       }
     }
@@ -60,15 +64,16 @@ export default function directusImageLoader({ src, width, quality }) {
   
   // Si c'est un UUID, construire l'URL Directus
   if (src.match(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i)) {
-    // Utiliser NEXT_PUBLIC_DIRECTUS_URL si défini, sinon utiliser localhost uniquement en développement local
-    let directusUrl = process.env.NEXT_PUBLIC_DIRECTUS_URL
-    
-    // En développement local uniquement, utiliser localhost si NEXT_PUBLIC_DIRECTUS_URL n'est pas défini
-    const isDevelopment = process.env.NODE_ENV === 'development'
-    if (isDevelopment && (!directusUrl || (!directusUrl.includes('localhost') && !directusUrl.includes('127.0.0.1')))) {
+    let directusUrl = process.env.NEXT_PUBLIC_DIRECTUS_URL || ''
+    // En production : ne jamais utiliser localhost (Mixed Content sur HTTPS)
+    const isProduction = process.env.NODE_ENV === 'production'
+    if (isProduction && (directusUrl.includes('localhost') || directusUrl.includes('127.0.0.1'))) {
+      directusUrl = ''
+    }
+    // En développement local uniquement, fallback localhost
+    if (!directusUrl && process.env.NODE_ENV === 'development') {
       directusUrl = 'http://localhost:8055'
     }
-    
     if (!directusUrl) {
       return src
     }

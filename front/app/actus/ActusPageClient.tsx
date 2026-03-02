@@ -20,12 +20,8 @@ export default function ActusPageClient({ initialActus, heroImageUrl: heroImageU
   const pageParam = searchParams.get('page') || '1'
   const [searchQuery, setSearchQuery] = useState('')
   
-  // Convertir l'image hero en URL si c'est un objet Directus
-  const heroImageUrl = typeof heroImageUrlProp === 'string' 
-    ? heroImageUrlProp 
-    : heroImageUrlProp 
-      ? getImageUrl(heroImageUrlProp)
-      : null
+  // Convertir l'image hero en URL (getImageUrl gère string et objet, et réécrit les URLs localhost en prod)
+  const heroImageUrl = heroImageUrlProp ? getImageUrl(heroImageUrlProp) : null
 
   useLayoutEffect(() => {
     window.scrollTo(0, 0)

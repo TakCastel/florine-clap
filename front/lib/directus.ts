@@ -9,32 +9,31 @@
 // Helper pour obtenir l'URL Directus en forçant localhost en développement
 function getDirectusUrlForClient(): string {
   // Toujours essayer d'utiliser NEXT_PUBLIC_DIRECTUS_URL en premier
-  const publicUrl = process.env.NEXT_PUBLIC_DIRECTUS_URL
+  let publicUrl = process.env.NEXT_PUBLIC_DIRECTUS_URL?.trim() ?? ''
   
-  // Si NEXT_PUBLIC_DIRECTUS_URL est défini et valide, l'utiliser
-  if (publicUrl && publicUrl.trim() !== '') {
+  // En production : ne jamais utiliser localhost (évite Mixed Content sur HTTPS)
+  if (process.env.NODE_ENV === 'production') {
+    if (!publicUrl || publicUrl.includes('localhost') || publicUrl.includes('127.0.0.1')) {
+      return ''
+    }
+    // Côté client : si la page est en HTTPS, refuser toute URL en HTTP pour éviter Mixed Content
+    if (typeof window !== 'undefined' && window.location.protocol === 'https:' && publicUrl.startsWith('http://')) {
+      return ''
+    }
     return publicUrl
   }
   
   // En développement : utiliser localhost si on est sur localhost
-  if (process.env.NODE_ENV === 'development') {
-    const isLocalDevelopment = 
-      typeof window !== 'undefined' && 
-      (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
-    
-    if (isLocalDevelopment) {
-      return 'http://localhost:8055'
-    }
+  if (publicUrl && publicUrl.trim() !== '') {
+    return publicUrl
   }
-  
-  // Dernier recours : en production, ne jamais retourner localhost
-  // Si NEXT_PUBLIC_DIRECTUS_URL n'est pas défini, on ne peut pas construire l'URL
-  // Retourner null pour que le composant puisse gérer l'erreur
-  if (process.env.NODE_ENV === 'production') {
-    return ''
+  const isLocalDevelopment =
+    typeof window !== 'undefined' &&
+    (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+  if (isLocalDevelopment) {
+    return 'http://localhost:8055'
   }
-  // En développement, utiliser localhost comme fallback
-  return 'http://localhost:8055'
+  return ''
 }
 
 function getDirectusUrl(): string {
@@ -389,25 +388,45 @@ export function getImageUrl(
   if (file === null) return null
   
   if (typeof file === 'string') {
-    // Si c'est déjà une URL complète, on la retourne
-    if (file.startsWith('http')) return file
+    // Si c'est déjà une URL complète, ne pas la retourner telle quelle si c'est localhost ou HTTP sur une page HTTPS (Mixed Content)
+    if (file.startsWith('http')) {
+      const isInsecure =
+        file.includes('localhost') ||
+        file.includes('127.0.0.1') ||
+        (typeof window !== 'undefined' && window.location.protocol === 'https:' && file.startsWith('http://'))
+      if (isInsecure) {
+        const match = file.match(/\/assets\/([0-9a-f-]+)(\?.*)?$/i)
+        if (match) {
+          const id = match[1]
+          const publicUrl = typeof window !== 'undefined' ? getDirectusUrlForClient() : (process.env.NEXT_PUBLIC_DIRECTUS_URL || process.env.DIRECTUS_PUBLIC_URL || null)
+          if (publicUrl && !publicUrl.includes('localhost') && !publicUrl.includes('127.0.0.1')) {
+            let base = publicUrl.trim().replace(/\/+$/, '')
+            if (!base.startsWith('http://') && !base.startsWith('https://')) base = `https://${base}`
+            return `${base}/assets/${id}${match[2] || ''}`
+          }
+          return null
+        }
+        return null
+      }
+      return file
+    }
     // Si c'est un UUID (36 caractères avec tirets), construire l'URL Directus
     if (file.match(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i)) {
       // Toujours utiliser l'URL publique pour les assets, même côté serveur
       // car les URLs seront utilisées côté client dans le HTML
-      const publicUrl = typeof window !== 'undefined' 
+      const publicUrl = typeof window !== 'undefined'
         ? getDirectusUrlForClient()
         : (process.env.NEXT_PUBLIC_DIRECTUS_URL || process.env.DIRECTUS_PUBLIC_URL || null)
       if (!publicUrl || publicUrl.trim() === '') {
-        // Si NEXT_PUBLIC_DIRECTUS_URL n'est pas défini côté serveur, retourner null
-        // Le composant client pourra appeler getImageUrl qui utilisera getDirectusUrlForClient()
         return null
       }
-      // S'assurer que l'URL a un protocole
+      // En production (SSR), ne jamais émettre localhost pour éviter Mixed Content
+      if (process.env.NODE_ENV === 'production' && (publicUrl.includes('localhost') || publicUrl.includes('127.0.0.1'))) {
+        return null
+      }
       let normalizedUrl = publicUrl.trim().replace(/\/+$/, '')
       if (!normalizedUrl.startsWith('http://') && !normalizedUrl.startsWith('https://')) {
-        // Si l'URL n'a pas de protocole, ajouter http:// par défaut
-        normalizedUrl = `http://${normalizedUrl}`
+        normalizedUrl = `https://${normalizedUrl}`
       }
       return `${normalizedUrl}/assets/${file}`
     }
@@ -421,18 +440,18 @@ export function getImageUrl(
     if (file.id) {
       // Toujours utiliser l'URL publique pour les assets, même côté serveur
       // car les URLs seront utilisées côté client dans le HTML
-      const publicUrl = typeof window !== 'undefined' 
+      const publicUrl = typeof window !== 'undefined'
         ? getDirectusUrlForClient()
         : (process.env.NEXT_PUBLIC_DIRECTUS_URL || process.env.DIRECTUS_PUBLIC_URL || null)
-      
       if (!publicUrl || publicUrl.trim() === '') {
         return null
       }
-      // S'assurer que l'URL a un protocole
+      if (process.env.NODE_ENV === 'production' && (publicUrl.includes('localhost') || publicUrl.includes('127.0.0.1'))) {
+        return null
+      }
       let normalizedUrl = publicUrl.trim().replace(/\/+$/, '')
       if (!normalizedUrl.startsWith('http://') && !normalizedUrl.startsWith('https://')) {
-        // Si l'URL n'a pas de protocole, ajouter http:// par défaut
-        normalizedUrl = `http://${normalizedUrl}`
+        normalizedUrl = `https://${normalizedUrl}`
       }
       return `${normalizedUrl}/assets/${file.id}`
     }

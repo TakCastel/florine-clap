@@ -123,6 +123,21 @@ DIRECTUS_PUBLIC_URL=http://votre-serveur:8055
 
 Le script cherche automatiquement le fichier `.env` à la racine du projet. Si ces variables ne sont pas définies, vous obtiendrez un message d'erreur détaillé.
 
+### Production : éviter Mixed Content (HTTPS)
+
+Si le site est servi en **HTTPS** (ex. `https://www.florineclap.com`), les assets Directus doivent aussi être chargés en HTTPS. Sinon le navigateur bloque les requêtes (Mixed Content).
+
+**Sur le serveur de production**, dans le `.env` utilisé par `docker compose build frontend`, définir l’URL **publique HTTPS** de Directus (pas `localhost`) :
+
+```env
+# Exemple : Directus exposé derrière le même domaine ou un sous-domaine
+DIRECTUS_PUBLIC_URL=https://api.florineclap.com
+NEXT_PUBLIC_DIRECTUS_URL=https://api.florineclap.com
+```
+
+- `NEXT_PUBLIC_DIRECTUS_URL` est figée au **build** du frontend : après modification, il faut **reconstruire** le front (`docker compose up -d --build frontend` ou `./scripts/deploy.sh`).
+- En production, le code refuse d’utiliser `localhost` pour les assets ; si cette variable pointe encore vers localhost, les images Directus ne s’afficheront pas tant que la bonne URL HTTPS n’est pas configurée et le front reconstruit.
+
 ## 🔍 Vérification après déploiement
 
 ```bash
