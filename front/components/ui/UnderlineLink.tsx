@@ -28,7 +28,7 @@ export const UnderlineLink = ({
   
   // Classes de base pour l'animation de soulignement
   // Utilisation de pb-1 pour garantir un espacement uniforme entre le texte et le trait
-  const baseClasses = `font-display font-normal uppercase cursor-pointer relative inline-block pb-1 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-px after:transition-all after:duration-500 after:ease-out hover:after:w-full tracking-wide transition-colors duration-300 text-base leading-normal`
+  const baseClasses = `font-display font-bold uppercase cursor-pointer relative inline-block pb-1 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-px after:transition-all after:duration-500 after:ease-out hover:after:w-full tracking-wide transition-colors duration-300 text-base leading-normal`
   
   // Classes de couleur selon la variante
   const colorClasses = variant === 'light'

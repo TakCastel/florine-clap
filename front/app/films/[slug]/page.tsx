@@ -239,26 +239,18 @@ export default async function FilmPage({ params }: FilmPageProps) {
                 {typeof film.diffusion === 'string' && film.diffusion.trim() && (
                   <div>
                     <h3 className="text-xs text-black/50 uppercase tracking-[0.2em] mb-3 font-light">Diffusion</h3>
-                    <ul className="space-y-2">
-                      {film.diffusion.split('\n').filter(Boolean).map((item, index) => (
-                        <li key={index} className="text-black font-display font-medium text-xs">
-                          {item.trim()}
-                        </li>
-                      ))}
-                    </ul>
+                    <div className="text-black font-display font-medium text-sm whitespace-pre-line">
+                      {film.diffusion.trim()}
+                    </div>
                   </div>
                 )}
 
                 {typeof film.selection === 'string' && film.selection.trim() && (
                   <div>
                     <h3 className="text-xs text-black/50 uppercase tracking-[0.2em] mb-3 font-light">Sélection</h3>
-                    <ul className="space-y-2">
-                      {film.selection.split('\n').filter(Boolean).map((item, index) => (
-                        <li key={index} className="text-black font-display font-medium text-xs">
-                          {item.trim()}
-                        </li>
-                      ))}
-                    </ul>
+                    <div className="text-black font-display font-medium text-sm whitespace-pre-line">
+                      {film.selection.trim()}
+                    </div>
                   </div>
                 )}
               </div>
