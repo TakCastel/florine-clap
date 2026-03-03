@@ -132,8 +132,13 @@ export default function BioSection({ homeSettings }: BioSectionProps) {
                       <div className="absolute inset-0 bg-black/10 group-hover:bg-black/5 transition-all duration-700 pointer-events-none"></div>
                       <div className="absolute inset-0 bg-gradient-to-t from-white/30 via-transparent to-transparent pointer-events-none"></div>
                     </div>
-                  </motion.div>
+                    </motion.div>
                 </div>
+              )}
+              {homeSettings?.credits?.trim() && (
+                <p className="mt-2 text-xs text-black/50 font-sans" aria-label="Crédit photo">
+                  {homeSettings.credits.trim()}
+                </p>
               )}
             </div>
             

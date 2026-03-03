@@ -65,6 +65,7 @@ export default async function FilmsPage() {
           items={sortedFilms}
           basePath="/films"
           title="Films"
+          description="Tout commence après le visionnage du film Les Glaneurs et la Glaneuse d'Agnès Varda. J'y découvre un cinéma documentaire qui me parle et m'inspire profondément. Je prends alors ma caméra et, à mon tour, me mets à glaner des images dans ma ville natale, Avignon, puis partout où je suis inspirée et touchée par les gens, leurs aspirations et par leur présence au monde."
           breadcrumbLabel="Films"
           seoTitle="Les films"
           seoDescription="Depuis 2013, je réalise essentiellement des films documentaires explorant des enjeux artistiques et sociaux. Ma démarche s'est construite dans une approche transversale des arts, au fil de collaborations avec des artistes plasticiens, chorégraphes, auteur·ices, architectes et institutions culturelles, qui nourrissent et façonnent ma pratique du cinéma."

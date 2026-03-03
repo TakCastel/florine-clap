@@ -133,6 +133,7 @@ export interface HomeSettings {
   bio?: string
   bio_text?: string
   bio_image?: string | { id: string; filename_download: string }
+  credits?: string
   category_films_image?: string | { id: string; filename_download: string }
   category_mediations_image?: string | { id: string; filename_download: string }
   category_videos_art_image?: string | { id: string; filename_download: string }
