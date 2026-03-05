@@ -1,28 +1,19 @@
 import { Suspense } from 'react'
 import ContentListPage from '@/components/ContentListPage'
 import ContentListSkeleton from '@/components/ContentListSkeleton'
-import { getAllFilms, Film, getHomeSettings, getImageUrl } from '@/lib/directus'
+import { getAllFilms, Film, getHomeSettings } from '@/lib/directus'
 import { buildMetadata, generateJsonLd } from '@/components/Seo'
 import { canonical } from '@/lib/seo'
 
 // Cache 24h ; revalidation à la demande via /api/revalidate (webhook Directus)
 export const revalidate = 86400
 
-export async function generateMetadata() {
-  const canonicalUrl = canonical('/films')
-  const base = buildMetadata({
+export function generateMetadata() {
+  return buildMetadata({
     title: 'Films - Les films',
     description: 'Depuis 2013, je réalise essentiellement des films documentaires explorant des enjeux artistiques et sociaux. Ma démarche s\'est construite dans une approche transversale des arts, au fil de collaborations avec des artistes plasticiens, chorégraphes, auteur·ices, architectes et institutions culturelles, qui nourrissent et façonnent ma pratique du cinéma.',
-    canonical: canonicalUrl,
+    canonical: canonical('/films'),
   })
-  try {
-    const homeSettings = await getHomeSettings()
-    const heroUrl = homeSettings?.category_films_image ? getImageUrl(homeSettings.category_films_image) : null
-    if (heroUrl && typeof heroUrl === 'string') {
-      return { ...base, links: [{ rel: 'preload', as: 'image', href: heroUrl }] }
-    }
-  } catch (_) { /* ignore */ }
-  return base
 }
 
 async function getFilms() {

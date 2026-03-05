@@ -8,21 +8,12 @@ import { canonical } from '@/lib/seo'
 // Cache 24h ; revalidation à la demande via /api/revalidate (webhook Directus)
 export const revalidate = 86400
 
-export async function generateMetadata() {
-  const canonicalUrl = canonical('/videos-art')
-  const base = buildMetadata({
+export function generateMetadata() {
+  return buildMetadata({
     title: 'Vidéos/art - VIDEO/ART',
     description: 'Enfant d\'Avignon, j\'ai grandi au contact des arts de la scène. La danse, le théâtre et les arts de la rue ont nourri très tôt une passion qui traverse aujourd\'hui mon cinéma, autant dans ses formes que dans ses thématiques, et irrigue l\'ensemble de mon travail vidéo.',
-    canonical: canonicalUrl,
+    canonical: canonical('/videos-art'),
   })
-  try {
-    const homeSettings = await getHomeSettings()
-    const heroUrl = homeSettings?.category_videos_art_image ? getImageUrl(homeSettings.category_videos_art_image) : null
-    if (heroUrl && typeof heroUrl === 'string') {
-      return { ...base, links: [{ rel: 'preload', as: 'image', href: heroUrl }] }
-    }
-  } catch (_) { /* ignore */ }
-  return base
 }
 
 async function getVideoArts() {

@@ -1,28 +1,19 @@
 import { Suspense } from 'react'
 import ContentListPage from '@/components/ContentListPage'
 import ContentListSkeleton from '@/components/ContentListSkeleton'
-import { getAllMediations, Mediation, getHomeSettings, getImageUrl } from '@/lib/directus'
+import { getAllMediations, Mediation, getHomeSettings } from '@/lib/directus'
 import { buildMetadata, generateJsonLd } from '@/components/Seo'
 import { canonical } from '@/lib/seo'
 
 // Cache 24h ; revalidation à la demande via /api/revalidate (webhook Directus)
 export const revalidate = 86400
 
-export async function generateMetadata() {
-  const canonicalUrl = canonical('/mediations')
-  const base = buildMetadata({
+export function generateMetadata() {
+  return buildMetadata({
     title: 'Médiations - Médiation et Formation artistique',
     description: 'Depuis une dizaine d\'années, en parallèle de mes projets artistiques, je propose des actions de médiation et des ateliers vidéo de réalisation, destinés principalement aux adolescent·es, étudiant·es et jeunes adultes, dans le cadre de dispositifs tels que Collège au cinéma, ou pour des écoles et des conservatoires.',
-    canonical: canonicalUrl,
+    canonical: canonical('/mediations'),
   })
-  try {
-    const homeSettings = await getHomeSettings()
-    const heroUrl = homeSettings?.category_mediations_image ? getImageUrl(homeSettings.category_mediations_image) : null
-    if (heroUrl && typeof heroUrl === 'string') {
-      return { ...base, links: [{ rel: 'preload', as: 'image', href: heroUrl }] }
-    }
-  } catch (_) { /* ignore */ }
-  return base
 }
 
 async function getMediations() {

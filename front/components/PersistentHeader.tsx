@@ -41,7 +41,7 @@ export default function Header() {
       >
         FLORINE CLAP
       </a>
-      <div className={showAnimations ? 'animate-slide-in-right' : ''}>
+      <div>
         <Navigation isHomePage={isHomePage} />
       </div>
     </header>

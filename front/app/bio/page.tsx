@@ -1,3 +1,4 @@
+import { Suspense } from 'react'
 import MarkdownRenderer from '@/components/MarkdownRenderer'
 import Breadcrumb from '@/components/Breadcrumb'
 import PartnersSection from '@/components/home/PartnersSection'
@@ -7,46 +8,24 @@ import { buildMetadata, generateJsonLd } from '@/components/Seo'
 import { canonical } from '@/lib/seo'
 import { Metadata } from 'next'
 import Image from 'next/image'
+import BioSkeleton from './BioSkeleton'
 
 // Cache 24h ; revalidation à la demande via /api/revalidate (webhook Directus)
 export const revalidate = 86400
 
-export async function generateMetadata(): Promise<Metadata> {
-  const canonicalUrl = canonical('/bio')
-  try {
-    const page = await getPageBySlug('bio')
-    
-    if (!page) {
-      return buildMetadata({
-        title: 'Bio',
-        description: 'Découvrez le parcours de Florine Clap, réalisatrice et formatrice en médiations vidéo',
-        canonical: canonicalUrl,
-      })
-    }
+export const metadata: Metadata = buildMetadata({
+  title: 'Bio',
+  description: 'Découvrez le parcours de Florine Clap, réalisatrice et formatrice en médiations vidéo',
+  canonical: canonical('/bio'),
+})
 
-    return buildMetadata({
-      title: page.title === "A propos" ? "Bio" : page.title,
-      description: 'Découvrez le parcours de Florine Clap, réalisatrice et formatrice en médiations vidéo',
-      image: '/images/FLORINE_DEF.avif',
-      canonical: canonicalUrl,
-    })
-  } catch (error) {
-    return buildMetadata({
-      title: 'Bio',
-      description: 'Découvrez le parcours de Florine Clap, réalisatrice et formatrice en médiations vidéo',
-      canonical: canonicalUrl,
-    })
-  }
-}
-
-export default async function BioPage() {
+async function BioContent() {
   let page: Page | null = null
   try {
     page = await getPageBySlug('bio')
   } catch (error) {
     console.error('Erreur lors de la récupération de la page bio:', error)
   }
-  
   if (!page) {
     return (
       <div className="min-h-screen bg-theme-white text-theme-dark flex items-center justify-center">
@@ -178,5 +157,13 @@ export default async function BioPage() {
         <PartnersSection />
       </main>
     </>
+  )
+}
+
+export default function BioPage() {
+  return (
+    <Suspense fallback={<BioSkeleton />}>
+      <BioContent />
+    </Suspense>
   )
 }

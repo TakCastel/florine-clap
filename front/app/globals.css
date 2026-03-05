@@ -434,3 +434,28 @@ div[class*="grid"][class*="max-w"] > * {
     scroll-behavior: smooth;
   }
 }
+
+/* Skeletons artistiques : shimmer + respiration */
+@keyframes skeleton-shimmer {
+  0% { background-position: 200% 50%; }
+  100% { background-position: -200% 50%; }
+}
+@keyframes skeleton-breathe {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+.skeleton-shimmer {
+  background: linear-gradient(
+    110deg,
+    rgba(0, 0, 0, 0.04) 0%,
+    rgba(0, 0, 0, 0.08) 25%,
+    rgba(155, 26, 51, 0.06) 50%,
+    rgba(0, 0, 0, 0.08) 75%,
+    rgba(0, 0, 0, 0.04) 100%
+  );
+  background-size: 400% 100%;
+  animation: skeleton-shimmer 2.2s ease-in-out infinite;
+}
+.skeleton-breathe {
+  animation: skeleton-breathe 1.8s ease-in-out infinite;
+}

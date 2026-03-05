@@ -90,8 +90,8 @@ export default function Header() {
           </UnderlineLink>
         </div>
 
-        {/* Navigation desktop à droite */}
-        <div className={showAnimations ? 'animate-slide-in-right' : ''}>
+        {/* Navigation desktop à droite — apparition du haut vers le bas uniquement */}
+        <div>
           <Navigation isHomePage={isHomePage} isLightText={isLightText} />
         </div>
 

@@ -1,4 +1,6 @@
+import { Suspense } from 'react'
 import HomePageClient from '@/components/home/HomePageClient'
+import HomeSkeleton from '@/components/home/HomeSkeleton'
 import { getHomeSettings, getImageUrl, getVideoUrl, HomeSettings } from '@/lib/directus'
 import type { Metadata } from 'next'
 
@@ -6,29 +8,9 @@ import type { Metadata } from 'next'
 export const revalidate = 86400
 
 /** Preload + preconnect de la vidéo hero pour qu’elle démarre au plus tôt */
-export async function generateMetadata(): Promise<Metadata> {
-  try {
-    const settings = await getHomeSettings()
-    const heroVideoFromDirectus = settings?.hero_video ? getVideoUrl(settings.hero_video) : null
-    let heroVideoUrl = heroVideoFromDirectus || settings?.hero_video_url || null
-    if (heroVideoUrl && heroVideoUrl.startsWith('http://')) {
-      heroVideoUrl = heroVideoUrl.replace(/^http:/, 'https:')
-    }
-    if (!heroVideoUrl || typeof heroVideoUrl !== 'string') return {}
-
-    const origin = new URL(heroVideoUrl).origin
-    const links: Array<{ rel: string; href: string; as?: string }> = [
-      { rel: 'preconnect', href: origin },
-    ]
-    // Ne preload qu'en tant que vidéo si l'URL ressemble à une vidéo (évite "preloaded but not used" pour une image)
-    const looksLikeImage = /[?&](width=|format=webp|quality=)/i.test(heroVideoUrl)
-    if (!looksLikeImage) {
-      links.push({ rel: 'preload', as: 'video', href: heroVideoUrl })
-    }
-    return { links }
-  } catch {
-    return {}
-  }
+export const metadata: Metadata = {
+  title: 'Florine Clap - Réalisatrice et Artiste',
+  description: "Réalisatrice et artiste, je crée des films documentaires et des médiations artistiques qui explorent la relation entre l'homme et son environnement.",
 }
 
 async function getHomeSettingsWithImageUrls(): Promise<HomeSettings | null> {
@@ -70,8 +52,15 @@ async function getHomeSettingsWithImageUrls(): Promise<HomeSettings | null> {
   }
 }
 
-export default async function HomePage() {
+async function HomeContent() {
   const homeSettings = await getHomeSettingsWithImageUrls()
-
   return <HomePageClient homeSettings={homeSettings} />
+}
+
+export default function HomePage() {
+  return (
+    <Suspense fallback={<HomeSkeleton />}>
+      <HomeContent />
+    </Suspense>
+  )
 }

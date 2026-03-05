@@ -18,11 +18,10 @@ export async function generateMetadata({ searchParams }: ActusPageMetadataProps)
   const pageValue = Array.isArray(pageParam) ? pageParam[0] : pageParam
   const pageNumber = pageValue ? Number.parseInt(pageValue, 10) : 1
   const isPaginated = Number.isFinite(pageNumber) && pageNumber > 1
-  const canonicalUrl = canonical('/actus')
   return buildMetadata({
     title: isPaginated ? `Actualités - Page ${pageNumber} | Florine Clap` : 'Actualités - Florine Clap',
     description: 'Découvrez mes dernières actualités, sélections en festival et projets en cours',
-    canonical: canonicalUrl,
+    canonical: canonical('/actus'),
     noindex: isPaginated,
   })
 }
