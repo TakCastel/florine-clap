@@ -47,31 +47,38 @@ function getDirectusUrl(): string {
   return getDirectusUrlForClient()
 }
 
+// Options pour le cache serveur (tags = invalidation à la demande via revalidateTag)
+export type FetchDirectusOptions = { tags?: string[] }
+
 // Fonction helper pour faire des appels API publics
-async function fetchDirectus<T>(endpoint: string): Promise<T> {
+async function fetchDirectus<T>(endpoint: string, options?: FetchDirectusOptions): Promise<T> {
   const directusUrl = getDirectusUrl()
-  // Normaliser l'URL : enlever TOUS les slashes finaux de directusUrl
   const normalizedUrl = directusUrl.replace(/\/+$/, '')
-  // Normaliser l'endpoint : s'assurer qu'il commence par exactement un slash
   const normalizedEndpoint = endpoint.startsWith('/') ? endpoint : `/${endpoint}`
-  // Éviter le double slash : si normalizedUrl se termine par / et normalizedEndpoint commence par /
-  // (normalement ça ne devrait pas arriver après la normalisation, mais on double-vérifie)
   const cleanUrl = normalizedUrl.endsWith('/') && normalizedEndpoint.startsWith('/')
     ? `${normalizedUrl}${normalizedEndpoint.slice(1)}`
     : `${normalizedUrl}${normalizedEndpoint}`
-  // Ajouter un timestamp pour éviter le cache
-  // Utiliser & si l'endpoint contient déjà des paramètres, sinon ?
+  // Cache buster uniquement côté client (côté serveur on veut le cache)
   const separator = cleanUrl.includes('?') ? '&' : '?'
   const cacheBuster = typeof window !== 'undefined' ? `${separator}_t=${Date.now()}` : ''
   const url = `${cleanUrl}${cacheBuster}`
   
+  const isServer = typeof window === 'undefined'
+  const fetchOptions: RequestInit = {
+    headers: { 'Content-Type': 'application/json' },
+  }
+  if (isServer) {
+    // Cache 24h + tags pour invalidation à la demande (webhook) → clic instantané
+    ;(fetchOptions as any).next = {
+      revalidate: 86400,
+      tags: options?.tags ?? [],
+    }
+  } else {
+    ;(fetchOptions as any).cache = 'no-store'
+  }
+
   try {
-    const response = await fetch(url, {
-      cache: 'no-store', // Force dynamic pour Next.js - ne déclenche pas de preflight CORS
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
+    const response = await fetch(url, fetchOptions)
     
     if (!response.ok) {
       const errorText = await response.text()
@@ -234,10 +241,13 @@ export interface HomeSettings {
 /**
  * Fonctions utilitaires pour récupérer les données
  */
+const FILMS_TAG = 'films'
+
 export async function getAllFilms(): Promise<Film[]> {
   try {
     return await fetchDirectus<Film[]>(
-      `/items/films?fields=*,image.id,image.filename_download,content.id,content.filename_download,heading.id,heading.filename_download,video.id,video.filename_download,video.type,video.filesize&sort[]=-date_created`
+      `/items/films?fields=*,image.id,image.filename_download,content.id,content.filename_download,heading.id,heading.filename_download,video.id,video.filename_download,video.type,video.filesize&sort[]=-date_created`,
+      { tags: [FILMS_TAG] }
     )
   } catch (error) {
     console.error('Erreur lors de la récupération des films:', error)
@@ -248,7 +258,8 @@ export async function getAllFilms(): Promise<Film[]> {
 export async function getFilmBySlug(slug: string): Promise<Film | null> {
   try {
     const films = await fetchDirectus<Film[]>(
-      `/items/films?fields=*,image.id,image.filename_download,content.id,content.filename_download,heading.id,heading.filename_download,video.id,video.filename_download,video.type,video.filesize&filter[slug][_eq]=${encodeURIComponent(slug)}&limit=1`
+      `/items/films?fields=*,image.id,image.filename_download,content.id,content.filename_download,heading.id,heading.filename_download,video.id,video.filename_download,video.type,video.filesize&filter[slug][_eq]=${encodeURIComponent(slug)}&limit=1`,
+      { tags: [FILMS_TAG] }
     )
     return films[0] || null
   } catch (error) {
@@ -257,10 +268,13 @@ export async function getFilmBySlug(slug: string): Promise<Film | null> {
   }
 }
 
+const MEDIATIONS_TAG = 'mediations'
+
 export async function getAllMediations(): Promise<Mediation[]> {
   try {
     return await fetchDirectus<Mediation[]>(
-      `/items/mediations?fields=*,cover.id,cover.filename_download,gallery.id,gallery.filename_download,video.id,video.filename_download,video.type,video.filesize&sort[]=-date`
+      `/items/mediations?fields=*,cover.id,cover.filename_download,gallery.id,gallery.filename_download,video.id,video.filename_download,video.type,video.filesize&sort[]=-date`,
+      { tags: [MEDIATIONS_TAG] }
     )
   } catch (error) {
     console.error('Erreur lors de la récupération des médiations:', error)
@@ -271,7 +285,8 @@ export async function getAllMediations(): Promise<Mediation[]> {
 export async function getMediationBySlug(slug: string): Promise<Mediation | null> {
   try {
     const mediations = await fetchDirectus<Mediation[]>(
-      `/items/mediations?fields=*,cover.id,cover.filename_download,gallery.id,gallery.filename_download,video.id,video.filename_download,video.type,video.filesize&filter[slug][_eq]=${encodeURIComponent(slug)}&limit=1`
+      `/items/mediations?fields=*,cover.id,cover.filename_download,gallery.id,gallery.filename_download,video.id,video.filename_download,video.type,video.filesize&filter[slug][_eq]=${encodeURIComponent(slug)}&limit=1`,
+      { tags: [MEDIATIONS_TAG] }
     )
     return mediations[0] || null
   } catch (error) {
@@ -280,10 +295,13 @@ export async function getMediationBySlug(slug: string): Promise<Mediation | null
   }
 }
 
+const ACTUS_TAG = 'actus'
+
 export async function getAllActus(): Promise<Actu[]> {
   try {
     return await fetchDirectus<Actu[]>(
-      `/items/actus?fields=*,cover.id,cover.filename_download&sort[]=-date`
+      `/items/actus?fields=*,cover.id,cover.filename_download&sort[]=-date`,
+      { tags: [ACTUS_TAG] }
     )
   } catch (error) {
     console.error('Erreur lors de la récupération des actualités:', error)
@@ -294,7 +312,8 @@ export async function getAllActus(): Promise<Actu[]> {
 export async function getActuBySlug(slug: string): Promise<Actu | null> {
   try {
     const actus = await fetchDirectus<Actu[]>(
-      `/items/actus?fields=*,cover.id,cover.filename_download&filter[slug][_eq]=${encodeURIComponent(slug)}&limit=1`
+      `/items/actus?fields=*,cover.id,cover.filename_download&filter[slug][_eq]=${encodeURIComponent(slug)}&limit=1`,
+      { tags: [ACTUS_TAG] }
     )
     return actus[0] || null
   } catch (error) {
@@ -303,10 +322,13 @@ export async function getActuBySlug(slug: string): Promise<Actu | null> {
   }
 }
 
+const PAGES_TAG = 'pages'
+
 export async function getAllPages(): Promise<Page[]> {
   try {
     return await fetchDirectus<Page[]>(
-      `/items/pages?fields=*,hero_image.id,hero_image.filename_download,bottom_image.id,bottom_image.filename_download`
+      `/items/pages?fields=*,hero_image.id,hero_image.filename_download,bottom_image.id,bottom_image.filename_download`,
+      { tags: [PAGES_TAG] }
     )
   } catch (error) {
     console.error('Erreur lors de la récupération des pages:', error)
@@ -317,7 +339,8 @@ export async function getAllPages(): Promise<Page[]> {
 export async function getPageBySlug(slug: string): Promise<Page | null> {
   try {
     const pages = await fetchDirectus<Page[]>(
-      `/items/pages?fields=*,hero_image.id,hero_image.filename_download,bottom_image.id,bottom_image.filename_download&filter[slug][_eq]=${encodeURIComponent(slug)}&limit=1`
+      `/items/pages?fields=*,hero_image.id,hero_image.filename_download,bottom_image.id,bottom_image.filename_download&filter[slug][_eq]=${encodeURIComponent(slug)}&limit=1`,
+      { tags: [PAGES_TAG] }
     )
     return pages[0] || null
   } catch (error) {
@@ -326,15 +349,14 @@ export async function getPageBySlug(slug: string): Promise<Page | null> {
   }
 }
 
+const VIDEOS_ART_TAG = 'videos_art'
+
 export async function getAllVideoArts(): Promise<VideoArt[]> {
   try {
-    // Note: Directus retourne parfois image comme UUID string au lieu d'un objet
-    // même avec fields=*,image.id,image.filename_download
-    // On récupère donc avec * pour avoir tous les champs, et on gérera l'image dans getImageUrl
     const videoArts = await fetchDirectus<VideoArt[]>(
-      `/items/videos_art?fields=*,video.id,video.filename_download,video.type,video.filesize&sort[]=-date_created`
+      `/items/videos_art?fields=*,video.id,video.filename_download,video.type,video.filesize&sort[]=-date_created`,
+      { tags: [VIDEOS_ART_TAG] }
     )
-    
     return videoArts
   } catch (error) {
     console.error('Erreur lors de la récupération des videos_art:', error)
@@ -345,10 +367,8 @@ export async function getAllVideoArts(): Promise<VideoArt[]> {
 export async function getVideoArtBySlug(slug: string): Promise<VideoArt | null> {
   try {
     const encodedSlug = encodeURIComponent(slug)
-    // Note: On utilise fields=* car Directus retourne parfois image comme UUID string
     const endpoint = `/items/videos_art?fields=*,video.id,video.filename_download,video.type,video.filesize&filter[slug][_eq]=${encodedSlug}&limit=1`
-    
-    const videoArts = await fetchDirectus<VideoArt[]>(endpoint)
+    const videoArts = await fetchDirectus<VideoArt[]>(endpoint, { tags: [VIDEOS_ART_TAG] })
     
     if (!videoArts || videoArts.length === 0) {
       return null
@@ -362,12 +382,12 @@ export async function getVideoArtBySlug(slug: string): Promise<VideoArt | null> 
 }
 
 /** Dédupliqué par requête (generateMetadata + page) pour éviter 2 appels Directus sur l’accueil */
+const HOME_TAG = 'home'
+
 export const getHomeSettings = cache(async (): Promise<HomeSettings | null> => {
   try {
-    // Liste explicite des champs (sans bio) pour éviter l'erreur 403 si le rôle n'a pas la permission
     const endpoint = `/items/home_settings?fields=id,hero_video.id,hero_video.filename_download,hero_video.type,hero_video.filesize,bio_text,bio_image.id,bio_image.filename_download,credits,category_films_image.id,category_films_image.filename_download,category_mediations_image.id,category_mediations_image.filename_download,category_videos_art_image.id,category_videos_art_image.filename_download,category_actus_image.id,category_actus_image.filename_download,date_created,date_updated&limit=1`
-
-    const settings = await fetchDirectus<HomeSettings | HomeSettings[]>(endpoint)
+    const settings = await fetchDirectus<HomeSettings | HomeSettings[]>(endpoint, { tags: [HOME_TAG] })
 
     const result = Array.isArray(settings)
       ? (settings.length > 0 ? settings[0] : null)

@@ -3,12 +3,12 @@ import { getAllActus, Actu, getHomeSettings } from '@/lib/directus'
 import { buildMetadata, generateJsonLd } from '@/components/Seo'
 import { canonical } from '@/lib/seo'
 import ActusPageClient from './ActusPageClient'
+import ActusSkeleton from './ActusSkeleton'
 
 // Cache 24h ; revalidation à la demande via /api/revalidate (webhook Directus)
 export const revalidate = 86400
 
 type ActusPageMetadataProps = {
-  // Next 15 : searchParams est une Promise
   searchParams?: Promise<Record<string, string | string[] | undefined>>
 }
 
@@ -18,11 +18,8 @@ export async function generateMetadata({ searchParams }: ActusPageMetadataProps)
   const pageValue = Array.isArray(pageParam) ? pageParam[0] : pageParam
   const pageNumber = pageValue ? Number.parseInt(pageValue, 10) : 1
   const isPaginated = Number.isFinite(pageNumber) && pageNumber > 1
-
   const canonicalUrl = canonical('/actus')
   return buildMetadata({
-    // Important pour les sitelinks Google: éviter que /actus?page=2+ soit considéré comme page "principale".
-    // On canonicalise vers /actus et on noindex les pages paginées.
     title: isPaginated ? `Actualités - Page ${pageNumber} | Florine Clap` : 'Actualités - Florine Clap',
     description: 'Découvrez mes dernières actualités, sélections en festival et projets en cours',
     canonical: canonicalUrl,
@@ -39,37 +36,31 @@ async function getActus() {
   }
 }
 
-export default async function ActusPage() {
+async function ActusContent() {
   const actus = await getActus()
   const homeSettings = await getHomeSettings()
-  
-  // Trier les actualités : du plus récent au plus ancien (par date)
   const sortedActus = [...actus].sort((a: Actu, b: Actu) => {
     return new Date(b.date || '2020').getTime() - new Date(a.date || '2020').getTime()
   })
-  
-  // Récupérer l'image hero depuis homeSettings
   const heroImageUrl = homeSettings?.category_actus_image || null
+  return <ActusPageClient initialActus={sortedActus} heroImageUrl={heroImageUrl} />
+}
 
+export default function ActusPage() {
   const jsonLd = generateJsonLd({
     type: 'WebSite',
     title: 'Actualités - Florine Clap',
     description: 'Découvrez mes dernières actualités, sélections en festival et projets en cours.',
     url: '/actus',
   })
-
   return (
     <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <Suspense fallback={
-        <div className="min-h-screen bg-theme-white flex items-center justify-center">
-          <p className="text-black/60">Chargement...</p>
-        </div>
-      }>
-        <ActusPageClient initialActus={sortedActus} heroImageUrl={heroImageUrl} />
+      <Suspense fallback={<ActusSkeleton />}>
+        <ActusContent />
       </Suspense>
     </>
   )

@@ -1,5 +1,26 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { revalidatePath } from 'next/cache'
+import { revalidatePath, revalidateTag } from 'next/cache'
+
+/** Paths revalidés → tags à invalider (cache des fetches Directus) pour que le nouveau contenu s'affiche */
+const PATH_TO_TAGS: Record<string, string[]> = {
+  '/': ['home'],
+  '/films': ['films'],
+  '/mediations': ['mediations'],
+  '/videos-art': ['videos_art'],
+  '/actus': ['actus'],
+  '/bio': ['pages'],
+  '/mentions-legales': ['pages'],
+  '/politique-confidentialite': ['pages'],
+}
+
+function getTagsForPath(path: string): string[] {
+  if (PATH_TO_TAGS[path]) return PATH_TO_TAGS[path]
+  if (path.startsWith('/films/')) return ['films']
+  if (path.startsWith('/mediations/')) return ['mediations']
+  if (path.startsWith('/videos-art/')) return ['videos_art']
+  if (path.startsWith('/actus/')) return ['actus']
+  return []
+}
 
 /**
  * Revalidation à la demande : à appeler depuis un webhook Directus
@@ -43,6 +64,8 @@ export async function POST(request: NextRequest) {
 
     for (const path of paths) {
       revalidatePath(path)
+      const tags = getTagsForPath(path)
+      for (const tag of tags) revalidateTag(tag)
     }
 
     return NextResponse.json({ revalidated: true, paths })

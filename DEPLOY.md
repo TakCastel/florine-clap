@@ -50,6 +50,7 @@ cd ..
 
 # 3. Reconstruire et redémarrer le frontend
 docker compose up -d --build frontend
+
 ```
 
 **Option C : Appliquer uniquement le schéma Directus (sans rebuild du frontend)**
@@ -103,6 +104,10 @@ cd front && npm run directus:apply:dry-run
 # Déploiement sans schéma (code uniquement)
 ./scripts/deploy.sh --skip-schema
 ```
+
+### Cache et première visite
+
+Les pages listes (Films, Vidéos-art, Médiations, Actus) affichent un **skeleton** dès le clic, puis le contenu se charge. Aucune configuration supplémentaire. Optionnel : après déploiement, `GET /api/warmup` pré-remplit le cache pour que le contenu s’affiche plus vite (aucune clé requise).
 
 ## ⚠️ Notes importantes
 
