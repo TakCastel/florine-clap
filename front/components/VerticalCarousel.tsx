@@ -85,9 +85,11 @@ export default function VerticalCarousel({ items, basePath, className = '' }: Ve
   useEffect(() => {
     const footer = document.getElementById('site-footer')
     if (!footer) return
-    let rafId = 0
+    let rafId: number | null = null
     const update = () => {
+      if (rafId !== null) return
       rafId = requestAnimationFrame(() => {
+        rafId = null
         const rect = footer.getBoundingClientRect()
         const vh = window.innerHeight
         setNavBottom(rect.top < vh ? vh - rect.top + 32 : null)
@@ -98,7 +100,7 @@ export default function VerticalCarousel({ items, basePath, className = '' }: Ve
     ro.observe(footer)
     update()
     return () => {
-      cancelAnimationFrame(rafId)
+      if (rafId !== null) cancelAnimationFrame(rafId)
       ro.disconnect()
       window.removeEventListener('scroll', update)
     }
@@ -256,9 +258,9 @@ export default function VerticalCarousel({ items, basePath, className = '' }: Ve
                         {meta.subtitle && (
                           <p className="text-sm text-black/50 uppercase tracking-wider mb-2">{meta.subtitle}</p>
                         )}
-                        <h3 className="text-2xl md:text-3xl font-bold tracking-tight text-black">
+                        <h2 className="text-2xl md:text-3xl font-bold tracking-tight text-black">
                           {item.title}
-                        </h3>
+                        </h2>
                         {meta.details && (
                           <p className="text-sm text-black/50 mt-2">{meta.details}</p>
                         )}
@@ -291,9 +293,9 @@ export default function VerticalCarousel({ items, basePath, className = '' }: Ve
                             {meta.subtitle && (
                               <p className="text-sm text-black/50 uppercase tracking-wider mb-2">{meta.subtitle}</p>
                             )}
-                            <h3 className="text-2xl md:text-3xl font-bold tracking-tight text-black">
+                            <h2 className="text-2xl md:text-3xl font-bold tracking-tight text-black">
                               {item.title}
-                            </h3>
+                            </h2>
                             {meta.details && (
                               <p className="text-sm text-black/50 mt-2">{meta.details}</p>
                             )}

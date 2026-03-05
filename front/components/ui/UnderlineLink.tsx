@@ -11,6 +11,8 @@ interface UnderlineLinkProps {
   variant?: 'light' | 'dark'
   className?: string
   onClick?: () => void
+  /** Désactiver le prefetch Next.js (pour réduire la charge au chargement initial) */
+  prefetch?: boolean
 }
 
 /**
@@ -22,7 +24,8 @@ export const UnderlineLink = ({
   children, 
   variant = 'dark',
   className = '',
-  onClick
+  onClick,
+  prefetch
 }: UnderlineLinkProps) => {
   const router = useRouter()
   
@@ -38,27 +41,24 @@ export const UnderlineLink = ({
   const combinedClasses = `${baseClasses} ${colorClasses} ${className}`.trim()
 
   // Si onClick est fourni, gérer le clic et la navigation
+  const linkProps = { href, className: combinedClasses, ...(prefetch !== undefined && { prefetch }) }
+
   if (onClick) {
     return (
       <Link 
-        href={href}
+        {...linkProps}
         onClick={(e) => {
           onClick()
           // La navigation se fait automatiquement via le Link Next.js
         }}
-        className={combinedClasses}
       >
         {children}
       </Link>
     )
   }
 
-  // Sinon, utiliser le Link Next.js normal
   return (
-    <Link 
-      href={href}
-      className={combinedClasses}
-    >
+    <Link {...linkProps}>
       {children}
     </Link>
   )

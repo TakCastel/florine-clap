@@ -5,6 +5,8 @@ interface ArticleHeroImageProps {
   imageUrl: string | null
   alt: string
   className?: string
+  /** Priorité de chargement (above-the-fold) ; défaut true pour les listes */
+  priority?: boolean
 }
 
 /**
@@ -15,7 +17,8 @@ interface ArticleHeroImageProps {
 export default function ArticleHeroImage({ 
   imageUrl, 
   alt, 
-  className = '' 
+  className = '',
+  priority = true
 }: ArticleHeroImageProps) {
   return (
     <section 
@@ -45,7 +48,7 @@ export default function ArticleHeroImage({
                 filter: 'blur(15px) brightness(1.15) grayscale(0.3)',
                 transform: 'scale(1.1)',
               }}
-              priority={false}
+              priority={priority}
               quality={85}
             />
           </div>

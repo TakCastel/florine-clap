@@ -1,8 +1,31 @@
 import HomePageClient from '@/components/home/HomePageClient'
-import { getHomeSettings, getImageUrl, HomeSettings } from '@/lib/directus'
+import { getHomeSettings, getImageUrl, getVideoUrl, HomeSettings } from '@/lib/directus'
+import type { Metadata } from 'next'
 
-export const dynamic = 'force-dynamic'
-export const revalidate = 60
+// Cache 24h ; revalidation à la demande via /api/revalidate (webhook Directus)
+export const revalidate = 86400
+
+/** Preload + preconnect de la vidéo hero pour qu’elle démarre au plus tôt */
+export async function generateMetadata(): Promise<Metadata> {
+  try {
+    const settings = await getHomeSettings()
+    const heroVideoFromDirectus = settings?.hero_video ? getVideoUrl(settings.hero_video) : null
+    let heroVideoUrl = heroVideoFromDirectus || settings?.hero_video_url || null
+    if (heroVideoUrl && heroVideoUrl.startsWith('http://')) {
+      heroVideoUrl = heroVideoUrl.replace(/^http:/, 'https:')
+    }
+    if (!heroVideoUrl || typeof heroVideoUrl !== 'string') return {}
+
+    const origin = new URL(heroVideoUrl).origin
+    const links: Array<{ rel: string; href: string; as?: string }> = [
+      { rel: 'preconnect', href: origin },
+      { rel: 'preload', as: 'video', href: heroVideoUrl },
+    ]
+    return { links }
+  } catch {
+    return {}
+  }
+}
 
 async function getHomeSettingsWithImageUrls(): Promise<HomeSettings | null> {
   try {

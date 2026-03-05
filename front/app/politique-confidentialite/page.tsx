@@ -1,10 +1,11 @@
 import { buildMetadata } from '@/components/Seo'
 import { canonical } from '@/lib/seo'
 import { Metadata } from 'next'
+import Image from 'next/image'
 import { getPageBySlug, getImageUrl } from '@/lib/directus'
 
-export const dynamic = 'force-dynamic'
-export const revalidate = 3600 // Revalider toutes les heures
+// Cache 24h ; revalidation à la demande via /api/revalidate (webhook Directus)
+export const revalidate = 86400
 
 export async function generateMetadata(): Promise<Metadata> {
   const canonicalUrl = canonical('/politique-confidentialite')
@@ -33,14 +34,15 @@ export default async function PolitiqueConfidentialitePage() {
       {/* Hero Image - dans le container */}
       {heroImageUrl && (
         <div className="max-w-container-small mx-auto px-6 md:px-10 lg:px-16 pt-16">
-          <div className="w-full overflow-hidden">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
+          <div className="relative w-full aspect-[21/9] overflow-hidden">
+            <Image
               src={heroImageUrl}
               alt="Politique de confidentialité"
-              className="w-full h-auto object-cover"
-              loading="eager"
-              fetchPriority="high"
+              fill
+              sizes="(max-width: 1024px) 100vw, 1024px"
+              className="object-cover"
+              priority
+              quality={85}
             />
           </div>
         </div>
@@ -114,13 +116,14 @@ export default async function PolitiqueConfidentialitePage() {
         }
         return (
           <div className="max-w-container-small mx-auto px-6 md:px-10 lg:px-16 mt-16 md:mt-24">
-            <div className="w-full overflow-hidden">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
+            <div className="relative w-full aspect-[21/9] overflow-hidden">
+              <Image
                 src={bottomImageUrl}
                 alt="Politique de confidentialité"
-                className="w-full h-auto object-cover"
-                loading="lazy"
+                fill
+                sizes="(max-width: 1024px) 100vw, 1024px"
+                className="object-cover"
+                quality={85}
               />
             </div>
           </div>

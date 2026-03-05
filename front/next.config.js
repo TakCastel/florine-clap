@@ -3,6 +3,10 @@ const nextConfig = {
   reactStrictMode: true,
   // Utiliser 'standalone' pour Docker/VPS
   output: 'standalone',
+  // Réduire le JS non utilisé (Lighthouse "Reduce unused JavaScript")
+  experimental: {
+    optimizePackageImports: ['framer-motion', 'lucide-react'],
+  },
   images: {
     loader: 'custom',
     loaderFile: './lib/image-loader.js',

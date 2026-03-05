@@ -1,18 +1,26 @@
 import ContentListPage from '@/components/ContentListPage'
-import { getAllFilms, Film, getHomeSettings } from '@/lib/directus'
+import { getAllFilms, Film, getHomeSettings, getImageUrl } from '@/lib/directus'
 import { buildMetadata, generateJsonLd } from '@/components/Seo'
 import { canonical } from '@/lib/seo'
 
-export const dynamic = 'force-dynamic'
-export const revalidate = 60 // Revalider toutes les 60 secondes
+// Cache 24h ; revalidation à la demande via /api/revalidate (webhook Directus)
+export const revalidate = 86400
 
 export async function generateMetadata() {
   const canonicalUrl = canonical('/films')
-  return buildMetadata({
+  const base = buildMetadata({
     title: 'Films - Les films',
     description: 'Depuis 2013, je réalise essentiellement des films documentaires explorant des enjeux artistiques et sociaux. Ma démarche s\'est construite dans une approche transversale des arts, au fil de collaborations avec des artistes plasticiens, chorégraphes, auteur·ices, architectes et institutions culturelles, qui nourrissent et façonnent ma pratique du cinéma.',
     canonical: canonicalUrl,
   })
+  try {
+    const homeSettings = await getHomeSettings()
+    const heroUrl = homeSettings?.category_films_image ? getImageUrl(homeSettings.category_films_image) : null
+    if (heroUrl && typeof heroUrl === 'string') {
+      return { ...base, links: [{ rel: 'preload', as: 'image', href: heroUrl }] }
+    }
+  } catch (_) { /* ignore */ }
+  return base
 }
 
 async function getFilms() {

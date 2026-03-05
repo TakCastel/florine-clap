@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import { Reveal } from '@/components/ui/Reveal'
 import { HomeSettings, getImageUrl, getVideoUrl } from '@/lib/directus'
@@ -11,7 +11,6 @@ interface HeroSectionProps {
 
 export default function HeroSection({ homeSettings }: HeroSectionProps) {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
-  const [videoSrc, setVideoSrc] = useState<string | null>(null)
   const [isVideoReady, setIsVideoReady] = useState(false)
   const [hasVideoError, setHasVideoError] = useState(false)
 
@@ -38,53 +37,16 @@ export default function HeroSection({ homeSettings }: HeroSectionProps) {
   
   const heroVideoUrl = heroVideoFromDirectus || heroVideoUrlExternal || null
 
-  const videoHost = useMemo(() => {
-    if (!heroVideoUrl) return null
-    try {
-      return new URL(heroVideoUrl).origin
-    } catch {
-      return null
-    }
-  }, [heroVideoUrl])
-
+  // Réinitialiser l’état quand l’URL change (ex. navigation client)
   useEffect(() => {
     if (!heroVideoUrl) {
-      setVideoSrc(null)
       setIsVideoReady(false)
       setHasVideoError(false)
       return
     }
-
-    // Réinitialiser l'état de la vidéo quand l'URL change
     setIsVideoReady(false)
     setHasVideoError(false)
-    setVideoSrc(null)
-
-    // Charger la vidéo immédiatement pour une meilleure performance
-    setVideoSrc(heroVideoUrl)
-
-    return () => {
-      setVideoSrc(null)
-    }
   }, [heroVideoUrl])
-
-  useEffect(() => {
-    if (!videoHost) return
-
-    const existingPreconnect = document.querySelector<HTMLLinkElement>(
-      'link[data-hero-preconnect="true"]'
-    )
-    if (!existingPreconnect) {
-      const preconnectLink = document.createElement('link')
-      preconnectLink.rel = 'preconnect'
-      preconnectLink.href = videoHost
-      preconnectLink.crossOrigin = 'anonymous'
-      preconnectLink.dataset.heroPreconnect = 'true'
-      document.head.appendChild(preconnectLink)
-    }
-
-    // Le préchargement vidéo est géré par l'attribut preload="auto" du <video>
-  }, [videoHost, heroVideoUrl])
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     const x = (e.clientX / window.innerWidth - 0.5) * 30
@@ -110,16 +72,17 @@ export default function HeroSection({ homeSettings }: HeroSectionProps) {
             className="absolute inset-0 bg-black"
           ></motion.div>
 
-          {/* Vidéo si disponible */}
-          {videoSrc && !hasVideoError && (
+          {/* Vidéo si disponible : src dès le 1er rendu pour démarrage rapide + preload côté serveur */}
+          {heroVideoUrl && !hasVideoError && (
             <motion.video
-              key={videoSrc}
-              src={videoSrc}
+              key={heroVideoUrl}
+              src={heroVideoUrl}
               autoPlay
               loop
               muted
               playsInline
               preload="auto"
+              fetchPriority="high"
               initial={{ opacity: 0 }}
               animate={{ opacity: isVideoReady ? 1 : 0 }}
               transition={{ duration: 1 }}

@@ -1,7 +1,8 @@
 import { MetadataRoute } from 'next'
 import { getAllMediations, getAllActus, getAllFilms, getAllVideoArts } from '@/lib/directus'
 
-export const dynamic = 'force-dynamic'
+// Cache 24h ; régénération avec le reste du site
+export const revalidate = 86400
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const base = process.env.SITE_URL || 'https://florineclap.com'

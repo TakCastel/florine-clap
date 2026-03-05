@@ -156,3 +156,28 @@ docker compose logs -f frontend
 # Voir les logs de Directus
 docker compose logs -f directus
 ```
+
+## Cache et revalidation à la demande
+
+Les pages (accueil, films, médiations, vidéos/art, actualités, bio, pages légales) sont mises en cache **24 h** (`revalidate = 86400`). Pour mettre à jour le site dès qu’un contenu est modifié dans Directus, sans attendre 24 h :
+
+1. **Variable d’environnement** (frontend / serveur Next) : définir `REVALIDATE_SECRET` avec une valeur secrète (ex. générée avec `openssl rand -hex 32`).
+
+2. **Webhook Directus** : créer un Flow ou Webhook qui envoie une requête **POST** vers  
+   `https://votre-domaine.com/api/revalidate`  
+   avec :
+   - Header : `Authorization: Bearer <REVALIDATE_SECRET>`
+   - Body JSON (optionnel) : `{ "path": "/films" }` ou `{ "paths": ["/films", "/mediations"] }`  
+   Si aucun `path` n’est fourni, les routes principales sont revalidées (/, /films, /mediations, etc.).
+
+Après une requête réussie, les pages concernées sont régénérées au prochain hit.
+
+## Lighthouse et performances
+
+- **Minification (JS/CSS)** : en mode développement (`npm run dev`), Next.js ne minifie pas. Les alertes Lighthouse « Minify JavaScript » / « Minify CSS » disparaissent en production (`npm run build && npm run start`).
+- **LCP** : les pages listes (films, médiations, vidéos/art) préchargent l’image hero via les metadata ; l’image hero a `priority={true}`.
+- **Back/forward cache** : si Lighthouse signale « Page prevented back/forward cache », vérifier qu’aucun listener `beforeunload` / `unload` n’est utilisé et que les en-têtes de cache permettent la mise en cache navigateur.
+
+## Vidéo hero (page d'accueil)
+
+Pour que la vidéo de fond se charge et démarre plus vite : la page précharge la vidéo et fait un preconnect (metadata), le lecteur a `preload="auto"` et `fetchPriority="high"`, et la balise `<video>` est rendue dès le premier affichage. Côté fichier : privilégier un MP4 avec moov en tête (`ffmpeg -movflags +faststart`) ou un WebM, résolution adaptée (ex. 1280×720).

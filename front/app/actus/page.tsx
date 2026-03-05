@@ -4,8 +4,8 @@ import { buildMetadata, generateJsonLd } from '@/components/Seo'
 import { canonical } from '@/lib/seo'
 import ActusPageClient from './ActusPageClient'
 
-export const dynamic = 'force-dynamic'
-export const revalidate = 60 // Revalider toutes les 60 secondes
+// Cache 24h ; revalidation à la demande via /api/revalidate (webhook Directus)
+export const revalidate = 86400
 
 type ActusPageMetadataProps = {
   // Next 15 : searchParams est une Promise

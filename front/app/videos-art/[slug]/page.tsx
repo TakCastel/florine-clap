@@ -10,8 +10,8 @@ import { buildMetadata, generateJsonLd } from '@/components/Seo'
 import { canonical } from '@/lib/seo'
 import Image from 'next/image'
 
-export const dynamic = 'force-dynamic'
-export const revalidate = 60
+// Cache 24h ; revalidation à la demande via /api/revalidate (webhook Directus)
+export const revalidate = 86400
 
 type VideoArtPageProps = {
   params: Promise<{ slug: string }>

@@ -1,11 +1,14 @@
 'use client'
 
 import { usePathname } from 'next/navigation'
+import dynamic from 'next/dynamic'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
-import BackToTop from '@/components/BackToTop'
 import { AnimationProvider } from '@/contexts/AnimationContext'
 import ScrollToTop from '@/components/ScrollToTop'
+
+// Chargement différé : le bouton "retour en haut" n'est pas critique au premier rendu (améliore LCP / TBT)
+const BackToTop = dynamic(() => import('@/components/BackToTop'), { ssr: false })
 
 export default function LayoutWrapper({ children }: { children: React.ReactNode }) {
   const pathname = usePathname()

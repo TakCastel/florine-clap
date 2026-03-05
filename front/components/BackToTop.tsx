@@ -6,61 +6,60 @@ export default function BackToTop() {
   const [isVisible, setIsVisible] = useState(false)
   const [isOnFooter, setIsOnFooter] = useState(false)
   const buttonRef = useRef<HTMLButtonElement>(null)
+  const rafId = useRef<number | null>(null)
+  const lastVisibility = useRef(false)
+  const lastOnFooter = useRef(false)
 
   useEffect(() => {
     const toggleVisibility = () => {
-      // Afficher le bouton après 300px de scroll sur desktop, 800px sur mobile
       const isMobile = window.innerWidth < 768
       const threshold = isMobile ? 800 : 300
-      if (window.scrollY > threshold) {
-        setIsVisible(true)
-      } else {
-        setIsVisible(false)
-      }
+      return window.scrollY > threshold
     }
 
     const checkIfOnFooter = () => {
-      if (!isVisible) return
-      
-      // Trouver le footer
       const footer = document.querySelector('footer')
-      if (!footer) {
-        setIsOnFooter(false)
-        return
-      }
-      
-      // Position du bouton (fixe en bas à droite, bottom-8 = 32px)
+      if (!footer) return false
       const buttonBottom = window.innerHeight - 32
-      const buttonTop = buttonBottom - 56 // h-14 = 56px
-      
-      // Position du footer par rapport à la fenêtre
       const footerRect = footer.getBoundingClientRect()
-      const footerTop = footerRect.top
-      
-      // Le bouton est au-dessus du footer si son bas est au-dessus du haut du footer
-      // On considère qu'on est "dans le footer" si le bas du bouton est au-dessus du haut du footer
-      const isOverlapping = buttonBottom > footerTop
-      
-      setIsOnFooter(isOverlapping)
+      return buttonBottom > footerRect.top
+    }
+
+    const update = () => {
+      const nextVisible = toggleVisibility()
+      const nextOnFooter = checkIfOnFooter()
+      if (nextVisible !== lastVisibility.current) {
+        lastVisibility.current = nextVisible
+        setIsVisible(nextVisible)
+      }
+      if (nextOnFooter !== lastOnFooter.current) {
+        lastOnFooter.current = nextOnFooter
+        setIsOnFooter(nextOnFooter)
+      }
+      rafId.current = null
     }
 
     const handleScroll = () => {
-      toggleVisibility()
-      checkIfOnFooter()
+      if (rafId.current !== null) return
+      rafId.current = requestAnimationFrame(update)
     }
 
-    window.addEventListener('scroll', handleScroll)
-    window.addEventListener('resize', checkIfOnFooter)
+    const handleResize = () => {
+      if (rafId.current !== null) return
+      rafId.current = requestAnimationFrame(update)
+    }
 
-    // Vérifier au montage
-    toggleVisibility()
-    checkIfOnFooter()
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    window.addEventListener('resize', handleResize)
+
+    update()
 
     return () => {
       window.removeEventListener('scroll', handleScroll)
-      window.removeEventListener('resize', checkIfOnFooter)
+      window.removeEventListener('resize', handleResize)
+      if (rafId.current !== null) cancelAnimationFrame(rafId.current)
     }
-  }, [isVisible])
+  }, [])
 
   const scrollToTop = () => {
     // Utiliser le scroll natif du navigateur
