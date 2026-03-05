@@ -3,6 +3,8 @@
  * Version simplifiée - appels API publics sans authentification
  */
 
+import { cache } from 'react'
+
 // URL pour les appels API
 // Côté serveur : utiliser l'URL interne Docker si disponible
 // Côté client : utiliser l'URL publique
@@ -359,7 +361,8 @@ export async function getVideoArtBySlug(slug: string): Promise<VideoArt | null> 
   }
 }
 
-export async function getHomeSettings(): Promise<HomeSettings | null> {
+/** Dédupliqué par requête (generateMetadata + page) pour éviter 2 appels Directus sur l’accueil */
+export const getHomeSettings = cache(async (): Promise<HomeSettings | null> => {
   try {
     // Liste explicite des champs (sans bio) pour éviter l'erreur 403 si le rôle n'a pas la permission
     const endpoint = `/items/home_settings?fields=id,hero_video.id,hero_video.filename_download,hero_video.type,hero_video.filesize,bio_text,bio_image.id,bio_image.filename_download,credits,category_films_image.id,category_films_image.filename_download,category_mediations_image.id,category_mediations_image.filename_download,category_videos_art_image.id,category_videos_art_image.filename_download,category_actus_image.id,category_actus_image.filename_download,date_created,date_updated&limit=1`
@@ -375,7 +378,7 @@ export async function getHomeSettings(): Promise<HomeSettings | null> {
     console.error('Erreur lors de la récupération des paramètres:', fetchError)
     return null
   }
-}
+})
 
 /**
  * Helper pour obtenir l'URL d'un fichier Directus (image, vidéo, etc.)

@@ -120,7 +120,6 @@ export default function BioSection({ homeSettings }: BioSectionProps) {
                           sizes="(max-width: 768px) 100vw, (max-width: 1024px) 40vw, 35vw"
                           className="object-cover"
                           style={{ filter: 'none', position: 'absolute' }}
-                          priority
                           quality={90}
                         />
                       ) : (

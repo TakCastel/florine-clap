@@ -14,9 +14,9 @@ export default function Navigation({ isHomePage = false, isLightText = false }: 
   const [visibleItems, setVisibleItems] = useState<number[]>([])
   
   const navItems = [
-    { href: '/films', label: 'FILMS', prefetch: false },
-    { href: '/mediations', label: 'MÉDIATIONS', prefetch: false },
-    { href: '/videos-art', label: 'VIDÉOS/ART', prefetch: false },
+    { href: '/films', label: 'FILMS' },
+    { href: '/mediations', label: 'MÉDIATIONS' },
+    { href: '/videos-art', label: 'VIDÉOS/ART' },
     { href: '/actus', label: 'ACTUALITÉS' },
     { href: '/bio', label: 'BIO' }
   ]
@@ -56,7 +56,7 @@ export default function Navigation({ isHomePage = false, isLightText = false }: 
               transition: 'all 0.6s ease-out'
             }}
           >
-            <UnderlineLink href={item.href} variant={isLightText ? 'light' : 'dark'} prefetch={'prefetch' in item ? item.prefetch : undefined}>
+            <UnderlineLink href={item.href} variant={isLightText ? 'light' : 'dark'}>
               {item.label}
             </UnderlineLink>
           </div>

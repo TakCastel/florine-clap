@@ -19,8 +19,12 @@ export async function generateMetadata(): Promise<Metadata> {
     const origin = new URL(heroVideoUrl).origin
     const links: Array<{ rel: string; href: string; as?: string }> = [
       { rel: 'preconnect', href: origin },
-      { rel: 'preload', as: 'video', href: heroVideoUrl },
     ]
+    // Ne preload qu'en tant que vidéo si l'URL ressemble à une vidéo (évite "preloaded but not used" pour une image)
+    const looksLikeImage = /[?&](width=|format=webp|quality=)/i.test(heroVideoUrl)
+    if (!looksLikeImage) {
+      links.push({ rel: 'preload', as: 'video', href: heroVideoUrl })
+    }
     return { links }
   } catch {
     return {}
