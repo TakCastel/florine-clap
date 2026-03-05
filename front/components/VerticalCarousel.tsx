@@ -106,53 +106,15 @@ export default function VerticalCarousel({ items, basePath, className = '' }: Ve
     }
   }, [mounted])
 
-  const easeInOutCubic = (t: number) =>
-    t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2
-
-  const smoothScrollTo = (targetY: number, duration: number, easing: (t: number) => number) => {
-    const startY = window.scrollY
-    const startTime = performance.now()
-
-    const tick = (now: number) => {
-      const elapsed = now - startTime
-      const t = Math.min(elapsed / duration, 1)
-      const eased = easing(t)
-      window.scrollTo(0, startY + (targetY - startY) * eased)
-      if (t < 1) {
-        scrollRef.current = requestAnimationFrame(tick)
-      }
-    }
-    if (scrollRef.current) cancelAnimationFrame(scrollRef.current)
-    scrollRef.current = requestAnimationFrame(tick)
-  }
-
   const scrollToSlide = (index: number) => {
     const el = sectionRefs.current[index]
     if (!el) return
 
     setActiveIndex(index)
 
-    const direction = index > activeIndex ? 1 : index < activeIndex ? -1 : 0
-
     const rect = el.getBoundingClientRect()
-    const targetScrollY = window.scrollY + rect.top - window.innerHeight / 2 + rect.height / 2
-    const slideDiff = Math.abs(index - activeIndex)
-    const overshootPx =
-      (slideDiff <= 1
-        ? 22
-        : Math.min(200, 25 + Math.pow(slideDiff, 1.35) * 9)) * direction
-
-    if (direction === 0) {
-      smoothScrollTo(targetScrollY, 650, easeInOutCubic)
-      return
-    }
-
-    const overshootScrollY = targetScrollY + overshootPx
-
-    smoothScrollTo(overshootScrollY, 420, easeInOutCubic)
-    setTimeout(() => {
-      smoothScrollTo(targetScrollY, 580, (t) => 1 - (1 - t) ** 3)
-    }, 440)
+    const targetY = window.scrollY + rect.top - window.innerHeight / 2 + rect.height / 2
+    window.scrollTo(0, targetY)
   }
 
   useEffect(() => {
