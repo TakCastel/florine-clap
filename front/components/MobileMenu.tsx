@@ -59,8 +59,11 @@ export default function MobileMenu({
   onMenuStateChange?: (isOpen: boolean) => void
 }) {
   const [isOpen, setIsOpen] = useState(false)
+  // Fermeture instantanée au clic sur un lien (pas d'animation) pour que la page de destination soit visible tout de suite
+  const [closeInstantly, setCloseInstantly] = useState(false)
 
   const handleToggle = () => {
+    setCloseInstantly(false)
     const newState = !isOpen
     setIsOpen(newState)
     onMenuStateChange?.(newState)
@@ -69,6 +72,11 @@ export default function MobileMenu({
   const handleClose = () => {
     setIsOpen(false)
     onMenuStateChange?.(false)
+  }
+
+  const handleLinkClick = () => {
+    setCloseInstantly(true)
+    handleClose()
   }
 
   // Exposer la fonction de fermeture pour utilisation externe
@@ -170,7 +178,7 @@ export default function MobileMenu({
             variants={overlayVariants}
             initial="closed"
             animate="open"
-            exit="closed"
+            exit={closeInstantly ? { opacity: 0, transition: { duration: 0 } } : 'closed'}
             className="md:hidden fixed top-0 left-0 right-0 bottom-0 z-[9999]"
             style={{ 
               backgroundColor: bgColor,
@@ -202,7 +210,7 @@ export default function MobileMenu({
                   >
                     <Link
                       href={item.href}
-                      onClick={handleClose}
+                      onClick={handleLinkClick}
                       className={`block text-xl md:text-2xl font-display font-normal uppercase tracking-wide text-center py-3 transition-all duration-300 ${textColor} ${linkHoverColor} relative group`}
                     >
                       <span className="relative inline-block">
