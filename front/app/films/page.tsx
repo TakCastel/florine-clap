@@ -26,8 +26,7 @@ async function getFilms() {
 }
 
 async function FilmsContent() {
-  const films = await getFilms()
-  const homeSettings = await getHomeSettings()
+  const [films, homeSettings] = await Promise.all([getFilms(), getHomeSettings()])
   const heroImageUrl = homeSettings?.category_films_image || null
   const sortedFilms = [...films].sort((a: Film, b: Film) => {
     const orderA = a.order ?? Number.MAX_SAFE_INTEGER

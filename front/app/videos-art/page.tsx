@@ -30,8 +30,7 @@ async function getVideoArts() {
 }
 
 async function VideosArtContent() {
-  const videoArts = await getVideoArts()
-  const homeSettings = await getHomeSettings()
+  const [videoArts, homeSettings] = await Promise.all([getVideoArts(), getHomeSettings()])
   const heroImageUrl = homeSettings?.category_videos_art_image || null
   const getYear = (item: VideoArt) => {
     if (item.annee) {

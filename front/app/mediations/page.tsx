@@ -35,8 +35,7 @@ function toTimestamp(m: Mediation): number {
 }
 
 async function MediationsContent() {
-  const mediations = await getMediations()
-  const homeSettings = await getHomeSettings()
+  const [mediations, homeSettings] = await Promise.all([getMediations(), getHomeSettings()])
   const heroImageUrl = homeSettings?.category_mediations_image || null
   const sortedMediations = [...mediations].sort((a: Mediation, b: Mediation) => {
     const diff = toTimestamp(b) - toTimestamp(a)

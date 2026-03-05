@@ -20,12 +20,16 @@ export const metadata: Metadata = buildMetadata({
 })
 
 async function BioContent() {
-  let page: Page | null = null
-  try {
-    page = await getPageBySlug('bio')
-  } catch (error) {
-    console.error('Erreur lors de la récupération de la page bio:', error)
-  }
+  // Charger page + homeSettings en parallèle (évite 2 allers-retours Directus séquentiels)
+  const [pageResult, homeSettings] = await Promise.all([
+    getPageBySlug('bio').catch((error) => {
+      console.error('Erreur lors de la récupération de la page bio:', error)
+      return null
+    }),
+    getHomeSettings(),
+  ])
+  const page = pageResult
+
   if (!page) {
     return (
       <div className="min-h-screen bg-theme-white text-theme-dark flex items-center justify-center">
@@ -37,8 +41,6 @@ async function BioContent() {
     )
   }
 
-  // Récupérer l'image hero depuis homeSettings pour l'effet flou en fond
-  const homeSettings = await getHomeSettings()
   const heroImageUrl = homeSettings?.bio_image || null
   
   // Récupérer l'image principale de la page bio (à afficher en haut)

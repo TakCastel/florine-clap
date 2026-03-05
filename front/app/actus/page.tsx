@@ -36,8 +36,7 @@ async function getActus() {
 }
 
 async function ActusContent() {
-  const actus = await getActus()
-  const homeSettings = await getHomeSettings()
+  const [actus, homeSettings] = await Promise.all([getActus(), getHomeSettings()])
   const sortedActus = [...actus].sort((a: Actu, b: Actu) => {
     return new Date(b.date || '2020').getTime() - new Date(a.date || '2020').getTime()
   })
