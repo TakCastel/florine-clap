@@ -8,8 +8,8 @@ WORKDIR /app
 
 # Copy package files (le contexte est maintenant à la racine, donc front/package.json)
 COPY front/package.json front/package-lock.json* ./
-# Install dependencies (npm install will update lock file if needed)
-RUN npm install
+# Install dependencies (legacy-peer-deps pour @types/react vs @types/react-dom)
+RUN npm install --legacy-peer-deps
 
 # Rebuild the source code only when needed
 FROM base AS builder
