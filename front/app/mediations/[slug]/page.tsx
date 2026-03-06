@@ -1,5 +1,6 @@
 import MarkdownRenderer from '@/components/MarkdownRenderer'
 import Breadcrumb from '@/components/Breadcrumb'
+import Link from 'next/link'
 import VimeoPlayer from '@/components/VimeoPlayer'
 import VideoPlayer from '@/components/VideoPlayer'
 import ArticleHeroImage from '@/components/ArticleHeroImage'
@@ -181,13 +182,14 @@ export default async function MediationPage({ params }: MediationPageProps) {
             </section>
 
             <nav className="border-t border-black/10 pt-8 pb-0">
-              <a 
+              <Link
                 href="/mediations"
+                prefetch
                 aria-label="Retour à la liste des médiations"
                 className="inline-flex items-center gap-2 text-black/70 hover:text-black transition-colors font-display font-light text-xs uppercase tracking-[0.1em]"
               >
                 ← Retour aux médiations
-              </a>
+              </Link>
             </nav>
           </StickyAside>
         </div>

@@ -7,6 +7,13 @@ export const revalidate = 86400
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const base = process.env.SITE_URL || 'https://florineclap.com'
   const now = new Date().toISOString()
+
+  /** Convertit une date en ISO string, ou retourne now si invalide */
+  const toValidISO = (d: string | undefined, fallback: string) => {
+    if (!d) return fallback
+    const date = new Date(d)
+    return isNaN(date.getTime()) ? fallback : date.toISOString()
+  }
   
   const staticRoutes: MetadataRoute.Sitemap = [
     { url: `${base}`, changeFrequency: 'weekly', priority: 1.0, lastModified: now },
@@ -35,25 +42,25 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         url: `${base}/films/${d.slug}`, 
         changeFrequency: 'monthly' as const, 
         priority: 0.7,
-        lastModified: d.annee ? new Date(`${d.annee}-01-01`).toISOString() : now
+        lastModified: toValidISO(d.annee ? `${d.annee}-01-01` : undefined, now)
       })),
       ...mediations.map((d) => ({ 
         url: `${base}/mediations/${d.slug}`, 
         changeFrequency: 'monthly' as const, 
         priority: 0.7,
-        lastModified: d.date ? new Date(d.date).toISOString() : now
+        lastModified: toValidISO(d.date, now)
       })),
       ...videoArts.map((d) => ({ 
         url: `${base}/videos-art/${d.slug}`, 
         changeFrequency: 'monthly' as const, 
         priority: 0.7,
-        lastModified: d.annee ? new Date(`${d.annee}-01-01`).toISOString() : now
+        lastModified: toValidISO(d.annee ? `${d.annee}-01-01` : undefined, now)
       })),
       ...actus.map((d) => ({ 
         url: `${base}/actus/${d.slug}`, 
         changeFrequency: 'weekly' as const, 
         priority: 0.6,
-        lastModified: d.date ? new Date(d.date).toISOString() : now
+        lastModified: toValidISO(d.date, now)
       })),
     ]
 

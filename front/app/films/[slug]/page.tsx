@@ -1,5 +1,6 @@
 import MarkdownRenderer from '@/components/MarkdownRenderer'
 import Breadcrumb from '@/components/Breadcrumb'
+import Link from 'next/link'
 import VimeoPlayer from '@/components/VimeoPlayer'
 import VideoPlayer from '@/components/VideoPlayer'
 import ArticleHeroImage from '@/components/ArticleHeroImage'
@@ -286,13 +287,14 @@ export default async function FilmPage({ params }: FilmPageProps) {
           )}
 
           <nav className="border-t border-black/10 pt-8 pb-0">
-            <a 
+            <Link
               href="/films"
+              prefetch
               aria-label="Retour à la liste des films"
               className="inline-flex items-center gap-2 text-black/70 hover:text-black transition-colors font-display font-light text-xs uppercase tracking-[0.1em]"
             >
               ← Retour aux films
-            </a>
+            </Link>
           </nav>
         </StickyAside>
         </div>

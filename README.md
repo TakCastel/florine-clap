@@ -32,14 +32,12 @@ DIRECTUS_STATIC_TOKEN=
 
 **Production (par défaut)** :
 ```bash
-docker-compose up -d
+docker compose up -d
 ```
 
-**Développement (avec hot reload)** :
+**Développement local (avec hot reload)** :
 ```bash
-docker-compose --profile dev up -d frontend-dev
-# Ou pour démarrer tous les services en dev :
-docker-compose --profile dev up -d
+docker compose -f docker-compose.yml -f docker-compose.dev.yml up -d frontend
 ```
 
 ### 3. Configurer Directus
@@ -67,17 +65,17 @@ Configurez Directus directement via l'interface d'administration :
 
 ```bash
 # Voir les logs
-docker-compose logs -f
+docker compose logs -f frontend
 
 # Redémarrer un service
-docker-compose restart frontend
+docker compose restart frontend
 
 # Arrêter tout
-docker-compose down
+docker compose down
 
 # Mode développement (avec hot reload)
-docker-compose --profile dev up -d frontend-dev
-docker-compose --profile dev logs -f frontend-dev
+docker compose -f docker-compose.yml -f docker-compose.dev.yml up -d frontend
+docker compose logs -f frontend
 ```
 
 ## 📦 Déploiement sur le serveur

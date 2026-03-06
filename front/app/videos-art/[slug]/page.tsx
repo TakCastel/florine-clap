@@ -1,5 +1,6 @@
 import MarkdownRenderer from '@/components/MarkdownRenderer'
 import Breadcrumb from '@/components/Breadcrumb'
+import Link from 'next/link'
 import VimeoPlayer from '@/components/VimeoPlayer'
 import VideoPlayer from '@/components/VideoPlayer'
 import ArticleHeroImage from '@/components/ArticleHeroImage'
@@ -207,13 +208,14 @@ export default async function VideoArtPage({ params }: VideoArtPageProps) {
             </section>
 
             <nav className="border-t border-black/10 pt-8 pb-0">
-              <a 
+              <Link
                 href="/videos-art"
+                prefetch
                 aria-label="Retour à la liste des vidéos d'art"
                 className="inline-flex items-center gap-2 text-black/70 hover:text-black transition-colors font-display font-light text-xs uppercase tracking-[0.1em]"
               >
                 ← Retour aux vidéos/art
-              </a>
+              </Link>
             </nav>
           </StickyAside>
         </div>

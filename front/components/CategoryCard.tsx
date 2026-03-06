@@ -1,6 +1,7 @@
 'use client'
 
 import Image from 'next/image'
+import Link from 'next/link'
 import { useState, useEffect, useRef } from 'react'
 import CtaLink from '@/components/CtaLink'
 
@@ -217,8 +218,8 @@ export default function CategoryCard({
         </div>
       </div>
 
-      {/* Lien */}
-      <a href={href} className="absolute inset-0 z-40" aria-label={title} />
+      {/* Lien - Link pour navigation client-side (évite rechargement complet) */}
+      <Link href={href} className="absolute inset-0 z-40" aria-label={title} prefetch />
     </div>
   )
 }

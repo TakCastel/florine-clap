@@ -1,4 +1,4 @@
-// import Link from 'next/link' - Removed to use native HTML links like the logo
+import Link from 'next/link'
 
 type BreadcrumbItem = {
   label: string
@@ -79,12 +79,13 @@ export default function Breadcrumb({ items, variant = 'default' }: Props) {
                 <span className={`mx-3 ${styles.separator} font-display`}>/</span>
               )}
               {item.href ? (
-                <a 
+                <Link 
                   href={item.href} 
+                  prefetch
                   className={`${styles.hover} transition-colors font-display`}
                 >
                   {item.label}
-                </a>
+                </Link>
               ) : (
                 <span className={`${styles.current} font-medium font-display`}>{item.label}</span>
               )}

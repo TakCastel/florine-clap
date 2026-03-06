@@ -40,8 +40,8 @@ function getDirectusUrlForClient(): string {
 
 function getDirectusUrl(): string {
   if (typeof window === 'undefined') {
-    // Côté serveur : utiliser l'URL interne Docker
-    return process.env.DIRECTUS_INTERNAL_URL || process.env.NEXT_PUBLIC_DIRECTUS_URL || 'http://directus:8055'
+    // Côté serveur : Docker utilise DIRECTUS_INTERNAL_URL (directus:8055), local utilise NEXT_PUBLIC ou localhost
+    return process.env.DIRECTUS_INTERNAL_URL || process.env.NEXT_PUBLIC_DIRECTUS_URL || 'http://localhost:8055'
   }
   // Côté client : utiliser l'URL publique
   return getDirectusUrlForClient()
@@ -255,7 +255,8 @@ export async function getAllFilms(): Promise<Film[]> {
   }
 }
 
-export async function getFilmBySlug(slug: string): Promise<Film | null> {
+/** Cache React : déduplique l'appel entre generateMetadata et la page (1 seul fetch Directus) */
+export const getFilmBySlug = cache(async (slug: string): Promise<Film | null> => {
   try {
     const films = await fetchDirectus<Film[]>(
       `/items/films?fields=*,image.id,image.filename_download,content.id,content.filename_download,heading.id,heading.filename_download,video.id,video.filename_download,video.type,video.filesize&filter[slug][_eq]=${encodeURIComponent(slug)}&limit=1`,
@@ -266,7 +267,7 @@ export async function getFilmBySlug(slug: string): Promise<Film | null> {
     console.error('Erreur lors de la récupération du film:', error)
     return null
   }
-}
+})
 
 const MEDIATIONS_TAG = 'mediations'
 
@@ -282,7 +283,8 @@ export async function getAllMediations(): Promise<Mediation[]> {
   }
 }
 
-export async function getMediationBySlug(slug: string): Promise<Mediation | null> {
+/** Cache React : déduplique l'appel entre generateMetadata et la page */
+export const getMediationBySlug = cache(async (slug: string): Promise<Mediation | null> => {
   try {
     const mediations = await fetchDirectus<Mediation[]>(
       `/items/mediations?fields=*,cover.id,cover.filename_download,gallery.id,gallery.filename_download,video.id,video.filename_download,video.type,video.filesize&filter[slug][_eq]=${encodeURIComponent(slug)}&limit=1`,
@@ -293,7 +295,7 @@ export async function getMediationBySlug(slug: string): Promise<Mediation | null
     console.error('Erreur lors de la récupération de la médiation:', error)
     return null
   }
-}
+})
 
 const ACTUS_TAG = 'actus'
 
@@ -309,7 +311,8 @@ export async function getAllActus(): Promise<Actu[]> {
   }
 }
 
-export async function getActuBySlug(slug: string): Promise<Actu | null> {
+/** Cache React : déduplique l'appel entre generateMetadata et la page */
+export const getActuBySlug = cache(async (slug: string): Promise<Actu | null> => {
   try {
     const actus = await fetchDirectus<Actu[]>(
       `/items/actus?fields=*,cover.id,cover.filename_download&filter[slug][_eq]=${encodeURIComponent(slug)}&limit=1`,
@@ -320,7 +323,7 @@ export async function getActuBySlug(slug: string): Promise<Actu | null> {
     console.error('Erreur lors de la récupération de l\'actualité:', error)
     return null
   }
-}
+})
 
 const PAGES_TAG = 'pages'
 
@@ -336,7 +339,8 @@ export async function getAllPages(): Promise<Page[]> {
   }
 }
 
-export async function getPageBySlug(slug: string): Promise<Page | null> {
+/** Cache React : déduplique les appels multiples */
+export const getPageBySlug = cache(async (slug: string): Promise<Page | null> => {
   try {
     const pages = await fetchDirectus<Page[]>(
       `/items/pages?fields=*,hero_image.id,hero_image.filename_download,bottom_image.id,bottom_image.filename_download&filter[slug][_eq]=${encodeURIComponent(slug)}&limit=1`,
@@ -347,7 +351,7 @@ export async function getPageBySlug(slug: string): Promise<Page | null> {
     console.error('Erreur lors de la récupération de la page:', error)
     return null
   }
-}
+})
 
 const VIDEOS_ART_TAG = 'videos_art'
 
@@ -364,7 +368,8 @@ export async function getAllVideoArts(): Promise<VideoArt[]> {
   }
 }
 
-export async function getVideoArtBySlug(slug: string): Promise<VideoArt | null> {
+/** Cache React : déduplique l'appel entre generateMetadata et la page */
+export const getVideoArtBySlug = cache(async (slug: string): Promise<VideoArt | null> => {
   try {
     const encodedSlug = encodeURIComponent(slug)
     const endpoint = `/items/videos_art?fields=*,video.id,video.filename_download,video.type,video.filesize&filter[slug][_eq]=${encodedSlug}&limit=1`
@@ -379,7 +384,7 @@ export async function getVideoArtBySlug(slug: string): Promise<VideoArt | null> 
     console.error(`Erreur lors de la récupération de la vidéo (slug: ${slug}):`, error)
     return null
   }
-}
+})
 
 /** Dédupliqué par requête (generateMetadata + page) pour éviter 2 appels Directus sur l’accueil */
 const HOME_TAG = 'home'

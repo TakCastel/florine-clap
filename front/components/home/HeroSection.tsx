@@ -5,6 +5,9 @@ import { motion } from 'framer-motion'
 import { Reveal } from '@/components/ui/Reveal'
 import { HomeSettings, getImageUrl, getVideoUrl } from '@/lib/directus'
 
+/** Poster minimal (1px noir) pour éviter le flash avant chargement vidéo */
+const VIDEO_POSTER_PLACEHOLDER = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1 1'%3E%3Crect fill='%23000' width='1' height='1'/%3E%3C/svg%3E"
+
 interface HeroSectionProps {
   homeSettings?: HomeSettings | null
 }
@@ -13,6 +16,14 @@ export default function HeroSection({ homeSettings }: HeroSectionProps) {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
   const [isVideoReady, setIsVideoReady] = useState(false)
   const [hasVideoError, setHasVideoError] = useState(false)
+  const [isMobile, setIsMobile] = useState(false)
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768)
+    check()
+    window.addEventListener('resize', check)
+    return () => window.removeEventListener('resize', check)
+  }, [])
 
   // Utiliser la vidéo depuis Directus uniquement
   // Priorité : hero_video (fichier Directus) > hero_video_url (URL externe)
@@ -59,7 +70,7 @@ export default function HeroSection({ homeSettings }: HeroSectionProps) {
       id="hero-section" 
       className="w-full h-screen relative overflow-hidden bg-gradient-to-br from-white to-gray-100/50"
       style={{ position: 'relative' }}
-      onMouseMove={handleMouseMove}
+      onMouseMove={isMobile ? undefined : handleMouseMove}
     >
       <div className="relative h-full overflow-hidden">
         {/* Vidéo de fond */}
@@ -77,12 +88,12 @@ export default function HeroSection({ homeSettings }: HeroSectionProps) {
             <motion.video
               key={heroVideoUrl}
               src={heroVideoUrl}
+              poster={VIDEO_POSTER_PLACEHOLDER}
               autoPlay
               loop
               muted
               playsInline
               preload="auto"
-              fetchPriority="high"
               initial={{ opacity: 0 }}
               animate={{ opacity: isVideoReady ? 1 : 0 }}
               transition={{ duration: 1 }}
@@ -161,14 +172,16 @@ export default function HeroSection({ homeSettings }: HeroSectionProps) {
           />
         </div>
 
-        {/* Effet de brillance qui suit la souris */}
-        <motion.div 
-          className="absolute inset-0 opacity-30 pointer-events-none"
-          animate={{
-            background: `radial-gradient(circle 600px at ${50 + (mousePosition.x / 30) * 100}% ${50 + (mousePosition.y / 30) * 100}%, rgba(255,255,255,0.1) 0%, transparent 100%)`
-          }}
-          transition={{ type: "tween", ease: "linear", duration: 0.2 }}
-        />
+        {/* Effet de brillance qui suit la souris - désactivé sur mobile (perf) */}
+        {!isMobile && (
+          <motion.div 
+            className="absolute inset-0 opacity-30 pointer-events-none"
+            animate={{
+              background: `radial-gradient(circle 600px at ${50 + (mousePosition.x / 30) * 100}% ${50 + (mousePosition.y / 30) * 100}%, rgba(255,255,255,0.1) 0%, transparent 100%)`
+            }}
+            transition={{ type: "tween", ease: "linear", duration: 0.2 }}
+          />
+        )}
       </div>
     </section>
   )

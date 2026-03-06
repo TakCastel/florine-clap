@@ -59,7 +59,7 @@ export default function BioSection({ homeSettings }: BioSectionProps) {
       id="bio-section" 
       className="w-full min-h-screen flex items-center justify-center py-12 md:py-20 relative overflow-hidden border-b border-black/5 bg-gradient-to-br from-white to-gray-100/50"
       style={{ position: 'relative' }}
-      onMouseMove={handleMouseMove}
+      onMouseMove={isMobile ? undefined : handleMouseMove}
     >
       <div className="max-w-container-small mx-auto px-6 md:px-10 lg:px-16 w-full overflow-hidden">
         <div className="relative overflow-hidden">
@@ -190,14 +190,16 @@ export default function BioSection({ homeSettings }: BioSectionProps) {
         </div>
       </div>
 
-      {/* Effet de brillance qui suit la souris */}
-      <motion.div 
-        className="absolute inset-0 opacity-20 pointer-events-none"
-        animate={{
-          background: `radial-gradient(circle 800px at ${50 + (mousePosition.x / 30) * 100}% ${50 + (mousePosition.y / 30) * 100}%, rgba(0,0,0,0.05) 0%, transparent 70%)`,
-        }}
-        transition={{ type: "tween", ease: "linear", duration: 0.2 }}
-      />
+      {/* Effet de brillance qui suit la souris - désactivé sur mobile (perf) */}
+      {!isMobile && (
+        <motion.div 
+          className="absolute inset-0 opacity-20 pointer-events-none"
+          animate={{
+            background: `radial-gradient(circle 800px at ${50 + (mousePosition.x / 30) * 100}% ${50 + (mousePosition.y / 30) * 100}%, rgba(0,0,0,0.05) 0%, transparent 70%)`,
+          }}
+          transition={{ type: "tween", ease: "linear", duration: 0.2 }}
+        />
+      )}
     </section>
   )
 }

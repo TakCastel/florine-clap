@@ -1,3 +1,9 @@
+// Charger .env du répertoire parent pour build local (sans Docker)
+const path = require('path')
+try {
+  require('dotenv').config({ path: path.resolve(__dirname, '../.env') })
+} catch (_) {}
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,

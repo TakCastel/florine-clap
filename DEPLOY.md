@@ -107,7 +107,7 @@ cd front && npm run directus:apply:dry-run
 
 ### Cache et première visite
 
-Les pages listes (Films, Vidéos-art, Médiations, Actus) affichent un **skeleton** dès le clic, puis le contenu se charge. Aucune configuration supplémentaire. Optionnel : après déploiement, `GET /api/warmup` pré-remplit le cache pour que le contenu s’affiche plus vite (aucune clé requise).
+Les pages listes (Films, Vidéos-art, Médiations, Actus) affichent un **skeleton** dès le clic, puis le contenu se charge. Le script `deploy.sh` appelle automatiquement `/api/warmup` après redémarrage. Variable optionnelle : définir `SITE_URL` dans `.env` (ex. `https://florineclap.com`) si le frontend est derrière un reverse proxy. 
 
 ## ⚠️ Notes importantes
 

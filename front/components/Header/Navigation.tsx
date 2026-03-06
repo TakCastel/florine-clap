@@ -56,7 +56,7 @@ export default function Navigation({ isHomePage = false, isLightText = false }: 
               transition: 'all 0.6s ease-out'
             }}
           >
-            <UnderlineLink href={item.href} variant={isLightText ? 'light' : 'dark'}>
+            <UnderlineLink href={item.href} variant={isLightText ? 'light' : 'dark'} prefetch>
               {item.label}
             </UnderlineLink>
           </div>

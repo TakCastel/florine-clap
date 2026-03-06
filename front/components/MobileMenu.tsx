@@ -210,6 +210,7 @@ export default function MobileMenu({
                   >
                     <Link
                       href={item.href}
+                      prefetch
                       onClick={handleLinkClick}
                       className={`block text-xl md:text-2xl font-display font-normal uppercase tracking-wide text-center py-3 transition-all duration-300 ${textColor} ${linkHoverColor} relative group`}
                     >
