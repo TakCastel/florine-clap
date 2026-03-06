@@ -5,12 +5,17 @@ import { motion } from 'framer-motion'
 import { Reveal } from '@/components/ui/Reveal'
 import { HomeSettings, getVideoUrl } from '@/lib/directus'
 
+/** Poster minimal (1px noir) pour éviter le flash avant chargement vidéo */
+const VIDEO_POSTER_PLACEHOLDER = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1 1'%3E%3Crect fill='%23000' width='1' height='1'/%3E%3C/svg%3E"
+
 interface HeroSectionProps {
   homeSettings?: HomeSettings | null
 }
 
 export default function HeroSection({ homeSettings }: HeroSectionProps) {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
+  const [isVideoReady, setIsVideoReady] = useState(false)
+  const [hasVideoError, setHasVideoError] = useState(false)
   const [isMobile, setIsMobile] = useState(false)
   const videoRef = useRef<HTMLVideoElement>(null)
   const hasTriedUnlock = useRef(false)
@@ -56,7 +61,6 @@ export default function HeroSection({ homeSettings }: HeroSectionProps) {
     }
   }, [heroVideoUrl])
 
-  // Déblocage autoplay : au premier clic/touch/keydown n'importe où sur la page, on lance la vidéo
   useEffect(() => {
     const handleFirstInteraction = () => {
       playVideo()
@@ -78,6 +82,16 @@ export default function HeroSection({ homeSettings }: HeroSectionProps) {
     hasTriedUnlock.current = false
   }, [heroVideoUrl])
 
+  useEffect(() => {
+    if (!heroVideoUrl) {
+      setIsVideoReady(false)
+      setHasVideoError(false)
+      return
+    }
+    setIsVideoReady(false)
+    setHasVideoError(false)
+  }, [heroVideoUrl])
+
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     const x = (e.clientX / window.innerWidth - 0.5) * 30
     const y = (e.clientY / window.innerHeight - 0.5) * 30
@@ -87,27 +101,56 @@ export default function HeroSection({ homeSettings }: HeroSectionProps) {
   return (
     <section
       id="hero-section"
-      className="w-full h-screen relative overflow-hidden bg-black"
+      className="w-full h-screen relative overflow-hidden bg-gradient-to-br from-white to-gray-100/50"
       style={{ position: 'relative' }}
       onMouseMove={isMobile ? undefined : handleMouseMove}
     >
       <div className="relative h-full overflow-hidden">
-        {/* Vidéo uniquement — visible dès le départ */}
-        {heroVideoUrl && (
-          <video
-            ref={videoRef}
-            key={heroVideoUrl}
-            src={heroVideoUrl}
-            autoPlay
-            loop
-            muted
-            playsInline
-            preload="auto"
-            className="w-full h-full object-cover scale-110"
-          >
-            Votre navigateur ne supporte pas la lecture de vidéos.
-          </video>
-        )}
+        {/* Vidéo de fond */}
+        <div className="absolute inset-0 overflow-hidden bg-black">
+          <motion.div
+            initial={{ opacity: 1 }}
+            animate={{ opacity: isVideoReady ? 0 : 1 }}
+            transition={{ duration: 0.7 }}
+            className="absolute inset-0 bg-black"
+          />
+
+          {heroVideoUrl && !hasVideoError && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: isVideoReady ? 1 : 0 }}
+              transition={{ duration: 1 }}
+              className="absolute inset-0"
+            >
+              <video
+                ref={videoRef}
+                key={heroVideoUrl}
+                src={heroVideoUrl}
+                poster={VIDEO_POSTER_PLACEHOLDER}
+                autoPlay
+                loop
+                muted
+                playsInline
+                preload="auto"
+                className="w-full h-full object-cover scale-110 bg-black"
+                onLoadedData={() => setIsVideoReady(true)}
+                onCanPlay={() => setIsVideoReady(true)}
+                onError={() => {
+                  setHasVideoError(true)
+                  setIsVideoReady(false)
+                }}
+              >
+                Votre navigateur ne supporte pas la lecture de vidéos.
+              </video>
+            </motion.div>
+          )}
+
+          {hasVideoError && (
+            <div className="absolute inset-0 flex items-center justify-center bg-black/70 text-white text-xs tracking-widest uppercase">
+              Vidéo indisponible pour le moment
+            </div>
+          )}
+        </div>
 
         {/* Contenu principal */}
         <div className="relative h-full flex flex-col items-center justify-center px-6 md:px-10">
