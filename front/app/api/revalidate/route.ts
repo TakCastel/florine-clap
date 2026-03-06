@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { revalidatePath, revalidateTag } from 'next/cache'
+import { revalidateTag } from 'next/cache'
 
 /** Paths revalidés → tags à invalider (cache des fetches Directus) pour que le nouveau contenu s'affiche */
 const PATH_TO_TAGS: Record<string, string[]> = {
@@ -62,10 +62,13 @@ export async function POST(request: NextRequest) {
       paths = ['/', '/films', '/mediations', '/videos-art', '/actus', '/bio', '/mentions-legales', '/politique-confidentialite']
     }
 
+    const allTags = new Set<string>()
     for (const path of paths) {
-      revalidatePath(path)
       const tags = getTagsForPath(path)
-      for (const tag of tags) revalidateTag(tag)
+      for (const tag of tags) allTags.add(tag)
+    }
+    for (const tag of allTags) {
+      revalidateTag(tag)
     }
 
     return NextResponse.json({ revalidated: true, paths })
