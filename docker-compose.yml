@@ -51,6 +51,8 @@ services:
         condition: service_healthy
 
   frontend:
+    env_file:
+      - .env
     build:
       context: .
       dockerfile: ./front/Dockerfile
@@ -66,6 +68,7 @@ services:
       NEXT_PUBLIC_DIRECTUS_URL: ${DIRECTUS_PUBLIC_URL:-http://localhost:8055}
       DIRECTUS_INTERNAL_URL: http://directus:8055
       DIRECTUS_STATIC_TOKEN: ${DIRECTUS_STATIC_TOKEN:-}
+      REVALIDATE_SECRET: ${REVALIDATE_SECRET}
     networks:
       - florine-clap-network
     depends_on:
