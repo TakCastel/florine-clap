@@ -391,7 +391,7 @@ const HOME_TAG = 'home'
 
 export const getHomeSettings = cache(async (): Promise<HomeSettings | null> => {
   try {
-    const endpoint = `/items/home_settings?fields=id,hero_video.id,hero_video.filename_download,hero_video.type,hero_video.filesize,bio_text,bio_image.id,bio_image.filename_download,credits,category_films_image.id,category_films_image.filename_download,category_mediations_image.id,category_mediations_image.filename_download,category_videos_art_image.id,category_videos_art_image.filename_download,category_actus_image.id,category_actus_image.filename_download,date_created,date_updated&limit=1`
+    const endpoint = `/items/home_settings?fields=id,hero_video.id,hero_video.filename_download,hero_video.type,hero_video.filesize,hero_video_url,bio_text,bio,bio_image.id,bio_image.filename_download,credits,category_films_image.id,category_films_image.filename_download,category_mediations_image.id,category_mediations_image.filename_download,category_videos_art_image.id,category_videos_art_image.filename_download,category_actus_image.id,category_actus_image.filename_download,date_created,date_updated&limit=1`
     const settings = await fetchDirectus<HomeSettings | HomeSettings[]>(endpoint, { tags: [HOME_TAG] })
 
     const result = Array.isArray(settings)
