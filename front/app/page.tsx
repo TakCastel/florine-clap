@@ -8,9 +8,16 @@ import type { Metadata } from 'next'
 export const revalidate = 86400
 
 /** Preload + preconnect de la vidéo hero pour qu’elle démarre au plus tôt */
-export const metadata: Metadata = {
-  title: 'Florine Clap - Réalisatrice et Artiste',
-  description: "Réalisatrice et artiste, je crée des films documentaires et des médiations artistiques qui explorent la relation entre l'homme et son environnement.",
+export async function generateMetadata(): Promise<Metadata> {
+  const settings = await getHomeSettings().catch(() => null)
+  const heroVideoUrl = settings?.hero_video ? getVideoUrl(settings.hero_video) : null
+  return {
+    title: 'Florine Clap - Réalisatrice et Artiste',
+    description: "Réalisatrice et artiste, je crée des films documentaires et des médiations artistiques qui explorent la relation entre l'homme et son environnement.",
+    ...(heroVideoUrl && {
+      links: [{ rel: 'preload', href: heroVideoUrl, as: 'video' }],
+    }),
+  }
 }
 
 async function getHomeSettingsWithImageUrls(): Promise<HomeSettings | null> {
@@ -24,7 +31,7 @@ async function getHomeSettingsWithImageUrls(): Promise<HomeSettings | null> {
     // Cela garantit que les URLs sont construites avec process.env.NEXT_PUBLIC_DIRECTUS_URL
     // (côté serveur) au lieu de getDirectusUrlForClient() (côté client)
     const bioImageUrl = settings.bio_image ? getImageUrl(settings.bio_image) : null
-    const heroVideoUrl = settings.hero_video ? getImageUrl(settings.hero_video) : null
+    const heroVideoUrl = settings.hero_video ? getVideoUrl(settings.hero_video) : null
     const categoryFilmsImageUrl = settings.category_films_image ? getImageUrl(settings.category_films_image) : null
     const categoryMediationsImageUrl = settings.category_mediations_image ? getImageUrl(settings.category_mediations_image) : null
     const categoryVideosArtImageUrl = settings.category_videos_art_image ? getImageUrl(settings.category_videos_art_image) : null

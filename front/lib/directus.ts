@@ -13,19 +13,13 @@ function getDirectusUrlForClient(): string {
   // Toujours essayer d'utiliser NEXT_PUBLIC_DIRECTUS_URL en premier
   let publicUrl = process.env.NEXT_PUBLIC_DIRECTUS_URL?.trim() ?? ''
   
-  // En production : ne jamais utiliser localhost (évite Mixed Content sur HTTPS)
-  if (process.env.NODE_ENV === 'production') {
-    if (!publicUrl || publicUrl.includes('localhost') || publicUrl.includes('127.0.0.1')) {
+  // Côté client : si la page est en HTTPS, refuser HTTP externe pour éviter Mixed Content (localhost OK)
+  if (typeof window !== 'undefined' && window.location.protocol === 'https:' && publicUrl.startsWith('http://')) {
+    if (!publicUrl.includes('localhost') && !publicUrl.includes('127.0.0.1')) {
       return ''
     }
-    // Côté client : si la page est en HTTPS, refuser toute URL en HTTP pour éviter Mixed Content
-    if (typeof window !== 'undefined' && window.location.protocol === 'https:' && publicUrl.startsWith('http://')) {
-      return ''
-    }
-    return publicUrl
   }
   
-  // En développement : utiliser localhost si on est sur localhost
   if (publicUrl && publicUrl.trim() !== '') {
     return publicUrl
   }
@@ -391,7 +385,7 @@ const HOME_TAG = 'home'
 
 export const getHomeSettings = cache(async (): Promise<HomeSettings | null> => {
   try {
-    const endpoint = `/items/home_settings?fields=id,hero_video.id,hero_video.filename_download,hero_video.type,hero_video.filesize,hero_video_url,bio_text,bio,bio_image.id,bio_image.filename_download,credits,category_films_image.id,category_films_image.filename_download,category_mediations_image.id,category_mediations_image.filename_download,category_videos_art_image.id,category_videos_art_image.filename_download,category_actus_image.id,category_actus_image.filename_download,date_created,date_updated&limit=1`
+    const endpoint = `/items/home_settings?fields=id,hero_video.id,hero_video.filename_download,hero_video.type,hero_video.filesize,hero_video_url,bio_text,bio_image.id,bio_image.filename_download,credits,category_films_image.id,category_films_image.filename_download,category_mediations_image.id,category_mediations_image.filename_download,category_videos_art_image.id,category_videos_art_image.filename_download,category_actus_image.id,category_actus_image.filename_download,date_created,date_updated&limit=1`
     const settings = await fetchDirectus<HomeSettings | HomeSettings[]>(endpoint, { tags: [HOME_TAG] })
 
     const result = Array.isArray(settings)
@@ -417,25 +411,24 @@ export function getImageUrl(
   if (file === null) return null
   
   if (typeof file === 'string') {
-    // Si c'est déjà une URL complète, ne pas la retourner telle quelle si c'est localhost ou HTTP sur une page HTTPS (Mixed Content)
+    // Si c'est déjà une URL complète
     if (file.startsWith('http')) {
-      const isInsecure =
-        file.includes('localhost') ||
-        file.includes('127.0.0.1') ||
-        (typeof window !== 'undefined' && window.location.protocol === 'https:' && file.startsWith('http://'))
-      if (isInsecure) {
+      // En dev ou sur localhost : accepter l'URL telle quelle
+      if (file.includes('localhost') || file.includes('127.0.0.1')) {
+        return file
+      }
+      // Page HTTPS + URL HTTP externe = Mixed Content, tenter de réécrire en HTTPS
+      if (typeof window !== 'undefined' && window.location.protocol === 'https:' && file.startsWith('http://')) {
         const match = file.match(/\/assets\/([0-9a-f-]+)(\?.*)?$/i)
         if (match) {
           const id = match[1]
-          const publicUrl = typeof window !== 'undefined' ? getDirectusUrlForClient() : (process.env.NEXT_PUBLIC_DIRECTUS_URL || process.env.DIRECTUS_PUBLIC_URL || null)
+          const publicUrl = getDirectusUrlForClient()
           if (publicUrl && !publicUrl.includes('localhost') && !publicUrl.includes('127.0.0.1')) {
             let base = publicUrl.trim().replace(/\/+$/, '')
             if (!base.startsWith('http://') && !base.startsWith('https://')) base = `https://${base}`
             return `${base}/assets/${id}${match[2] || ''}`
           }
-          return null
         }
-        return null
       }
       return file
     }
@@ -447,10 +440,6 @@ export function getImageUrl(
         ? getDirectusUrlForClient()
         : (process.env.NEXT_PUBLIC_DIRECTUS_URL || process.env.DIRECTUS_PUBLIC_URL || null)
       if (!publicUrl || publicUrl.trim() === '') {
-        return null
-      }
-      // En production (SSR), ne jamais émettre localhost pour éviter Mixed Content
-      if (process.env.NODE_ENV === 'production' && (publicUrl.includes('localhost') || publicUrl.includes('127.0.0.1'))) {
         return null
       }
       let normalizedUrl = publicUrl.trim().replace(/\/+$/, '')
@@ -473,9 +462,6 @@ export function getImageUrl(
         ? getDirectusUrlForClient()
         : (process.env.NEXT_PUBLIC_DIRECTUS_URL || process.env.DIRECTUS_PUBLIC_URL || null)
       if (!publicUrl || publicUrl.trim() === '') {
-        return null
-      }
-      if (process.env.NODE_ENV === 'production' && (publicUrl.includes('localhost') || publicUrl.includes('127.0.0.1'))) {
         return null
       }
       let normalizedUrl = publicUrl.trim().replace(/\/+$/, '')
