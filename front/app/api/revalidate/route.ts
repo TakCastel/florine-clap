@@ -51,10 +51,10 @@ export async function POST(request: NextRequest) {
       paths = ['/', '/films', '/mediations', '/videos-art', '/actus', '/bio', '/mentions-legales', '/politique-confidentialite']
     }
 
-    // Appel interne : le contexte local évite le bug revalidateTag avec les webhooks externes
-    const baseUrl = process.env.VERCEL_URL
-      ? `https://${process.env.VERCEL_URL}`
-      : process.env.REVALIDATE_INTERNAL_URL || 'http://127.0.0.1:3000'
+    // Appel interne : le contexte local évite le bug revalidateTag avec les webhooks externes.
+    // En Docker : REVALIDATE_INTERNAL_URL=http://frontend:3000 (le service se contacte lui-même)
+    const baseUrl = process.env.REVALIDATE_INTERNAL_URL
+      ?? (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://127.0.0.1:3000')
     const internalUrl = `${baseUrl}/api/revalidate-internal`
 
     const res = await fetch(internalUrl, {
