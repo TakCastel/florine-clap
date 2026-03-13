@@ -57,21 +57,34 @@ export async function POST(request: NextRequest) {
       ?? (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://127.0.0.1:3000')
     const internalUrl = `${baseUrl}/api/revalidate-internal`
 
-    const res = await fetch(internalUrl, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-Internal-Secret': secret,
-      },
-      body: JSON.stringify({ paths }),
-    })
+    let res: Response | null = null
+    for (let attempt = 1; attempt <= 3; attempt++) {
+      try {
+        res = await fetch(internalUrl, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-Internal-Secret': secret,
+          },
+          body: JSON.stringify({ paths }),
+        })
+        break
+      } catch (fetchErr) {
+        if (attempt < 3) {
+          await new Promise((r) => setTimeout(r, 300 * attempt))
+        } else {
+          throw fetchErr
+        }
+      }
+    }
 
+    if (!res) throw new Error('Fetch failed')
     const data = await res.json().catch(() => ({}))
     if (!res.ok) {
       console.warn('revalidate-internal a échoué:', res.status, data)
       return NextResponse.json({
         revalidated: false,
-        error: data.error || 'Erreur interne',
+        error: data.error || `Erreur interne (${res.status})`,
         warning: 'Le Flow ne bloque pas la publication. Contenu visible sous 24h ou après curl manuel.',
       }, { status: 200 })
     }
@@ -82,10 +95,11 @@ export async function POST(request: NextRequest) {
       tags: data.tags,
     })
   } catch (err) {
+    const errMsg = err instanceof Error ? err.message : String(err)
     console.error('Erreur revalidation:', err)
     return NextResponse.json({
       revalidated: false,
-      error: 'Erreur lors de la revalidation',
+      error: `Erreur lors de la revalidation: ${errMsg}`,
       warning: 'Le Flow ne bloque pas la publication. Contenu visible sous 24h ou après curl manuel.',
     }, { status: 200 })
   }

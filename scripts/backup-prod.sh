@@ -20,9 +20,9 @@ echo "1/2 Base de données..."
 docker compose exec -T postgres pg_dump -U directus -Fc directus > "$DUMP_FILE"
 echo "   → $DUMP_FILE"
 
-# 2. Archive des uploads (tout le contenu de /directus/uploads)
-echo "2/2 Uploads..."
-docker compose exec -T directus tar -czf - -C /directus uploads > "$UPLOADS_FILE"
+# 2. Archive des uploads (originaux uniquement, sans webp/avif générés par Directus)
+echo "2/2 Uploads (originaux, sans cache webp/avif)..."
+docker compose exec -T directus tar --exclude='*.webp' --exclude='*.avif' -czf - -C /directus uploads > "$UPLOADS_FILE"
 echo "   → $UPLOADS_FILE"
 
 echo ""
