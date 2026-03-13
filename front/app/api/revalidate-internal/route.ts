@@ -40,7 +40,8 @@ export async function POST(request: NextRequest) {
   }
 
   try {
-    const body = await request.json().catch(() => ({}))
+    const raw = await request.json().catch(() => ({}))
+    const body = raw && typeof raw === 'object' && !Array.isArray(raw) ? raw : {}
     let paths: string[] = []
     if (body.path && typeof body.path === 'string') {
       paths = [body.path]
