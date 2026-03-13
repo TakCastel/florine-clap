@@ -1,12 +1,16 @@
 #!/bin/bash
 # Script de déploiement complet sur le serveur
-# Usage: ./scripts/deploy.sh [--skip-schema]
+# Usage: ./scripts/deploy.sh [--apply-schema]
+#
+# Par défaut, le schéma Directus n'est JAMAIS appliqué pour ne pas écraser
+# les modifications faites dans l'interface admin. Utiliser --apply-schema
+# uniquement quand vous avez exporté et versionné un nouveau schéma.
 
 set -e  # Arrêter en cas d'erreur
 
-SKIP_SCHEMA=false
-if [ "$1" == "--skip-schema" ]; then
-  SKIP_SCHEMA=true
+APPLY_SCHEMA=false
+if [ "$1" == "--apply-schema" ]; then
+  APPLY_SCHEMA=true
 fi
 
 echo "🚀 Déploiement en cours..."
@@ -18,8 +22,8 @@ git pull
 echo "✅ Modifications récupérées"
 echo ""
 
-# 2. Appliquer le schéma Directus (si nécessaire)
-if [ "$SKIP_SCHEMA" = false ]; then
+# 2. Appliquer le schéma Directus (uniquement si --apply-schema)
+if [ "$APPLY_SCHEMA" = true ]; then
   SNAPSHOT_PATH="directus/snapshots/schema.yaml"
   if [ -f "$SNAPSHOT_PATH" ]; then
     echo "🔄 Application du schéma Directus..."
@@ -32,11 +36,12 @@ if [ "$SKIP_SCHEMA" = false ]; then
     cd ..
     echo ""
   else
-    echo "ℹ️  Aucun snapshot trouvé, passage du schéma"
+    echo "ℹ️  Aucun snapshot trouvé"
     echo ""
   fi
 else
-  echo "⏭️  Application du schéma ignorée (--skip-schema)"
+  echo "⏭️  Schéma Directus non appliqué (les modifs back-office sont préservées)"
+  echo "   Pour appliquer le schéma : ./scripts/deploy.sh --apply-schema"
   echo ""
 fi
 

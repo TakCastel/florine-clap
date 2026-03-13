@@ -25,7 +25,7 @@ git push
 
 ### 3. Sur le serveur : Déployer
 
-**Option A : Déploiement automatique complet**
+**Option A : Déploiement standard (recommandé)**
 
 ```bash
 ./scripts/deploy.sh
@@ -33,48 +33,34 @@ git push
 
 Ce script fait automatiquement :
 - `git pull` pour récupérer les modifications
-- Application du schéma Directus (si modifié)
+- **Ne touche pas au schéma Directus** (préserve les modifs faites dans l'admin)
 - Reconstruction du frontend
 - Redémarrage du conteneur
 
-**Option B : Déploiement manuel étape par étape**
+**Option B : Déploiement avec application du schéma**
+
+Uniquement quand vous avez exporté et versionné un nouveau schéma :
+
+```bash
+./scripts/deploy.sh --apply-schema
+```
+
+⚠️ Cela **écrase** la base Directus avec le schéma versionné. À utiliser avec précaution.
+
+**Option C : Déploiement manuel étape par étape**
 
 ```bash
 # 1. Récupérer les modifications
 git pull
 
-# 2. Appliquer le schéma Directus (si modifié)
-cd front
-npm run directus:apply
-cd ..
-
-# 3. Reconstruire et redémarrer le frontend
+# 2. Reconstruire et redémarrer le frontend
 docker compose up -d --build frontend
-
 ```
 
-**Option C : Appliquer uniquement le schéma Directus (sans rebuild du frontend)**
-
-Si vous avez seulement modifié le schéma Directus et que vous voulez l'appliquer sans reconstruire le frontend :
+**Option D : Appliquer uniquement le schéma Directus (sans rebuild du frontend)**
 
 ```bash
-# 1. Récupérer les modifications
-git pull
-
-# 2. Appliquer uniquement le schéma Directus
 ./scripts/apply-schema.sh
-```
-
-**Option D : Déploiement rapide (code uniquement, sans schéma)**
-
-```bash
-git pull && docker compose up -d --build frontend
-```
-
-Ou avec le script :
-
-```bash
-./scripts/deploy.sh --skip-schema
 ```
 
 ## 📋 Commandes utiles
@@ -95,14 +81,14 @@ cd front && npm run directus:apply:dry-run
 ### Déploiement
 
 ```bash
-# Déploiement complet (code + schéma + rebuild frontend)
+# Déploiement standard (code + rebuild frontend, schéma préservé)
 ./scripts/deploy.sh
+
+# Déploiement avec application du schéma (écrase les modifs Directus)
+./scripts/deploy.sh --apply-schema
 
 # Appliquer uniquement le schéma Directus (sans rebuild frontend)
 ./scripts/apply-schema.sh
-
-# Déploiement sans schéma (code uniquement)
-./scripts/deploy.sh --skip-schema
 ```
 
 ### Cache et première visite
@@ -111,10 +97,10 @@ Les pages listes (Films, Vidéos-art, Médiations, Actus) affichent un **skeleto
 
 ## ⚠️ Notes importantes
 
-- Le schéma Directus est versionné dans `directus/snapshots/schema.yaml`
+- **Par défaut, le déploiement ne touche jamais au schéma Directus** — les modifications faites dans l'interface admin sont préservées
+- Le schéma est versionné dans `directus/snapshots/schema.yaml` ; utiliser `--apply-schema` uniquement quand vous voulez l'appliquer explicitement
 - Les données (contenu) ne sont **pas** affectées par l'application d'un snapshot
 - Toujours tester en local avant de déployer
-- En cas d'erreur lors de l'application du schéma, vérifiez les logs
 
 ### Variables d'environnement requises
 

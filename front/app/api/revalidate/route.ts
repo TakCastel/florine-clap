@@ -67,13 +67,35 @@ export async function POST(request: NextRequest) {
       const tags = getTagsForPath(path)
       for (const tag of tags) allTags.add(tag)
     }
+
+    const revalidatedTags: string[] = []
+    const failedTags: string[] = []
     for (const tag of allTags) {
-      revalidateTag(tag)
+      try {
+        revalidateTag(tag)
+        revalidatedTags.push(tag)
+      } catch (tagErr) {
+        console.warn(`revalidateTag("${tag}") a échoué:`, tagErr)
+        failedTags.push(tag)
+      }
     }
 
-    return NextResponse.json({ revalidated: true, paths })
+    // Toujours retourner 200 pour que le Flow Directus ne bloque pas la publication.
+    // Les tags en échec seront revalidés au prochain hit (cache 24h) ou via curl manuel.
+    return NextResponse.json({
+      revalidated: true,
+      paths,
+      revalidatedTags,
+      ...(failedTags.length > 0 && { failedTags, warning: 'Certains tags ont échoué (bug Next.js connu)' }),
+    })
   } catch (err) {
     console.error('Erreur revalidation:', err)
-    return NextResponse.json({ error: 'Erreur lors de la revalidation' }, { status: 500 })
+    // Retourner 200 quand même pour ne pas bloquer le Flow Directus.
+    // Le contenu sera visible après 24h ou via revalidation manuelle.
+    return NextResponse.json({
+      revalidated: false,
+      error: 'Erreur lors de la revalidation',
+      warning: 'Le Flow ne bloque pas la publication. Contenu visible sous 24h ou après curl manuel.',
+    }, { status: 200 })
   }
 }
