@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { revalidateTag } from 'next/cache'
 
 /** Paths revalidés → tags à invalider (cache des fetches Directus) pour que le nouveau contenu s'affiche */
 const PATH_TO_TAGS: Record<string, string[]> = {
@@ -23,18 +22,9 @@ function getTagsForPath(path: string): string[] {
 }
 
 /**
- * Revalidation à la demande : à appeler depuis un webhook Directus
- * quand le contenu (films, médiations, vidéos art, actualités, etc.) change.
- *
- * Configurer dans Directus : Flow ou Webhook qui envoie une requête POST vers
- *   https://votre-domaine.com/api/revalidate
- * avec :
- *   - Header: Authorization: Bearer <REVALIDATE_SECRET>
- *   - Body JSON (optionnel): { "path": "/films" } ou { "paths": ["/films", "/mediations"] }
- *
- * Si aucun path n'est fourni, revalide les routes principales (home, listes).
- *
- * Variable d'environnement requise : REVALIDATE_SECRET (secret partagé avec le webhook).
+ * Revalidation à la demande : à appeler depuis un webhook Directus.
+ * Délègue à /api/revalidate-internal via fetch local pour contourner le bug Next.js
+ * (revalidateTag échoue quand la requête vient d'un webhook externe).
  */
 export async function POST(request: NextRequest) {
   const secret = process.env.REVALIDATE_SECRET
@@ -57,41 +47,42 @@ export async function POST(request: NextRequest) {
     } else if (Array.isArray(body.paths)) {
       paths = body.paths.filter((p: unknown) => typeof p === 'string')
     }
-
     if (paths.length === 0) {
       paths = ['/', '/films', '/mediations', '/videos-art', '/actus', '/bio', '/mentions-legales', '/politique-confidentialite']
     }
 
-    const allTags = new Set<string>()
-    for (const path of paths) {
-      const tags = getTagsForPath(path)
-      for (const tag of tags) allTags.add(tag)
+    // Appel interne : le contexte local évite le bug revalidateTag avec les webhooks externes
+    const baseUrl = process.env.VERCEL_URL
+      ? `https://${process.env.VERCEL_URL}`
+      : process.env.REVALIDATE_INTERNAL_URL || 'http://127.0.0.1:3000'
+    const internalUrl = `${baseUrl}/api/revalidate-internal`
+
+    const res = await fetch(internalUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Internal-Secret': secret,
+      },
+      body: JSON.stringify({ paths }),
+    })
+
+    const data = await res.json().catch(() => ({}))
+    if (!res.ok) {
+      console.warn('revalidate-internal a échoué:', res.status, data)
+      return NextResponse.json({
+        revalidated: false,
+        error: data.error || 'Erreur interne',
+        warning: 'Le Flow ne bloque pas la publication. Contenu visible sous 24h ou après curl manuel.',
+      }, { status: 200 })
     }
 
-    const revalidatedTags: string[] = []
-    const failedTags: string[] = []
-    for (const tag of allTags) {
-      try {
-        revalidateTag(tag)
-        revalidatedTags.push(tag)
-      } catch (tagErr) {
-        console.warn(`revalidateTag("${tag}") a échoué:`, tagErr)
-        failedTags.push(tag)
-      }
-    }
-
-    // Toujours retourner 200 pour que le Flow Directus ne bloque pas la publication.
-    // Les tags en échec seront revalidés au prochain hit (cache 24h) ou via curl manuel.
     return NextResponse.json({
       revalidated: true,
       paths,
-      revalidatedTags,
-      ...(failedTags.length > 0 && { failedTags, warning: 'Certains tags ont échoué (bug Next.js connu)' }),
+      tags: data.tags,
     })
   } catch (err) {
     console.error('Erreur revalidation:', err)
-    // Retourner 200 quand même pour ne pas bloquer le Flow Directus.
-    // Le contenu sera visible après 24h ou via revalidation manuelle.
     return NextResponse.json({
       revalidated: false,
       error: 'Erreur lors de la revalidation',
