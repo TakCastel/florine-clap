@@ -1,21 +1,24 @@
 #!/bin/bash
 # Script de déploiement complet sur le serveur
-# Usage: ./scripts/deploy.sh [--apply-schema] [--no-pull]
+# Usage: ./scripts/deploy.sh [--apply-schema] [--no-pull] [--pull-image]
 #
 # Par défaut, le schéma Directus n'est JAMAIS appliqué pour ne pas écraser
 # les modifications faites dans l'interface admin. Utiliser --apply-schema
 # uniquement quand vous avez exporté et versionné un nouveau schéma.
 # --no-pull : saute git pull (utilisé par la CI GitHub après git reset)
+# --pull-image : pull l'image GHCR au lieu de builder (CI/CD, nécessite FRONTEND_IMAGE_TAG)
 
 set -e  # Arrêter en cas d'erreur
 
 APPLY_SCHEMA=false
 SKIP_PULL=false
+PULL_IMAGE=false
 
 for arg in "$@"; do
   case "$arg" in
     --apply-schema) APPLY_SCHEMA=true ;;
     --no-pull) SKIP_PULL=true ;;
+    --pull-image) PULL_IMAGE=true ;;
   esac
 done
 
@@ -56,10 +59,20 @@ else
   echo ""
 fi
 
-# 3. Reconstruire et redémarrer le frontend
-echo "🔨 Reconstruction du frontend..."
-docker compose build frontend
-echo "✅ Frontend reconstruit"
+# 3. Mettre à jour le frontend
+if [ "$PULL_IMAGE" = true ]; then
+  if [ -z "$FRONTEND_IMAGE_TAG" ]; then
+    echo "❌ FRONTEND_IMAGE_TAG est requis avec --pull-image"
+    exit 1
+  fi
+  echo "📥 Récupération de l'image ghcr.io/takcastel/florine-clap-frontend:${FRONTEND_IMAGE_TAG}..."
+  docker compose pull frontend
+  echo "✅ Image récupérée"
+else
+  echo "🔨 Reconstruction du frontend..."
+  docker compose build frontend
+  echo "✅ Frontend reconstruit"
+fi
 echo ""
 
 echo "🔄 Redémarrage du frontend..."

@@ -27,10 +27,15 @@ Chaque push (ou merge) sur `main` déclenche automatiquement le déploiement via
 
 ### 3. Déploiement automatique (CI/CD GitHub Actions)
 
-Le workflow `.github/workflows/deploy.yml` se connecte en SSH au VPS et exécute :
+Le workflow `.github/workflows/deploy.yml` :
 
-1. `git fetch` + `git reset --hard origin/main` dans `/srv/florine-clap`
-2. `./scripts/deploy.sh --no-pull` (rebuild Docker frontend + restart + warmup)
+1. **Build** l'image Docker sur GitHub Actions (Next.js compilé dans la CI)
+2. **Push** vers GitHub Container Registry : `ghcr.io/takcastel/florine-clap-frontend:<commit>`
+3. **SSH** sur le VPS → `git reset` + `docker compose pull` + restart (pas de build sur le serveur)
+
+```
+push main → GitHub build l'image → GHCR → VPS pull + restart
+```
 
 #### Configuration initiale (une seule fois)
 
@@ -57,6 +62,11 @@ Vérifier que `ubuntu` est dans le groupe `docker` : `groups ubuntu` (sinon `sud
 | `VPS_USER` | `ubuntu` |
 | `VPS_SSH_KEY` | contenu de la clé privée `florine-clap-deploy` |
 | `VPS_PORT` | `22` (optionnel) |
+| `NEXT_PUBLIC_DIRECTUS_URL` | URL HTTPS publique de Directus (ex. `https://api.florineclap.com`) — **figée au build** |
+| `GHCR_TOKEN` | PAT GitHub avec scope `read:packages` (pour que le VPS pull l'image privée) |
+
+> **GHCR_TOKEN** : créer un [Personal Access Token](https://github.com/settings/tokens) (classic) avec `read:packages`.  
+> Alternative : rendre le package public dans GitHub → Packages → florine-clap-frontend → Package settings → Change visibility.
 
 **4. Vérifier le clone Git sur le serveur** :
 
@@ -81,7 +91,7 @@ Suivi des déploiements : onglet **Actions** sur GitHub.
 Ce script fait automatiquement :
 - `git pull` pour récupérer les modifications
 - **Ne touche pas au schéma Directus** (préserve les modifs faites dans l'admin)
-- Reconstruction du frontend
+- Reconstruction locale du frontend (`docker compose build`) ou pull GHCR (`--pull-image`)
 - Redémarrage du conteneur
 
 **Option B : Déploiement avec application du schéma**
@@ -128,11 +138,14 @@ cd front && npm run directus:apply:dry-run
 ### Déploiement
 
 ```bash
-# Déploiement standard (code + rebuild frontend, schéma préservé)
+# Déploiement standard (build local sur le VPS)
 ./scripts/deploy.sh
 
+# Déploiement CI : pull image GHCR (après build GitHub Actions)
+FRONTEND_IMAGE_TAG=abc123 ./scripts/deploy.sh --pull-image
+
 # Sans git pull (code déjà à jour, ex. après reset CI)
-./scripts/deploy.sh --no-pull
+./scripts/deploy.sh --no-pull --pull-image
 
 # Déploiement avec application du schéma (écrase les modifs Directus)
 ./scripts/deploy.sh --apply-schema

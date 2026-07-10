@@ -53,6 +53,7 @@ services:
   frontend:
     env_file:
       - .env
+    image: ghcr.io/takcastel/florine-clap-frontend:${FRONTEND_IMAGE_TAG:-latest}
     build:
       context: .
       dockerfile: ./front/Dockerfile
