@@ -1,26 +1,37 @@
 #!/bin/bash
 # Script de déploiement complet sur le serveur
-# Usage: ./scripts/deploy.sh [--apply-schema]
+# Usage: ./scripts/deploy.sh [--apply-schema] [--no-pull]
 #
 # Par défaut, le schéma Directus n'est JAMAIS appliqué pour ne pas écraser
 # les modifications faites dans l'interface admin. Utiliser --apply-schema
 # uniquement quand vous avez exporté et versionné un nouveau schéma.
+# --no-pull : saute git pull (utilisé par la CI GitHub après git reset)
 
 set -e  # Arrêter en cas d'erreur
 
 APPLY_SCHEMA=false
-if [ "$1" == "--apply-schema" ]; then
-  APPLY_SCHEMA=true
-fi
+SKIP_PULL=false
+
+for arg in "$@"; do
+  case "$arg" in
+    --apply-schema) APPLY_SCHEMA=true ;;
+    --no-pull) SKIP_PULL=true ;;
+  esac
+done
 
 echo "🚀 Déploiement en cours..."
 echo ""
 
 # 1. Récupérer les modifications
-echo "📥 Récupération des modifications depuis Git..."
-git pull
-echo "✅ Modifications récupérées"
-echo ""
+if [ "$SKIP_PULL" = true ]; then
+  echo "⏭️  git pull ignoré (--no-pull)"
+  echo ""
+else
+  echo "📥 Récupération des modifications depuis Git..."
+  git pull
+  echo "✅ Modifications récupérées"
+  echo ""
+fi
 
 # 2. Appliquer le schéma Directus (uniquement si --apply-schema)
 if [ "$APPLY_SCHEMA" = true ]; then

@@ -14,18 +14,65 @@ npm run directus:export
 
 Cela exporte le schéma dans `directus/snapshots/schema.yaml`.
 
-### 2. Committer les modifications
+### 2. Committer et pousser sur `main`
 
 ```bash
 # Depuis la racine du projet
 git add .
 git commit -m "Modifications + mise à jour du schéma Directus"
-git push
+git push origin main
 ```
 
-### 3. Sur le serveur : Déployer
+Chaque push (ou merge) sur `main` déclenche automatiquement le déploiement via GitHub Actions (voir ci-dessous).
 
-**Option A : Déploiement standard (recommandé)**
+### 3. Déploiement automatique (CI/CD GitHub Actions)
+
+Le workflow `.github/workflows/deploy.yml` se connecte en SSH au VPS et exécute :
+
+1. `git fetch` + `git reset --hard origin/main` dans `/srv/florine-clap`
+2. `./scripts/deploy.sh --no-pull` (rebuild Docker frontend + restart + warmup)
+
+#### Configuration initiale (une seule fois)
+
+**1. Clé SSH dédiée au déploiement** (en local) :
+
+```bash
+ssh-keygen -t ed25519 -C "github-deploy-florine-clap" -f ~/.ssh/florine-clap-deploy -N ""
+```
+
+**2. Autoriser la clé sur le VPS** (utilisateur `ubuntu`) :
+
+```bash
+cat florine-clap-deploy.pub >> ~/.ssh/authorized_keys
+chmod 600 ~/.ssh/authorized_keys
+```
+
+Vérifier que `ubuntu` est dans le groupe `docker` : `groups ubuntu` (sinon `sudo usermod -aG docker ubuntu`).
+
+**3. Secrets GitHub** — repo `TakCastel/florine-clap` → Settings → Secrets and variables → Actions :
+
+| Secret | Valeur |
+|--------|--------|
+| `VPS_HOST` | IP ou domaine du VPS |
+| `VPS_USER` | `ubuntu` |
+| `VPS_SSH_KEY` | contenu de la clé privée `florine-clap-deploy` |
+| `VPS_PORT` | `22` (optionnel) |
+
+**4. Vérifier le clone Git sur le serveur** :
+
+```bash
+cd /srv/florine-clap
+git remote -v
+git branch
+```
+
+Le remote doit pointer vers `github.com:TakCastel/florine-clap.git`. Si `git fetch` échoue sans authentification, ajouter une [deploy key](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/managing-deploy-keys) en lecture seule sur le repo.
+
+Suivi des déploiements : onglet **Actions** sur GitHub.
+
+### 4. Sur le serveur : Déploiement manuel (secours)
+
+**Option A : Déploiement standard**
 
 ```bash
 ./scripts/deploy.sh
@@ -83,6 +130,9 @@ cd front && npm run directus:apply:dry-run
 ```bash
 # Déploiement standard (code + rebuild frontend, schéma préservé)
 ./scripts/deploy.sh
+
+# Sans git pull (code déjà à jour, ex. après reset CI)
+./scripts/deploy.sh --no-pull
 
 # Déploiement avec application du schéma (écrase les modifs Directus)
 ./scripts/deploy.sh --apply-schema
