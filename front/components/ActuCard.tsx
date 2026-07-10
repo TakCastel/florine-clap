@@ -64,7 +64,7 @@ export default function ActuCard({
       <div className="flex flex-col md:flex-row gap-4 md:gap-6 md:items-stretch">
         {/* Image à gauche - pleine hauteur */}
         {cover && (
-          <div className="relative w-full md:w-48 lg:w-56 h-48 md:h-auto flex-shrink-0 overflow-hidden bg-gray-100">
+          <div className="relative w-full md:w-48 lg:w-56 h-48 md:h-auto flex-shrink-0 overflow-hidden">
             <Image 
               src={cover} 
               alt={title}

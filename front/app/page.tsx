@@ -2,23 +2,18 @@ import { Suspense } from 'react'
 import HomePageClient from '@/components/home/HomePageClient'
 import HomeSkeleton from '@/components/home/HomeSkeleton'
 import { getHomeSettings, getImageUrl, getVideoUrl, HomeSettings } from '@/lib/directus'
+import { buildMetadata, generateJsonLd } from '@/components/Seo'
+import { canonical, SITE_TITLE, SITE_DESCRIPTION } from '@/lib/seo'
 import type { Metadata } from 'next'
 
 // Cache 24h ; revalidation à la demande via /api/revalidate (webhook Directus)
 export const revalidate = 86400
 
-/** Preload + preconnect de la vidéo hero pour qu’elle démarre au plus tôt */
-export async function generateMetadata(): Promise<Metadata> {
-  const settings = await getHomeSettings().catch(() => null)
-  const heroVideoUrl = settings?.hero_video ? getVideoUrl(settings.hero_video) : null
-  return {
-    title: 'Florine Clap - Réalisatrice et Artiste',
-    description: "Réalisatrice et artiste, je crée des films documentaires et des médiations artistiques qui explorent la relation entre l'homme et son environnement.",
-    ...(heroVideoUrl && {
-      links: [{ rel: 'preload', href: heroVideoUrl, as: 'video' }],
-    }),
-  }
-}
+export const metadata: Metadata = buildMetadata({
+  title: SITE_TITLE,
+  description: SITE_DESCRIPTION,
+  canonical: canonical('/'),
+})
 
 async function getHomeSettingsWithImageUrls(): Promise<HomeSettings | null> {
   try {
@@ -61,7 +56,45 @@ async function getHomeSettingsWithImageUrls(): Promise<HomeSettings | null> {
 
 async function HomeContent() {
   const homeSettings = await getHomeSettingsWithImageUrls()
-  return <HomePageClient homeSettings={homeSettings} />
+  const heroVideoUrl = homeSettings?.hero_video
+    ? (typeof homeSettings.hero_video === 'string'
+      ? homeSettings.hero_video
+      : getVideoUrl(homeSettings.hero_video))
+    : null
+  const websiteJsonLd = generateJsonLd({
+    type: 'WebSite',
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
+    url: canonical('/'),
+  })
+  const personJsonLd = generateJsonLd({
+    type: 'Person',
+    description: SITE_DESCRIPTION,
+    url: canonical('/bio'),
+    image: homeSettings?.bio_image
+      ? (typeof homeSettings.bio_image === 'string'
+        ? homeSettings.bio_image
+        : undefined)
+      : undefined,
+  })
+  return (
+    <>
+      {heroVideoUrl && (
+        <link rel="preload" href={heroVideoUrl} as="video" />
+      )}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }}
+      />
+      {/* H1 caché pour le SEO : le contenu visuel utilise des h3 pour des raisons de design */}
+      <h1 className="sr-only">{SITE_TITLE}</h1>
+      <HomePageClient homeSettings={homeSettings} />
+    </>
+  )
 }
 
 export default function HomePage() {

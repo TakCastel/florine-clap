@@ -6,6 +6,7 @@ import { AnimationProvider } from '@/contexts/AnimationContext'
 import LayoutWrapper from './LayoutWrapper'
 import { JetBrains_Mono } from 'next/font/google'
 import type { Metadata } from 'next'
+import { SITE_TITLE, SITE_DESCRIPTION, SITE_KEYWORDS } from '@/lib/seo'
 
 const jetbrainsMono = JetBrains_Mono({
   subsets: ['latin'],
@@ -18,11 +19,11 @@ const siteUrl = process.env.SITE_URL || 'https://florineclap.com'
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: 'Florine Clap - Réalisatrice et Artiste',
+    default: SITE_TITLE,
     template: '%s | Florine Clap'
   },
-  description: 'Réalisatrice et artiste, je crée des films documentaires et des médiations artistiques qui explorent la relation entre l\'homme et son environnement.',
-  keywords: ['Florine Clap', 'réalisatrice', 'documentaire', 'cinéma', 'art', 'médiation artistique', 'films', 'vidéos art'],
+  description: SITE_DESCRIPTION,
+  keywords: SITE_KEYWORDS,
   authors: [{ name: 'Florine Clap' }],
   creator: 'Florine Clap',
   publisher: 'Florine Clap',
@@ -36,13 +37,15 @@ export const metadata: Metadata = {
     locale: 'fr_FR',
     url: siteUrl,
     siteName: 'Florine Clap',
-    title: 'Florine Clap - Réalisatrice et Artiste',
-    description: 'Réalisatrice et artiste, je crée des films documentaires et des médiations artistiques qui explorent la relation entre l\'homme et son environnement.',
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
+    images: [{ url: `${siteUrl}/images/og-default.jpg`, width: 1200, height: 630, alt: 'Florine Clap' }],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Florine Clap - Réalisatrice et Artiste',
-    description: 'Réalisatrice et artiste, je crée des films documentaires et des médiations artistiques qui explorent la relation entre l\'homme et son environnement.',
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
+    images: [`${siteUrl}/images/og-default.jpg`],
   },
   robots: {
     index: true,
@@ -70,31 +73,9 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="fr" className={`${jetbrainsMono.variable}`}>
-      <head>
-        {/* Andale Mono via police système ou locale injectée */}
-        <style dangerouslySetInnerHTML={{
-          __html: `
-            @font-face {
-              font-family: 'Andale Mono';
-              src: local('Andale Mono'), local('AndaleMono'), local('AndaleMono-Regular');
-              font-weight: normal;
-              font-style: normal;
-              font-display: swap;
-            }
-          `
-        }} />
-        
-        {/* Favicon */}
-        <link rel="icon" type="image/png" href="/favicon.png" sizes="32x32" />
-        <link rel="apple-touch-icon" href="/favicon.png" sizes="180x180" />
-      </head>
       <body className="bg-theme-white font-sans">
         {/* Skip to main content link for accessibility */}
-        <a 
-          href="#main-content" 
-          tabIndex={0}
-          className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[200] focus:px-4 focus:py-2 focus:bg-black focus:text-white focus:rounded focus:no-underline focus:outline-2 focus:outline-white"
-        >
+        <a href="#main-content" className="skip-link">
           Aller au contenu principal
         </a>
         <LayoutWrapper>

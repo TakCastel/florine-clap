@@ -134,7 +134,9 @@ export default function HeroSection({ homeSettings }: HeroSectionProps) {
                 preload="auto"
                 className="w-full h-full object-cover scale-110 bg-black"
                 onLoadedData={() => setIsVideoReady(true)}
+                onLoadedMetadata={() => setIsVideoReady(true)}
                 onCanPlay={() => setIsVideoReady(true)}
+                onCanPlayThrough={() => setIsVideoReady(true)}
                 onError={() => {
                   setHasVideoError(true)
                   setIsVideoReady(false)

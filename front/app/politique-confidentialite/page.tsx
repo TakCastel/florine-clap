@@ -30,7 +30,7 @@ export default async function PolitiqueConfidentialitePage() {
   const bottomImageUrl = page?.bottom_image ? getImageUrl(page.bottom_image) : null
 
   return (
-    <main id="main-content" className="min-h-screen bg-theme-white text-black">
+    <div className="min-h-screen bg-theme-white text-black">
       {/* Hero Image - dans le container */}
       {heroImageUrl && (
         <div className="max-w-container-small mx-auto px-6 md:px-10 lg:px-16 pt-16">
@@ -129,7 +129,7 @@ export default async function PolitiqueConfidentialitePage() {
           </div>
         )
       })()}
-    </main>
+    </div>
   )
 }
 

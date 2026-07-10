@@ -45,7 +45,7 @@ export default function directusImageLoader({ src, width, quality }) {
         if (width) {
           url.searchParams.set('width', width.toString())
         }
-        const finalQuality = quality || 85
+        const finalQuality = quality ?? 75
         url.searchParams.set('quality', finalQuality.toString())
         url.searchParams.set('format', 'webp')
         return url.toString()
@@ -85,8 +85,7 @@ export default function directusImageLoader({ src, width, quality }) {
     if (width) {
       url.searchParams.set('width', width.toString())
     }
-    // Qualité par défaut à 85 si non spécifiée
-    const finalQuality = quality || 85
+    const finalQuality = quality ?? 75
     url.searchParams.set('quality', finalQuality.toString())
     // Ajouter le format webp pour une meilleure compression
     url.searchParams.set('format', 'webp')

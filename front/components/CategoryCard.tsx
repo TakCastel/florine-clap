@@ -141,10 +141,10 @@ export default function CategoryCard({
             src={image1} 
             alt={imageAlt}
             fill
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 25vw"
             className="object-cover"
             priority={priority || activeImage === 'image1'}
-            quality={85}
+            quality={75}
             onLoad={() => setImage1Loaded(true)}
             onError={() => setImage1Loaded(true)}
           />
@@ -169,10 +169,10 @@ export default function CategoryCard({
             src={image2} 
             alt={imageAlt}
             fill
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 25vw"
             className="object-cover"
             priority={priority || activeImage === 'image2'}
-            quality={85}
+            quality={75}
             onLoad={() => setImage2Loaded(true)}
             onError={() => setImage2Loaded(true)}
           />
@@ -194,17 +194,17 @@ export default function CategoryCard({
 
       {/* Contenu mobile */}
       <div className="absolute inset-0 z-30 p-4 md:hidden flex flex-col">
-        <h3 className="font-display text-white font-bold tracking-tight leading-[1.1] text-lg">
+        <h2 className="font-display text-white font-bold tracking-tight leading-[1.1] text-lg">
           {title}
-        </h3>
+        </h2>
       </div>
 
       {/* Contenu desktop */}
       <div className="absolute inset-0 z-30 p-6 md:p-8 hidden md:flex flex-col justify-between">
         <div className="mt-auto transform translate-y-4 group-hover:translate-y-0 mb-4 transition-all duration-500">
-          <h3 className="text-xl md:text-2xl font-bold tracking-tight leading-tight text-white mb-3">
+          <h2 className="text-xl md:text-2xl font-bold tracking-tight leading-tight text-white mb-3">
             {title}
-          </h3>
+          </h2>
           <div className="h-[3px] bg-white w-16 group-hover:w-full opacity-90 transition-all duration-500 ease-out rounded-full" />
         </div>
 

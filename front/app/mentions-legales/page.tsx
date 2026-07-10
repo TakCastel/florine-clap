@@ -30,7 +30,7 @@ export default async function MentionsLegalesPage() {
   const bottomImageUrl = page?.bottom_image ? getImageUrl(page.bottom_image) : null
 
   return (
-    <main id="main-content" className="min-h-screen bg-theme-white text-black">
+    <div className="min-h-screen bg-theme-white text-black">
       {/* Hero Image - dans le container */}
       {heroImageUrl && (
         <div className="max-w-container-small mx-auto px-6 md:px-10 lg:px-16 pt-16">
@@ -69,14 +69,14 @@ export default async function MentionsLegalesPage() {
               Ce site a été conçu et développé par :
             </p>
             <p>
-              <strong>Tarik Talhoui</strong><br />
+              <strong>Tarik Talhaoui</strong><br />
               <a 
-                href="https://tariktalhaoui.fr" 
+                href="https://www.linkedin.com/in/tarik-talhaoui-832769110/" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="text-theme-dark underline hover:text-theme-dark/80 transition-colors"
               >
-                tariktalhaoui.fr
+                LinkedIn
               </a>
             </p>
           </section>
@@ -217,7 +217,7 @@ export default async function MentionsLegalesPage() {
           </div>
         )
       })()}
-    </main>
+    </div>
   )
 }
 

@@ -63,11 +63,11 @@ export default function FilmsPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <main id="main-content">
+      <div>
         <Suspense fallback={<ContentListSkeleton title="Films" breadcrumbLabel="Films" />}>
           <FilmsContent />
         </Suspense>
-      </main>
+      </div>
     </>
   )
 }

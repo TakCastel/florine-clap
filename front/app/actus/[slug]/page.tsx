@@ -102,13 +102,13 @@ export default async function ActuPage({ params }: ActuPageProps) {
         </header>
         <article>
           {actu.body && (
-            <div className="prose max-w-none text-base text-black mb-12 [&_p]:text-justify [&_li]:text-justify">
+            <div className="prose max-w-none text-base text-black mb-12 [&_p]:text-justify [&_li]:text-justify [&_img]:w-full [&_img]:h-auto [&_img]:bg-transparent">
               <MarkdownRenderer content={actu.body} skipFirstHeading={true} />
             </div>
           )}
 
           {coverUrl && (
-            <div className="relative w-full aspect-video overflow-hidden bg-black/5">
+            <div className="relative w-full aspect-[846/362] overflow-hidden">
               <Image
                 src={coverUrl}
                 alt={`Image de couverture de l'article ${actu.title}`}

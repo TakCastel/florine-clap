@@ -15,7 +15,7 @@ export default function Navigation({ isHomePage = false, isLightText = false }: 
   
   const navItems = [
     { href: '/films', label: 'FILMS' },
-    { href: '/mediations', label: 'MÉDIATIONS' },
+    { href: '/mediations', label: 'MÉDIATIONS ARTISTIQUES' },
     { href: '/videos-art', label: 'VIDÉOS/ART' },
     { href: '/actus', label: 'ACTUALITÉS' },
     { href: '/bio', label: 'BIO' }

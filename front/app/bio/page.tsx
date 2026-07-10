@@ -5,7 +5,7 @@ import PartnersSection from '@/components/home/PartnersSection'
 import ArticleHeroImage from '@/components/ArticleHeroImage'
 import { getPageBySlug, Page, getImageUrl, getHomeSettings } from '@/lib/directus'
 import { buildMetadata, generateJsonLd } from '@/components/Seo'
-import { canonical } from '@/lib/seo'
+import { canonical, BIO_DESCRIPTION } from '@/lib/seo'
 import { Metadata } from 'next'
 import Image from 'next/image'
 import BioSkeleton from './BioSkeleton'
@@ -14,8 +14,8 @@ import BioSkeleton from './BioSkeleton'
 export const revalidate = 86400
 
 export const metadata: Metadata = buildMetadata({
-  title: 'Bio',
-  description: 'Découvrez le parcours de Florine Clap, réalisatrice et formatrice en médiations vidéo',
+  title: 'Bio - Réalisatrice à Avignon',
+  description: BIO_DESCRIPTION,
   canonical: canonical('/bio'),
 })
 
@@ -60,7 +60,7 @@ async function BioContent() {
   const jsonLd = generateJsonLd({
     type: 'Person',
     title: page.title === "A propos" ? "Bio" : page.title,
-    description: 'Découvrez le parcours de Florine Clap, réalisatrice et formatrice en médiations vidéo',
+    description: BIO_DESCRIPTION,
     image: heroImageUrlString || '/images/FLORINE_DEF.avif' || undefined,
     url: canonicalUrl,
   })
@@ -71,7 +71,7 @@ async function BioContent() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <main id="main-content" className="min-h-screen bg-theme-white text-theme-dark relative">
+      <div className="min-h-screen bg-theme-white text-theme-dark relative">
         {/* H1 caché pour le SEO */}
         <h1 className="sr-only">
           {page.title === "A propos" ? "Bio" : page.title}
@@ -157,7 +157,7 @@ async function BioContent() {
 
         {/* Section Partenaires */}
         <PartnersSection />
-      </main>
+      </div>
     </>
   )
 }

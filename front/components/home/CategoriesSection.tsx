@@ -120,10 +120,10 @@ export default function CategoriesSection({ homeSettings }: CategoriesSectionPro
     },
     {
       href: '/mediations',
-      title: 'Médiations',
+      title: 'Médiations artistiques',
       linkText: 'Découvrir',
       imageSrc: categoryImages.mediations,
-      imageAlt: 'Découvrir mes médiations',
+      imageAlt: 'Découvrir mes médiations artistiques',
       theme: 'mediations' as const,
       bgColor: 'bg-theme-mediations/85',
       hoverBgColor: 'group-hover:bg-theme-mediations/90',

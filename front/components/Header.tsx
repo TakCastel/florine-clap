@@ -54,10 +54,15 @@ export default function Header() {
         ? 'absolute' 
         : 'fixed md:relative'
     }`}>
+      {isHomePage && (
+        <div className="absolute inset-x-0 top-0 h-28 md:h-36 bg-gradient-to-b from-black/45 to-transparent pointer-events-none" />
+      )}
       <div className={`flex justify-between items-center px-4 md:px-6 lg:px-10 xl:px-16 py-4 relative ${
-        isHomePage || isArticlePage || isListPage || isBioPage
-          ? 'bg-transparent backdrop-blur-none'
-          : 'backdrop-blur-xl bg-theme-white/85 border-b border-gray-200'
+        isHomePage
+          ? 'bg-transparent z-10'
+          : isArticlePage || isListPage || isBioPage
+            ? 'bg-transparent backdrop-blur-none'
+            : 'backdrop-blur-xl bg-theme-white/85 border-b border-gray-200'
       }`}>
         {/* Logo - style simple comme les liens de navigation */}
         <div

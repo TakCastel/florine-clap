@@ -146,9 +146,9 @@ export default function BioSection({ homeSettings }: BioSectionProps) {
               {/* Titre avec animation */}
               <div className="overflow-hidden mb-4 md:mb-6">
                 <Reveal delay={0.3} duration={1}>
-                  <h3 className="text-xl md:text-2xl font-bold tracking-tight leading-tight text-black mb-4">
+                  <h2 className="text-xl md:text-2xl font-bold tracking-tight leading-tight text-black mb-4">
                     Florine Clap
-                  </h3>
+                  </h2>
                   
                   {/* Ligne de séparation animée */}
                   <motion.div 

@@ -2,7 +2,7 @@ import Link from 'next/link'
 
 export const MENU_ITEMS = [
   { href: '/films', label: 'FILMS' },
-  { href: '/mediations', label: 'MÉDIATIONS' },
+  { href: '/mediations', label: 'MÉDIATIONS ARTISTIQUES' },
   { href: '/videos-art', label: 'VIDÉOS/ART' },
   { href: '/actus', label: 'ACTUALITÉS' },
   { href: '/bio', label: 'BIO' }

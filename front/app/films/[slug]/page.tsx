@@ -260,9 +260,6 @@ export default async function FilmPage({ params }: FilmPageProps) {
 
           {film.lien_film && (
             <section className="border-t border-black/10 pt-8 pb-8">
-              <h2 className="text-lg md:text-xl font-bold tracking-tight leading-tight text-black mb-6">
-                Voir le film
-              </h2>
               <a 
                 href={film.lien_film}
                 target="_blank"

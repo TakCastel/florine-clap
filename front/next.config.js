@@ -10,20 +10,22 @@ const nextConfig = {
   // Utiliser 'standalone' pour Docker/VPS
   output: 'standalone',
   // Réduire le JS non utilisé (Lighthouse "Reduce unused JavaScript")
+  // Metadata dans <head> pour Lighthouse et crawlers sans JS (Next.js 15 stream sinon dans le body)
+  htmlLimitedBots: /.*/,
   experimental: {
     optimizePackageImports: ['framer-motion', 'lucide-react'],
   },
   images: {
     loader: 'custom',
     loaderFile: './lib/image-loader.js',
-    qualities: [75, 85, 90],
+    qualities: [70, 75, 85, 90],
     remotePatterns: [
       { protocol: 'https', hostname: '**' },
       { protocol: 'http', hostname: '**' },
     ],
     formats: ['image/webp', 'image/avif'],
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
-    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
+    imageSizes: [16, 32, 48, 64, 96, 128, 256, 320, 384, 400, 480],
     minimumCacheTTL: 60,
     dangerouslyAllowSVG: true,
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",

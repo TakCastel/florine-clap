@@ -74,11 +74,11 @@ export default function VideosArtPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <main id="main-content">
+      <div>
         <Suspense fallback={<ContentListSkeleton title="Vidéos/art" breadcrumbLabel="Vidéos/art" />}>
           <VideosArtContent />
         </Suspense>
-      </main>
+      </div>
     </>
   )
 }

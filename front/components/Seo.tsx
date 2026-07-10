@@ -1,4 +1,21 @@
 import { Metadata } from 'next'
+import { DEFAULT_OG_IMAGE } from '@/lib/seo'
+
+/** Force une taille/format fiables pour les crawlers sociaux (Facebook/LinkedIn gèrent mal l'AVIF/WebP et les gros fichiers) */
+function toSocialImageUrl(url: string): string {
+  if (!url.includes('/assets/')) return url
+  try {
+    const parsed = new URL(url)
+    parsed.searchParams.set('width', '1200')
+    parsed.searchParams.set('height', '630')
+    parsed.searchParams.set('fit', 'cover')
+    parsed.searchParams.set('quality', '80')
+    parsed.searchParams.set('format', 'jpg')
+    return parsed.toString()
+  } catch {
+    return url
+  }
+}
 
 type SeoProps = {
   title?: string
@@ -29,11 +46,12 @@ export function buildMetadata({
   section,
   tags
 }: SeoProps): Metadata {
-  const fullImageUrl = image 
-    ? (image.startsWith('http') ? image : `${siteUrl}${image.startsWith('/') ? '' : '/'}${image}`)
-    : undefined
+  const rawImage = image || DEFAULT_OG_IMAGE
+  const fullImageUrl = toSocialImageUrl(
+    rawImage.startsWith('http') ? rawImage : `${siteUrl}${rawImage.startsWith('/') ? '' : '/'}${rawImage}`
+  )
 
-  const canonicalUrl = canonical 
+  const canonicalUrl = canonical
     ? (canonical.startsWith('http') ? canonical : `${siteUrl}${canonical.startsWith('/') ? '' : '/'}${canonical}`)
     : undefined
 
@@ -45,12 +63,12 @@ export function buildMetadata({
     openGraph: {
       title: title ?? 'Florine Clap',
       description: description,
-      images: fullImageUrl ? [{ 
+      images: [{
         url: fullImageUrl,
         width: 1200,
         height: 630,
         alt: title || 'Florine Clap'
-      }] : undefined,
+      }],
       url: canonicalUrl,
       siteName: 'Florine Clap',
       type: type === 'video' ? 'website' : type,
@@ -67,7 +85,7 @@ export function buildMetadata({
       card: 'summary_large_image',
       title: title ?? 'Florine Clap',
       description,
-      images: fullImageUrl ? [fullImageUrl] : undefined,
+      images: [fullImageUrl],
       creator: '@florineclap',
     },
   }
@@ -148,8 +166,19 @@ export function generateJsonLd({
     return {
       ...baseJsonLd,
       name: 'Florine Clap',
-      description: description || 'Réalisatrice et artiste, je crée des films documentaires et des médiations artistiques.',
+      description: description || 'Florine Clap, réalisatrice et artiste à Avignon. Films documentaires et médiations artistiques.',
       url: baseUrl,
+      author: {
+        '@type': 'Person',
+        name: 'Florine Clap',
+        jobTitle: 'Réalisatrice et artiste',
+        address: {
+          '@type': 'PostalAddress',
+          addressLocality: 'Avignon',
+          addressRegion: 'Vaucluse',
+          addressCountry: 'FR',
+        },
+      },
     }
   }
 
@@ -157,8 +186,26 @@ export function generateJsonLd({
     return {
       ...baseJsonLd,
       name: 'Florine Clap',
-      jobTitle: 'Réalisatrice et Artiste',
-      url: baseUrl,
+      jobTitle: 'Réalisatrice et artiste',
+      description: description || 'Réalisatrice et artiste à Avignon, spécialisée en films documentaires et médiations artistiques.',
+      url: fullUrl,
+      image: fullImageUrl,
+      address: {
+        '@type': 'PostalAddress',
+        addressLocality: 'Avignon',
+        addressRegion: 'Vaucluse',
+        addressCountry: 'FR',
+      },
+      homeLocation: {
+        '@type': 'Place',
+        name: 'Avignon',
+        address: {
+          '@type': 'PostalAddress',
+          addressLocality: 'Avignon',
+          addressRegion: 'Vaucluse',
+          addressCountry: 'FR',
+        },
+      },
     }
   }
 

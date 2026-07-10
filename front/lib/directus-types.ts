@@ -109,6 +109,7 @@ export interface VideoArt {
   id: string
   slug: string
   title: string
+  subtitle?: string
   image?: string | { id: string; filename_download: string }
   video?: string | { id: string; filename_download: string }
   type?: string

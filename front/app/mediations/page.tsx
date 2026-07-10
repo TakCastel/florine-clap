@@ -10,7 +10,7 @@ export const revalidate = 86400
 
 export function generateMetadata() {
   return buildMetadata({
-    title: 'Médiations - Médiation et Formation artistique',
+    title: 'Médiations artistiques - Médiation et Formation artistique',
     description: 'Depuis une dizaine d\'années, en parallèle de mes projets artistiques, je propose des actions de médiation et des ateliers vidéo de réalisation, destinés principalement aux adolescent·es, étudiant·es et jeunes adultes, dans le cadre de dispositifs tels que Collège au cinéma, ou pour des écoles et des conservatoires.',
     canonical: canonical('/mediations'),
   })
@@ -49,9 +49,9 @@ async function MediationsContent() {
     <ContentListPage
       items={sortedMediations}
       basePath="/mediations"
-      title="Médiations"
+      title="Médiations artistiques"
       description="Depuis une dizaine d'années, en parallèle de mes projets artistiques, je propose des actions de médiation et des ateliers vidéo de réalisation, destinés principalement aux adolescent·es, étudiant·es et jeunes adultes, dans le cadre de dispositifs tels que Collège au cinéma, ou pour des écoles et des conservatoires. Je m'investis également au sein de l'association 1,2,3 Soleil, on fait de l'image, ça se partage !, qui vise à réaliser des films avec des publics empêchés ou fragilisés, tels que des mineur·es isolé·es sans papiers, ou des résident·es en EHPAD, en IME ou en EEAP."
-      breadcrumbLabel="Médiations"
+      breadcrumbLabel="Médiations artistiques"
       seoTitle="Médiation et Formation"
       seoDescription="Depuis une dizaine d'années, en parallèle de mes projets artistiques, je propose des actions de médiation et des ateliers vidéo de réalisation, destinés principalement aux adolescent·es, étudiant·es et jeunes adultes, dans le cadre de dispositifs tels que Collège au cinéma, ou pour des écoles et des conservatoires."
       heroImageUrl={heroImageUrl}
@@ -62,7 +62,7 @@ async function MediationsContent() {
 export default function MediationsPage() {
   const jsonLd = generateJsonLd({
     type: 'WebSite',
-    title: 'Médiations - Florine Clap',
+    title: 'Médiations artistiques - Florine Clap',
     description: 'Actions de médiation et ateliers vidéo de réalisation proposés par Florine Clap.',
     url: '/mediations',
   })
@@ -72,11 +72,11 @@ export default function MediationsPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <main id="main-content">
-        <Suspense fallback={<ContentListSkeleton title="Médiations" breadcrumbLabel="Médiations" />}>
+      <div>
+        <Suspense fallback={<ContentListSkeleton title="Médiations artistiques" breadcrumbLabel="Médiations artistiques" />}>
           <MediationsContent />
         </Suspense>
-      </main>
+      </div>
     </>
   )
 }

@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { canonical } from '@/lib/seo'
 
 type BreadcrumbItem = {
   label: string
@@ -8,6 +9,19 @@ type BreadcrumbItem = {
 type Props = {
   items: BreadcrumbItem[]
   variant?: 'default' | 'blue' | 'grey' | 'yellow' | 'dark' | 'white'
+}
+
+function buildBreadcrumbJsonLd(items: BreadcrumbItem[]) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: items.map((item, index) => ({
+      '@type': 'ListItem',
+      position: index + 1,
+      name: item.label,
+      ...(item.href && { item: canonical(item.href) }),
+    })),
+  }
 }
 
 export default function Breadcrumb({ items, variant = 'default' }: Props) {
@@ -68,8 +82,12 @@ export default function Breadcrumb({ items, variant = 'default' }: Props) {
 
   return (
     <div className={`${styles.container} py-4 sr-only`}>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(buildBreadcrumbJsonLd(items)) }}
+      />
       <div className="max-w-container-large mx-auto px-6 md:px-10 lg:px-16">
-        <nav 
+        <nav
           className={`flex items-center text-xs font-display ${styles.text}`} 
           aria-label="Breadcrumb"
         >

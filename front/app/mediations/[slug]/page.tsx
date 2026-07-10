@@ -85,7 +85,7 @@ export default async function MediationPage({ params }: MediationPageProps) {
             <Breadcrumb 
               items={[
                 { label: 'Accueil', href: '/' },
-                { label: 'Médiations', href: '/mediations' },
+                { label: 'Médiations artistiques', href: '/mediations' },
                 { label: mediation.title }
               ]}
               variant="default"
@@ -185,10 +185,10 @@ export default async function MediationPage({ params }: MediationPageProps) {
               <Link
                 href="/mediations"
                 prefetch
-                aria-label="Retour à la liste des médiations"
+                aria-label="Retour à la liste des médiations artistiques"
                 className="inline-flex items-center gap-2 text-black/70 hover:text-black transition-colors font-display font-light text-xs uppercase tracking-[0.1em]"
               >
-                ← Retour aux médiations
+                ← Retour aux médiations artistiques
               </Link>
             </nav>
           </StickyAside>

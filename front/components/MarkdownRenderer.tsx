@@ -70,7 +70,7 @@ const components = {
         alt={props.alt || ''} 
         width={1200} 
         height={800}
-        className=""
+        className="block w-full h-auto object-contain bg-transparent"
       />
     )
   },

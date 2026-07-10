@@ -71,7 +71,7 @@ export default function ContentListPage({
   }, [heroImageUrl])
 
   return (
-    <main id="main-content" className="min-h-screen bg-theme-white text-black relative">
+    <div className="min-h-screen bg-theme-white text-black relative">
       <div className="relative">
         {/* Image hero en haut */}
         {heroImageUrlString && (
@@ -111,7 +111,7 @@ export default function ContentListPage({
           </div>
         </section>
       </div>
-    </main>
+    </div>
   )
 }
 

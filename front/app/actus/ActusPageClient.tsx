@@ -54,7 +54,7 @@ export default function ActusPageClient({ initialActus, heroImageUrl: heroImageU
   const paginatedItems = filteredItems.slice(startIndex, endIndex)
 
   return (
-    <main id="main-content" className="min-h-screen bg-theme-white relative overflow-hidden">
+    <div className="min-h-screen bg-theme-white relative overflow-hidden">
       <div className="relative">
         {/* Image hero en haut */}
         {heroImageUrl && (
@@ -237,6 +237,6 @@ export default function ActusPageClient({ initialActus, heroImageUrl: heroImageU
           </div>
         </div>
       </div>
-    </main>
+    </div>
   )
 }

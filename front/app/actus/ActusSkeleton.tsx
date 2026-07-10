@@ -5,7 +5,7 @@ import Breadcrumb from '@/components/Breadcrumb'
  */
 export default function ActusSkeleton() {
   return (
-    <main id="main-content" className="min-h-screen bg-theme-white relative overflow-hidden">
+    <div className="min-h-screen bg-theme-white relative overflow-hidden">
       <div className="max-w-container-small mx-auto px-4 md:px-6 lg:px-10 xl:px-16 pt-20 md:pt-28">
         <Breadcrumb
           items={[
@@ -62,6 +62,6 @@ export default function ActusSkeleton() {
           </div>
         </div>
       </div>
-    </main>
+    </div>
   )
 }

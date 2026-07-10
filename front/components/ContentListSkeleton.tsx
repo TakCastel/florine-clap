@@ -10,7 +10,7 @@ type ContentListSkeletonProps = {
  */
 export default function ContentListSkeleton({ title, breadcrumbLabel }: ContentListSkeletonProps) {
   return (
-    <main id="main-content" className="min-h-screen bg-theme-white text-black relative">
+    <div className="min-h-screen bg-theme-white text-black relative">
       <div className="max-w-container-small mx-auto px-4 md:px-6 lg:px-10 xl:px-16 pt-20 md:pt-28">
         <Breadcrumb
           items={[
@@ -62,6 +62,6 @@ export default function ContentListSkeleton({ title, breadcrumbLabel }: ContentL
           </div>
         </section>
       </div>
-    </main>
+    </div>
   )
 }

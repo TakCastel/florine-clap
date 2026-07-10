@@ -4,7 +4,7 @@ import { useRef, useState, useEffect } from 'react'
 import { createPortal } from 'react-dom'
 import Link from 'next/link'
 import Image from 'next/image'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion } from 'framer-motion'
 import { getImageUrl } from '@/lib/directus'
 
 type ContentItem = {
@@ -12,6 +12,7 @@ type ContentItem = {
   _id?: string
   slug: string
   title: string
+  subtitle?: string
   image?: string | { id: string; filename_download: string }
   content?: string | { id: string; filename_download: string }
   cover?: string | { id: string; filename_download: string }
@@ -47,26 +48,42 @@ function getMetadata(item: ContentItem, basePath: string) {
     return { subtitle: item.lieu, details: item.date ? new Date(item.date).toLocaleDateString('fr-FR') : undefined }
   }
   if (basePath === '/videos-art') {
-    return { subtitle: item.annee, details: item.duree }
+    return { subtitle: item.annee, details: item.duree, freeSubtitle: item.subtitle }
   }
   return { subtitle: undefined, details: undefined }
 }
 
 export default function VerticalCarousel({ items, basePath, className = '' }: VerticalCarouselProps) {
+  const TEXT_DELAY_PREV_MS = 220
+  const TEXT_DELAY_NEXT_MS = 140
   const containerRef = useRef<HTMLDivElement>(null)
   const sectionRefs = useRef<(HTMLElement | null)[]>([])
   const scrollRef = useRef<number | null>(null)
+  const activationTimeoutRef = useRef<number | null>(null)
+  const isNavigatingRef = useRef(false)
   const [activeIndex, setActiveIndex] = useState(0)
+  const [textIndex, setTextIndex] = useState(0)
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
   const [mounted, setMounted] = useState(false)
   const [navBottom, setNavBottom] = useState<number | null>(null)
   const [isMobile, setIsMobile] = useState(false)
   const [revealed, setRevealed] = useState<Set<number>>(() => new Set([0]))
+  const [visibleIndexes, setVisibleIndexes] = useState<Set<number>>(() => new Set([0]))
+  const imageDisplayedIndex =
+    !isMobile && hoveredIndex !== null && visibleIndexes.has(hoveredIndex)
+      ? hoveredIndex
+      : activeIndex
+  const textDisplayedIndex =
+    !isMobile && hoveredIndex !== null && visibleIndexes.has(hoveredIndex)
+      ? hoveredIndex
+      : textIndex
 
   useEffect(() => setMounted(true), [])
 
   useEffect(
     () => () => {
       if (scrollRef.current) cancelAnimationFrame(scrollRef.current)
+      if (activationTimeoutRef.current !== null) window.clearTimeout(activationTimeoutRef.current)
     },
     []
   )
@@ -110,11 +127,40 @@ export default function VerticalCarousel({ items, basePath, className = '' }: Ve
     const el = sectionRefs.current[index]
     if (!el) return
 
+    isNavigatingRef.current = true
+    setHoveredIndex(null)
+    if (activationTimeoutRef.current !== null) {
+      window.clearTimeout(activationTimeoutRef.current)
+      activationTimeoutRef.current = null
+    }
+
     setActiveIndex(index)
+
+    const isGoingUp = index < activeIndex
+    const isGoingDown = index > activeIndex
+    if (isGoingUp) {
+      setTextIndex(-1)
+      activationTimeoutRef.current = window.setTimeout(() => {
+        setTextIndex(index)
+        activationTimeoutRef.current = null
+      }, TEXT_DELAY_PREV_MS)
+    } else if (isGoingDown) {
+      setTextIndex(-1)
+      activationTimeoutRef.current = window.setTimeout(() => {
+        setTextIndex(index)
+        activationTimeoutRef.current = null
+      }, TEXT_DELAY_NEXT_MS)
+    } else {
+      setTextIndex(index)
+    }
 
     const rect = el.getBoundingClientRect()
     const targetY = window.scrollY + rect.top - window.innerHeight / 2 + rect.height / 2
     window.scrollTo(0, targetY)
+
+    window.setTimeout(() => {
+      isNavigatingRef.current = false
+    }, 600)
   }
 
   useEffect(() => {
@@ -123,9 +169,16 @@ export default function VerticalCarousel({ items, basePath, className = '' }: Ve
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (!entry.isIntersecting) return
           const index = parseInt(entry.target.getAttribute('data-section-index') ?? '0', 10)
+          setVisibleIndexes((prev) => {
+            const next = new Set(prev)
+            if (entry.isIntersecting) next.add(index)
+            else next.delete(index)
+            return next
+          })
+          if (!entry.isIntersecting || isNavigatingRef.current) return
           setActiveIndex(index)
+          setTextIndex(index)
         })
       },
       {
@@ -194,13 +247,24 @@ export default function VerticalCarousel({ items, basePath, className = '' }: Ve
             const cover = getCoverUrl(item)
             const meta = getMetadata(item, basePath)
             const href = `${basePath}/${item.slug}`
-            const isActive = index === activeIndex
+            const isImageActive = index === imageDisplayedIndex
+            const isTextActive = index === textDisplayedIndex && textDisplayedIndex >= 0
+            const isCurrent = index === activeIndex
 
             return (
               <section
                 key={item.id || item._id || index}
                 ref={(el) => { sectionRefs.current[index] = el }}
                 className="flex items-center py-1 md:py-2 lg:py-3"
+                onMouseEnter={() => {
+                  if (!isMobile) setHoveredIndex(index)
+                }}
+                onMouseMove={() => {
+                  if (!isMobile) setHoveredIndex(index)
+                }}
+                onMouseLeave={() => {
+                  if (!isMobile) setHoveredIndex(null)
+                }}
               >
                 <div className="w-full max-w-6xl mx-auto flex flex-col lg:flex-row lg:items-start gap-8">
                   <div className="flex-shrink-0 w-full lg:w-2/5 min-h-[8rem] lg:min-h-0 text-left lg:text-right">
@@ -223,6 +287,11 @@ export default function VerticalCarousel({ items, basePath, className = '' }: Ve
                         <h2 className="text-2xl md:text-3xl font-bold tracking-tight text-black">
                           {item.title}
                         </h2>
+                        {meta.freeSubtitle && (
+                          <p className="text-sm text-black/70 mt-2 leading-relaxed">
+                            {meta.freeSubtitle}
+                          </p>
+                        )}
                         {meta.details && (
                           <p className="text-sm text-black/50 mt-2">{meta.details}</p>
                         )}
@@ -238,51 +307,53 @@ export default function VerticalCarousel({ items, basePath, className = '' }: Ve
                         </motion.div>
                       )
                     ) : (
-                      <AnimatePresence mode="wait">
-                        {isActive && (
-                          <motion.div
-                            key={index}
-                            initial={{ x: 80, opacity: 0 }}
-                            animate={{ x: 0, opacity: 1 }}
-                            exit={{ x: 80, opacity: 0 }}
-                            transition={{
-                              type: 'spring',
-                              stiffness: 320,
-                              damping: 22,
-                              mass: 0.8,
-                            }}
+                      isTextActive && (
+                        <motion.div
+                          key={index}
+                          initial={{ x: 80, opacity: 0 }}
+                          animate={{ x: 0, opacity: 1 }}
+                          transition={{
+                            type: 'spring',
+                            stiffness: 320,
+                            damping: 22,
+                            mass: 0.8,
+                          }}
+                        >
+                          {meta.subtitle && (
+                            <p className="text-sm text-black/50 uppercase tracking-wider mb-2">{meta.subtitle}</p>
+                          )}
+                          <h2 className="text-2xl md:text-3xl font-bold tracking-tight text-black">
+                            {item.title}
+                          </h2>
+                          {meta.freeSubtitle && (
+                            <p className="text-sm text-black/70 mt-2 leading-relaxed">
+                              {meta.freeSubtitle}
+                            </p>
+                          )}
+                          {meta.details && (
+                            <p className="text-sm text-black/50 mt-2">{meta.details}</p>
+                          )}
+                          <Link
+                            href={href}
+                            className="inline-flex items-center gap-2 mt-4 text-xs font-medium uppercase tracking-wide text-black/60 hover:text-black transition-colors"
                           >
-                            {meta.subtitle && (
-                              <p className="text-sm text-black/50 uppercase tracking-wider mb-2">{meta.subtitle}</p>
-                            )}
-                            <h2 className="text-2xl md:text-3xl font-bold tracking-tight text-black">
-                              {item.title}
-                            </h2>
-                            {meta.details && (
-                              <p className="text-sm text-black/50 mt-2">{meta.details}</p>
-                            )}
-                            <Link
-                              href={href}
-                              className="inline-flex items-center gap-2 mt-4 text-xs font-medium uppercase tracking-wide text-black/60 hover:text-black transition-colors"
-                            >
-                              Découvrir
-                              <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
-                                <path d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                              </svg>
-                            </Link>
-                          </motion.div>
-                        )}
-                      </AnimatePresence>
+                            Découvrir
+                            <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                              <path d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                            </svg>
+                          </Link>
+                        </motion.div>
+                      )
                     )}
                   </div>
 
                   <div className="flex-1 lg:ml-auto lg:w-3/5 flex items-center lg:justify-end justify-center">
                     <motion.div
-                      className={`w-full max-w-full ${!isActive ? 'lg:origin-right' : ''}`}
+                      className={`w-full max-w-full ${!isImageActive ? 'lg:origin-right' : ''}`}
                       initial={false}
                       animate={{
-                        scale: isActive ? 1 : 0.88,
-                        opacity: isActive ? 1 : 0.6,
+                        scale: isImageActive ? 1 : 0.88,
+                        opacity: isImageActive ? 1 : 0.6,
                       }}
                       transition={{
                         type: 'spring',
@@ -290,7 +361,7 @@ export default function VerticalCarousel({ items, basePath, className = '' }: Ve
                         damping: 28,
                       }}
                     >
-                      {isActive ? (
+                      {isCurrent ? (
                         <Link href={href} className="block overflow-hidden aspect-[4/3] relative">
                           {cover ? (
                             <div className="relative w-full h-full">

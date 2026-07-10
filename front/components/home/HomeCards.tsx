@@ -64,7 +64,7 @@ export default function HomeCards({ innerRef }: HomeCardsProps) {
             </Link>
 
             {/* Carte Médiations */}
-            <Link href="/m�diations" className="group transition-all duration-1000 ease-out opacity-100 translate-y-0">
+            <Link href="/mediations" className="group transition-all duration-1000 ease-out opacity-100 translate-y-0">
               <div className="relative w-full h-80 overflow-hidden bg-theme-mediations transition-all duration-500 group-hover:brightness-110 group-hover:scale-105 cursor-pointer">
                 {/* Image en filigrane */}
                 {mediationImage && (
@@ -83,7 +83,7 @@ export default function HomeCards({ innerRef }: HomeCardsProps) {
                 </div>
                 <div className="absolute inset-0 flex items-center justify-center">
                   <h3 className="text-xl md:text-2xl font-display font-bold tracking-wider text-theme-mediations-text relative after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-1 after:bg-current after:transition-all after:duration-300 group-hover:after:w-full">
-                    Médiations
+                    Médiations artistiques
                   </h3>
                 </div>
                 {/* Bordure qui apparaît au hover */}

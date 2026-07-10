@@ -19,9 +19,9 @@ export default function Footer() {
           <div className="lg:col-span-5">
             <Reveal delay={0.2} duration={0.8}>
               <div className="mb-8">
-                <h3 className="text-xl md:text-2xl font-bold tracking-tight leading-tight text-white mb-6">
+                <h2 className="text-xl md:text-2xl font-bold tracking-tight leading-tight text-white mb-6">
                   Florine Clap
-                </h3>
+                </h2>
                 
                 {/* Ligne décorative */}
                 <motion.div 
@@ -78,13 +78,13 @@ export default function Footer() {
             {/* Navigation */}
             <Reveal delay={0.4} duration={0.8}>
               <div>
-                <h4 className="text-white/50 text-xs uppercase tracking-[0.2em] mb-6 font-medium">
+                <h3 className="text-white/50 text-xs uppercase tracking-[0.2em] mb-6 font-medium">
                   Navigation
-                </h4>
+                </h3>
                 <StaggerContainer staggerChildren={0.1} delay={0.6} className="flex flex-col space-y-4">
                   {[
                     { label: 'Films', href: '/films' },
-                    { label: 'Médiations', href: '/mediations' },
+                    { label: 'Médiations artistiques', href: '/mediations' },
                     { label: 'Vidéos/art', href: '/videos-art' },
                     { label: 'Actualités', href: '/actus' },
                     { label: 'Bio', href: '/bio' }
@@ -108,9 +108,9 @@ export default function Footer() {
             {/* Contact */}
             <Reveal delay={0.6} duration={0.8}>
               <div>
-                <h4 className="text-white/50 text-xs uppercase tracking-[0.2em] mb-6 font-medium">
+                <h3 className="text-white/50 text-xs uppercase tracking-[0.2em] mb-6 font-medium">
                   Contact
-                </h4>
+                </h3>
                 <div className="space-y-4 text-white/75">
                   <a 
                     href="mailto:florine.clap@gmail.com" 
@@ -144,7 +144,7 @@ export default function Footer() {
               <p className="text-white/30 text-[10px]">
                 Site créé par{' '}
                 <a 
-                  href="https://tariktalhaoui.fr" 
+                  href="https://www.linkedin.com/in/tarik-talhaoui-832769110/" 
                   target="_blank" 
                   rel="noopener noreferrer"
                   className="text-white/40 hover:text-white/60 transition-colors duration-300 underline underline-offset-2"
