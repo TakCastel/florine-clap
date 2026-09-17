@@ -5,6 +5,7 @@ import VimeoPlayer from '@/components/VimeoPlayer'
 import VideoPlayer from '@/components/VideoPlayer'
 import ArticleHeroImage from '@/components/ArticleHeroImage'
 import StickyAside from '@/components/StickyAside'
+import { Reveal } from '@/components/ui/Reveal'
 import { getFilmBySlug, getImageUrl, getVideoUrl, Film } from '@/lib/directus'
 import { notFound } from 'next/navigation'
 import { buildMetadata, generateJsonLd } from '@/components/Seo'
@@ -22,7 +23,7 @@ export async function generateMetadata({ params }: FilmPageProps) {
   const resolvedParams = await Promise.resolve(params)
   const slug = resolvedParams.slug
   const film = await getFilmBySlug(slug)
-  
+
   if (!film) {
     return {}
   }
@@ -46,17 +47,17 @@ export async function generateMetadata({ params }: FilmPageProps) {
 export default async function FilmPage({ params }: FilmPageProps) {
   const resolvedParams = await Promise.resolve(params)
   const slug = resolvedParams.slug
-  
+
   if (!slug) {
     notFound()
   }
-  
+
   const film = await getFilmBySlug(slug)
-  
+
   if (!film) {
     notFound()
   }
-  
+
   const headingImageUrl = getImageUrl(film.heading || film.image)
   const imageUrl = getImageUrl(film.image)
   const directusVideoUrl = getVideoUrl(film.video)
@@ -80,10 +81,10 @@ export default async function FilmPage({ params }: FilmPageProps) {
       />
       <div className="relative">
         <ArticleHeroImage imageUrl={headingImageUrl} alt={film.title} />
-        
+
         <div className="relative z-10">
           <div className="max-w-container-large mx-auto px-6 md:px-10 lg:px-16 pt-20 md:pt-28">
-            <Breadcrumb 
+            <Breadcrumb
               items={[
                 { label: 'Accueil', href: '/' },
                 { label: 'Films', href: '/films' },
@@ -101,12 +102,13 @@ export default async function FilmPage({ params }: FilmPageProps) {
           {film.title}
         </h1>
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 lg:items-start" style={{ overflow: 'visible' }}>
-          <article className="lg:col-span-2">
+          <Reveal width="100%" className="lg:col-span-2">
+          <article>
             {imageUrl && (
               <div className="relative w-full aspect-video mb-8 overflow-hidden">
                 <Image
                   src={imageUrl}
-                  alt={`Image de couverture du film ${film.title}`}
+                  alt={`Image de couverture du film ${film.title}${film.annee ? ` (${film.annee})` : ''}, réalisé par Florine Clap`}
                   fill
                   sizes="(max-width: 768px) 100vw, 1024px"
                   className="object-cover"
@@ -114,7 +116,7 @@ export default async function FilmPage({ params }: FilmPageProps) {
                 />
               </div>
             )}
-            
+
             {film.body && (
               <div className="prose max-w-none text-base text-black mb-12 [&_p]:text-justify [&_li]:text-justify">
                 <MarkdownRenderer content={film.body} />
@@ -147,13 +149,15 @@ export default async function FilmPage({ params }: FilmPageProps) {
               />
             ) : null}
           </article>
+          </Reveal>
 
-          <StickyAside className="lg:col-span-1">
+          <Reveal width="100%" delay={0.15} className="lg:col-span-1">
+          <StickyAside>
           <section className="border-t border-black/10 pt-8 pb-8">
             <h2 className="text-lg md:text-xl font-bold tracking-tight leading-tight text-black mb-6">
               Fiche technique
             </h2>
-            
+
             <dl className="space-y-6">
               {film.realisation && (
                 <div>
@@ -235,7 +239,7 @@ export default async function FilmPage({ params }: FilmPageProps) {
               <h2 className="text-lg md:text-xl font-bold tracking-tight leading-tight text-black mb-6">
                 Diffusion / Sélection
               </h2>
-              
+
               <div className="space-y-6">
                 {typeof film.diffusion === 'string' && film.diffusion.trim() && (
                   <div>
@@ -260,7 +264,7 @@ export default async function FilmPage({ params }: FilmPageProps) {
 
           {film.lien_film && (
             <section className="border-t border-black/10 pt-8 pb-8">
-              <a 
+              <a
                 href={film.lien_film}
                 target="_blank"
                 rel="noopener noreferrer"
@@ -294,6 +298,7 @@ export default async function FilmPage({ params }: FilmPageProps) {
             </Link>
           </nav>
         </StickyAside>
+          </Reveal>
         </div>
       </div>
     </>

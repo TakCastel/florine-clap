@@ -5,6 +5,7 @@ import VimeoPlayer from '@/components/VimeoPlayer'
 import VideoPlayer from '@/components/VideoPlayer'
 import ArticleHeroImage from '@/components/ArticleHeroImage'
 import StickyAside from '@/components/StickyAside'
+import { Reveal } from '@/components/ui/Reveal'
 import { getVideoArtBySlug, getImageUrl, getVideoUrl, VideoArt } from '@/lib/directus'
 import { notFound } from 'next/navigation'
 import { buildMetadata, generateJsonLd } from '@/components/Seo'
@@ -22,7 +23,7 @@ export async function generateMetadata({ params }: VideoArtPageProps) {
   const resolvedParams = await Promise.resolve(params)
   const slug = resolvedParams.slug
   const videoArt = await getVideoArtBySlug(slug)
-  
+
   if (!videoArt) {
     return {}
   }
@@ -45,17 +46,17 @@ export async function generateMetadata({ params }: VideoArtPageProps) {
 export default async function VideoArtPage({ params }: VideoArtPageProps) {
   const resolvedParams = await Promise.resolve(params)
   const slug = resolvedParams.slug
-  
+
   if (!slug) {
     notFound()
   }
-  
+
   const videoArt = await getVideoArtBySlug(slug)
-  
+
   if (!videoArt) {
     notFound()
   }
-  
+
   const headingImageUrl = getImageUrl(videoArt.image)
   const imageUrl = getImageUrl(videoArt.image)
   const directusVideoUrl = getVideoUrl(videoArt.video)
@@ -79,10 +80,10 @@ export default async function VideoArtPage({ params }: VideoArtPageProps) {
       />
       <div className="relative">
         <ArticleHeroImage imageUrl={headingImageUrl} alt={videoArt.title} />
-        
+
         <div className="relative z-10">
           <div className="max-w-container-small mx-auto px-6 md:px-10 lg:px-16 pt-20 md:pt-28">
-            <Breadcrumb 
+            <Breadcrumb
               items={[
                 { label: 'Accueil', href: '/' },
                 { label: 'Vidéos/art', href: '/videos-art' },
@@ -105,12 +106,13 @@ export default async function VideoArtPage({ params }: VideoArtPageProps) {
             {videoArt.title}
           </h1>
         </header>
+        <Reveal width="100%">
         <article>
           {imageUrl && (
             <div className="relative w-full aspect-video mb-8 overflow-hidden">
               <Image
                 src={imageUrl}
-                alt={`Image de couverture de la vidéo d'art ${videoArt.title}`}
+                alt={`Image de couverture de la vidéo d'art ${videoArt.title}${videoArt.annee ? ` (${videoArt.annee})` : ''}, par Florine Clap`}
                 fill
                 sizes="(max-width: 768px) 100vw, 1024px"
                 className="object-cover"
@@ -118,7 +120,7 @@ export default async function VideoArtPage({ params }: VideoArtPageProps) {
               />
             </div>
           )}
-          
+
           {videoArt.body && (
             <div className="prose max-w-none text-base text-black mb-12">
               <MarkdownRenderer content={videoArt.body} />
@@ -151,14 +153,16 @@ export default async function VideoArtPage({ params }: VideoArtPageProps) {
             />
           ) : null}
         </article>
+        </Reveal>
 
+        <Reveal width="100%" delay={0.15}>
         <div className="mt-12">
           <StickyAside>
             <section className="border-t border-black/10 pt-8 pb-8">
               <h2 className="text-lg md:text-xl font-bold tracking-tight leading-tight text-black mb-6">
                 Fiche technique
               </h2>
-              
+
               <dl className="space-y-6">
                 {videoArt.realisation && (
                   <div>
@@ -219,6 +223,7 @@ export default async function VideoArtPage({ params }: VideoArtPageProps) {
             </nav>
           </StickyAside>
         </div>
+        </Reveal>
       </div>
     </>
   )
