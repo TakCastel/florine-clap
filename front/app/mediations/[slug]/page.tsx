@@ -5,6 +5,7 @@ import VimeoPlayer from '@/components/VimeoPlayer'
 import VideoPlayer from '@/components/VideoPlayer'
 import ArticleHeroImage from '@/components/ArticleHeroImage'
 import StickyAside from '@/components/StickyAside'
+import { Reveal } from '@/components/ui/Reveal'
 import { getMediationBySlug, getImageUrl, getVideoUrl, Mediation } from '@/lib/directus'
 import { notFound } from 'next/navigation'
 import { buildMetadata, generateJsonLd } from '@/components/Seo'
@@ -22,7 +23,7 @@ export async function generateMetadata({ params }: MediationPageProps) {
   const resolvedParams = await Promise.resolve(params)
   const slug = resolvedParams.slug
   const mediation = await getMediationBySlug(slug)
-  
+
   if (!mediation) {
     return {}
   }
@@ -46,17 +47,17 @@ export async function generateMetadata({ params }: MediationPageProps) {
 export default async function MediationPage({ params }: MediationPageProps) {
   const resolvedParams = await Promise.resolve(params)
   const slug = resolvedParams.slug
-  
+
   if (!slug) {
     notFound()
   }
-  
+
   const mediation = await getMediationBySlug(slug)
-  
+
   if (!mediation) {
     notFound()
   }
-  
+
   const coverUrl = getImageUrl(mediation.cover)
   const directusVideoUrl = getVideoUrl(mediation.video)
   const canonicalUrl = canonical(`/mediations/${slug}`)
@@ -79,10 +80,10 @@ export default async function MediationPage({ params }: MediationPageProps) {
       />
       <div className="relative">
         <ArticleHeroImage imageUrl={coverUrl} alt={mediation.title} />
-        
+
         <div className="relative z-10">
           <div className="max-w-container-small mx-auto px-6 md:px-10 lg:px-16 pt-20 md:pt-28">
-            <Breadcrumb 
+            <Breadcrumb
               items={[
                 { label: 'Accueil', href: '/' },
                 { label: 'Médiations artistiques', href: '/mediations' },
@@ -99,12 +100,13 @@ export default async function MediationPage({ params }: MediationPageProps) {
         <h1 className="text-xl md:text-2xl font-bold tracking-tight leading-tight text-black mb-8 pt-6">
           {mediation.title}
         </h1>
+        <Reveal width="100%">
         <article>
           {coverUrl && (
             <div className="relative w-full aspect-video mb-8 overflow-hidden">
               <Image
                 src={coverUrl}
-                alt={`Image de couverture de la médiation ${mediation.title}`}
+                alt={`Image de couverture de la médiation artistique ${mediation.title}${mediation.lieu ? ` à ${mediation.lieu}` : ''}, par Florine Clap`}
                 fill
                 sizes="(max-width: 768px) 100vw, 1024px"
                 className="object-cover"
@@ -112,7 +114,7 @@ export default async function MediationPage({ params }: MediationPageProps) {
               />
             </div>
           )}
-          
+
           {mediation.body && (
             <div className="prose max-w-none text-base text-black mb-12 [&_p]:text-justify [&_li]:text-justify">
               <MarkdownRenderer content={mediation.body} />
@@ -145,14 +147,16 @@ export default async function MediationPage({ params }: MediationPageProps) {
             />
           ) : null}
         </article>
+        </Reveal>
 
+        <Reveal width="100%" delay={0.15}>
         <div className="mt-12">
           <StickyAside>
             <section className="border-t border-black/10 pt-8 pb-8">
               <h2 className="text-lg md:text-xl font-bold tracking-tight leading-tight text-black mb-6">
                 Informations
               </h2>
-              
+
               <dl className="space-y-6">
                 <div>
                   <dt className="text-xs text-black/50 uppercase tracking-[0.2em] mb-2 font-light">Date</dt>
@@ -193,6 +197,7 @@ export default async function MediationPage({ params }: MediationPageProps) {
             </nav>
           </StickyAside>
         </div>
+        </Reveal>
       </div>
     </>
   )

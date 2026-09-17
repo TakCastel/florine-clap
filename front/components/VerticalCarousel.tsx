@@ -382,9 +382,14 @@ export default function VerticalCarousel({ items, basePath, className = '' }: Ve
                           )}
                         </Link>
                       ) : (
-                        <button
-                          type="button"
-                          onClick={() => scrollToSlide(index)}
+                        <Link
+                          href={href}
+                          onClick={(e) => {
+                            // Un premier clic amène l'item au centre au lieu de naviguer directement ;
+                            // href reste un vrai lien HTML pour les crawlers et la navigation sans JS.
+                            e.preventDefault()
+                            scrollToSlide(index)
+                          }}
                           className="block w-full overflow-hidden aspect-[4/3] cursor-pointer text-left relative"
                           aria-label={`Voir ${item.title}`}
                         >
@@ -405,7 +410,7 @@ export default function VerticalCarousel({ items, basePath, className = '' }: Ve
                               <span className="text-black/30 text-sm uppercase">Image non disponible</span>
                             </div>
                           )}
-                        </button>
+                        </Link>
                       )}
                     </motion.div>
                   </div>

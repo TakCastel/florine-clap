@@ -1,5 +1,5 @@
 import { Metadata } from 'next'
-import { DEFAULT_OG_IMAGE } from '@/lib/seo'
+import { DEFAULT_OG_IMAGE, parseDurationToISO8601 } from '@/lib/seo'
 
 /** Force une taille/format fiables pour les crawlers sociaux (Facebook/LinkedIn gèrent mal l'AVIF/WebP et les gros fichiers) */
 function toSocialImageUrl(url: string): string {
@@ -154,7 +154,7 @@ export function generateJsonLd({
       thumbnailUrl: fullImageUrl,
       contentUrl: fullUrl,
       uploadDate: publishedTime,
-      duration: duration,
+      duration: parseDurationToISO8601(duration),
       publisher: {
         '@type': 'Person',
         name: 'Florine Clap'
