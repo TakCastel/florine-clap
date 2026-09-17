@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { canonical } from '@/lib/seo'
+import { canonical, jsonLdToSafeString } from '@/lib/seo'
 
 type BreadcrumbItem = {
   label: string
@@ -84,7 +84,7 @@ export default function Breadcrumb({ items, variant = 'default' }: Props) {
     <div className={`${styles.container} py-4 sr-only`}>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(buildBreadcrumbJsonLd(items)) }}
+        dangerouslySetInnerHTML={{ __html: jsonLdToSafeString(buildBreadcrumbJsonLd(items)) }}
       />
       <div className="max-w-container-large mx-auto px-6 md:px-10 lg:px-16">
         <nav

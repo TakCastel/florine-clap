@@ -25,4 +25,9 @@ export function canonical(pathname: string): string {
   return `${base}${pathname.startsWith('/') ? '' : '/'}${pathname}`
 }
 
+/** Sérialise pour un <script type="application/ld+json"> : échappe `<` pour empêcher toute évasion hors du tag script si un champ CMS contient "</script>" */
+export function jsonLdToSafeString(data: unknown): string {
+  return JSON.stringify(data).replace(/</g, '\\u003c')
+}
+
 

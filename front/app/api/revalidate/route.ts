@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { safeCompare } from '@/lib/security'
 
 /** Paths revalidés → tags à invalider (cache des fetches Directus) pour que le nouveau contenu s'affiche */
 const PATH_TO_TAGS: Record<string, string[]> = {
@@ -35,7 +36,7 @@ export async function POST(request: NextRequest) {
 
   const authHeader = request.headers.get('authorization')
   const token = authHeader?.replace(/^Bearer\s+/i, '').trim()
-  if (token !== secret) {
+  if (!token || !safeCompare(token, secret)) {
     return NextResponse.json({ error: 'Non autorisé' }, { status: 401 })
   }
 

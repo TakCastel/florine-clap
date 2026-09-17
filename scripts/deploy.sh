@@ -82,11 +82,16 @@ echo ""
 
 # 4. Warmup du cache (pré-remplit le cache Directus pour navigation rapide)
 echo "🔥 Warmup du cache..."
+if [ -f .env ]; then
+  set -a
+  source .env
+  set +a
+fi
 WARMUP_URL="${SITE_URL:-http://localhost:3000}"
 sleep 5
 WARMUP_OK=false
 for i in 1 2 3; do
-  if curl -sf "${WARMUP_URL}/api/warmup" > /dev/null 2>&1; then
+  if curl -sf -H "Authorization: Bearer ${REVALIDATE_SECRET}" "${WARMUP_URL}/api/warmup" > /dev/null 2>&1; then
     echo "✅ Cache pré-rempli (warmup OK)"
     WARMUP_OK=true
     break

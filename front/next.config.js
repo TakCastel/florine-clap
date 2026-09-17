@@ -4,6 +4,19 @@ try {
   require('dotenv').config({ path: path.resolve(__dirname, '../.env') })
 } catch (_) {}
 
+// L'optimiseur d'images Next.js (/_next/image) fait un fetch serveur vers l'URL donnée :
+// on limite remotePatterns au strict nécessaire (hôte Directus) pour éviter tout SSRF
+// si une URL externe arbitraire venait à être passée en src d'image.
+function directusHostname() {
+  const raw = process.env.NEXT_PUBLIC_DIRECTUS_URL || process.env.DIRECTUS_INTERNAL_URL || ''
+  try {
+    return new URL(raw).hostname
+  } catch {
+    return null
+  }
+}
+const directusHost = directusHostname()
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
@@ -20,8 +33,14 @@ const nextConfig = {
     loaderFile: './lib/image-loader.js',
     qualities: [70, 75, 85, 90],
     remotePatterns: [
-      { protocol: 'https', hostname: '**' },
-      { protocol: 'http', hostname: '**' },
+      ...(directusHost
+        ? [
+            { protocol: 'https', hostname: directusHost },
+            { protocol: 'http', hostname: directusHost },
+          ]
+        : []),
+      { protocol: 'http', hostname: 'localhost' },
+      { protocol: 'http', hostname: '127.0.0.1' },
     ],
     formats: ['image/webp', 'image/avif'],
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],

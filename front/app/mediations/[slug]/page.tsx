@@ -8,7 +8,7 @@ import StickyAside from '@/components/StickyAside'
 import { getMediationBySlug, getImageUrl, getVideoUrl, Mediation } from '@/lib/directus'
 import { notFound } from 'next/navigation'
 import { buildMetadata, generateJsonLd } from '@/components/Seo'
-import { canonical } from '@/lib/seo'
+import { canonical, jsonLdToSafeString } from '@/lib/seo'
 import Image from 'next/image'
 
 // Cache 24h ; revalidation à la demande via /api/revalidate (webhook Directus)
@@ -75,7 +75,7 @@ export default async function MediationPage({ params }: MediationPageProps) {
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        dangerouslySetInnerHTML={{ __html: jsonLdToSafeString(jsonLd) }}
       />
       <div className="relative">
         <ArticleHeroImage imageUrl={coverUrl} alt={mediation.title} />

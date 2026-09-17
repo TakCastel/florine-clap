@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { revalidateTag } from 'next/cache'
+import { safeCompare } from '@/lib/security'
 
 /**
  * Endpoint interne pour la revalidation.
@@ -35,7 +36,7 @@ export async function POST(request: NextRequest) {
   }
 
   const headerSecret = request.headers.get('x-internal-secret')
-  if (headerSecret !== internalSecret) {
+  if (!headerSecret || !safeCompare(headerSecret, internalSecret)) {
     return NextResponse.json({ error: 'Non autorisé' }, { status: 401 })
   }
 

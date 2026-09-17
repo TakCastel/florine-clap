@@ -3,7 +3,7 @@ import HomePageClient from '@/components/home/HomePageClient'
 import HomeSkeleton from '@/components/home/HomeSkeleton'
 import { getHomeSettings, getImageUrl, getVideoUrl, HomeSettings } from '@/lib/directus'
 import { buildMetadata, generateJsonLd } from '@/components/Seo'
-import { canonical, SITE_TITLE, SITE_DESCRIPTION } from '@/lib/seo'
+import { canonical, SITE_TITLE, SITE_DESCRIPTION, jsonLdToSafeString } from '@/lib/seo'
 import type { Metadata } from 'next'
 
 // Cache 24h ; revalidation à la demande via /api/revalidate (webhook Directus)
@@ -84,11 +84,11 @@ async function HomeContent() {
       )}
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
+        dangerouslySetInnerHTML={{ __html: jsonLdToSafeString(websiteJsonLd) }}
       />
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }}
+        dangerouslySetInnerHTML={{ __html: jsonLdToSafeString(personJsonLd) }}
       />
       {/* H1 caché pour le SEO : le contenu visuel utilise des h3 pour des raisons de design */}
       <h1 className="sr-only">{SITE_TITLE}</h1>

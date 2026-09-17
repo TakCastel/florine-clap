@@ -8,7 +8,7 @@ import StickyAside from '@/components/StickyAside'
 import { getFilmBySlug, getImageUrl, getVideoUrl, Film } from '@/lib/directus'
 import { notFound } from 'next/navigation'
 import { buildMetadata, generateJsonLd } from '@/components/Seo'
-import { canonical } from '@/lib/seo'
+import { canonical, jsonLdToSafeString } from '@/lib/seo'
 import Image from 'next/image'
 
 // Cache 24h ; revalidation à la demande via /api/revalidate (webhook Directus)
@@ -76,7 +76,7 @@ export default async function FilmPage({ params }: FilmPageProps) {
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        dangerouslySetInnerHTML={{ __html: jsonLdToSafeString(jsonLd) }}
       />
       <div className="relative">
         <ArticleHeroImage imageUrl={headingImageUrl} alt={film.title} />

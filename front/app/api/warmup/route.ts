@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { safeCompare } from '@/lib/security'
 import {
   getHomeSettings,
   getAllFilms,
@@ -13,10 +14,20 @@ import {
 } from '@/lib/directus'
 
 /**
- * Pré-remplit le cache Directus (optionnel). Aucune clé requise.
- * Après déploiement : GET https://votre-domaine.com/api/warmup
+ * Pré-remplit le cache Directus (optionnel). Protégé par le même secret que /api/revalidate
+ * pour éviter qu'un tiers déclenche des requêtes Directus en boucle (coût/DoS).
+ * Après déploiement : curl -H "Authorization: Bearer $REVALIDATE_SECRET" https://votre-domaine.com/api/warmup
  */
-export async function GET(_request: NextRequest) {
+export async function GET(request: NextRequest) {
+  const secret = process.env.REVALIDATE_SECRET
+  if (!secret) {
+    return NextResponse.json({ error: 'Non configuré' }, { status: 501 })
+  }
+  const authHeader = request.headers.get('authorization')
+  const token = authHeader?.replace(/^Bearer\s+/i, '').trim()
+  if (!token || !safeCompare(token, secret)) {
+    return NextResponse.json({ error: 'Non autorisé' }, { status: 401 })
+  }
 
   const start = Date.now()
   const errors: string[] = []

@@ -1,7 +1,7 @@
 import { Suspense } from 'react'
 import { getAllActus, Actu, getHomeSettings } from '@/lib/directus'
 import { buildMetadata, generateJsonLd } from '@/components/Seo'
-import { canonical } from '@/lib/seo'
+import { canonical, jsonLdToSafeString } from '@/lib/seo'
 import ActusPageClient from './ActusPageClient'
 import ActusSkeleton from './ActusSkeleton'
 
@@ -55,7 +55,7 @@ export default function ActusPage() {
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        dangerouslySetInnerHTML={{ __html: jsonLdToSafeString(jsonLd) }}
       />
       <Suspense fallback={<ActusSkeleton />}>
         <ActusContent />

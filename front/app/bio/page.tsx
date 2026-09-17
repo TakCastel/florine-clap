@@ -5,7 +5,7 @@ import PartnersSection from '@/components/home/PartnersSection'
 import ArticleHeroImage from '@/components/ArticleHeroImage'
 import { getPageBySlug, Page, getImageUrl, getHomeSettings } from '@/lib/directus'
 import { buildMetadata, generateJsonLd } from '@/components/Seo'
-import { canonical, BIO_DESCRIPTION } from '@/lib/seo'
+import { canonical, BIO_DESCRIPTION, jsonLdToSafeString } from '@/lib/seo'
 import { Metadata } from 'next'
 import Image from 'next/image'
 import BioSkeleton from './BioSkeleton'
@@ -69,7 +69,7 @@ async function BioContent() {
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        dangerouslySetInnerHTML={{ __html: jsonLdToSafeString(jsonLd) }}
       />
       <div className="min-h-screen bg-theme-white text-theme-dark relative">
         {/* H1 caché pour le SEO */}

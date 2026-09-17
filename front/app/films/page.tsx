@@ -3,7 +3,7 @@ import ContentListPage from '@/components/ContentListPage'
 import ContentListSkeleton from '@/components/ContentListSkeleton'
 import { getAllFilms, Film, getHomeSettings } from '@/lib/directus'
 import { buildMetadata, generateJsonLd } from '@/components/Seo'
-import { canonical } from '@/lib/seo'
+import { canonical, jsonLdToSafeString } from '@/lib/seo'
 
 // Cache 24h ; revalidation à la demande via /api/revalidate (webhook Directus)
 export const revalidate = 86400
@@ -61,7 +61,7 @@ export default function FilmsPage() {
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        dangerouslySetInnerHTML={{ __html: jsonLdToSafeString(jsonLd) }}
       />
       <div>
         <Suspense fallback={<ContentListSkeleton title="Films" breadcrumbLabel="Films" />}>
