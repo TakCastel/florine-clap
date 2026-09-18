@@ -133,14 +133,17 @@ export default async function ActuPage({ params }: ActuPageProps) {
                       />
                     </div>
                   ) : (
-                    <div className="relative float-right w-32 sm:w-48 md:w-64 aspect-[4/3] ml-4 sm:ml-6 mb-3">
-                      <Image
+                    // Dimensions inconnues (API publique Directus ne les expose pas) : on ne peut pas
+                    // utiliser next/image en mode fill sans imposer un ratio arbitraire qui rognerait ou
+                    // laisserait du vide. Une <img> classique en w-full h-auto épouse le ratio réel du fichier.
+                    <div className="float-right w-32 sm:w-48 md:w-64 ml-4 sm:ml-6 mb-3">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
                         src={coverUrl}
                         alt={`Image de couverture de l'actualité ${actu.title}${actu.date ? ` du ${new Date(actu.date).toLocaleDateString('fr-FR')}` : ''}`}
-                        fill
-                        sizes="(max-width: 640px) 128px, (max-width: 768px) 192px, 256px"
-                        className="object-contain"
-                        quality={85}
+                        className="w-full h-auto"
+                        loading="lazy"
+                        decoding="async"
                       />
                     </div>
                   )
