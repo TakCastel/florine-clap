@@ -133,13 +133,13 @@ export default async function ActuPage({ params }: ActuPageProps) {
                       />
                     </div>
                   ) : (
-                    <div className="relative float-right w-32 sm:w-48 md:w-64 aspect-[4/3] ml-4 sm:ml-6 mb-3 overflow-hidden">
+                    <div className="relative float-right w-32 sm:w-48 md:w-64 aspect-[4/3] ml-4 sm:ml-6 mb-3">
                       <Image
                         src={coverUrl}
                         alt={`Image de couverture de l'actualité ${actu.title}${actu.date ? ` du ${new Date(actu.date).toLocaleDateString('fr-FR')}` : ''}`}
                         fill
                         sizes="(max-width: 640px) 128px, (max-width: 768px) 192px, 256px"
-                        className="object-cover"
+                        className="object-contain"
                         quality={85}
                       />
                     </div>
