@@ -4,7 +4,7 @@ import Image from 'next/image'
 import { useState, useRef, useEffect } from 'react'
 import CtaLink from '@/components/CtaLink'
 import { Reveal } from '@/components/ui/Reveal'
-import { motion, useScroll, useTransform } from 'framer-motion'
+import { motion } from 'framer-motion'
 import { HomeSettings, getImageUrl } from '@/lib/directus'
 import MarkdownRenderer from '@/components/MarkdownRenderer'
 
@@ -15,7 +15,6 @@ interface BioSectionProps {
 export default function BioSection({ homeSettings }: BioSectionProps) {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
   const [isMobile, setIsMobile] = useState(false)
-  const sectionRef = useRef<HTMLElement>(null)
   const imageRef = useRef<HTMLDivElement>(null)
   
   // Utiliser l'URL de l'image : si c'est déjà une URL complète (string), l'utiliser directement
@@ -42,21 +41,9 @@ export default function BioSection({ homeSettings }: BioSectionProps) {
     setMousePosition({ x, y })
   }
 
-  // Opacité des paragraphes en fonction du scroll
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: isMobile ? ["start 0.7", "center 0.3"] : ["start end", "end start"]
-  })
-
-  const paragraph1Opacity = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [0, 1, 1, 1])
-  const paragraph2Opacity = useTransform(scrollYProgress, [0.1, 0.4, 0.8, 1], [0, 1, 1, 1])
-  const paragraph3Opacity = useTransform(scrollYProgress, [0.2, 0.5, 0.9, 1], [0, 1, 1, 1])
-  const paragraph4Opacity = useTransform(scrollYProgress, [0.3, 0.6, 1], [0, 1, 1])
-
   return (
-    <section 
-      ref={sectionRef}
-      id="bio-section" 
+    <section
+      id="bio-section"
       className="w-full min-h-screen flex items-center justify-center py-12 md:py-20 relative overflow-hidden border-b border-black/5 bg-gradient-to-br from-white to-gray-100/50"
       style={{ position: 'relative' }}
       onMouseMove={isMobile ? undefined : handleMouseMove}
@@ -167,7 +154,10 @@ export default function BioSection({ homeSettings }: BioSectionProps) {
               <div className="flex-1 flex flex-col">
                 {(homeSettings?.bio || homeSettings?.bio_text) && (
                   <motion.div
-                    style={{ opacity: paragraph1Opacity }}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, amount: 0.2 }}
+                    transition={{ duration: 0.6, delay: 0.4, ease: 'easeOut' }}
                     className="prose max-w-none text-base text-theme-dark [&_p]:text-justify [&_li]:text-justify flex-1"
                   >
                     <MarkdownRenderer content={homeSettings.bio || homeSettings.bio_text || ''} />

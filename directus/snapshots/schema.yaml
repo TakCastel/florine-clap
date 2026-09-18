@@ -752,6 +752,76 @@
         }
       },
       {
+        "collection": "actus",
+        "field": "type",
+        "type": "string",
+        "meta": {
+          "collection": "actus",
+          "conditions": null,
+          "display": "labels",
+          "display_options": {
+            "choices": [
+              {
+                "background": "#6644FF",
+                "foreground": "#FFFFFF",
+                "text": "Extrait",
+                "value": "extrait"
+              },
+              {
+                "background": "#2ECDA7",
+                "foreground": "#FFFFFF",
+                "text": "Flyer",
+                "value": "flyer"
+              }
+            ]
+          },
+          "field": "type",
+          "group": null,
+          "hidden": false,
+          "interface": "select-dropdown",
+          "note": "Mise en page de l'article : extrait (image en bas, texte resserré) ou flyer (image en haut à droite, texte autour)",
+          "options": {
+            "choices": [
+              {
+                "text": "Extrait",
+                "value": "extrait"
+              },
+              {
+                "text": "Flyer",
+                "value": "flyer"
+              }
+            ]
+          },
+          "readonly": false,
+          "required": false,
+          "searchable": true,
+          "sort": null,
+          "special": null,
+          "translations": null,
+          "validation": null,
+          "validation_message": null,
+          "width": "full"
+        },
+        "schema": {
+          "name": "type",
+          "table": "actus",
+          "data_type": "character varying",
+          "default_value": "extrait",
+          "max_length": 255,
+          "numeric_precision": null,
+          "numeric_scale": null,
+          "is_nullable": false,
+          "is_unique": false,
+          "is_indexed": false,
+          "is_primary_key": false,
+          "is_generated": false,
+          "generation_expression": null,
+          "has_auto_increment": false,
+          "foreign_key_table": null,
+          "foreign_key_column": null
+        }
+      },
+      {
         "collection": "films",
         "field": "diffusion",
         "type": "string",

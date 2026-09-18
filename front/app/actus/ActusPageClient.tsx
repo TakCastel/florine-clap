@@ -4,7 +4,7 @@ import { useState, useLayoutEffect } from 'react'
 import { useSearchParams } from 'next/navigation'
 import ActuCard from '@/components/ActuCard'
 import Breadcrumb from '@/components/Breadcrumb'
-import ScrollRevealCard from '@/components/ScrollRevealCard'
+import { Reveal } from '@/components/ui/Reveal'
 import PageHeader from '@/components/PageHeader'
 import ArticleHeroImage from '@/components/ArticleHeroImage'
 import { Actu, getImageUrl } from '@/lib/directus'
@@ -87,11 +87,16 @@ export default function ActusPageClient({ initialActus, heroImageUrl: heroImageU
           />
         </div>
         
-        {/* Grille des actualités - 1 colonne mobile, 2 colonnes desktop */}
-        <div className="space-y-8 md:space-y-12 mb-16">
-          {paginatedItems.map((actu, index) => (
-            <div key={actu.id}>
-              <ScrollRevealCard delay={index * 0.05}>
+        {/* Grille des actualités - 1 colonne mobile, 2 colonnes tablette, 3 colonnes desktop */}
+        <h2 className="sr-only">Liste des actualités</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-12 mb-16">
+          {paginatedItems.map((actu, index) => {
+            // 1re rangée déjà dans le premier écran : visible immédiatement (pas d'attente hydratation + animation, sinon le LCP explose).
+            // Au-delà, un délai en cascade par rangée (et non par index global) pour éviter qu'il ne s'accumule sans limite sur les longues grilles.
+            const isAboveTheFold = index < 3
+            const staggerDelay = isAboveTheFold ? 0 : (index % 3) * 0.06
+            return (
+              <Reveal key={actu.id} delay={staggerDelay} priority={isAboveTheFold} threshold={0.1} width="100%">
                 <ActuCard
                   href={`/actus/${actu.slug}`}
                   title={actu.title}
@@ -100,13 +105,9 @@ export default function ActusPageClient({ initialActus, heroImageUrl: heroImageU
                   body={actu.body}
                   date={actu.date}
                 />
-              </ScrollRevealCard>
-              {/* Trait fin entre les articles (sauf le dernier) */}
-              {index < paginatedItems.length - 1 && (
-                <div className="mt-8 md:mt-12 border-t border-black/5"></div>
-              )}
-            </div>
-          ))}
+              </Reveal>
+            )
+          })}
         </div>
 
         {/* Champ de recherche */}

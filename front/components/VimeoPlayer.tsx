@@ -28,9 +28,12 @@ export default function VimeoPlayer({
   const iframeRef = useRef<HTMLIFrameElement>(null)
   const [isLoading, setIsLoading] = useState(true)
   const [hasError, setHasError] = useState(false)
+  // Player Vimeo chargé seulement au clic : évite de charger son iframe/JS/cookie tiers
+  // tant que la vidéo n'est pas demandée (poids initial de la page, bf-cache, cookie __cf_bm).
+  const [activated, setActivated] = useState(autoplay)
 
   useEffect(() => {
-    if (!iframeRef.current) return
+    if (!activated || !iframeRef.current) return
 
     setIsLoading(true)
     setHasError(false)
@@ -105,7 +108,26 @@ export default function VimeoPlayer({
         iframeRef.current.removeEventListener('error', handleError)
       }
     }
-  }, [videoId, autoplay, muted, loop, controls])
+  }, [activated, videoId, autoplay, muted, loop, controls])
+
+  if (!activated) {
+    return (
+      <div className={`relative w-full ${className}`} style={{ width, height }}>
+        <button
+          type="button"
+          onClick={() => setActivated(true)}
+          className="absolute inset-0 w-full h-full bg-black flex items-center justify-center group cursor-pointer"
+          aria-label={`Lire la vidéo${title ? ` : ${title}` : ''}`}
+        >
+          <span className="relative w-16 h-16 rounded-full border-2 border-white/50 flex items-center justify-center transition-all duration-300 group-hover:border-white group-hover:scale-110">
+            <svg className="w-6 h-6 text-white translate-x-0.5" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M8 5v14l11-7z" />
+            </svg>
+          </span>
+        </button>
+      </div>
+    )
+  }
 
   return (
     <div className={`relative w-full ${className}`} style={{ width, height }}>

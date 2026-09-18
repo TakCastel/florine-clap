@@ -5,6 +5,8 @@ node_modules
 .DS_Store
 .contentlayer
 
+tsconfig.tsbuildinfo
+
 # Vidéos locales (hébergées sur serveur distant)
 public/videos/*.mp4
 public/videos/*.mov

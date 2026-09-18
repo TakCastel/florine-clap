@@ -177,9 +177,11 @@ export interface Actu {
   date: string
   excerpt?: string
   tags?: string[]
-  cover?: string | { id: string; filename_download: string }
+  cover?: string | { id: string; filename_download: string; width?: number; height?: number }
   location?: string
   body?: string
+  /** Mise en page de l'article : 'extrait' (image en bas, texte resserré) ou 'flyer' (image en haut à droite, texte autour). Défaut : 'extrait' */
+  type?: 'extrait' | 'flyer'
   date_created?: string
   date_updated?: string
 }
@@ -297,7 +299,7 @@ const ACTUS_TAG = 'actus'
 export async function getAllActus(): Promise<Actu[]> {
   try {
     return await fetchDirectus<Actu[]>(
-      `/items/actus?fields=*,cover.id,cover.filename_download&sort[]=-date`,
+      `/items/actus?fields=*,cover.id,cover.filename_download,cover.width,cover.height&sort[]=-date`,
       { tags: [ACTUS_TAG] }
     )
   } catch (error) {
@@ -310,7 +312,7 @@ export async function getAllActus(): Promise<Actu[]> {
 export const getActuBySlug = cache(async (slug: string): Promise<Actu | null> => {
   try {
     const actus = await fetchDirectus<Actu[]>(
-      `/items/actus?fields=*,cover.id,cover.filename_download&filter[slug][_eq]=${encodeURIComponent(slug)}&limit=1`,
+      `/items/actus?fields=*,cover.id,cover.filename_download,cover.width,cover.height&filter[slug][_eq]=${encodeURIComponent(slug)}&limit=1`,
       { tags: [ACTUS_TAG] }
     )
     return actus[0] || null

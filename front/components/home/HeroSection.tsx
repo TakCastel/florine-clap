@@ -131,7 +131,7 @@ export default function HeroSection({ homeSettings }: HeroSectionProps) {
                 loop
                 muted
                 playsInline
-                preload="auto"
+                preload="metadata"
                 className="w-full h-full object-cover scale-110 bg-black"
                 onLoadedData={() => setIsVideoReady(true)}
                 onLoadedMetadata={() => setIsVideoReady(true)}

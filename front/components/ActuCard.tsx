@@ -61,33 +61,33 @@ export default function ActuCard({
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      <div className="flex flex-col md:flex-row gap-4 md:gap-6 md:items-stretch">
-        {/* Image à gauche - pleine hauteur */}
+      <div className="flex flex-col h-full">
+        {/* Image en haut */}
         {cover && (
-          <div className="relative w-full md:w-48 lg:w-56 h-48 md:h-auto flex-shrink-0 overflow-hidden">
-            <Image 
-              src={cover} 
+          <div className="relative w-full aspect-[4/3] flex-shrink-0 overflow-hidden">
+            <Image
+              src={cover}
               alt={title}
               fill
-              className="object-cover"
-              sizes="(max-width: 768px) 100vw, 224px"
+              className="object-cover transition-transform duration-500 group-hover:scale-105"
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             />
           </div>
         )}
-        
-        {/* Contenu à droite */}
-        <div className="flex-1 flex flex-col justify-between min-w-0 md:min-h-[192px]">
+
+        {/* Contenu en dessous */}
+        <div className="flex-1 flex flex-col justify-between min-w-0 pt-4">
           <div>
             {/* Titre - police réduite */}
             <h3 className="text-base font-bold text-black mb-3 line-clamp-2">
               {title}
             </h3>
-            
+
             {/* Date */}
             <div className="text-xs text-black/60 mb-4">
               <span>{formattedDate}</span>
             </div>
-            
+
             {/* Résumé - police réduite, espacement augmenté */}
             {displayExcerpt && (
               <p className="text-base text-black/70 leading-loose line-clamp-3 mb-4">
@@ -95,7 +95,7 @@ export default function ActuCard({
               </p>
             )}
           </div>
-          
+
           {/* Composant Lire avec trait et flèche - s'étend au survol du bloc */}
           <div className="mt-auto pt-2">
             <CtaLink

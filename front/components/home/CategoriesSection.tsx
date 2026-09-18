@@ -16,7 +16,7 @@ export default function CategoriesSection({ homeSettings }: CategoriesSectionPro
   const sectionRef = useRef<HTMLElement>(null)
   const containerRef = useRef<HTMLDivElement>(null)
   const isInView = useInView(sectionRef, { once: true, margin: "-100px" })
-  
+
   // Variantes d'animation pour l'effet de fade in séquentiel
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -55,7 +55,7 @@ export default function CategoriesSection({ homeSettings }: CategoriesSectionPro
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 768)
     }
-    
+
     checkMobile()
     window.addEventListener('resize', checkMobile)
     return () => window.removeEventListener('resize', checkMobile)
@@ -78,26 +78,26 @@ export default function CategoriesSection({ homeSettings }: CategoriesSectionPro
         actus: ''
       }
     }
-    
+
     return {
-      films: homeSettings.category_films_image 
-        ? (typeof homeSettings.category_films_image === 'string' 
-          ? homeSettings.category_films_image 
+      films: homeSettings.category_films_image
+        ? (typeof homeSettings.category_films_image === 'string'
+          ? homeSettings.category_films_image
           : getImageUrl(homeSettings.category_films_image) || '')
         : '',
-      mediations: homeSettings.category_mediations_image 
-        ? (typeof homeSettings.category_mediations_image === 'string' 
-          ? homeSettings.category_mediations_image 
+      mediations: homeSettings.category_mediations_image
+        ? (typeof homeSettings.category_mediations_image === 'string'
+          ? homeSettings.category_mediations_image
           : getImageUrl(homeSettings.category_mediations_image) || '')
         : '',
-      'video-art': homeSettings.category_videos_art_image 
-        ? (typeof homeSettings.category_videos_art_image === 'string' 
-          ? homeSettings.category_videos_art_image 
+      'video-art': homeSettings.category_videos_art_image
+        ? (typeof homeSettings.category_videos_art_image === 'string'
+          ? homeSettings.category_videos_art_image
           : getImageUrl(homeSettings.category_videos_art_image) || '')
         : '',
-      actus: homeSettings.category_actus_image 
-        ? (typeof homeSettings.category_actus_image === 'string' 
-          ? homeSettings.category_actus_image 
+      actus: homeSettings.category_actus_image
+        ? (typeof homeSettings.category_actus_image === 'string'
+          ? homeSettings.category_actus_image
           : getImageUrl(homeSettings.category_actus_image) || '')
         : ''
     }
@@ -163,14 +163,14 @@ export default function CategoriesSection({ homeSettings }: CategoriesSectionPro
   ], [categoryImages])
 
   return (
-    <section 
+    <section
       ref={sectionRef}
-      id="categories-section" 
+      id="categories-section"
       className="w-full min-h-screen flex items-center md:items-center justify-center py-4 md:py-8 overflow-hidden relative border-b border-black/5 bg-gradient-to-br from-white to-gray-100/50"
       style={{ position: 'relative' }}
     >
       <div className="w-full max-w-container-large px-4 md:px-10 lg:px-16 relative z-10">
-        <motion.div 
+        <motion.div
           ref={containerRef}
           className="w-full min-h-screen md:min-h-0 md:h-[380px] lg:h-[420px] flex flex-col md:flex-row gap-2 md:gap-3 items-stretch"
           style={{ position: 'relative' }}
@@ -179,15 +179,15 @@ export default function CategoriesSection({ homeSettings }: CategoriesSectionPro
           animate={isInView && isReady ? "visible" : "hidden"}
         >
           {cards.map((card, index) => (
-            <motion.div 
-              key={index} 
+            <motion.div
+              key={index}
               className="relative flex-1 md:hover:flex-[1.5] transition-all duration-500 ease-out min-h-[180px] h-[calc((100vh-4.25rem)/4)] md:h-full group/card"
               variants={getCardVariants(index)}
               onMouseEnter={() => setHoveredIndex(index)}
               onMouseLeave={() => setHoveredIndex(null)}
               whileHover={{
                 zIndex: 50,
-                transition: { 
+                transition: {
                   duration: 0.4,
                   ease: [0.16, 1, 0.3, 1] as [number, number, number, number]
                 },

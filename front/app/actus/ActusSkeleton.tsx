@@ -1,20 +1,16 @@
-import Breadcrumb from '@/components/Breadcrumb'
-
 /**
  * Skeleton Actualités — style arti : shimmer, cartes image + texte, recherche, pagination.
+ *
+ * Pas de <Breadcrumb> ici volontairement : le composant est sr-only (invisible)
+ * et injecte un JSON-LD BreadcrumbList. Comme ce skeleton s'affiche en fallback
+ * de Suspense au-dessus de la vraie page (qui a déjà son propre Breadcrumb),
+ * le garder ferait apparaître deux BreadcrumbList dupliqués dans le HTML brut
+ * streamé (mauvais pour les outils/robots qui ne font pas tourner le JS).
  */
 export default function ActusSkeleton() {
   return (
     <div className="min-h-screen bg-theme-white relative overflow-hidden">
-      <div className="max-w-container-small mx-auto px-4 md:px-6 lg:px-10 xl:px-16 pt-20 md:pt-28">
-        <Breadcrumb
-          items={[
-            { label: 'Accueil', href: '/' },
-            { label: 'Actualités' },
-          ]}
-          variant="default"
-        />
-      </div>
+      <div className="max-w-container-small mx-auto px-4 md:px-6 lg:px-10 xl:px-16 pt-20 md:pt-28" aria-hidden />
 
       <div className="max-w-container-small mx-auto px-4 md:px-6 lg:px-10 xl:px-16">
         <div className="pt-12 md:pt-20 mb-8 md:mb-12">
@@ -26,15 +22,15 @@ export default function ActusSkeleton() {
           </div>
         </div>
 
-        <div className="space-y-8 md:space-y-12 mb-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-12 mb-16">
           {[1, 2, 3, 4, 5, 6].map((i) => (
-            <div key={i} className="flex flex-col md:flex-row gap-4 md:gap-6 md:items-stretch" aria-hidden>
-              <div className="w-full md:w-48 lg:w-56 h-48 md:min-h-[192px] flex-shrink-0 skeleton-shimmer rounded-sm border border-black/5" />
-              <div className="flex-1 flex flex-col justify-between min-w-0 md:min-h-[192px] space-y-3 pt-1">
+            <div key={i} className="flex flex-col" aria-hidden>
+              <div className="w-full aspect-[4/3] flex-shrink-0 skeleton-shimmer rounded-sm border border-black/5" />
+              <div className="flex-1 flex flex-col justify-between min-w-0 space-y-3 pt-4">
                 <div className="h-6 w-3/4 max-w-xs skeleton-shimmer rounded-sm" />
                 <div className="h-4 w-28 skeleton-shimmer rounded-sm" />
-                <div className="h-4 w-full max-w-md skeleton-shimmer rounded-sm" />
-                <div className="h-4 w-full max-w-sm skeleton-shimmer rounded-sm" />
+                <div className="h-4 w-full skeleton-shimmer rounded-sm" />
+                <div className="h-4 w-2/3 skeleton-shimmer rounded-sm" />
               </div>
             </div>
           ))}

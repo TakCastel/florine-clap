@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import VideoArtCard from '@/components/VideoArtCard'
 import Breadcrumb from '@/components/Breadcrumb'
-import ScrollRevealCard from '@/components/ScrollRevealCard'
+import { Reveal } from '@/components/ui/Reveal'
 import { VideoArt, getImageUrl } from '@/lib/directus'
 
 type VideosArtClientProps = {
@@ -73,7 +73,7 @@ export default function VideosArtClient({ videoArts }: VideosArtClientProps) {
         {/* Liste de toutes les vidéos-art en grandes cards */}
         <div className="space-y-12 md:space-y-16">
           {videoArts.map((videoArt, index) => (
-            <ScrollRevealCard key={videoArt.id} delay={index * 0.05}>
+            <Reveal key={videoArt.id} delay={index * 0.05} threshold={0.1} width="100%">
               <VideoArtCard
                 href={`/videos-art/${videoArt.slug}`}
                 title={videoArt.title}
@@ -84,7 +84,7 @@ export default function VideosArtClient({ videoArts }: VideosArtClientProps) {
                 vimeoId={videoArt.vimeo_id}
                 isHero={true}
               />
-            </ScrollRevealCard>
+            </Reveal>
           ))}
         </div>
 

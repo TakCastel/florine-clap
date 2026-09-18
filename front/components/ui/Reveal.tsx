@@ -12,6 +12,8 @@ interface RevealProps {
   className?: string
   once?: boolean
   threshold?: number
+  /** Contenu déjà visible au premier écran (hero, 1res cartes) : rendu visible dès le HTML serveur, sans attendre l'hydratation + l'animation, pour ne pas retarder le LCP. */
+  priority?: boolean
 }
 
 export const Reveal = ({
@@ -23,6 +25,7 @@ export const Reveal = ({
   className = '',
   once = true,
   threshold = 0.2,
+  priority = false,
 }: RevealProps) => {
   const ref = useRef(null)
   const isInView = useInView(ref, { once, amount: threshold } as UseInViewOptions)
@@ -49,7 +52,7 @@ export const Reveal = ({
     <div ref={ref} style={{ width, overflow: 'visible' }} className={className}>
       <motion.div
         variants={variants}
-        initial="hidden"
+        initial={priority ? 'visible' : 'hidden'}
         animate={isInView ? 'visible' : 'hidden'}
       >
         {children}
