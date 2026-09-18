@@ -1,5 +1,5 @@
 import { Suspense } from 'react'
-import { getAllActus, Actu, getHomeSettings } from '@/lib/directus'
+import { getAllActus, Actu, getHomeSettings, getPageBySlug } from '@/lib/directus'
 import { buildMetadata, generateJsonLd } from '@/components/Seo'
 import { canonical } from '@/lib/seo'
 import ActusPageClient from './ActusPageClient'
@@ -7,6 +7,9 @@ import ActusSkeleton from './ActusSkeleton'
 
 // Cache 24h ; revalidation à la demande via /api/revalidate (webhook Directus)
 export const revalidate = 86400
+
+const DEFAULT_SEO_TITLE = 'Actualités - Florine Clap'
+const DEFAULT_SEO_DESCRIPTION = 'Découvrez mes dernières actualités, sélections en festival et projets en cours'
 
 type ActusPageMetadataProps = {
   searchParams?: Promise<Record<string, string | string[] | undefined>>
@@ -18,9 +21,11 @@ export async function generateMetadata({ searchParams }: ActusPageMetadataProps)
   const pageValue = Array.isArray(pageParam) ? pageParam[0] : pageParam
   const pageNumber = pageValue ? Number.parseInt(pageValue, 10) : 1
   const isPaginated = Number.isFinite(pageNumber) && pageNumber > 1
+  const page = await getPageBySlug('actus').catch(() => null)
+  const seoTitle = page?.seo_title || DEFAULT_SEO_TITLE
   return buildMetadata({
-    title: isPaginated ? `Actualités - Page ${pageNumber} | Florine Clap` : 'Actualités - Florine Clap',
-    description: 'Découvrez mes dernières actualités, sélections en festival et projets en cours',
+    title: isPaginated ? `Actualités - Page ${pageNumber} | Florine Clap` : seoTitle,
+    description: page?.seo_description || DEFAULT_SEO_DESCRIPTION,
     canonical: canonical('/actus'),
     noindex: isPaginated,
   })
@@ -36,12 +41,19 @@ async function getActus() {
 }
 
 async function ActusContent() {
-  const [actus, homeSettings] = await Promise.all([getActus(), getHomeSettings()])
+  const [actus, homeSettings, page] = await Promise.all([getActus(), getHomeSettings(), getPageBySlug('actus').catch(() => null)])
   const sortedActus = [...actus].sort((a: Actu, b: Actu) => {
     return new Date(b.date || '2020').getTime() - new Date(a.date || '2020').getTime()
   })
-  const heroImageUrl = homeSettings?.category_actus_image || null
-  return <ActusPageClient initialActus={sortedActus} heroImageUrl={heroImageUrl} />
+  const heroImageUrl = page?.hero_image || homeSettings?.category_actus_image || null
+  return (
+    <ActusPageClient
+      initialActus={sortedActus}
+      heroImageUrl={heroImageUrl}
+      title={page?.title || 'Actualités'}
+      description={DEFAULT_SEO_DESCRIPTION}
+    />
+  )
 }
 
 export default function ActusPage() {

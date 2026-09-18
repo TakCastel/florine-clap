@@ -1,17 +1,21 @@
 import { Suspense } from 'react'
 import ContentListPage from '@/components/ContentListPage'
 import ContentListSkeleton from '@/components/ContentListSkeleton'
-import { getAllFilms, Film, getHomeSettings } from '@/lib/directus'
+import { getAllFilms, Film, getHomeSettings, getPageBySlug } from '@/lib/directus'
 import { buildMetadata, generateJsonLd } from '@/components/Seo'
 import { canonical } from '@/lib/seo'
 
 // Cache 24h ; revalidation à la demande via /api/revalidate (webhook Directus)
 export const revalidate = 86400
 
-export function generateMetadata() {
+const DEFAULT_SEO_TITLE = 'Les films'
+const DEFAULT_SEO_DESCRIPTION = 'Depuis 2013, je réalise essentiellement des films documentaires explorant des enjeux artistiques et sociaux. Ma démarche s\'est construite dans une approche transversale des arts, au fil de collaborations avec des artistes plasticiens, chorégraphes, auteur·ices, architectes et institutions culturelles, qui nourrissent et façonnent ma pratique du cinéma.'
+
+export async function generateMetadata() {
+  const page = await getPageBySlug('films').catch(() => null)
   return buildMetadata({
-    title: 'Films - Les films',
-    description: 'Depuis 2013, je réalise essentiellement des films documentaires explorant des enjeux artistiques et sociaux. Ma démarche s\'est construite dans une approche transversale des arts, au fil de collaborations avec des artistes plasticiens, chorégraphes, auteur·ices, architectes et institutions culturelles, qui nourrissent et façonnent ma pratique du cinéma.',
+    title: `Films - ${page?.seo_title || DEFAULT_SEO_TITLE}`,
+    description: page?.seo_description || DEFAULT_SEO_DESCRIPTION,
     canonical: canonical('/films'),
   })
 }
@@ -26,8 +30,8 @@ async function getFilms() {
 }
 
 async function FilmsContent() {
-  const [films, homeSettings] = await Promise.all([getFilms(), getHomeSettings()])
-  const heroImageUrl = homeSettings?.category_films_image || null
+  const [films, homeSettings, page] = await Promise.all([getFilms(), getHomeSettings(), getPageBySlug('films').catch(() => null)])
+  const heroImageUrl = page?.hero_image || homeSettings?.category_films_image || null
   const sortedFilms = [...films].sort((a: Film, b: Film) => {
     const orderA = a.order ?? Number.MAX_SAFE_INTEGER
     const orderB = b.order ?? Number.MAX_SAFE_INTEGER
@@ -40,7 +44,7 @@ async function FilmsContent() {
     <ContentListPage
       items={sortedFilms}
       basePath="/films"
-      title="Films"
+      title={page?.title || 'Films'}
       description="Tout commence après le visionnage du film Les Glaneurs et la Glaneuse d'Agnès Varda. J'y découvre un cinéma documentaire qui me parle et m'inspire profondément. Je prends alors ma caméra et, à mon tour, me mets à glaner des images dans ma ville natale, Avignon, puis partout où je suis inspirée et touchée par les gens, leurs aspirations et par leur présence au monde."
       breadcrumbLabel="Films"
       seoTitle="Les films"

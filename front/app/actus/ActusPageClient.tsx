@@ -13,9 +13,16 @@ import Link from 'next/link'
 type ActusPageClientProps = {
   initialActus: Actu[]
   heroImageUrl: string | null | { id: string; filename_download: string }
+  title?: string
+  description?: string
 }
 
-export default function ActusPageClient({ initialActus, heroImageUrl: heroImageUrlProp }: ActusPageClientProps) {
+export default function ActusPageClient({
+  initialActus,
+  heroImageUrl: heroImageUrlProp,
+  title = 'Actualités',
+  description = 'Découvrez mes dernières actualités, sélections en festival et projets en cours',
+}: ActusPageClientProps) {
   const searchParams = useSearchParams()
   const pageParam = searchParams.get('page') || '1'
   const [searchQuery, setSearchQuery] = useState('')
@@ -81,9 +88,9 @@ export default function ActusPageClient({ initialActus, heroImageUrl: heroImageU
       <div className={`max-w-container-small mx-auto px-4 md:px-6 lg:px-10 xl:px-16 ${heroImageUrl ? 'relative z-10' : ''}`} style={heroImageUrl ? { marginTop: '-66vh' } : {}}>
         {/* En-tête de page avec animation */}
         <div className={`${heroImageUrl ? 'pt-6' : 'mb-8 md:mb-12'} mb-8 md:mb-12`}>
-          <PageHeader 
-            title="Actualités"
-            description="Découvrez mes dernières actualités, sélections en festival et projets en cours"
+          <PageHeader
+            title={title}
+            description={description}
           />
         </div>
         

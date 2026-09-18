@@ -1,17 +1,21 @@
 import { Suspense } from 'react'
 import ContentListPage from '@/components/ContentListPage'
 import ContentListSkeleton from '@/components/ContentListSkeleton'
-import { getAllVideoArts, VideoArt, getImageUrl, getHomeSettings } from '@/lib/directus'
+import { getAllVideoArts, VideoArt, getImageUrl, getHomeSettings, getPageBySlug } from '@/lib/directus'
 import { buildMetadata, generateJsonLd } from '@/components/Seo'
 import { canonical } from '@/lib/seo'
 
 // Cache 24h ; revalidation à la demande via /api/revalidate (webhook Directus)
 export const revalidate = 86400
 
-export function generateMetadata() {
+const DEFAULT_SEO_TITLE = 'VIDEO/ART'
+const DEFAULT_SEO_DESCRIPTION = 'Enfant d\'Avignon, j\'ai grandi au contact des arts de la scène. La danse, le théâtre et les arts de la rue ont nourri très tôt une passion qui traverse aujourd\'hui mon cinéma, autant dans ses formes que dans ses thématiques, et irrigue l\'ensemble de mon travail vidéo.'
+
+export async function generateMetadata() {
+  const page = await getPageBySlug('videos-art').catch(() => null)
   return buildMetadata({
-    title: 'Vidéos/art - VIDEO/ART',
-    description: 'Enfant d\'Avignon, j\'ai grandi au contact des arts de la scène. La danse, le théâtre et les arts de la rue ont nourri très tôt une passion qui traverse aujourd\'hui mon cinéma, autant dans ses formes que dans ses thématiques, et irrigue l\'ensemble de mon travail vidéo.',
+    title: `Vidéos/art - ${page?.seo_title || DEFAULT_SEO_TITLE}`,
+    description: page?.seo_description || DEFAULT_SEO_DESCRIPTION,
     canonical: canonical('/videos-art'),
   })
 }
@@ -30,8 +34,8 @@ async function getVideoArts() {
 }
 
 async function VideosArtContent() {
-  const [videoArts, homeSettings] = await Promise.all([getVideoArts(), getHomeSettings()])
-  const heroImageUrl = homeSettings?.category_videos_art_image || null
+  const [videoArts, homeSettings, page] = await Promise.all([getVideoArts(), getHomeSettings(), getPageBySlug('videos-art').catch(() => null)])
+  const heroImageUrl = page?.hero_image || homeSettings?.category_videos_art_image || null
   const getYear = (item: VideoArt) => {
     if (item.annee) {
       const year = parseInt(item.annee, 10)
@@ -51,7 +55,7 @@ async function VideosArtContent() {
     <ContentListPage
       items={sortedVideoArts}
       basePath="/videos-art"
-      title="Vidéos/art"
+      title={page?.title || 'Vidéos/art'}
       description="Enfant d'Avignon, j'ai grandi au contact des arts de la scène. La danse, le théâtre et les arts de la rue ont nourri très tôt une passion qui traverse aujourd'hui mon cinéma, autant dans ses formes que dans ses thématiques, et irrigue l'ensemble de mon travail vidéo. Cette influence m'amène naturellement à me mettre au service d'artistes, afin de traduire leur démarche en images, au sein de collaborations artistiques partagées, ou dans le cadre de dispositifs de communication sensibles et créatifs."
       breadcrumbLabel="Vidéos/art"
       seoTitle="VIDEO/ART"

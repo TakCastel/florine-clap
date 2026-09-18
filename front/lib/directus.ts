@@ -193,6 +193,8 @@ export interface Page {
   hero_image?: string | { id: string; filename_download: string }
   bottom_image?: string | { id: string; filename_download: string }
   body?: string
+  seo_title?: string
+  seo_description?: string
   date_created?: string
   date_updated?: string
 }
