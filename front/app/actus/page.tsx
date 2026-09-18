@@ -8,7 +8,7 @@ import ActusSkeleton from './ActusSkeleton'
 // Cache 24h ; revalidation à la demande via /api/revalidate (webhook Directus)
 export const revalidate = 86400
 
-const DEFAULT_SEO_TITLE = 'Actualités - Florine Clap'
+const DEFAULT_SEO_TITLE = 'Actualités'
 const DEFAULT_SEO_DESCRIPTION = 'Découvrez mes dernières actualités, sélections en festival et projets en cours'
 
 type ActusPageMetadataProps = {
